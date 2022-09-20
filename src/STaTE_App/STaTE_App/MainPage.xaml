@@ -1,41 +1,152 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="STaTE_App.MainPage">
+             x:Class="STaTE_App.MainPage"
+             BackgroundColor="Black"
+             BackgroundImageSource="earth_stars.png">
 
-    <ScrollView>
+    <VerticalStackLayout
+                x:Name="MainPageLayout"
+                Spacing="25"
+                Padding="0,0, 0, 0"
+                VerticalOptions="Center">
+
         <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
+                x:Name="LoginPageLayout"
+                Spacing="25"
+                Padding="0,0, 0, 0"
+                VerticalOptions="End">
 
-            <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
+            <Label 
+                Text="Hello,
+                Welcome to the Spacecraft-Control-Center Testing and Training Environment (STaTE).
+                Please Select Login Type:"
+                FontSize="22"
+                TextColor="Gold"
+                FontFamily="Space"
+                Margin="20, 0, 20, 0"
+                VerticalOptions="Center"
+                AutomationProperties.IsInAccessibleTree="True" />
 
-            <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
 
             <Button
-                x:Name="CounterBtn"
-                Text="Click me"
+                x:Name="StuLoginBtn"
+                Text="Login as Student"
+                FontSize="18"
+                TextColor="Black"
+                FontFamily="Space"
+                BackgroundColor="Gold"
+                Margin="0, 20, 0, 0"
+                WidthRequest="250"
+                Clicked="OnStuClicked"
+                HorizontalOptions="Center"/>
+
+
+            <Button
+                x:Name="ProfLoginBtn"
+                Text="Login as Professor"
+                FontSize="18"
+                TextColor="Black"
+                FontFamily="Space"
+                BackgroundColor="Gold"
+                Margin="0, 0, 0, 0"
+                WidthRequest="250"
                 SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
+                Clicked="OnProfClicked"
+                HorizontalOptions="Center"/>
 
         </VerticalStackLayout>
-    </ScrollView>
+
+        <VerticalStackLayout
+            x:Name="StuLoginPageLayout"
+            Spacing="25"
+            Padding="0,0, 0, 0"
+            VerticalOptions="Center">
+
+            <Button
+                x:Name="StuLoginOptionsReturn"
+                Text="Back"
+                FontSize="18"
+                TextColor="Black"
+                FontFamily="Space"
+                BackgroundColor="Gold"
+                Margin="0, 0, 0, 0"
+                WidthRequest="250"
+                Clicked="OnLoginOptionsReturnClicked"
+                HorizontalOptions="Center"/>
+
+            <Editor
+                x:Name="StuLoginEditor"
+                Text="Please Enter Session Code"
+                FontSize="18"
+                TextColor="Black"
+                FontFamily="Space"
+                BackgroundColor="Gold"
+                Margin="0, 0, 0, 0"
+                WidthRequest="250"
+                HorizontalOptions="Center"/>
+
+
+            <Button
+                x:Name="StuEnter"
+                Text="Enter"
+                FontSize="18"
+                TextColor="Black"
+                FontFamily="Space"
+                BackgroundColor="Gold"
+                Margin="0, 0, 0, 0"
+                WidthRequest="250"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="OnStuEnterClicked"
+                HorizontalOptions="Center"/>
+
+        </VerticalStackLayout>
+
+        <VerticalStackLayout
+            x:Name="ProfLoginPageLayout"
+            Spacing="25"
+            Padding="0,0, 0, 0"
+            VerticalOptions="Center">
+
+            <Button
+                x:Name="ProfLoginOptionsReturn"
+                Text="Back"
+                FontSize="18"
+                TextColor="Black"
+                FontFamily="Space"
+                BackgroundColor="Gold"
+                Margin="0, 0, 0, 0"
+                WidthRequest="250"
+                Clicked="OnLoginOptionsReturnClicked"
+                HorizontalOptions="Center"/>
+
+            <Editor
+                x:Name="ProfLoginEditor"
+                Text="Please Enter Password"
+                FontSize="18"
+                TextColor="Black"
+                FontFamily="Space"
+                BackgroundColor="Gold"
+                Margin="0, 0, 0, 0"
+                WidthRequest="250"
+                HorizontalOptions="Center"/>
+
+
+            <Button
+                x:Name="ProfEnter"
+                Text="Enter"
+                FontSize="18"
+                TextColor="Black"
+                FontFamily="Space"
+                BackgroundColor="Gold"
+                Margin="0, 0, 0, 0"
+                WidthRequest="250"
+                Clicked="OnProfEnterClicked"
+                HorizontalOptions="Center"/>
+
+
+        </VerticalStackLayout>
+
+    </VerticalStackLayout>
 
 </ContentPage>
