@@ -1,24 +1,56 @@
-﻿namespace STaTE_App;
+﻿using AndroidX.Core.Provider;
+
+namespace STaTE_App;
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
 
 	public MainPage()
 	{
 		InitializeComponent();
-	}
 
-	private void OnCounterClicked(object sender, EventArgs e)
+        StuLoginPageLayout.IsVisible = false;
+        ProfLoginPageLayout.IsVisible = false;
+        LoginPageLayout.IsVisible = true;
+    }
+
+	private void OnStuClicked(object sender, EventArgs e)
 	{
-		count++;
+        LoginPageLayout.IsVisible = false;
+        StuLoginPageLayout.IsVisible = true;
+    }
+    private void OnProfClicked(object sender, EventArgs e)
+    {
+        LoginPageLayout.IsVisible = false;
+        ProfLoginPageLayout.IsVisible = true;
+    }
 
-		if (count == 1)
-			CounterBtn.Text = $"Clicked {count} time";
-		else
-			CounterBtn.Text = $"Clicked {count} times";
+    private void OnStuEnterClicked(object sender, EventArgs e)
+    {
+        StuLoginEditor.IsVisible = false;
+        ProfLoginEditor.IsVisible = false;
+        StuEnter.IsVisible = false;
+        ProfEnter.IsVisible = false;
 
-		SemanticScreenReader.Announce(CounterBtn.Text);
-	}
+        StuLoginBtn.IsVisible = true;
+        ProfLoginBtn.IsVisible = true;
+    }
+    private void OnProfEnterClicked(object sender, EventArgs e)
+    {
+        StuLoginEditor.IsVisible = false;
+        ProfLoginEditor.IsVisible = false;
+        StuEnter.IsVisible = false;
+        ProfEnter.IsVisible = false;
+
+        StuLoginBtn.IsVisible = true;
+        ProfLoginBtn.IsVisible = true;
+    }
+    private void OnLoginOptionsReturnClicked(object sender, EventArgs e)
+    {
+        StuLoginPageLayout.IsVisible = false;
+        ProfLoginPageLayout.IsVisible = false;
+        LoginPageLayout.IsVisible = true;
+    }
+
 }
 
