@@ -17,3 +17,6 @@ Engineering Notebook: Jesse Slager
 		- Successfuly tested game
 	10/6/22
 		- Started development of rough web app and embedded connection test game into a new nav web page
+	10/13/22
+		- (Finally got a requirements doc from Prof. Garfield) conducted research into the control system simulator attributes and subsystems
+		- Research and create data flow diagram (level 0) to start planning system communications and interactive layover between the web app and sim
