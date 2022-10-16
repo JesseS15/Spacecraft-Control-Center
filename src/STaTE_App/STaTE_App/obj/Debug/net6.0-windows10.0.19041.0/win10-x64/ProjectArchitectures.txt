@@ -1,1 +1,0 @@
-C:\Users\Garbe\source\Repos\STaTE_App\STaTE_App\STaTE_App.csproj;x64

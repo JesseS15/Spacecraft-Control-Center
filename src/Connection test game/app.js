@@ -132,3 +132,12 @@
         }); //client.on disconnect
      
     }); //sio.sockets.on connection
+
+    function loadPage(pageName) {
+        
+        app.get( '/', function( req, res ){
+            console.log('trying to load %s', __dirname + '/index.html');
+            res.sendfile( '/' + pageName + '.html' , { root:__dirname });
+        });
+
+    }
