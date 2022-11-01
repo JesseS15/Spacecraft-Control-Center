@@ -9,25 +9,10 @@ const userSchema = new mongoose.Schema({
   passwordResetExpires: Date,
   emailVerificationToken: String,
   emailVerified: Boolean,
-
-  snapchat: String,
-  facebook: String,
-  twitter: String,
-  google: String,
-  github: String,
-  instagram: String,
-  linkedin: String,
-  steam: String,
-  twitch: String,
-  quickbooks: String,
-  tokens: Array,
+  activeSimCodes: Array,
 
   profile: {
-    name: String,
-    gender: String,
-    location: String,
-    website: String,
-    picture: String
+    userName: String,
   }
 }, { timestamps: true });
 
