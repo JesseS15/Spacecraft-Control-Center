@@ -6,3 +6,8 @@ def login(request):
     template = loader.get_template('tc/login.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def createSim(request):
+    template = loader.get_template('tc/createSim.html')
+    context = {}
+    return HttpResponse(template.render(context, request))

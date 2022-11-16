@@ -1,3 +1,6 @@
 from django.db import models
+import static.testModule
 
-# Create your models here.
+class simulation():
+    testArgument = "red"
+    sim = static.testModule.testClass(testArgument)
