@@ -5,17 +5,17 @@
 
 <body style="background-image: url({% static 'images/stars.jpg' %});">
   <div class="content-section col-md-8 col-md-offset-2">
-    <center>
+    <center style="margin: 0 15px;">
       <form method="POST" style="color: white; margin: 4%; padding:10%; border-radius:1%;">
         {% csrf_token %}
         <fieldset class="form-group">
           {{ form|crispy}}
         </fieldset>
-      <center>
-        <button style="background: black; font-size: 2rem; padding:1%; color: white;" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-log-in"></span> &nbsp; login</button>
-      </center>
-      <br/>
-      <sub style="text-align: center;"><a href="{% url 'register' %}" style="text-decoration: underline; color: white; padding:2%; cursor:pointer;">Don't have account? Sign up Here</a></sub>
+        <center>
+          <button style="background: black; font-size: 2rem; padding:1%; color: white;" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-log-in"></span> &nbsp; login</button>
+        </center>
+        <br/>
+        <sub style="text-align: center;"><a href="{% url 'register' %}" style="background: black;color: white; padding:2%; cursor:pointer;">Don't have account? Sign up Here</a></sub>
       </form>
     </center>
   </div>
