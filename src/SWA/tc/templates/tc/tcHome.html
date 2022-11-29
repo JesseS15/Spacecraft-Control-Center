@@ -1,0 +1,7 @@
+
+{% extends "tc/index.html" %}
+{% if user.is_authenticated %}
+<center><h1>Welcome back {{user.username}}!</h1></center>
+{% else %}
+<meta http-equiv = "refresh" content = "0; url = /tc" />
+{% endif %}
