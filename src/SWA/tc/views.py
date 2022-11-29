@@ -1,7 +1,9 @@
+from django.db import models
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import UserRegisterForm
 from django.core.mail import send_mail
@@ -10,6 +12,7 @@ from django.template.loader import get_template
 from django.template import Context
 from django.http import HttpResponse
 from django.template import loader
+from .models import TestConductor
 
 #################### index#######################################
 def index(request):
@@ -36,7 +39,7 @@ def register(request):
             ##################################################################
             user = authenticate(request, username = username, password = password)
             form = login(request, user)
-            messages.success(request, f' welcome {username} !!')
+            TestConductor.objects.create(user = user)
             return redirect('tcHome')
     else:
         form = UserRegisterForm()
@@ -48,14 +51,25 @@ def Login(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username = username, password = password)
-        if user is not None:
+        if user is not None and not user.is_staff:
+            #messages.success(request, f' welcome {username} !!')
+            return redirect('foLogin')
+        if user is not None and user.is_staff:
             form = login(request, user)
-            messages.success(request, f' welcome {username} !!')
+            #messages.success(request, f' welcome {username} !!')
             return redirect('tcHome')
         else:
             messages.info(request, f'account does not exist')
+    elif request.user.is_authenticated:
+        return redirect('tcHome')
+
     form = AuthenticationForm()
     return render(request, 'tc/login.html', {'form':form, 'title':'log in'})
+
+def Logout(request):
+
+    logout(request)
+    return Login(request)
 
 def tcHome(request):
     template = loader.get_template('tc/tcHome.html')
