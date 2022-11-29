@@ -54,7 +54,7 @@ def Login(request):
 
         if user is not None and user.is_staff:
             #messages.info(request, f'Information submitted is for a Test Conductor account. Redirecting to Test Conductor login.')
-            return redirect('tclogin')
+            return redirect('tcLogin')
         if user is not None and not user.is_staff:
             form = login(request, user)
             #messages.success(request, f' welcome {username} !!')
