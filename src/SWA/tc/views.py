@@ -48,10 +48,12 @@ def Login(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username = username, password = password)
-        if user is not None:
+        if user is not None and user.is_staff:
             form = login(request, user)
             messages.success(request, f' welcome {username} !!')
             return redirect('tcHome')
+        if user is not None and not user.is_staff:
+             return redirect('foLogin')
         else:
             messages.info(request, f'account does not exist')
     form = AuthenticationForm()
