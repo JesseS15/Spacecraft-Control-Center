@@ -1,0 +1,28 @@
+a.button1{
+    display:inline-block;
+    height: 3em;
+    width: 14em;
+    border:0.1em solid #FFFFFF;
+    background-color:#000000;
+    margin:4em 0 0 0;
+    border-radius:.5em;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-size: 100%;
+    font-weight:300;
+    color:#FFFFFF;
+    text-align:center;
+    transition: all 0.2s;
+}
+
+a.button1:hover{
+    color:#000000;
+    background-color:#FFFFFF;
+}
+
+@media all and (max-width:30em){
+    a.button1{
+        display:block;
+        margin:0.4em auto;
+    }
+}
