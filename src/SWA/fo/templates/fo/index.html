@@ -56,24 +56,24 @@
     <!-- navbar-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
-        <div class="navbar-header">
+        <div class="navbar-header" style="color: #ECBD00;">
           <button class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" class="styleheader" href="{% url "home" %}">STaTE</a>
+          <a class="navbar-brand" class="styleheader" href="{% url "home" %}" style="color: #ECBD00;">STaTE</a>
         </div>
         <div class="collapse navbar-collapse" id="mainNavBar">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="{% url "home" %}">Home</a></li>
 
+            <li><a href="{% url "home" %}"><span class="glyphicon glyphicon-home"></span> &nbsp; Home</a></li>
             {% if user.is_authenticated %}
-            <li><a href="{% url "logout" %}"><span class="glyphicon glyphicon-log-out"></span> &nbsp; Logout</a></li>
+            <li><a href="{% url "foLogout" %}"><span class="glyphicon glyphicon-log-out"></span> &nbsp; Logout</a></li>
             {% else %}
             <li><a href="{% url "register" %}"><span class="glyphicon glyphicon-user"></span> &nbsp; Sign up</a></li>
-            <li><a href="{% url "login" %}"><span class="glyphicon glyphicon-log-in"></span> &nbsp; Log in</a></li>
+            <li><a href="{% url "foLogin" %}"><span class="glyphicon glyphicon-log-in"></span> &nbsp; Log in</a></li>
             {% endif %}
 
           </ul>
@@ -86,11 +86,6 @@
   <br>
   <div class="row">
     {% block start %}
-    {% if user.is_authenticated %}
-    <center><h1>welcome back {{user.username}}!</h1></center>
-    {% else %}
-    <center><h1>Successfully Logged Out</h1></center>
-    {% endif %}
     {% endblock %}
   </div>
 </body>
