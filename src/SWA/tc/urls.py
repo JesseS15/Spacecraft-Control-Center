@@ -10,4 +10,5 @@ urlpatterns = [
     path('tcHome/', views.tcHome, name ='tcHome'),
     path('', auth.LogoutView.as_view(template_name ='tc/index.html'), name ='logout'),
     path('register/', views.register, name ='register'),
+    path('logout', views.Logout, name ='logout'),
 ]
