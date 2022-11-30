@@ -19,6 +19,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <!-- bootstrap file-->
+  <!-- Load an icon library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -28,7 +30,7 @@
 
   <!-- main css -->
   <link rel="stylesheet" type="text/css" href="{% static "css/index.css" %}" />
-
+  <link rel="stylesheet" type="text/css" href="{% static "css/sidebar.css" %}" />
 
   <!-- message here -->
 
@@ -78,6 +80,12 @@
 
           </ul>
         </div>
+      </div>
+      <div class="sidebar">
+        <a href="#home"><i class="fa fa-fw fa-home"></i> Home</a>
+        <a href="#services"><i class="fa fa-fw fa-wrench"></i> Services</a>
+        <a href="#clients"><i class="fa fa-fw fa-user"></i> Clients</a>
+        <a href="#contact"><i class="fa fa-fw fa-envelope"></i> Contact</a>
       </div>
     </nav>
   </header>
