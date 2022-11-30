@@ -1,7 +1,45 @@
 
-{% extends "tc/index.html" %}
-{% if user.is_authenticated %}
-<center><h1>Welcome back {{user.username}}!</h1></center>
-{% else %}
-<meta http-equiv = "refresh" content = "0; url = /tc" />
-{% endif %}
+{% extends "tc/navigate.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="eng"></html>
+<head>
+    <meta charset="utf-8">
+    <title>Test</title> 
+    <link rel="stylesheet" type="text\css" href="{% static "css/paddingBetweenRows.css" %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
+</head>
+<body>
+    
+      <div class="row">
+        {% block start %}
+        {% if user.is_authenticated %}
+        <center><h1>Welcome Back {{user.username}}!</h1></center>
+        <center><div class="box">
+            <div class="content">
+              <h3>Class List</h3>
+              <table border="1">
+                <tr>
+                  <th>Name</th>
+                  <th>Status</th>
+                </tr>
+                <tr>
+                  <td> <a href="#CS490">CS490</a></td>
+                  <td>Active</td>
+                </tr>
+                <tr>
+                  <td>DATABASE?</td>
+                  <td>Inactive</td>
+                </tr>
+              </table> 
+            </div>
+          </div></center>
+        {% else %}
+        <center><h1>Successfully Logged Out</h1></center>
+        {% endif %}
+        {% endblock %}
+      </div>
+      
+</body>
+</html>
