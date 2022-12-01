@@ -10,3 +10,9 @@ class TestConductor(models.Model):
     
     def __str__(self):
         return self.user.username
+
+###class Classes(models.Model,):
+    ##name = models.CharField(default='-', max_length=15)
+    ##status = models.CharField(default='',max_length=15)
+    ##class Meta:
+       ## verbose_name_plural = "Classes"

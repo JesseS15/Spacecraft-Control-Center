@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, GroupRegisterForm
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
@@ -13,6 +13,8 @@ from django.template import Context
 from django.http import HttpResponse
 from django.template import loader
 from .models import TestConductor
+from django.contrib.auth.models import Group, Permission, User
+from django.contrib.contenttypes.models import ContentType 
 
 #################### index#######################################
 def index(request):
@@ -79,3 +81,27 @@ def createSim(request):
     template = loader.get_template('tc/createSim.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+#############get group names#######################
+def getGroups(request):
+    #if request.method == 'POST':
+    username = request.POST['username']
+    print("works")
+    data = Group.objects.filter(username='carly')
+    
+    print('works')
+    return render(request, 'tcHome.html', {"data": data})
+
+def addClass(request):
+    if request.method == 'POST':
+        form = GroupRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            name = form.cleaned_data.get('name')
+            status = form.cleaned_data.get('status')
+            ##group = authenticate(request, name = name, status = status)
+            ##Classes.objects.create(group = group)
+            return redirect('tcHome')
+    else:
+        form = GroupRegisterForm()
+    return render(request, 'tc/addClass.html', {'form': form, 'title':'Add Class'})
