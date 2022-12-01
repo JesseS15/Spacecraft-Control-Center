@@ -1,3 +1,4 @@
+import numpy
 from django.db import models
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -48,7 +49,7 @@ def register(request):
     return render(request, 'tc/register.html', {'form': form, 'title':'register here'})
   
 ################ login forms###################################################
-def Login(request):
+def Login(request):      
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -77,20 +78,20 @@ def tcHome(request):
     template = loader.get_template('tc/tcHome.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def getGroups(request):
+    
+    group = list(request.user.groups.values_list('name', flat = True))
+    data = numpy.asarray(group)
+    print(data)
+    return render(request, 'tc/tcHome.html', {"data":data})
+
 def createSim(request):
     template = loader.get_template('tc/createSim.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
 #############get group names#######################
-def getGroups(request):
-    #if request.method == 'POST':
-    username = request.POST['username']
-    print("works")
-    data = Group.objects.filter(username='carly')
-    
-    print('works')
-    return render(request, 'tcHome.html', {"data": data})
 
 def addClass(request):
     if request.method == 'POST':

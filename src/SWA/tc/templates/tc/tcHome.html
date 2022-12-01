@@ -20,15 +20,15 @@
         <center><div class="box">
             <div class="content">
               <h3 class="list">Class List</h3>
-             {% for k in data  %}
               <table border="1">
                 <thead>
                   <th>Name</th>
                   <th>Status</th>
                 </thead>
+                 {% for k in data %}
                 <tr>
-                  <td><a>{{k.name}}</a></td>
-                  <td><a>{{k.status}}</a></td>
+                  <td><a>{{k}}</a></td>
+                  <td><a>cool</a></td>
                 </tr>
               {% endfor %}
               </table> 
