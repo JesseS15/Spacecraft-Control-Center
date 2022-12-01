@@ -1,5 +1,4 @@
-from django.db import models
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -12,14 +11,18 @@ from django.template.loader import get_template
 from django.template import Context
 from django.http import HttpResponse
 from django.template import loader
+
 from .models import FlightOperator
-  
-#################### index#######################################
+
 def index(request):
-    return render(request, 'fo/foIndex.html', {'title':'index'})
-  
-########### register here #####################################
-def register(request):
+
+    if request.user.is_authenticated:
+        return redirect('fo:home')
+    else:
+        return redirect('fo:login')
+
+def foRegister(request):
+
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -39,13 +42,13 @@ def register(request):
             user = authenticate(request, username = username, password = password)
             form = login(request, user)
             FlightOperator.objects.create(user = user)
-            return redirect('foHome')
+            return redirect('fo:home')
     else:
         form = UserRegisterForm()
+
     return render(request, 'fo/foRegister.html', {'form': form, 'title':'register here'})
-  
-################ login forms###################################################
-def Login(request):
+
+def foLogin(request):
 
     if request.method == 'POST':
         username = request.POST['username']
@@ -53,39 +56,23 @@ def Login(request):
         user = authenticate(request, username = username, password = password)
 
         if user is not None and user.is_staff:
-            #messages.info(request, f'Information submitted is for a Test Conductor account. Redirecting to Test Conductor login.')
-            return redirect('tcLogin')
+            return redirect('tclogin')
         if user is not None and not user.is_staff:
             form = login(request, user)
-            #messages.success(request, f' welcome {username} !!')
-            return redirect('foHome')
+            return redirect('fo:home')
         else:
             messages.info(request, f'account does not exist')
 
     elif request.user.is_authenticated:
-        return redirect('foHome')
+        return redirect('fo:home')
 
     form = AuthenticationForm()
     return render(request, 'fo/foLogin.html', {'form':form, 'title':'log in'})
 
-################ logout method###################################################
-def Logout(request):
-
+def foLogout(request):
     logout(request)
-    return Login(request)
+    return redirect('fo:login')
 
 def foHome(request):
-
-    flightOperator = None
-    for fo in FlightOperator.objects.all():
-        if fo.user == request.user:
-            flightOperator = fo
-
-    return render(request, 'fo/foHome.html', {'user':request.user, 'flightOperator':flightOperator})
-
-def foProfile(request):
-    flightOperator = None
-    for fo in FlightOperator.objects.all():
-        if fo.user == request.user:
-            flightOperator = fo
-    return render(request, 'fo/foProfile.html', {'user':request.user, 'flightOperator':flightOperator})
+    flightOperator = get_object_or_404(FlightOperator, user = request.user)
+    return render(request, 'fo/foHome.html', {'flightOperator':flightOperator})
