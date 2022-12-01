@@ -83,7 +83,7 @@ def getGroups(request):
     
     group = list(request.user.groups.values_list('name', flat = True))
     data = numpy.asarray(group)
-    print(data)
+    print(data) 
     return render(request, 'tc/tcHome.html', {"data":data})
 
 def createSim(request):
@@ -96,8 +96,13 @@ def createSim(request):
 def addClass(request):
     if request.method == 'POST':
         form = GroupRegisterForm(request.POST)
+
         if form.is_valid():
             form.save()
+            group = request.POST['name']
+            print(group)
+            my_group = Group.objects.get(name=group) 
+            my_group.user_set.add(request.user)
             name = form.cleaned_data.get('name')
             status = form.cleaned_data.get('status')
             ##group = authenticate(request, name = name, status = status)
