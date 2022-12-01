@@ -1,0 +1,41 @@
+AnnaMaria Summer
+Capstone Course
+Engineering Notebook
+
+9/13/22:
+	- Met with Dr.Laskey and Dr.Garfield
+	- Got a overview and vision statement
+9/15/22:
+	- Group meeting to defined backlog, epics, UI roles and login, server-UI relationship and database drafting
+9/20/22:
+	- Group meeting
+    - Professor Akbas decided to propose limits and specific ways of proceed
+9/22/22
+	- Group Meeting
+    - Started looking into app framework
+9/27/22
+	- Decided on Web App development
+	- Starting researching frameworks and connection ideas
+10/13/22
+	- Recieved requirements doc from Prof. Garfield
+	- Conducted research into the control system simulator attributes and subsystems
+	- Research and create data flow diagram (level 0) to start planning system communications and interactive layover between the web app and sim
+10/18/2022
+	- Create powerpoint presention for first demo 
+10/25/2022
+	- Worked on SRS and SDD documentation
+10/27/2022
+	- Researched optimized frameworks; started django python design
+11/1/2022
+	- Worked on Test Plan documentation
+11/8/2022
+	- Finialized SRS2, SDD2, and UI design
+11/10/2022
+	- Started on Simcraft Object and Subsystems
+11/13/2022
+	- Create powerpoint presentation for second demo
+11/29/2022
+	- Group Meeting - I got Django to work!
+    - Worked on Flight Operaters home page
+12/1/2022
+	- 

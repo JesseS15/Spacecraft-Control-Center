@@ -1,12 +1,12 @@
-{% extends "fo/index.html" %}
+
+{% extends "fo/foNavigate.html" %}
 {% block start %}
 {% if user.is_authenticated %}
-<center><h1>welcome back {{flightOperator}}!</h1></center>
+  <center><h1>welcome back {{user.username}}!</h1></center>
+  
 
-<div style="width=30%;height=100%;background-color=black;">
-</div>
 
 {% else %}
-<meta http-equiv = "refresh" content = "0; url = /fo" />
+  <meta http-equiv = "refresh" content = "0; url = /fo" />
 {% endif %}
 {% endblock start %}

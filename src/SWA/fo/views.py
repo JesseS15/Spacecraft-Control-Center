@@ -16,7 +16,7 @@ from .models import FlightOperator
   
 #################### index#######################################
 def index(request):
-    return render(request, 'fo/index.html', {'title':'index'})
+    return render(request, 'fo/foIndex.html', {'title':'index'})
   
 ########### register here #####################################
 def register(request):
@@ -42,7 +42,7 @@ def register(request):
             return redirect('foHome')
     else:
         form = UserRegisterForm()
-    return render(request, 'fo/register.html', {'form': form, 'title':'register here'})
+    return render(request, 'fo/foRegister.html', {'form': form, 'title':'register here'})
   
 ################ login forms###################################################
 def Login(request):
@@ -54,7 +54,7 @@ def Login(request):
 
         if user is not None and user.is_staff:
             #messages.info(request, f'Information submitted is for a Test Conductor account. Redirecting to Test Conductor login.')
-            return redirect('tclogin')
+            return redirect('tcLogin')
         if user is not None and not user.is_staff:
             form = login(request, user)
             #messages.success(request, f' welcome {username} !!')
@@ -66,7 +66,7 @@ def Login(request):
         return redirect('foHome')
 
     form = AuthenticationForm()
-    return render(request, 'fo/login.html', {'form':form, 'title':'log in'})
+    return render(request, 'fo/foLogin.html', {'form':form, 'title':'log in'})
 
 ################ logout method###################################################
 def Logout(request):
@@ -82,3 +82,10 @@ def foHome(request):
             flightOperator = fo
 
     return render(request, 'fo/foHome.html', {'user':request.user, 'flightOperator':flightOperator})
+
+def foProfile(request):
+    flightOperator = None
+    for fo in FlightOperator.objects.all():
+        if fo.user == request.user:
+            flightOperator = fo
+    return render(request, 'fo/foProfile.html', {'user':request.user, 'flightOperator':flightOperator})
