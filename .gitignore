@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 *.pyc
 *.cache
+=======
+
+*.sqlite3
+>>>>>>> remotes/origin/Bosma
