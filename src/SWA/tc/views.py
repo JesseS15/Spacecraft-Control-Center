@@ -13,7 +13,6 @@ from django.template.loader import get_template
 from django.template import Context
 from django.http import HttpResponse
 from django.template import loader
-from .models import TestConductor
 from django.contrib.auth.models import Group, Permission, User
 from django.contrib.contenttypes.models import ContentType 
 

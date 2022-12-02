@@ -11,4 +11,5 @@ urlpatterns = [
     path('logout/', views.foLogout, name ='logout'),
     path('register/', views.foRegister, name ='register'),
     path('home/', views.foHome, name ='home'),
+    path('<str:sim>/', views.foSim, name ='sim'),
 ]
