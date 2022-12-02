@@ -80,6 +80,11 @@ def tcHome(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
+def classHome(request):
+    template = loader.get_template('tc/classHome.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
 def getGroups(request):
     
     group = list(request.user.groups.values_list('name', flat = True))

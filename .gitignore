@@ -2,3 +2,4 @@
 src/SWA/db.sqlite3
 *.pyc
 *.pyc
+*.sqlite3
