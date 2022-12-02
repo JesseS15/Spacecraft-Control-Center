@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
 
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, SubsystemForm
 from .models import FlightOperator
 from tc.models import Sim
 
@@ -78,4 +78,14 @@ def foHome(request):
 ###############################################################################
 def foSim(request, sim):
     simobj = Sim.objects.get(sim_name=sim)
-    return render(request, 'fo/foSim.html', {'sim': simobj})
+
+    if request.method == 'POST':
+
+        for subsystem in simobj.sys_list.all():
+            if subsystem.sys_name in request.POST:
+                form = SubsystemForm(request.POST, prefix=subsystem.sys_name, instance=subsystem)
+                if form.is_valid():
+                    form.save()
+
+    forms = [SubsystemForm(prefix=subsystem.sys_name, instance=subsystem) for subsystem in simobj.sys_list.all()]
+    return render(request, 'fo/foSim.html', {'sim': simobj, 'forms': forms})
