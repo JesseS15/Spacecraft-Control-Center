@@ -32,6 +32,7 @@
   <link rel="stylesheet" type="text/css" href="{% static "css/index.css" %}" />
   <link rel="stylesheet" type="text/css" href="{% static "css/sidebar.css" %}" />
 
+
   <!-- message here -->
 
   {% if messages %}
@@ -72,12 +73,18 @@
             <li><a href="{% url "home" %}">Home</a></li>
 
             {% if user.is_authenticated %}
+            
             <li><a href="{% url "logout" %}"><span class="glyphicon glyphicon-log-out"></span> &nbsp; Logout</a></li>
             {% else %}
             <li><a href="{% url "register" %}"><span class="glyphicon glyphicon-user"></span> &nbsp; Sign up</a></li>
             <li><a href="{% url "login" %}"><span class="glyphicon glyphicon-log-in"></span> &nbsp; Log in</a></li>
             {% endif %}
 
+          </ul>
+          <ul class="nav navbar-nav navbar-center">
+            <li>
+              <a class = "nav-link" href="{% url "home" %}">xxClass</a>
+            </li>
           </ul>
         </div>
       </div>
