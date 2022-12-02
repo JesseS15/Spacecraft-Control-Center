@@ -4,11 +4,12 @@ from . import views
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth
  
+app_name = 'fo'
 urlpatterns = [
-    path('', views.Login, name ='login'),
-    path('', views.Login, name ='foLogin'),
-    path('foHome/', views.foHome, name ='foHome'),
-    path('foProfile/', views.foProfile, name='foProfile'),
-    path('logout', views.Logout, name ='foLogout'),
-    path('foRegister/', views.register, name ='foRegister'),
+    path('', views.index, name ='index'),
+    path('login/', views.foLogin, name ='login'),
+    path('logout/', views.foLogout, name ='logout'),
+    path('register/', views.foRegister, name ='register'),
+    path('home/', views.foHome, name ='home'),
+    path('<str:sim>/', views.foSim, name ='sim'),
 ]
