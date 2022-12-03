@@ -72,17 +72,17 @@
             <li><a href="{% url "home" %}">Home</a></li>
 
             {% if user.is_authenticated %}
-            <li><a href="{% url "logout" %}"><span class="glyphicon glyphicon-log-out"></span> &nbsp; Logout</a></li>
+            <li><a href="{% url "tc:logout" %}"><span class="glyphicon glyphicon-log-out"></span> &nbsp; Logout</a></li>
             {% else %}
-            <li><a href="{% url "register" %}"><span class="glyphicon glyphicon-user"></span> &nbsp; Sign up</a></li>
-            <li><a href="{% url "login" %}"><span class="glyphicon glyphicon-log-in"></span> &nbsp; Log in</a></li>
+            <li><a href="{% url "tc:register" %}"><span class="glyphicon glyphicon-user"></span> &nbsp; Sign up</a></li>
+            <li><a href="{% url "tc:login" %}"><span class="glyphicon glyphicon-log-in"></span> &nbsp; Log in</a></li>
             {% endif %}
 
           </ul>
         </div>
       </div>
       <div class="sidebar">
-        <li><a href="{% url "addClass" %}"><i class="fa fa-users" aria-hidden="true"></i> Add New Class</a></li>
+        <li><a href="{% url "tc:addClass" %}"><i class="fa fa-users" aria-hidden="true"></i> Add New Class</a></li>
         <b href="#settings"><i class="fa fa-fw fa-wrench"></i> Settings</b>
       </div>
     </nav>

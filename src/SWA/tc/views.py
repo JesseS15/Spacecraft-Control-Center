@@ -16,14 +16,19 @@ from django.template import loader
 from django.contrib.auth.models import Group, Permission, User
 from django.contrib.contenttypes.models import ContentType
 
-from .models import TestConductor
+from .models import TestConductor, Sim
 
-#################### index#######################################
+###############################################################################
 def index(request):
-    return render(request, 'tc/index.html', {'title':'index'})
+
+    if request.user.is_authenticated and request.user.is_staff:
+        return redirect('tc:home')
+    else:
+        return redirect('tc:login')
   
-########### register here #####################################
-def register(request):
+###############################################################################
+def tcRegister(request):
+
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -31,60 +36,59 @@ def register(request):
             username = form.cleaned_data.get('username')
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password1')
-            #TODO: implement account creation email confirmation
-            ######################### mail system ####################################
-            #htmly = get_template('fo/Email.html')
-            #d = { 'username': username }
-            #subject, from_email, to = 'welcome', 'chacotaco707@gmail.com', email
-            #html_content = htmly.render(d)
-            #msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
-            #msg.attach_alternative(html_content, "text/html")
-            #msg.send()
-            ##################################################################
+            # Send registration confirmation
+            send_mail(
+                'STaTE Registration',
+                'Thank you for registering to STaTE!',
+                None,
+                [email],
+                fail_silently=False,
+            )
             user = authenticate(request, username = username, password = password)
             form = login(request, user)
             TestConductor.objects.create(user = user)
-            return redirect('tcHome')
+            return redirect('tc:home')
     else:
         form = UserRegisterForm()
+
     return render(request, 'tc/register.html', {'form': form, 'title':'register here'})
   
-################ login forms###################################################
-def Login(request):      
+###############################################################################
+def tcLogin(request):      
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username = username, password = password)
+
         if user is not None and not user.is_staff:
-            #messages.success(request, f' welcome {username} !!')
-            return redirect('foLogin')
+            return redirect('fo:login')
         if user is not None and user.is_staff:
             form = login(request, user)
-            #messages.success(request, f' welcome {username} !!')
-            return redirect('tcHome')
+            return redirect('tc:home')
         else:
             messages.info(request, f'account does not exist')
-    elif request.user.is_authenticated:
-        return redirect('tcHome')
+
+    elif request.user.is_authenticated and not request.user.is_staff:
+        return redirect('tc:home')
 
     form = AuthenticationForm()
     return render(request, 'tc/login.html', {'form':form, 'title':'log in'})
 
-def Logout(request):
-
+###############################################################################
+def tcLogout(request):
     logout(request)
-    return Login(request)
+    return redirect('tc:login')
 
+###############################################################################
 def tcHome(request):
-    template = loader.get_template('tc/tcHome.html')
-    context = {}
-    return HttpResponse(template.render(context, request))
+    return render(request, 'tc/tcHome.html')
 
+###############################################################################
 def classHome(request):
-    template = loader.get_template('tc/classHome.html')
-    context = {}
-    return HttpResponse(template.render(context, request))
+    return render(request, 'tc/classHome.html')
 
+###############################################################################
 def getGroups(request):
     
     group = list(request.user.groups.values_list('name', flat = True))
@@ -92,6 +96,7 @@ def getGroups(request):
     print(data) 
     return render(request, 'tc/tcHome.html', {"data":data})
 
+###############################################################################
 def createSim(request):
     template = loader.get_template('tc/createSim.html')
     context = {}
@@ -117,3 +122,9 @@ def addClass(request):
     else:
         form = GroupRegisterForm()
     return render(request, 'tc/addClass.html', {'form': form, 'title':'Add Class'})
+
+###############################################################################
+def tcSim(request, sim):
+    #simobj = Sim.objects.get(sim_name=sim)
+
+    return render(request, 'tc/tcHome.html')

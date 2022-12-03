@@ -11,7 +11,7 @@ from tc.models import Sim
 ###############################################################################
 def index(request):
 
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and not request.user.is_staff:
         return redirect('fo:home')
     else:
         return redirect('fo:login')
@@ -52,14 +52,14 @@ def foLogin(request):
         user = authenticate(request, username = username, password = password)
 
         if user is not None and user.is_staff:
-            return redirect('tclogin')
+            return redirect('tc:login')
         if user is not None and not user.is_staff:
             form = login(request, user)
             return redirect('fo:home')
         else:
             messages.info(request, f'account does not exist')
 
-    elif request.user.is_authenticated:
+    elif request.user.is_authenticated and not request.user.is_staff:
         return redirect('fo:home')
 
     form = AuthenticationForm()

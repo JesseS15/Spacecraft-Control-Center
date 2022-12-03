@@ -9,7 +9,6 @@
   <meta name="title" content="STaTE Test Conductor">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="language" content="English">
-  <meta name="author" content="vinayak sharma">
 
   <title>{{title}}</title>
 
@@ -70,20 +69,20 @@
         </div>
         <div class="collapse navbar-collapse" id="mainNavBar">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="{% url "home" %}">Home</a></li>
+            <li><a href="{% url "tc:home" %}">Home</a></li>
 
             {% if user.is_authenticated %}
             
-            <li><a href="{% url "logout" %}"><span class="glyphicon glyphicon-log-out"></span> &nbsp; Logout</a></li>
+            <li><a href="{% url "tc:logout" %}"><span class="glyphicon glyphicon-log-out"></span> &nbsp; Logout</a></li>
             {% else %}
-            <li><a href="{% url "register" %}"><span class="glyphicon glyphicon-user"></span> &nbsp; Sign up</a></li>
-            <li><a href="{% url "login" %}"><span class="glyphicon glyphicon-log-in"></span> &nbsp; Log in</a></li>
+            <li><a href="{% url "tc:register" %}"><span class="glyphicon glyphicon-user"></span> &nbsp; Sign up</a></li>
+            <li><a href="{% url "tc:login" %}"><span class="glyphicon glyphicon-log-in"></span> &nbsp; Log in</a></li>
             {% endif %}
 
           </ul>
           <ul class="nav navbar-nav navbar-center">
             <li>
-              <a class = "nav-link" href="{% url "home" %}">xxClass</a>
+              <a class = "nav-link" href="{% url "tc:home" %}">xxClass</a>
             </li>
           </ul>
         </div>
