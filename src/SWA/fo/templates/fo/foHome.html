@@ -4,7 +4,7 @@
 {% if flightOperator.user.is_authenticated %}
 
 <center>
-  <ul>
+  <ul style="list-style-type:none;padding: 0">
     {% for sim in flightOperator.sim_list.all %}
 
     <li><a href="{% url 'fo:sim' sim %}">{{ sim }}</a></li>

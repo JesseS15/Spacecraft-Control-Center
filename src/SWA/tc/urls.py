@@ -13,5 +13,6 @@ urlpatterns = [
     path('home/', views.tcHome, name ='home'),
     path('addClass/', views.addClass, name ='addClass'),
     path('classHome/', views.classHome, name='classHome'),
+    path('create/', views.createSim, name='createSim'),
     path('<str:sim>/', views.tcSim, name ='sim'),
 ]

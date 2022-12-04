@@ -1,6 +1,15 @@
-<h1>{{ question.question_text }}</h1>
-<ul>
-{% for choice in question.choice_set.all %}
-    <li>{{ choice.choice_text }}</li>
-{% endfor %}
-</ul>
+{% extends "tc/nosidebar.html" %}
+{% load crispy_forms_tags %}
+{% block start %}
+
+<center>
+    <form method="POST" style="color: black; margin: 10%;">
+    {% csrf_token %}
+    <fieldset class="form-group">
+        {{ form|crispy}}
+    </fieldset>
+    <button style="background: black; font-size: 2rem; padding:1%; color: white;" class="btn btn-outline-info" type="submit">Submit</button>
+    </form>
+</center>
+
+{% endblock start %}

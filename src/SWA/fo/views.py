@@ -29,7 +29,7 @@ def foRegister(request):
             # Send registration confirmation
             send_mail(
                 'STaTE Registration',
-                'Thank you for registering to STaTE!',
+                'Thank you, ' + username + ' for registering to STaTE!',
                 None,
                 [email],
                 fail_silently=False,
