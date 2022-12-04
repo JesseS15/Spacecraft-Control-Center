@@ -84,10 +84,6 @@
           </ul>
         </div>
       </div>
-      <div class="sidebar">
-        <a href="{% url "fo:home" %}"><i class="fa fa-users" aria-hidden="true"></i> Home?</a>
-        <b href="#settings"><i class="fa fa-fw fa-wrench"></i> Settings</b>
-      </div>
     </nav>
   </header>
   <br/>
@@ -95,11 +91,7 @@
   <br>
   <div class="row">
     {% block start %}
-    {% if user.is_authenticated %}
-    <center><h1>welcome back {{user.username}}!</h1></center>
-    {% else %}
-    <center><h1>Successfully Logged Out</h1></center>
-    {% endif %}
+
     {% endblock %}
   </div>
 </body>
