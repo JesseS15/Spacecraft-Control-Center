@@ -82,8 +82,11 @@ def tcLogout(request):
 
 ###############################################################################
 def tcHome(request):
-    return render(request, 'tc/tcHome.html')
-
+    group = list(request.user.groups.values_list('name', flat = True))
+    data = numpy.asarray(group)
+    print(data) 
+    return render(request, 'tc/tcHome.html', {"data":data})
+  
 ###############################################################################
 def classHome(request):
     return render(request, 'tc/classHome.html')
@@ -94,7 +97,7 @@ def getGroups(request):
     group = list(request.user.groups.values_list('name', flat = True))
     data = numpy.asarray(group)
     print(data) 
-    return render(request, 'tc/tcHome.html', {"data":data})
+    return render(request, 'tc: home.html', {"data":data})
 
 ###############################################################################
 def createSim(request):
@@ -118,7 +121,7 @@ def addClass(request):
             status = form.cleaned_data.get('status')
             ##group = authenticate(request, name = name, status = status)
             ##Classes.objects.create(group = group)
-            return redirect('tcHome')
+            return redirect('tc:home')
     else:
         form = GroupRegisterForm()
     return render(request, 'tc/addClass.html', {'form': form, 'title':'Add Class'})

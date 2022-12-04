@@ -12,6 +12,6 @@ urlpatterns = [
     path('register/', views.tcRegister, name ='register'),
     path('home/', views.tcHome, name ='home'),
     path('<str:sim>/', views.tcSim, name ='sim'),
-    path('addClass/', views.addClass, name ='addClass'),
-    path('classHome/', views.classHome, name='classHome')
+    path('tc/addClass/', views.addClass, name ='addClass'),
+    path('tc/classHome/', views.classHome, name='classHome')
 ]
