@@ -6,7 +6,7 @@ class TestConductor(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
-
+    sim_list = models.ManyToManyField("tc.Sim", verbose_name=("Sim"))
     def __str__(self):
         return self.user.username
 
