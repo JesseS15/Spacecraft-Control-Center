@@ -92,7 +92,7 @@ def tcHome(request):
     return render(request, 'tc/tcHome.html', {"data":data})
   
 ###############################################################################
-def classHome(request):
+def classHome(request, k):
     sims = Sim.objects.all()
     return render(request, 'tc/classHome.html', {"sims": sims})
 
