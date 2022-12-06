@@ -19,7 +19,7 @@ class Subsystem(models.Model):
 
 class Sim(models.Model):
     sim_name = models.CharField(default='', max_length=15)
-
+    flight_operators = models.ManyToManyField("fo.FlightOperator", verbose_name=("Flight Operator"))
     sys_list = models.ManyToManyField(Subsystem)
 
     def __str__(self):
