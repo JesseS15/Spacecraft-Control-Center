@@ -88,12 +88,13 @@ def tcHome(request):
     data = numpy.asarray(group)
     print(data) 
 
-    sims = Sim.objects.all()
-    return render(request, 'tc/tcHome.html', {"data":data, "sims": sims})
+    ##sims = Sim.objects.all()
+    return render(request, 'tc/tcHome.html', {"data":data})
   
 ###############################################################################
 def classHome(request):
-    return render(request, 'tc/classHome.html')
+    sims = Sim.objects.all()
+    return render(request, 'tc/classHome.html', {"sims": sims})
 
 ###############################################################################
 def getGroups(request):
@@ -181,6 +182,6 @@ def tcSim(request, sim):
                             [flight_operator.user.email],
                             fail_silently=False,
                         )
-
+    print(simobj);
     forms = [SubsystemForm(prefix=subsystem.sys_name, instance=subsystem) for subsystem in simobj.sys_list.all()]
     return render(request, 'tc/tcSim.html', {'sim': simobj, 'forms': forms})

@@ -19,7 +19,18 @@
         <center><h1>Welcome to xxClassxx </h1></center>
         <center><div class="box">
             <div class="content">
-              <h3 class="list">Class List</h3>
+              <a href="{% url 'admin:index' %}">View Admin Page</a>
+              <br></br>
+              <a href="{% url 'tc:createSim' %}">Create New Simulation</a>
+              <br></br>
+              <p>Active Simulations:</p>
+              <ul style="list-style-type:none;padding: 0">
+              {% for sim in sims %}
+    
+                <li><a href="{% url 'tc:sim' sim %}">{{ sim }}</a></li>
+            
+              {% endfor %}
+              </ul>
             </div>
           </div></center>
         {% else %}
