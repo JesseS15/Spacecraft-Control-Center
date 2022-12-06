@@ -24,7 +24,8 @@
     font-size: 20px;
     color: #818181;
     display: block;
-    padding-top: 630px;
+    position: absolute;
+    bottom:0;
   }
   
   /* Style links on mouse-over */
