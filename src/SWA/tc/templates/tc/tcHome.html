@@ -28,7 +28,7 @@
                 </thead>
                  {% for k in data %}
                 <tr>
-                  <td><a href="{% url "tc:classHome" %}">{{k}}</a></td>
+                  <td><a href="{% url 'tc:k' k %}">{{k}}</a></td>
                   <td>TBD</td>
                 </tr>
               {% endfor %}
