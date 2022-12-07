@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
 </head>
 <body>
-  
       <div class="row">
         {% block start %}
         {% if user.is_authenticated %}
@@ -26,8 +25,6 @@
         </h1></center>
         <center><div class="box">
             <div class="content">
-              <a href="{% url 'admin:index' %}">View Admin Page</a>
-              <br></br>
               <a href="{% url 'tc:createSim' %}">Create New Simulation</a>
               <br></br>
               <p>Active Simulations:</p>

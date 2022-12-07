@@ -3,7 +3,7 @@
 {% block start %}
 
 <center>
-    <form method="POST" style="color: black; margin: 10%;">
+    <form method="POST" style="color: black; margin: 10%;width: 60vw">
     {% csrf_token %}
     <fieldset class="form-group">
         {{ form|crispy}}

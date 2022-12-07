@@ -18,6 +18,7 @@
         {% if user.is_authenticated %}
         <center>
           <p>Welcome Back {{user.username}}!</p>
+          <a href="{% url 'admin:index' %}">View Admin Page</a>
           <div class="box">
             <div class="content">
               <h3 class="list">Class List</h3>
