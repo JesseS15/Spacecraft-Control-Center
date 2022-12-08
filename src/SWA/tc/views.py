@@ -48,6 +48,9 @@ def tcRegister(request):
             user = authenticate(request, username = username, password = password)
             form = login(request, user)
             TestConductor.objects.create(user = user)
+            user.is_staff=True
+            #user.is_superuser=True
+            user.save();
             return redirect('tc:home')
     else:
         form = UserRegisterForm()
@@ -88,10 +91,27 @@ def tcHome(request):
     return render(request, 'tc/tcHome.html', {"classes":classes})
   
 ###############################################################################
+<<<<<<< Updated upstream
 def classHome(request, class_name):
     classobj = Class.objects.get(class_name = class_name)
     sims = classobj.sims.all()
     return render(request, 'tc/classHome.html', {"sims": sims, "class_name": classobj})
+=======
+def classHome(request, k):
+
+    group = Group.objects.all().filter(name=k).values_list('sim_list', flat=True)
+    data = numpy.asarray(group)
+    print(data)
+    if (data[0]!=None):
+        sims = ['']*(len(data))
+        for e in range(len(data)):
+            print(Sim.objects.get(pk=data[e]))
+            sims[e] = Sim.objects.get(pk=data[e])
+        print(sims)
+    else:
+        sims=[]
+    return render(request, 'tc/classHome.html', {"sims":sims})
+>>>>>>> Stashed changes
 
 ###############################################################################
 def getGroups(request):
@@ -113,6 +133,7 @@ def createSim(request, class_name):
             sys2_name = form.cleaned_data.get('sys2_name')
             sys3_name = form.cleaned_data.get('sys3_name')
             flight_operators = form.cleaned_data.get('flight_operators')
+            class_belong = form.cleaned_data.get('class_belong')
 
             sim = Sim.objects.create(sim_name = sim_name)
             subsystem1 = Subsystem.objects.create(sys_name = sys1_name)
@@ -120,8 +141,16 @@ def createSim(request, class_name):
             subsystem3 = Subsystem.objects.create(sys_name = sys3_name)
 
             sim.sys_list.add(subsystem1, subsystem2, subsystem3)
+<<<<<<< Updated upstream
             classobj = Class.objects.get(class_name = class_name)
             classobj.sims.add(sim)
+=======
+            for class_belong in class_belong:
+                sim.class_belong.add(class_belong)
+                class_belong.sim_list.add(sim)
+            form.save_m2m()
+            ##gohere
+>>>>>>> Stashed changes
             for flight_operator in flight_operators:
                 sim.flight_operators.add(flight_operator)
                 flight_operator.sim_list.add(sim)
@@ -133,9 +162,14 @@ def createSim(request, class_name):
                     [flight_operator.user.email],
                     fail_silently=False,
                 )
+<<<<<<< Updated upstream
 
             return redirect('tc:classHome', classobj)
     
+=======
+            return redirect('tc:home')
+
+>>>>>>> Stashed changes
     form = SimCreationForm()
     return render(request, 'tc/createSim.html', {'form': form})
 
@@ -163,6 +197,7 @@ def tcSim(request, sim):
             if subsystem.sys_name in request.POST:
                 form = SubsystemForm(request.POST, prefix=subsystem.sys_name, instance=subsystem)
                 if form.is_valid():
+                    #form.save_m2m()
                     form.save()
                     for flight_operator in simobj.flight_operators.all():
                         # Send notification
