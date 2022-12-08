@@ -1,0 +1,19 @@
+{% extends "fo/foNavigate.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block start %}
+
+<body style="background-image: url({% static 'images/stars.jpg' %});">
+  <center>
+    <div class="content-section col-md-8 col-md-offset-2">
+      <form method="POST" style="width: 60vw;color: white; margin: 4%; padding:10%; border-radius:1%;">
+        {% csrf_token %}
+        <fieldset class="form-group">
+          {{ form|crispy}}
+        </fieldset>
+          <button style="background: black; padding:2%; font-size: 2rem; color:white;" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-check"></span> &nbsp;Join</button>
+      </form>
+    </div>
+  </center>
+</body>
+{% endblock start %}
