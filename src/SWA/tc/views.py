@@ -91,10 +91,27 @@ def tcHome(request):
     return render(request, 'tc/tcHome.html', {"classes":classes})
   
 ###############################################################################
+<<<<<<< Updated upstream
 def classHome(request, class_name):
     classobj = Class.objects.get(class_name = class_name)
     sims = classobj.sims.all()
     return render(request, 'tc/classHome.html', {"sims": sims, "class_name": classobj})
+=======
+def classHome(request, k):
+
+    group = Group.objects.all().filter(name=k).values_list('sim_list', flat=True)
+    data = numpy.asarray(group)
+    print(data)
+    if (data[0]!=None):
+        sims = ['']*(len(data))
+        for e in range(len(data)):
+            print(Sim.objects.get(pk=data[e]))
+            sims[e] = Sim.objects.get(pk=data[e])
+        print(sims)
+    else:
+        sims=[]
+    return render(request, 'tc/classHome.html', {"sims":sims})
+>>>>>>> Stashed changes
 
 ###############################################################################
 def getGroups(request):
@@ -124,7 +141,15 @@ def createSim(request, class_name):
             subsystem3 = Subsystem.objects.create(sys_name = sys3_name)
 
             sim.sys_list.add(subsystem1, subsystem2, subsystem3)
+<<<<<<< Updated upstream
 
+=======
+            for class_belong in class_belong:
+                sim.class_belong.add(class_belong)
+                class_belong.sim_list.add(sim)
+            form.save_m2m()
+            ##gohere
+>>>>>>> Stashed changes
             for flight_operator in flight_operators:
                 sim.flight_operators.add(flight_operator)
                 flight_operator.sim_list.add(sim)

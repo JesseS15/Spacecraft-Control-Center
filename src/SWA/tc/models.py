@@ -1,6 +1,11 @@
 from django.conf import settings
 from django.db import models 
 from django.contrib.auth.models import Group
+<<<<<<< Updated upstream
+=======
+
+Group.add_to_class('sim_list', models.ManyToManyField("tc.Sim",verbose_name="Sim"))
+>>>>>>> Stashed changes
 
 Group.add_to_class('sim_list', models.ManyToManyField("tc.Sim",verbose_name="Sim"))
 
