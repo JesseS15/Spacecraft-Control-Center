@@ -4,9 +4,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
 
-from .forms import UserRegisterForm, SubsystemForm
+from .forms import UserRegisterForm, SubsystemForm, JoinClassForm
 from .models import FlightOperator
-from tc.models import Sim
+from tc.models import Sim, Class
 
 ###############################################################################
 def index(request):
@@ -91,3 +91,18 @@ def foSim(request, sim):
     return render(request, 'fo/foSim.html', {'sim': simobj, 'forms': forms})
 
 ###############################################################################
+def joinClass(request):
+    
+    if request.method == 'POST':
+        class_name = request.POST['class_name']
+        class_names = [classobj.class_name for classobj in Class.objects.all()]
+        if class_name in class_names:
+            classobj = Class.objects.get(class_name = class_name)
+            classobj.flight_operators.add(FlightOperator.objects.get(user = request.user))
+            return redirect('fo:home')
+            
+        else:
+            messages.info(request, f'Class does not exist')
+
+    form = JoinClassForm()
+    return render(request, 'fo/joinClass.html', {'form':form})

@@ -3,7 +3,9 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import UserCreationForm
 
 from fo.models import FlightOperator
+from .models import Class
  
+ ###############################################################################
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
     first_name = forms.CharField(max_length = 20)
@@ -12,19 +14,20 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
-class GroupRegisterForm(forms.ModelForm):
-    name = forms.CharField(max_length = 20)
-    status = forms.CharField(max_length = 20)
+###############################################################################
+class ClassForm(forms.ModelForm):
     class Meta:
-        model = Group
-        fields = ['name','status']
+        model = Class
+        fields = ['class_name','status']
 
+###############################################################################
 class SimCreationForm(forms.Form):
+
     sim_name = forms.CharField(max_length = 20)
     sys1_name = forms.CharField(max_length = 20)
     sys2_name = forms.CharField(max_length = 20)
     sys3_name = forms.CharField(max_length = 20)
 
     flight_operators = forms.ModelMultipleChoiceField(
-        queryset=FlightOperator.objects.all(),
-        widget=forms.CheckboxSelectMultiple)
+                        queryset=FlightOperator.objects.all(),
+                        widget=forms.CheckboxSelectMultiple)

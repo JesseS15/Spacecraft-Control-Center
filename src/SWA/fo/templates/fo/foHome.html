@@ -5,9 +5,12 @@
 
 <center>
 
-  <p>Welcome Back {{user.username}}!</p>
-  <p>Active Simulations:</p>
+  <h3>Welcome Back {{user.username}}!</h3>
 
+  <a href="{% url 'fo:join' %}">Join Class</a>
+  <br></br>
+
+  <h3>Active Simulations:</h3>
   <ul style="list-style-type:none;padding: 0">
     {% for sim in flightOperator.sim_list.all %}
 
