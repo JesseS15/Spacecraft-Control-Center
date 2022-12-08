@@ -30,7 +30,7 @@
   <!-- main css -->
   <link rel="stylesheet" type="text/css" href="{% static "css/index.css" %}" />
   <link rel="stylesheet" type="text/css" href="{% static "css/sidebar.css" %}" />
-
+  
 
   <!-- message here -->
 
@@ -52,7 +52,6 @@
 
 <body class="container-fluid">
 
-
   <header class="row">
 
     <!-- navbar-->
@@ -72,7 +71,6 @@
             <li><a href="{% url "tc:home" %}">Home</a></li>
 
             {% if user.is_authenticated %}
-            
             <li><a href="{% url "tc:logout" %}"><span class="glyphicon glyphicon-log-out"></span> &nbsp; Logout</a></li>
             {% else %}
             <li><a href="{% url "tc:register" %}"><span class="glyphicon glyphicon-user"></span> &nbsp; Sign up</a></li>
@@ -80,21 +78,10 @@
             {% endif %}
 
           </ul>
-          <ul class="nav navbar-nav navbar-center">
-            <li>
-              <a class = "nav-link" href="{% url "tc:home" %}"> <script type="text/javascript">
-                var url = location.href;
-                var splitURL = url.split('/');
-                var updateURL= splitURL[splitURL.length-2];
-                document.write(updateURL);
-                </script></a>
-            </li>
-          </ul>
         </div>
       </div>
       <div class="sidebar">
-        <a href="#Example"><i class="fa fa-fw fa-home"></i> Example</a>
-        <a href="#Reports"><i class="fa fa-file-text" aria-hidden="true"></i> Reports</a>
+        <li><a href="{% url "tc:addClass" %}"><i class="fa fa-users" aria-hidden="true"></i> Add New Class</a></li>
         <b href="#settings"><i class="fa fa-fw fa-wrench"></i> Settings</b>
       </div>
     </nav>
@@ -104,11 +91,7 @@
   <br>
   <div class="row">
     {% block start %}
-    {% if user.is_authenticated %}
 
-    {% else %}
-
-    {% endif %}
     {% endblock %}
   </div>
 </body>

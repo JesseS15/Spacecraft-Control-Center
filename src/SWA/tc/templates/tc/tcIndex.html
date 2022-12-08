@@ -30,7 +30,6 @@
   <!-- main css -->
   <link rel="stylesheet" type="text/css" href="{% static "css/index.css" %}" />
   <link rel="stylesheet" type="text/css" href="{% static "css/sidebar.css" %}" />
-  
 
   <!-- message here -->
 
@@ -52,6 +51,7 @@
 
 <body class="container-fluid">
 
+
   <header class="row">
 
     <!-- navbar-->
@@ -68,7 +68,6 @@
         </div>
         <div class="collapse navbar-collapse" id="mainNavBar">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="{% url "home" %}">Home</a></li>
 
             {% if user.is_authenticated %}
             <li><a href="{% url "tc:logout" %}"><span class="glyphicon glyphicon-log-out"></span> &nbsp; Logout</a></li>
@@ -80,10 +79,7 @@
           </ul>
         </div>
       </div>
-      <div class="sidebar">
-        <li><a href="{% url "tc:addClass" %}"><i class="fa fa-users" aria-hidden="true"></i> Add New Class</a></li>
-        <b href="#settings"><i class="fa fa-fw fa-wrench"></i> Settings</b>
-      </div>
+
     </nav>
   </header>
   <br/>
@@ -91,11 +87,7 @@
   <br>
   <div class="row">
     {% block start %}
-    {% if user.is_authenticated %}
-    
-    {% else %}
-    
-    {% endif %}
+
     {% endblock %}
   </div>
 </body>

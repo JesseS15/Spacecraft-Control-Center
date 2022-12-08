@@ -6,7 +6,6 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import UserRegisterForm, GroupRegisterForm
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
@@ -16,8 +15,8 @@ from django.template import loader
 from django.contrib.auth.models import Group, Permission, User
 from django.contrib.contenttypes.models import ContentType
 
-from .models import TestConductor, Sim, Subsystem
-from .forms import SimCreationForm
+from .models import TestConductor, Sim, Subsystem, Class
+from .forms import UserRegisterForm, SimCreationForm, ClassForm
 from fo.forms import SubsystemForm
 
 ###############################################################################
@@ -84,17 +83,15 @@ def tcLogout(request):
 
 ###############################################################################
 def tcHome(request):
-    group = list(request.user.groups.values_list('name', flat = True))
-    data = numpy.asarray(group)
-    print(data) 
+    classes = Class.objects.all()
 
-    ##sims = Sim.objects.all()
-    return render(request, 'tc/tcHome.html', {"data":data})
+    return render(request, 'tc/tcHome.html', {"classes":classes})
   
 ###############################################################################
-def classHome(request, k):
-    sims = Sim.objects.all()
-    return render(request, 'tc/classHome.html', {"sims": sims})
+def classHome(request, class_name):
+    classobj = Class.objects.get(class_name = class_name)
+    sims = classobj.sims.all()
+    return render(request, 'tc/classHome.html', {"sims": sims, "class_name": classobj})
 
 ###############################################################################
 def getGroups(request):
@@ -105,8 +102,8 @@ def getGroups(request):
     return render(request, 'tc: home.html', {"data":data})
 
 ###############################################################################
-def createSim(request):
-
+def createSim(request, class_name):
+    
     if request.method == 'POST':
         form = SimCreationForm(request.POST)
         
@@ -123,6 +120,8 @@ def createSim(request):
             subsystem3 = Subsystem.objects.create(sys_name = sys3_name)
 
             sim.sys_list.add(subsystem1, subsystem2, subsystem3)
+            classobj = Class.objects.get(class_name = class_name)
+            classobj.sims.add(sim)
             for flight_operator in flight_operators:
                 sim.flight_operators.add(flight_operator)
                 flight_operator.sim_list.add(sim)
@@ -135,8 +134,8 @@ def createSim(request):
                     fail_silently=False,
                 )
 
-            return redirect('tc:home')
-
+            return redirect('tc:classHome', classobj)
+    
     form = SimCreationForm()
     return render(request, 'tc/createSim.html', {'form': form})
 
@@ -145,21 +144,13 @@ def createSim(request):
 def addClass(request):
 
     if request.method == 'POST':
-        form = GroupRegisterForm(request.POST)
+        form = ClassForm(request.POST)
 
         if form.is_valid():
             form.save()
-            group = request.POST['name']
-            print(group)
-            my_group = Group.objects.get(name=group) 
-            my_group.user_set.add(request.user)
-            name = form.cleaned_data.get('name')
-            status = form.cleaned_data.get('status')
-            ##group = authenticate(request, name = name, status = status)
-            ##Classes.objects.create(group = group)
             return redirect('tc:home')
     else:
-        form = GroupRegisterForm()
+        form = ClassForm()
     return render(request, 'tc/addClass.html', {'form': form, 'title':'Add Class'})
 
 ###############################################################################
@@ -182,6 +173,6 @@ def tcSim(request, sim):
                             [flight_operator.user.email],
                             fail_silently=False,
                         )
-    print(simobj);
+    print(simobj)
     forms = [SubsystemForm(prefix=subsystem.sys_name, instance=subsystem) for subsystem in simobj.sys_list.all()]
     return render(request, 'tc/tcSim.html', {'sim': simobj, 'forms': forms})

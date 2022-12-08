@@ -12,7 +12,7 @@ urlpatterns = [
     path('register/', views.tcRegister, name ='register'),
     path('home/', views.tcHome, name ='home'),
     path('addClass/', views.addClass, name ='addClass'),
-    path('tc/<str:k>/', views.classHome, name='k'),
-    path('create/', views.createSim, name='createSim'),
+    path('home/<str:class_name>', views.classHome, name='classHome'),
+    path('create/<str:class_name>', views.createSim, name='createSim'),
     path('<str:sim>/', views.tcSim, name ='sim'),
 ]
