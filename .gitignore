@@ -4,3 +4,4 @@ src/SWA/db.sqlite3
 *.pyc
 *.sqlite3
 src/SWA/db.sqlite3
+src/SWA/db.sqlite3

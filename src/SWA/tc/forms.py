@@ -29,5 +29,8 @@ class SimCreationForm(forms.Form):
     sys3_name = forms.CharField(max_length = 20)
 
     flight_operators = forms.ModelMultipleChoiceField(
-                        queryset=FlightOperator.objects.all(),
-                        widget=forms.CheckboxSelectMultiple)
+        queryset=FlightOperator.objects.all(),
+        widget=forms.CheckboxSelectMultiple)
+
+      
+    

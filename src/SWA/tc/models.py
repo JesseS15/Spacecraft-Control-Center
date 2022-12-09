@@ -1,5 +1,13 @@
 from django.conf import settings
-from django.db import models
+from django.db import models 
+from django.contrib.auth.models import Group
+<<<<<<< Updated upstream
+=======
+
+Group.add_to_class('sim_list', models.ManyToManyField("tc.Sim",verbose_name="Sim"))
+>>>>>>> Stashed changes
+
+Group.add_to_class('sim_list', models.ManyToManyField("tc.Sim",verbose_name="Sim"))
 
 ###############################################################################
 class TestConductor(models.Model):
@@ -7,7 +15,7 @@ class TestConductor(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
-    sim_list = models.ManyToManyField("tc.Sim", verbose_name=("Sim"))
+    ##sim_list = models.ManyToManyField("tc.Sim", verbose_name=("Sim"), blank =True)
     def __str__(self):
         return self.user.username
 
@@ -24,7 +32,7 @@ class Sim(models.Model):
     sim_name = models.CharField(default='', max_length=15)
     flight_operators = models.ManyToManyField("fo.FlightOperator", verbose_name=("Flight Operators"))
     sys_list = models.ManyToManyField(Subsystem)
-
+    
     def __str__(self):
         return self.sim_name
 
