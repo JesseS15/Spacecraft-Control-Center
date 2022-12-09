@@ -12,10 +12,10 @@ Engineering Notebook: Jesse Slager
         9/27/22
 	        - Decided on Web App development
 		- Starting researching frameworks and connection ideas
-	10/1/22
+	10/01/22
 		- Starting programming connection test game to host and connect multiple clients over a web socket on my personal server PC
 		- Successfuly tested game
-	10/6/22
+	10/06/22
 		- Started development of rough web app and embedded connection test game into a new nav web page
 	10/13/22
 		- (Finally got a requirements doc from Prof. Garfield) conducted research into the control system simulator attributes and subsystems
@@ -26,11 +26,11 @@ Engineering Notebook: Jesse Slager
 		- Worked on SRS and SDD documentation
 	10/27/2022
 	 	- Researched optimized frameworks; started django python design
-	11/1/2022
+	11/01/2022
 		- Worked on Test Plan documentation
-	11/3/2022
+	11/03/2022
 		- Started Microsoft Azure research/design
-	11/8/2022
+	11/08/2022
 		- Finialized SRS2, SDD2, and UI design
 	11/10/2022
 		- Made first push from github to Azure host
@@ -45,4 +45,10 @@ Engineering Notebook: Jesse Slager
 		- Did research on how the project will fit together and planned out deadlines
 	12/01/2022
 		- Started planning and development of submodules and physics engine
-		- Started development and planning of the 
+		- Started designing the bridge between the front end and python physics engine via SQLite
+	12/06/2022
+		- Continued planning the Payload and Power Distribution subsystem
+		- Met with Professor Garfield over zoom to discuss Demo and SRS(v3)
+	12/08/2022
+		- Created powerpoint presentation for third demo
+		- Presented Sprint 3
