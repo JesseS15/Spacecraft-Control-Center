@@ -5,37 +5,89 @@ Engineering Notebook
 9/13/22:
 	- Met with Dr.Laskey and Dr.Garfield
 	- Got a overview and vision statement
+	- Dr. Laskey really wants a mobil app??? why????
+		- Push notifications?? for this???? crazy.
+	- Goals: Having something to demo for Dr. Laskey that will show we are on the right track.
 9/15/22:
 	- Group meeting to defined backlog, epics, UI roles and login, server-UI relationship and database drafting
 9/20/22:
 	- Group meeting
-    - Professor Akbas decided to propose limits and specific ways of proceed
+   	 - Professor Akbas decided to propose limits and specific ways of proceed
 9/22/22
-	- Group Meeting
-    - Started looking into app framework
+	- Group Meeting: Most people sick
+	- Me and Carly talked to Akbas about trying to get ahold of Garfield
+	- Need to add TA's and Garfield to the github (DONT FORGET)
+   	- Started looking into app framework
 9/27/22
 	- Decided on Web App development
 	- Starting researching frameworks and connection ideas
+	- We need to start moving forward to create a product even if we dont have guidance from customer or product owner
+10/5/22
+	- Me and Jeremy were able to catch Garfield between classes and asked about what the simulation should look liek or to get some guidance on how to proceed
+10/6/22
+	- Group meeting (we got tacos yay!)
+	- Split into groups and continued planning project
+	- I am on Simulation team
+10/7/22
+	- Looked into NASA resources and found some good links about their Spacecraft Control Centers
+	- Was able to see what type of subsystems NASA uses to give us an idea of what we are making (since none of us are space peeps)
 10/13/22
 	- Recieved requirements doc from Prof. Garfield
 	- Conducted research into the control system simulator attributes and subsystems
 	- Research and create data flow diagram (level 0) to start planning system communications and interactive layover between the web app and sim
+	- Worked on presentation
+	- My laptop broke so I could only work on my tablet
 10/18/2022
-	- Create powerpoint presention for first demo 
+	- Group Meeting
+	- Created powerpoint presention for first demo
+	- Presented project for sprint 1
+	- Laptop still broken
 10/25/2022
 	- Worked on SRS and SDD documentation
+	- Was able to get my laptop fixed over break!
 10/27/2022
-	- Researched optimized frameworks; started django python design
-11/1/2022
-	- Worked on Test Plan documentation
+	- Group meeting
+	- Everyone started downloading Django
+	- My Laptop died so I could not continue downloading it
+	- Split into different groups, I am now on Flight Operator Team with Jules
 11/8/2022
 	- Finialized SRS2, SDD2, and UI design
+	- Group talked about the visual design of the web pages and how the user should interact with the system
 11/10/2022
-	- Started on Simcraft Object and Subsystems
-11/13/2022
-	- Create powerpoint presentation for second demo
+	- Hurricane
+11/15/2022
+	- Group Meeting
+	- Everyone worked on powerpoint together for the presentation
+11/17/2022
+	- Group Meeting
+	- My laptop broke again! how!!
 11/29/2022
-	- Group Meeting - I got Django to work!
-    - Worked on Flight Operaters home page
+	- Group Meeting 
+	- I got a new (used) laptop and I got Django to work!
+    	- Worked on Flight Operaters home page
 12/1/2022
-	- 
+	- Worked on getting the Profile page to work
+	- Was able to get the Flight Operator task bars to work
+12/3/2022
+	- Created all the necessary pages for the Flight Operator and tried fixing some of the navigation bars
+12/5/2022
+	- Group Meeting
+	- Me and Carly tried to get the sidebar to not have a weird scroll
+	- I was put in charge of making sure the test plan got done
+	- Kyle keeps overwritting what me and Carly do (just a little irritating but he is adding good funnctionality)
+	- Most of us have started unofficially/officially(?) showing up to meetings around 12-12:30 and working through the class time
+12/6/2022
+	- Worked on test plan, was able to clean up the SWA requirements
+12/8/2022
+	- Group Meeting
+	- We worked on presentation slides and gave last presentation of the semester
+	- Jules was sick, Jeff needs to come to more meetings so he knows what he is presenting
+	- Jessie is new scrum master
+	- Finished test plan with lots of help from Jessie
+	- Turned in test plan
+12/9/2022
+	- Updated engineering notebook for final submission today
+
+
+
+
