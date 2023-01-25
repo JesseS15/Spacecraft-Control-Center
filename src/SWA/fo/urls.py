@@ -9,8 +9,5 @@ urlpatterns = [
     path('', views.index, name ='index'),
     path('home/', views.foHome, name ='home'),
     path('join/', views.joinClass, name ='join'),
-    path('login/', views.foLogin, name ='login'),
-    path('logout/', views.foLogout, name ='logout'),
-    path('register/', views.foRegister, name ='register'),
     path('<str:sim>/', views.foSim, name ='sim'),
 ]

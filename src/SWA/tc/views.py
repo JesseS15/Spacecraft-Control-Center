@@ -25,64 +25,7 @@ def index(request):
     if request.user.is_authenticated and request.user.is_staff:
         return redirect('tc:home')
     else:
-        return redirect('tc:login')
-  
-###############################################################################
-def tcRegister(request):
-
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password1')
-            # Send registration confirmation
-            send_mail(
-                'STaTE Registration',
-                'Thank you for registering to STaTE!',
-                None,
-                [email],
-                fail_silently=False,
-            )
-            user = authenticate(request, username = username, password = password)
-            form = login(request, user)
-            TestConductor.objects.create(user = user)
-            user.is_staff=True
-            #user.is_superuser=True
-            user.save();
-            return redirect('tc:home')
-    else:
-        form = UserRegisterForm()
-
-    return render(request, 'tc/register.html', {'form': form, 'title':'register here'})
-  
-###############################################################################
-def tcLogin(request):      
-
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username = username, password = password)
-
-        if user is not None and not user.is_staff:
-            return redirect('fo:login')
-        if user is not None and user.is_staff:
-            form = login(request, user)
-            return redirect('tc:home')
-        else:
-            messages.info(request, f'account does not exist')
-
-    elif request.user.is_authenticated and request.user.is_staff:
-        return redirect('tc:home')
-
-    form = AuthenticationForm()
-    return render(request, 'tc/login.html', {'form':form, 'title':'log in'})
-
-###############################################################################
-def tcLogout(request):
-    logout(request)
-    return redirect('tc:login')
+        return redirect('home:login')
 
 ###############################################################################
 def tcHome(request):
@@ -91,15 +34,9 @@ def tcHome(request):
     return render(request, 'tc/tcHome.html', {"classes":classes})
   
 ###############################################################################
-<<<<<<< Updated upstream
 def classHome(request, class_name):
-    classobj = Class.objects.get(class_name = class_name)
-    sims = classobj.sims.all()
-    return render(request, 'tc/classHome.html', {"sims": sims, "class_name": classobj})
-=======
-def classHome(request, k):
 
-    group = Group.objects.all().filter(name=k).values_list('sim_list', flat=True)
+    group = Group.objects.all().filter(name=class_name).values_list('sim_list', flat=True)
     data = numpy.asarray(group)
     print(data)
     if (data[0]!=None):
@@ -111,7 +48,6 @@ def classHome(request, k):
     else:
         sims=[]
     return render(request, 'tc/classHome.html', {"sims":sims})
->>>>>>> Stashed changes
 
 ###############################################################################
 def getGroups(request):
@@ -141,15 +77,11 @@ def createSim(request, class_name):
             subsystem3 = Subsystem.objects.create(sys_name = sys3_name)
 
             sim.sys_list.add(subsystem1, subsystem2, subsystem3)
-<<<<<<< Updated upstream
-
-=======
             for class_belong in class_belong:
                 sim.class_belong.add(class_belong)
                 class_belong.sim_list.add(sim)
             form.save_m2m()
             ##gohere
->>>>>>> Stashed changes
             for flight_operator in flight_operators:
                 sim.flight_operators.add(flight_operator)
                 flight_operator.sim_list.add(sim)

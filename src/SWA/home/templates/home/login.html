@@ -1,0 +1,21 @@
+{% extends "home/index.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block start %}
+
+<body style="background-image: url({% static 'images/stars.jpg' %}); height: 100vh;">
+  <div>
+    <center>
+      <form method="POST" style="padding-top: 30vh; color: white; width: 40vw;">
+        {% csrf_token %}
+        <fieldset class="form-group">
+          {{ form|crispy}}
+        </fieldset>
+          <button style="background: black; font-size: 2rem; padding:1%; color: white;" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-log-in"></span> &nbsp; Login</button>
+        <br/>
+        <sub style="text-align: center;"><a href="{% url 'home:register' %}" style="background: black;color: white; padding:2%; cursor:pointer;">Don't have account? Sign up Here</a></sub>
+      </form>
+    </center>
+  </div>
+</body>
+{% endblock start %}
