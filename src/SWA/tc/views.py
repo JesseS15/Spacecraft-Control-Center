@@ -39,7 +39,7 @@ def classHome(request, class_name):
     group = Group.objects.all().filter(name=class_name).values_list('sim_list', flat=True)
     data = numpy.asarray(group)
     print(data)
-    if (data[0]!=None):
+    if (data!=None):
         sims = ['']*(len(data))
         for e in range(len(data)):
             print(Sim.objects.get(pk=data[e]))
@@ -47,7 +47,7 @@ def classHome(request, class_name):
         print(sims)
     else:
         sims=[]
-    return render(request, 'tc/classHome.html', {"sims":sims})
+    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims})
 
 ###############################################################################
 def getGroups(request):
