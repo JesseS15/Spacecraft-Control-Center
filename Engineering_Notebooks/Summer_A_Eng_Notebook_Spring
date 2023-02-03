@@ -25,3 +25,38 @@ Engineering Notebook - Spring Semester
   - Each mini-team worked on defining what they are doing and filling backlog
   - I worked with Jesse and Jeremy to define necessary subsystems
 
+1/24/23 - Class/Team Meeting
+- Prepared questions for Dr. Lasky
+- Worked on making the system modular
+
+1/26/23 - Class/Team Meeting
+- Had a meeting with Dr. Garfield and Prof Lasky
+  - The project should be mission based NOT anomily based
+  - She will work on providing a script
+  - We don't need to worry about math that much
+- I created a general modular overview with the changes dicussed in the meeting
+
+1/30/23 - Individual
+- I looked into using threads or multiprocessing for the user interactions
+
+1/31/23 - Class/Team Meeting
+- Dr. Akbas notes:
+  - Basically we need to work faster, dont focus on the unecessary things
+- We created a more detailed overview of each subsystem and UI designs
+- I took that plan made during the meeting and created a solid first draft of a UML for the subsystems
+- I also created a potential UI design for adding generic subsystems which led me to create an even 
+  better modular design of the UML
+- Carly was sick :(
+
+2/1/23 - Individual
+- I worked on making my designs from yesterday even better
+
+2/2/23 - Class/Team Meeting
+- Prof. Akbas note:
+  - Don't forget about documentation, but also don't have all of us working on it
+  - Changed presentation date from next Tuesday to the following Tuesday
+- Jessie found Brython which solves a lot of our issues
+- We will be using python Dictionaries to sort attributes which will help keep it modular
+- Started the formal UML design in Draw.io
+  - Jessie, Jeremy, and Kyle provided insight on what specific variables and types should be used for different subsystems
+- Sidenote: why are dictionaries hard to add to UML's??
