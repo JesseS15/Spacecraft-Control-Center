@@ -1,8 +1,11 @@
+import Subsystem
 class ACS(Subsystem):
 
-    altitude = 0.0
-    orbit = 0.0
-    orientation = [0,1,2]
+    def __init__(self) -> None:
+        super().__init__()
+        altitude = 0.0
+        orbit = 0.0
+        orientation = [0,1,2]
 
     def thrustersErro():
         print("Error with thrusters")
