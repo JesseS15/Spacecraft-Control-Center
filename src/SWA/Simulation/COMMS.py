@@ -1,9 +1,12 @@
+import Subsystem
 class COMMS(Subsystem):
 
-    downlinkActive = False
-    uplinkActive = False
-    antennaWorking = False
-    clearSignal = False
+    def __init__(self) -> None:
+        super().__init__()
+        downlinkActive = False
+        uplinkActive = False
+        antennaWorking = False
+        clearSignal = False
 
     def downlinkError():
         print("Error with the downlink")
