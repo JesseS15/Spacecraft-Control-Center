@@ -7,8 +7,8 @@ class ACS(Subsystem):
         orbit = 0.0
         orientation = [0,1,2]
 
-    def thrustersErro():
-        print("Error with thrusters")
+    def thrustersError():
+        return "Error with thrusters"
 
     def altitudeError():
         print("Altitude is not optimal")

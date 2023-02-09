@@ -17,5 +17,5 @@ class COMMS(Subsystem):
     def antennaError():
         print("Error with antenna")
 
-    def signalErro():
+    def signalError():
         print("Signal is not clear")

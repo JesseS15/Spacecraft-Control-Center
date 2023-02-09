@@ -4,6 +4,6 @@ class payload(Subsystem):
         super().__init__()
 
     def payloadAction():
-        pass
+        print("Payload acction")
 
     
