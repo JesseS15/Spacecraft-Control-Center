@@ -1,7 +1,8 @@
-import Subsystem
+from Subsystem import Subsystem
+
 class ACS(Subsystem):
 
-    def __init__(self) -> None:
+    def __init__(self):
         super().__init__()
         altitude = 0.0
         orbit = 0.0

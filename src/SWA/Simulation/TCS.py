@@ -1,4 +1,4 @@
-import Subsystem
+from Subsystem import Subsystem
 class TCS(Subsystem):
     #TODO THIS should be changed in the future I believe, needs to be able to handle all subsystem's temps
     def __init__(self) -> None:

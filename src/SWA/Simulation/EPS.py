@@ -1,4 +1,4 @@
-import Subsystem
+from Subsystem import Subsystem
 class EPS(Subsystem):
     def __init__(self) -> None:
         super().__init__()

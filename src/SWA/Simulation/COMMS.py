@@ -1,4 +1,4 @@
-import Subsystem
+from Subsystem import Subsystem
 class COMMS(Subsystem):
 
     def __init__(self) -> None:
