@@ -14,6 +14,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth.models import Group, Permission, User
 from django.contrib.contenttypes.models import ContentType
+import time
 
 from .models import TestConductor, Sim, Subsystem, Class
 from .forms import UserRegisterForm, SimCreationForm, ClassForm
@@ -104,9 +105,13 @@ def addClass(request):
 
     if request.method == 'POST':
         form = ClassForm(request.POST)
-
         if form.is_valid():
+            start = time.time()
             form.save()
+            duration = (time.time() - start) * 1000
+            print('form.name {:.2f} ms'.format(
+            duration
+            ))
             return redirect('tc:home')
     else:
         form = ClassForm()
