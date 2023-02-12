@@ -2,11 +2,43 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.mail import send_mail
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import UserRegisterForm, SubsystemForm, JoinClassForm
-from .models import FlightOperator
-from tc.models import Sim, Class
+from .models import FlightOperator, Post, Like
+from tc.models import Sim, Class, Subsystem
+
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+import json
+
+def post(request):
+    posts = Post.objects.all()  # Getting all the posts from database
+    return render(request, 'fo/post.html', { 'posts': posts })
+
+def submit(request):
+    if request.method == 'GET':
+           post_id = request.GET['post_id']
+           post_text = request.GET['post_text']
+           likedpost = Post.objects.get(pk=post_id) #getting the liked posts
+           likedpost.post_heading = post_text
+           likedpost.save()
+           m = Like(post=likedpost) # Creating Like Object
+           m.save()  # saving it to store in database
+           return HttpResponse(likedpost.post_heading) # Sending an success response
+    else:
+           return HttpResponse("Request method is not a GET")
+
+def fetchdata(request, simkey):
+    if request.method == 'GET':
+        dic = {}
+        simobj = Sim.objects.get(pk = simkey)
+        for sys in simobj.sys_list.all():
+            dic.update({sys.sys_name : sys.button_value})
+        return HttpResponse(json.dumps(dic)) # Sending an success response
+    else:
+        return HttpResponse("Request method is not GET")
 
 ###############################################################################
 def index(request):
@@ -22,19 +54,10 @@ def foHome(request):
     return render(request, 'fo/foHome.html', {'flightOperator':flightOperator})
 
 ###############################################################################
-def foSim(request, sim):
-    simobj = Sim.objects.get(sim_name=sim)
+def foSim(request, simkey):
+    simobj = Sim.objects.get(pk=simkey)
 
-    if request.method == 'POST':
-
-        for subsystem in simobj.sys_list.all():
-            if subsystem.sys_name in request.POST:
-                form = SubsystemForm(request.POST, prefix=subsystem.sys_name, instance=subsystem)
-                if form.is_valid():
-                    form.save()
-
-    forms = [SubsystemForm(prefix=subsystem.sys_name, instance=subsystem) for subsystem in simobj.sys_list.all()]
-    return render(request, 'fo/foSim.html', {'sim': simobj, 'forms': forms})
+    return render(request, 'fo/foSim.html', {'sim': simobj, 'simkey': simkey})
 
 ###############################################################################
 def joinClass(request):

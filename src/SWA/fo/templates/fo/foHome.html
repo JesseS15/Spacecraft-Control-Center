@@ -3,6 +3,19 @@
 {% block start %}
 {% if flightOperator.user.is_authenticated %}
 
+<script>
+  $(document).ready(function () {
+    $('#my-button').click(function () {
+        $.ajax({
+            url: '',
+            success: function (data) {
+                alert(data.message);
+            }
+        });
+    });
+  }); 
+</script>
+
 <center>
 
   <h3>Welcome Back {{user.username}}!</h3>
@@ -14,9 +27,10 @@
   <ul style="list-style-type:none;padding: 0">
     {% for sim in flightOperator.sim_list.all %}
 
-    <li><a href="{% url 'fo:sim' sim %}">{{ sim }}</a></li>
+    <li><a href="{% url 'fo:sim' sim.pk %}">{{ sim }}</a></li>
 
     {% endfor %}
+  
   </ul>
 </center>
 
