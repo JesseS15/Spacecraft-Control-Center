@@ -49,14 +49,14 @@
                     <h2>Edit Classss</h2>
                   </div>
                   <div class="popup-body">
-                    <h3 style="text-align: left;"><label style="margin-right: 17px" for="enteredText">Class Name:</label>
+                    <h3 style="text-align: left;"><label style="margin-right: 3.4%" for="enteredText">Class Name:</label>
                     <input type="text" id="textbox" name="enteredText"></h3>
-                    <h3 style="margin-right: 14px;"><label style="margin-right: 22px"for="enteredText">Status:</label>
+                    <h3 style="margin-right: 2.8%;"><label style="margin-right: 4.4%"for="enteredText">Status:</label>
                     <input type="text" id="textbox" name="enteredText"></h3>
-                    <h3 style="text-align: left;"><label style="margin-right: 22px"for="enteredText">Class Code:</label>
+                    <h3 style="text-align: left;"><label style="margin-right: 4.4%"for="enteredText">Class Code:</label>
                     <input type="text" id="textbox" name="enteredText"></h3>
                     <script src = "/static/js/settingspopup.js"></script>
-                    <h3><button style = "margin-left: 75px" class="submitBtn" onClick="displayData()">Generate New Code</button></h3>
+                    <h3><button style = "margin-left: 15%" class="submitBtn" onClick="displayData()">Generate New Code</button></h3>
                     <h3><button class="submitBtn" onClick="displayData()">Save</button></h3>
                   </div>
                 </div>
@@ -64,21 +64,16 @@
               
               <div id="modal2" class="modal">
                 <div class="modal-content"style="width:500px">
-                  <form method="POST" style="color: white; margin: 4%; padding:10%; border-radius:1%;width: 60vw; border-color: black;">
                   <div class="modal-header">
                     <span class="close" id="span2" onClick="openForm()">&times;</span>
                     <h2>Add New Class</h2>
                   </div>
                 <div class="popup-body">
-                        {% csrf_token %}
-                        { form.non_field_errors }}
-                        <div class="form-group">
-                          {{ form|crispy}}
-                        </div>
-                          <button style="background: black; padding:2%; font-size: 2rem; color:white;" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-check"></span> &nbsp;Add Class</button>
-                        <br />
-                          <a href="{% url 'tc:home' %}" style="text-decoration: underline; color: black; padding:2%; cursor:pointer;">Exit</a></sub>
-                      </form>
+                  <form name = "ClassForm" method="POST" style="color: white; margin: 4%; padding:10%; border-radius:1%;width: 60vw; border-color: black;"></form>
+
+                    
+                    <button style="background: black; padding:2%; font-size: 2rem; color:white;" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-check"></span> &nbsp;Add Class</button>
+                  </form>
           
                     <script src = "/static/js/addnewclasspopup.js"></script>
                 </div>
@@ -92,14 +87,14 @@
                     <h2>Operators</h2>
                   </div>
                   <div class="popup-body">
-                    <h3 style="text-align: left;"><label style="margin-right: 17px" for="enteredText">Class Name:</label>
+                    <h3 style="text-align: left;"><label style="margin-right: 3.4%" for="enteredText">Class Name:</label>
                     <input type="text" id="textbox" name="enteredText"></h3>
-                    <h3 style="margin-right: 14px;"><label style="margin-right: 22px"for="enteredText">Status:</label>
+                    <h3 style="margin-right: 2.8%;"><label style="margin-right: 4.4%"for="enteredText">Status:</label>
                     <input type="text" id="textbox" name="enteredText"></h3>
-                    <h3 style="text-align: left;"><label style="margin-right: 22px"for="enteredText">Class Code:</label>
+                    <h3 style="text-align: left;"><label style="margin-right: 4.4%"for="enteredText">Class Code:</label>
                     <input type="text" id="textbox" name="enteredText"></h3>
                     <script src = "/static/js/operatorspopup.js"></script>
-                    <h3><button style = "margin-left: 75px" class="submitBtn" onClick="displayData()">Generate New Code</button></h3>
+                    <h3><button style = "margin-left: 15%" class="submitBtn" onClick="displayData()">Generate New Code</button></h3>
                     <h3><button id = "save" class="submitBtn" onClick="displayData()">Save</button></h3>
                   </div>
                 </div>
