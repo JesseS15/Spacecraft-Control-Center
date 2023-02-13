@@ -13,33 +13,6 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 import json
 
-def post(request):
-    posts = Post.objects.all()  # Getting all the posts from database
-    return render(request, 'fo/post.html', { 'posts': posts })
-
-def submit(request):
-    if request.method == 'GET':
-           post_id = request.GET['post_id']
-           post_text = request.GET['post_text']
-           likedpost = Post.objects.get(pk=post_id) #getting the liked posts
-           likedpost.post_heading = post_text
-           likedpost.save()
-           m = Like(post=likedpost) # Creating Like Object
-           m.save()  # saving it to store in database
-           return HttpResponse(likedpost.post_heading) # Sending an success response
-    else:
-           return HttpResponse("Request method is not a GET")
-
-def fetchdata(request, simkey):
-    if request.method == 'GET':
-        dic = {}
-        simobj = Sim.objects.get(pk = simkey)
-        for sys in simobj.sys_list.all():
-            dic.update({sys.sys_name : sys.button_value})
-        return HttpResponse(json.dumps(dic)) # Sending an success response
-    else:
-        return HttpResponse("Request method is not GET")
-
 ###############################################################################
 def index(request):
 
@@ -75,3 +48,29 @@ def joinClass(request):
 
     form = JoinClassForm()
     return render(request, 'fo/joinClass.html', {'form':form})
+
+###############################################################################
+
+def submit(request, simkey):
+    if request.method == 'GET':
+           syspk = request.GET.get('syspk')
+           val = request.GET.get('value') # JSON string
+           value = json.loads(val) # Boolean value
+           sys = Subsystem.objects.get(pk = syspk)
+           sys.button_value = value
+           sys.save()
+           return HttpResponse(val) # Sending an success response
+    else:
+           return HttpResponse("Request method is not a GET")
+
+###############################################################################
+
+def fetchdata(request, simkey):
+    if request.method == 'GET':
+        dic = {}
+        simobj = Sim.objects.get(pk = simkey)
+        for sys in simobj.sys_list.all():
+            dic.update({sys.pk : sys.button_value})
+        return HttpResponse(json.dumps(dic)) # Sending an success response
+    else:
+        return HttpResponse("Request method is not GET")

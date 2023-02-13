@@ -3,6 +3,8 @@
 {% load crispy_forms_tags %}
 {% block start %}
 
+<script src=  "/static/js/jquery.min.js"></script>
+<script src = "/static/js/fosim.js"></script>
 
 <p id = "message">{{ sim }}<p>
 {% for sys in sim.sys_list.all %}
@@ -10,64 +12,14 @@
   <div style="background-color:Red; border-radius: 25px;height: 15%;width: 25vw;display: inline-block;">
     <center>
       <p>{{ sys }}<p>
-      <input type='checkbox' class = 'syscheck'id="{{ sys }}">
-      <a class="syssubmit" id="{{ sys }}" href="#" data-catid="{{ sys }}">Submit</a>
+      <input type='checkbox' class='syscheck' id="{{ sys.pk }}">
+      <a class='submit' id="{{ sys.pk }}" href='#' syscheck-id="{{ sys.pk }}">Submit</a>
+      <p>{{ sys.pk }}</p>
     </center>
   </div>
 {% endfor %}
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script type="text/javascript">
-fetchdata();
-$('.submit').click(function(){
-    var catid;
-    var txt;
-    var sys;
-    catid = $(this).attr("data-catid");
-    txt = document. querySelector('input').value;
-    $.ajax(
-    {
-        url: "submit",
-        data:{
-                sys: catid,
-        },
-        success: function( data ) 
-        {
-            //$( '#message' ).text(data);
-        }
-    })
-});
-
-function fetchdata(){
-    $.ajax({
-      // fo/views.fetchdata
-      url: 'fetchdata',
-      type: "GET",
-      dataType: "json",
-
-      success: (data) => {
-        // All syscheck checkbox elements in the document
-        const collection = document.getElementsByClassName("syscheck");
-        for (let i = 0; i < collection.length; i++) {
-          let sysvalue = data[collection[i].id];
-          // Set checkbox to subsystem value found in database
-          collection[i].checked = sysvalue
-          // Set parent div background color
-          if(sysvalue) {
-            collection[i].parentElement.parentElement.parentElement.style.backgroundColor = 'Green';
-          }
-          else {
-            collection[i].parentElement.parentElement.parentElement.style.backgroundColor = 'Red';
-          }
-        }
-     }
-    });
-   }
-
-$(document).ready(function(){
-    setInterval(fetchdata,5000);
-   });
-</script>
-
+<script src=  "/static/js/jquery.min.js"></script>
+<script src = "/static/js/fosim.js"></script>
 
 {% endblock start %}

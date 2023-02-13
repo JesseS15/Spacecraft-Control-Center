@@ -27,7 +27,7 @@
   <ul style="list-style-type:none;padding: 0">
     {% for sim in flightOperator.sim_list.all %}
 
-    <li><a href="{% url 'fo:sim' sim.pk %}">{{ sim }}</a></li>
+      <li><a href="{% url 'fo:sim' sim.pk %}">{{ sim }}</a></li>
 
     {% endfor %}
   

@@ -10,5 +10,5 @@ urlpatterns = [
     path('join/', views.joinClass, name ='join'),
     path('<str:simkey>/', views.foSim, name ='sim'),
     path('<str:simkey>/fetchdata/', views.fetchdata, name='fetchdata'),
-    path('<str:simkey>/submit/', views.submit, name='submit'),
+    path('<str:simkey>/submit', views.submit, name='submit'),
 ]
