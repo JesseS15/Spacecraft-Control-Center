@@ -6,8 +6,9 @@ from django.contrib.auth import views as auth
  
 app_name = 'fo'
 urlpatterns = [
-    path('', views.index, name ='index'),
     path('home/', views.foHome, name ='home'),
     path('join/', views.joinClass, name ='join'),
-    path('<str:sim>/', views.foSim, name ='sim'),
+    path('<str:simkey>/', views.foSim, name ='sim'),
+    path('<str:simkey>/fetchdata/', views.fetchdata, name='fetchdata'),
+    path('<str:simkey>/submit', views.submit, name='submit'),
 ]

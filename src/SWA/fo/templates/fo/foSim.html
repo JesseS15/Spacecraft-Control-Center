@@ -3,24 +3,23 @@
 {% load crispy_forms_tags %}
 {% block start %}
 
-{% for form in forms %}
+<script src=  "/static/js/jquery.min.js"></script>
+<script src = "/static/js/fosim.js"></script>
 
-  {% if form.instance.button_value %}
-  <div style="background-color:Green;border-radius: 25px;height: 15%;width: 25vw;display: inline-block;">
-  {% else %}
-  <div style="background-color:Red  ;border-radius: 25px;height: 15%;width: 25vw;display: inline-block;">
-  {% endif %}
+<p id = "message">{{ sim }}<p>
+{% for sys in sim.sys_list.all %}
+
+  <div style="background-color:Red; border-radius: 25px;height: 15%;width: 25vw;display: inline-block;">
     <center>
-      <form method="POST" style="color: white; margin: 10%;">
-        <p>{{form.prefix}}</p>
-        {% csrf_token %}
-        <fieldset class="form-group">
-          {{ form|crispy}}
-        </fieldset>
-        <button style="background: black; font-size: 2rem; padding:1%; color: white;" class="btn btn-outline-info" type="submit" name={{form.prefix}}>Submit</button>
-      </form>
+      <p>{{ sys }}<p>
+      <input type='checkbox' class='syscheck' id="{{ sys.pk }}">
+      <a class='submit' id="{{ sys.pk }}" href='#' syscheck-id="{{ sys.pk }}">Submit</a>
+      <p>{{ sys.pk }}</p>
     </center>
   </div>
 {% endfor %}
+
+<script src=  "/static/js/jquery.min.js"></script>
+<script src = "/static/js/fosim.js"></script>
 
 {% endblock start %}
