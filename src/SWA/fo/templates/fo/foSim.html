@@ -9,7 +9,7 @@
 <p id = "message">{{ sim }}<p>
 {% for sys in sim.sys_list.all %}
 
-  <div style="background-color:Red; border-radius: 25px;height: 15%;width: 25vw;display: inline-block;">
+  <div style="background-color:Red; border-radius: 25px;min-height: 20vh;min-width: 33vw;display: inline-block;">
     <center>
       <p>{{ sys }}<p>
       <input type='checkbox' class='syscheck' id="{{ sys.pk }}">

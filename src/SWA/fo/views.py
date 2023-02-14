@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import UserRegisterForm, SubsystemForm, JoinClassForm
-from .models import FlightOperator, Post, Like
+from .models import FlightOperator
 from tc.models import Sim, Class, Subsystem
 
 from django.http import JsonResponse
@@ -50,7 +50,6 @@ def joinClass(request):
     return render(request, 'fo/joinClass.html', {'form':form})
 
 ###############################################################################
-
 def submit(request, simkey):
     if request.method == 'GET':
            syspk = request.GET.get('syspk')
@@ -64,7 +63,6 @@ def submit(request, simkey):
            return HttpResponse("Request method is not a GET")
 
 ###############################################################################
-
 def fetchdata(request, simkey):
     if request.method == 'GET':
         dic = {}
