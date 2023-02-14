@@ -15,7 +15,9 @@ class UserRegisterForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
 
 ###############################################################################
-class ClassForm(forms.ModelForm):
+class ClassForm(forms.Form):
+    class_name = forms.CharField(max_length = 20)
+    status = forms.CharField(max_length = 20)
     class Meta:
         model = Class
         fields = ['class_name','status']
