@@ -1,6 +1,8 @@
-import Subsystem
+from Subsystem import Subsystem
 class EPS(Subsystem):
-    def __init__(self) -> None:
+
+    
+    def __init__(self):
         super().__init__()
         powerDistribution = [0,1,2,3]
         powerIntake = 0.0
