@@ -5,18 +5,22 @@
 #from tc.views import createSim
 import threading
 
+class SimManager():
 
-def startThread():
-    x = threading.Thread(target = thread_time)
-    x.start()
-    print("\n!!!! Thread started  !!!!\n")
+    def __init__(self):
+        print("New SimManager instance created")
 
-# Adding new sim to the database
-#def createNewSim(simName):
-    #newSim = Sim.objects.create(sim_name = simName, sys1_name='ACS', sys2_name='TCS')
-    #newSim.save()
-    #createSim(sim_name = simName)
-    #print('New Simulation created:' + simName)
+    def startThread():
+        x = threading.Thread(target = thread_time)
+        x.start()
+        print("\n!!!! Thread started  !!!!\n")
 
-#startThread()
-#createNewSim("My new sim")
+    # Adding new sim to the database
+    #def createNewSim(simName):
+        #newSim = Sim.objects.create(sim_name = simName, sys1_name='ACS', sys2_name='TCS')
+        #newSim.save()
+        #createSim(sim_name = simName)
+        #print('New Simulation created:' + simName)
+
+    #startThread()
+    #createNewSim("My new sim")
