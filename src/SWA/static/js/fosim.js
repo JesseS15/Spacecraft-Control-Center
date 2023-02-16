@@ -21,7 +21,7 @@ $('.submit').click(function(){
             value: val,
         },
 
-        success: function( data ) 
+        success: function( data )
         {
             cb.checked = data;
         }
@@ -43,13 +43,14 @@ function fetchdata(){
 
                 let sysvalue = data[collection[i].id];
                 // Set checkbox to subsystem value found in database
-                collection[i].checked = sysvalue
+                collection[i].checked = sysvalue;
+                console.log(collection[i].value);
                 // Set parent div background color
                 if(sysvalue) {
-                    collection[i].parentElement.parentElement.parentElement.style.backgroundColor = 'Green';
+                    collection[i].parentElement.parentElement.style.backgroundColor = 'Green';
                 }
                 else {
-                    collection[i].parentElement.parentElement.parentElement.style.backgroundColor = 'Red';
+                    collection[i].parentElement.parentElement.style.backgroundColor = 'Red';
                 }
             }
         }

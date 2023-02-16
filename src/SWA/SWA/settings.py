@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'fo.apps.FoConfig',
     'tc.apps.TcConfig',
+    'simapp.apps.SimappConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
