@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import UserRegisterForm, SubsystemForm, JoinClassForm
-from .models import FlightOperator, Post, Like
+from .models import FlightOperator
 from tc.models import Class
 from simapp.models import Sim, Subsystem
 
