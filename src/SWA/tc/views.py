@@ -17,9 +17,11 @@ from django.contrib.contenttypes.models import ContentType
 import time
 from .models import Class
 
-from .models import TestConductor, Sim, Subsystem, Class
+from .models import TestConductor, Class
+from simapp.models import Sim, Subsystem
 from .forms import UserRegisterForm, SimCreationForm, ClassForm
 from fo.forms import SubsystemForm
+
 
 ###############################################################################
 def index(request):
@@ -156,3 +158,8 @@ def tcSim(request, sim):
     print(simobj)
     forms = [SubsystemForm(prefix=subsystem.sys_name, instance=subsystem) for subsystem in simobj.sys_list.all()]
     return render(request, 'tc/tcSim.html', {'sim': simobj, 'forms': forms})
+
+    ############################################################################
+
+
+

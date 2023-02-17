@@ -11,13 +11,39 @@
 
   <div style="background-color:Red; border-radius: 25px;height: 15%;width: 25vw;display: inline-block;">
     <center>
-      <p>{{ sys }}<p>
+      <p>{{ sys }}</p>
       <input type='checkbox' class='syscheck' id="{{ sys.pk }}">
-      <a class='submit' id="{{ sys.pk }}" href='#' syscheck-id="{{ sys.pk }}">Submit</a>
+      <input type="submit" class='submit' id="{{ sys.pk }}" syscheck-id="{{ sys.pk }}">
       <p>{{ sys.pk }}</p>
     </center>
   </div>
 {% endfor %}
+
+<div style="background-color:Red; border-radius: 25px">
+  <center>
+    <input type="number" class='syscheck'>
+  </center>
+</div>
+<div style="background-color:Red; border-radius: 25px">
+  <center>    
+    <input type="range" class='syscheck'>
+  </center>
+</div>
+<div style="background-color:Red; border-radius: 25px">
+  <center>
+    <input type="reset" class='syscheck'>
+  </center>
+</div>
+<div style="background-color:Red; border-radius: 25px">
+  <center>    
+    <input type="submit" class='syscheck'>
+  </center>
+</div>
+<div style="background-color:Red; border-radius: 25px">
+  <center>    
+    <input type="text" class='syscheck'>
+  </center>
+</div>
 
 <script src=  "/static/js/jquery.min.js"></script>
 <script src = "/static/js/fosim.js"></script>

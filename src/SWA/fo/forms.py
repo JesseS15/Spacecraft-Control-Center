@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
-from tc.models import Subsystem
+from simapp.models import Subsystem
 
 ###############################################################################
 class UserRegisterForm(UserCreationForm):

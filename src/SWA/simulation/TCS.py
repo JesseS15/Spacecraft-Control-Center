@@ -1,13 +1,12 @@
-import Subsystem
+from Subsystem import Subsystem
 class TCS(Subsystem):
     #TODO THIS should be changed in the future I believe, needs to be able to handle all subsystem's temps
-    def __init__(self) -> None:
-        super().__init__()
-        tempRegulation = [0,1]
-        tempRateOfChange = 0.0
+    def __init__(self, dicts):
+        super().__init__(dicts)
+        
 
-    def regulationFunction():
+    def regulationFunction(self):
         print("Function to regulate tempurature")
 
-    def regulationError():
+    def regulationError(self):
         print("Error with tempurature regulation in TCS")
