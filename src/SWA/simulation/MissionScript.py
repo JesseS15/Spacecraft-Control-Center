@@ -21,8 +21,7 @@ class MissionScript:
         self.dicts["TCS"] = dict(TCSDict)
         self.dicts["EPS"] = dict(EPSDict)
         self.dicts["COMMS"] = dict(COMMSDict)
-        print(self.dicts)
-
+        
     # Creating all the subsystems and passing them the dictionaries
     def createSubsys(self):
         self.subsystems["ACS"] = ACS(self.dicts)
