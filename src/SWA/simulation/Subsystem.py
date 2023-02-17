@@ -3,31 +3,25 @@
 
 class Subsystem:
 
-	isWorking = False
-	isActive = False
-	hasPower = False
-	powerUsage = 0.0
-	powerRange = [0,10]
-	tempAcceptable = False
-	tempValue = 0.0
-	tempRange = [0,10]
+	dicts = { }
 
-	def __init__(self):
+	def __init__(self, dictionaries):
 		print("New subsystem created")
+		self.dicts = dictionaries
 	
-	def subsysWorking():
+	def subsysWorking(self):
 		print("Subsystem Working")
 
-	def subsysError():
+	def subsysError(self):
 		print("Subsystem Error")
 
-	def subsysCheck():
+	def subsysCheck(self):
 		print("Checking if subsystem is working")
 
-	def powerError():
+	def powerError(self):
 		print("Error with power")
 
-	def tempError():
+	def tempError(self):
 		print("Error with tempurature")
 
 

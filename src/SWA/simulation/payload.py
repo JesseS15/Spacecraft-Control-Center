@@ -1,9 +1,13 @@
 from Subsystem import Subsystem
 class payload(Subsystem):
-    def __init__(self) -> None:
-        super().__init__()
 
-    def payloadAction():
+    payloadName = "Payload"
+
+    def __init__(self, payloadName):
+        super().__init__()
+        self.payloadName = payloadName
+
+    def payloadAction(self):
         print("Payload acction")
 
     

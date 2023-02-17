@@ -1,20 +1,21 @@
-import Subsystem
+from Subsystem import Subsystem
+
+
 class ACS(Subsystem):
 
-    def __init__(self) -> None:
-        super().__init__()
-        altitude = 0.0
-        orbit = 0.0
-        orientation = [0,1,2]
+    def __init__(self, dicts):
+        super().__init__(dicts)
+        
 
-    def thrustersError():
-        return "Error with thrusters"
+    def thrustersError(self):
+        print(self.dicts["ACS"].get("isWorking"))
+        print("Error with thrusters")
 
-    def altitudeError():
+    def altitudeError(self):
         print("Altitude is not optimal")
 
-    def orbitError():
+    def orbitError(self):
         print("Not on correct orbit")
 
-    def orientationError():
+    def orientationError(self):
         print("Orientation incorrect")

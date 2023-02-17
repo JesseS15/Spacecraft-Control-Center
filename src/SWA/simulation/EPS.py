@@ -2,20 +2,16 @@ from Subsystem import Subsystem
 class EPS(Subsystem):
 
     
-    def __init__(self):
-        super().__init__()
-        powerDistribution = [0,1,2,3]
-        powerIntake = 0.0
-        powerLevel = 0.0
-        isChanging = False
-        hasPowerIntake = False
+    def __init__(self, dicts):
+        super().__init__(dicts)
+        
 
-    def powerDistributionError():
+    def powerDistributionError(self):
         print("Error with power distribution")
 
-    def powerIntakeError():
+    def powerIntakeError(self):
         print("Error with power intake")
 
-    def powerLevelError():
+    def powerLevelError(self):
         print("Error with power level")
 
