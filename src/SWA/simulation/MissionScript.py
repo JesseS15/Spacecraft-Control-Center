@@ -21,7 +21,7 @@ class MissionScript:
         self.dicts["TCS"] = dict(TCSDict)
         self.dicts["EPS"] = dict(EPSDict)
         self.dicts["COMMS"] = dict(COMMSDict)
-        
+
     # Creating all the subsystems and passing them the dictionaries
     def createSubsys(self):
         self.subsystems["ACS"] = ACS(self.dicts)
@@ -51,5 +51,5 @@ class MissionScript:
     # Method to start the mission (will need to actually create once a missions script is aquired)
     def startM(self):
         print("Starting mission")
-        # Should we start a thread here?
+        
 
