@@ -57,7 +57,7 @@ def classHome(request, class_name):
     group = Class.objects.all().filter(class_name = class_name).values_list('sims', flat=True)
     data = numpy.asarray(group)
     print(group)
-    if (data!=None):
+    if (data.all()!=None):
         sims = ['']*(len(data))
         for e in range(len(data)):
             print(Sim.objects.get(pk=data[e]))
@@ -74,30 +74,28 @@ def classHome(request, class_name):
             sim_name = form.cleaned_data.get('sim_name')
             sys_list = form.cleaned_data.get('sys_list')
             flight_operators = form.cleaned_data.get('flight_operators')
-            class_belong = form.cleaned_data.get('class_belong')
 
             sim = Sim.objects.create(sim_name = sim_name)
-
+            Class.objects.get(class_name = class_name).sims.add(sim)
             for x in sys_list:
                 sim.sys_list.add(x)
-                sys_list.sim_list.add(sim)
-            for class_belong in class_belong:
-                sim.class_belong.add(class_belong)
-                class_belong.sim_list.add(sim)
-            form.save_m2m()
+                #sys_list.sim_list.add(sim)
+                #class_belong.sim_list.add(sim)
+            #form.save_m2m()
             ##gohere
             for flight_operator in flight_operators:
                 sim.flight_operators.add(flight_operator)
-                flight_operator.sim_list.add(sim)
+                #flight_operator.sim_list.add(sim)
                 # Send notification
-                send_mail(
+                """send_mail(
                     'STaTE Simulation Added to Your Account',
                     'A new simulation, ' + sim.sim_name + ', has been added to your STaTE account.',
                     None,
                     [flight_operator.user.email],
                     fail_silently=False,
-                )
+                )"""
                 return redirect('tc:home')
+            
 
     form = SimCreationForm()
     return render(request, 'tc/classHome.html', {"form": form, "class_name": class_name, "sims":sims})

@@ -23,14 +23,14 @@
               <h3 class="list" style="margin-left: 10%;text-align: left;">Sim List</h3>
               <table border="2" style="width: 80%;">
                 <thead>
-                  <th style="font-size:18px; width: 26%">Name</th>
-                  <th style="font-size:18px; width: 26%">Status</th>
-                  <th style="font-size:18px; width: 26%"></th>
+                  <th style="font-size:18px; width: 18%">Name</th>
+                  <th style="font-size:18px; width: 18%">Status</th>
+                  <th style="font-size:18px; width: 54%"></th>
                 </thead>
                  {% for sim in sims %}
                 <tr style="font-size:16px; max-height: 20px; overflow-y: scroll;">
                   <td style="font-size:16px;"><a class = "simlist" href="{% url 'tc:sim' sim %}">{{ sim }}</a></td>
-                  <td style="font-size:16px;">{{class_name.status}}</td>
+                  <td style="font-size:16px;"></td>
                   <td style="font-size:16px;"><button type = "button">Manage</button><button type = "button" class="settings">Operators</button><button type = "button" class="settings">Reports</button></td>
                 </tr>
               {% endfor %}
