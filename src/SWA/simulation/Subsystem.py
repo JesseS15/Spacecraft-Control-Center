@@ -6,7 +6,6 @@ class Subsystem:
 	dicts = { }
 
 	def __init__(self, dictionaries):
-		print("New subsystem created")
 		self.dicts = dictionaries
 	
 	def subsysWorking(self):
