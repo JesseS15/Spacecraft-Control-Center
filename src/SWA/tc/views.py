@@ -15,6 +15,7 @@ from django.template import loader
 from django.contrib.auth.models import Group, Permission, User
 from django.contrib.contenttypes.models import ContentType
 import time
+from .models import Class
 
 from .models import TestConductor, Sim, Subsystem, Class
 from .forms import UserRegisterForm, SimCreationForm, ClassForm
@@ -31,6 +32,8 @@ def index(request):
 ###############################################################################
 def tcHome(request):
     classes = Class.objects.all()
+   
+    print(classes)
     if request.method == 'POST':
         form = ClassForm(request.POST)
         if form.is_valid():
@@ -43,6 +46,7 @@ def tcHome(request):
             return redirect('tc:home')
     else:
         form = ClassForm()
+
     return render(request, 'tc/tcHome.html', {"classes":classes, 'form': form})
   
 ###############################################################################

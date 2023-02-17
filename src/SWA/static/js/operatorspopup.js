@@ -7,16 +7,21 @@ const opbtns = document.getElementsByClassName("operators");
 //get span
 var span3 = document.getElementById("span3");
 
+
 for(i=0; i<opbtns.length; i++){
     opbtns[i].onclick = function() {
-        if(modal2.style.display == "none" && modal1.style.display == "none"){
+        choice = document.getElementsByClassName("classlist")[0].id;
+        document.getElementById("class_test").innerHTML = choice;
+        
+        if(modal2.style.display == "none" && modal1.style.display == "none" && modal3.style.display == "none"){
             $('#modal3').show();
         }else{
             $('#modal2').hide();
             $('#modal1').hide(); 
+            $('#modal3').hide(); 
             $('#modal3').show();
         }
-}
+    }
 }
 
 span3.onclick = function(){

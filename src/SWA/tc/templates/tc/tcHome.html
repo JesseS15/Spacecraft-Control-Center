@@ -31,12 +31,16 @@
                   <th style="width:15%"></th>
                 </thead>
                  {% for class_name in classes %}
-                <tr>
+                <tr style="font-size:16px; max-height: 20px; overflow-y: scroll;">
                   <td style="text-align:center;"><button type = "button" data-toggle = "modal" data-target = "modal1" class="settings"><span class="glyphicon glyphicon-wrench"></span></button></td>
-                  <td style="font-size:16px;"><a href="{% url 'tc:classHome' class_name %}">{{class_name}}</a></td>
+                  <td style="font-size:16px;"><a id = {{class_name}} class = "classlist" href="{% url 'tc:classHome' class_name %}">{{class_name}}</a></td>
                   <td style="font-size:16px;">{{class_name.status}}</td>
-                  <td style="font-size:16px;"><a></a></td>
-                  <td style="text-align:center; font-size: 16px;"><a><button class="operators"> &nbsp;Operators</button></a></td>
+                  <td style="font-size:16px;">
+                    {% for x in class_name.flight_operators.all %}
+                    <li>{{x}}</li>
+                    {% endfor %}
+                  </td>
+                  <td style="text-align:center; font-size: 16px;"><a><button class="operators" id ={{class_name}}> &nbsp;{{class_name.flight_operators}}</button></a></td>
                 </tr>
               {% endfor %}
               </table> 
@@ -70,7 +74,6 @@
                   </div>
                 <div class="popup-body">
                   <form name = "ClassForm" method="POST" style="color: black; padding:10%; border-radius:1%;width: 60vw; border-color: black;">
-                 
                     {% csrf_token %}
                     <fieldset class="form-group">
                       {{ form|crispy}}
@@ -91,8 +94,10 @@
                     <h2>Operators</h2>
                   </div>
                   <div class="popup-body">
-                    <span>hi</span>
-                    <h3><button style = "margin-left: 15%" class="submitBtn" onClick="displayData()">Generate New Code</button></h3>
+                    <li>{{class_test}}</li>
+                    {% for x in class_test.flight_operators.all %}
+                    <li>hi</li>
+                    {% endfor %}
                     <h3><button id = "save" class="submitBtn" onClick="displayData()">Save</button></h3>
                     <script src = "/static/js/operatorspopup.js"></script>
                   </div>
