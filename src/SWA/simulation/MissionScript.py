@@ -38,7 +38,7 @@ class MissionScript:
 
     # Method to update dictionaries. 
     # May need to just put dictionaries in a class and handle it that way?
-    def updateDictionaries(updateDict):
+    def updateDictionaries(self, updateDict):
         self.dicts.update(updateDict)
 
     # Method to test interactions (NOT SURE IF IT STILL WORKS)
