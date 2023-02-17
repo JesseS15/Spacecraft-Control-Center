@@ -8,8 +8,9 @@ app_name = 'tc'
 urlpatterns = [
     path('', views.index, name ='index'),
     path('home/', views.tcHome, name ='home'),
-    path('addClass/', views.addClass, name ='addClass'),
+    #path('addClass/', views.addClass, name ='addClass'),# ##unused because moved##
     path('home/<str:class_name>', views.classHome, name='classHome'),
-    path('create/<str:class_name>', views.createSim, name='createSim'),
+    #path('create/<str:class_name>', views.createSim, name='createSim'),# ##unused because moved##
     path('<str:sim>/', views.tcSim, name ='sim'),
+    
 ]

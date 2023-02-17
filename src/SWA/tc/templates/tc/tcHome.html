@@ -35,12 +35,12 @@
                   <td style="text-align:center;"><button type = "button" data-toggle = "modal" data-target = "modal1" class="settings"><span class="glyphicon glyphicon-wrench"></span></button></td>
                   <td style="font-size:16px;"><a id = {{class_name}} class = "classlist" href="{% url 'tc:classHome' class_name %}">{{class_name}}</a></td>
                   <td style="font-size:16px;">{{class_name.status}}</td>
-                  <td style="font-size:16px;">
+                  <td style="font-size:16px;">{{class_name.code}}</td>
+                  <td style="text-align:center; font-size: 16px;">
                     {% for x in class_name.flight_operators.all %}
-                    <li>{{x}}</li>
+                    <li style = "list-style-type: none;">{{x}}</li>
                     {% endfor %}
                   </td>
-                  <td style="text-align:center; font-size: 16px;"><a><button class="operators" id ={{class_name}}> &nbsp;{{class_name.flight_operators}}</button></a></td>
                 </tr>
               {% endfor %}
               </table> 

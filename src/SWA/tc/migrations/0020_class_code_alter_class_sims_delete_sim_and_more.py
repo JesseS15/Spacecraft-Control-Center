@@ -7,7 +7,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('simapp', '0001_initial'),
-        ('auth', '0014_alter_group_sim_list'),
+        #('auth', '0014_alter_group_sim_list'),
         ('fo', '0006_alter_flightoperator_sim_list'),
         ('tc', '0019_alter_sim_flight_operators'),
     ]

@@ -54,9 +54,9 @@ def tcHome(request):
 ###############################################################################
 def classHome(request, class_name):
 
-    group = Group.objects.all().filter(name=class_name).values_list('sim_list', flat=True)
+    group = Class.objects.all().filter(class_name = class_name).values_list('sims', flat=True)
     data = numpy.asarray(group)
-    print(data)
+    print(group)
     if (data!=None):
         sims = ['']*(len(data))
         for e in range(len(data)):
@@ -65,7 +65,42 @@ def classHome(request, class_name):
         print(sims)
     else:
         sims=[]
-    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims})
+    ########################################################
+    if request.method == 'POST':
+        form = SimCreationForm(request.POST)
+
+        if form.is_valid():
+            sim_list = form.cleaned_data.get('sim_list')
+            sim_name = form.cleaned_data.get('sim_name')
+            sys_list = form.cleaned_data.get('sys_list')
+            flight_operators = form.cleaned_data.get('flight_operators')
+            class_belong = form.cleaned_data.get('class_belong')
+
+            sim = Sim.objects.create(sim_name = sim_name)
+
+            for x in sys_list:
+                sim.sys_list.add(x)
+                sys_list.sim_list.add(sim)
+            for class_belong in class_belong:
+                sim.class_belong.add(class_belong)
+                class_belong.sim_list.add(sim)
+            form.save_m2m()
+            ##gohere
+            for flight_operator in flight_operators:
+                sim.flight_operators.add(flight_operator)
+                flight_operator.sim_list.add(sim)
+                # Send notification
+                send_mail(
+                    'STaTE Simulation Added to Your Account',
+                    'A new simulation, ' + sim.sim_name + ', has been added to your STaTE account.',
+                    None,
+                    [flight_operator.user.email],
+                    fail_silently=False,
+                )
+                return redirect('tc:home')
+
+    form = SimCreationForm()
+    return render(request, 'tc/classHome.html', {"form": form, "class_name": class_name, "sims":sims})
 
 ###############################################################################
 def getGroups(request):
@@ -76,7 +111,10 @@ def getGroups(request):
     return render(request, 'tc: home.html', {"data":data})
 
 ###############################################################################
-def createSim(request, class_name):
+##The following function is commented out because the functionality had 
+##to be added to the classHome so that the classHome page could see this 
+##function and use it during the popup
+"""def createSim(request, class_name):
     
     if request.method == 'POST':
         form = SimCreationForm(request.POST)
@@ -114,11 +152,13 @@ def createSim(request, class_name):
             return redirect('tc:home')
 
     form = SimCreationForm()
-    return render(request, 'tc/createSim.html', {'form': form})
+    return render(request, 'tc/createSim.html', {'form': form})"""
 
 ###############################################################################
-
-def addClass(request):
+##The following function is commented out because the functionality had 
+##to be added to the tcHome so that the tcHome page could see this 
+##function and use it during the popup
+"""def addClass(request):
 
     if request.method == 'POST':
         form = ClassForm(request.POST)
@@ -132,7 +172,7 @@ def addClass(request):
             return redirect('tc:home')
     else:
         form = ClassForm()
-    return render(request, 'tc/addClass.html', {'form': form, 'title':'Add Class'})
+    return render(request, 'tc/addClass.html', {'form': form, 'title':'Add Class'})"""
 
 ###############################################################################
 def tcSim(request, sim):
