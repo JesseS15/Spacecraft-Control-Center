@@ -1,40 +1,42 @@
 # Manager for all of the missions. Will call MissionScript.py
 
 import threading
-from MissionScript import MissionScript
+from SimObject import SimObject
 
-
+# SimManager manages all the sims for A CLASS
+# An instance needs to be created when a new class (of students) is made
 class SimManager:
 
     # Dictionary to hold all the simulations
     simulations = { }
+    className = ""
 
-    def __init__(self):
-        print("New SimManager instance created")              
+    def __init__(self, cName):
+        print("New SimManager instance created")
+        self.className = cName              
 
     # Pass a name for the simulation and a new MissionScript (simulation) will be created
-    def createSimulation(self,name):
+    def createSimulation(self,simName):
         # Need to start a thread here
-        self.simulations[name] = MissionScript()
-        print("New MissionScript object created in SWA\Simulation\SimManager.py createSimulation() method")
+        self.simulations[simName] = SimObject(simName)
+        print("New SimObject created in SWA\Simulation\SimManager.py createSimulation() method")
 
+
+    ########### Do these need to be called here? #####################
     # Method that starts a given name simulation
-    def startAMission(self,name):
-        x = threading.Thread(target = self.simulations[name].startM())
-        x.start()
+    def startASim(self,sName):
+        self.simulation[sName].startSim()
         print("\n!!!! Thread started  !!!!\n")
 
     # Method that starts ALL the missions startM() method for all missions
-    def startAllMissions(self):
+    def startAllSims(self):
         for mission in self.simulations:
             self.startAMission(mission)
-
-
+    ##################################################################
 
 sm = SimManager()
 sm.createSimulation("Sim1")
 sm.createSimulation("Sim2")
-sm.startAllMissions()
 
 
 
