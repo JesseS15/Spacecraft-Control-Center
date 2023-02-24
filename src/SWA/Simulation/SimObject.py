@@ -28,7 +28,7 @@ class SimObject():
         self.dicts.update(updateDict)
 
     # Creating all the subsystems and passing them the dictionaries
-    def _createSubsys(self):
+    def createSubsys(self):
         self.subsystems["ACS"] = ACS(self.dicts)
         self.subsystems["EPS"] = EPS(self.dicts)
         self.subsystems["COMMS"] = COMMS(self.dicts)

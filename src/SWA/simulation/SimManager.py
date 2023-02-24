@@ -11,13 +11,12 @@ class SimManager:
     simulations = { }
     className = ""
 
-    def __init__(self, cName):
+    def __init__(self, className):
         print("New SimManager instance created")
-        self.className = cName              
+        self.className = className              
 
     # Pass a name for the simulation and a new MissionScript (simulation) will be created
     def createSimulation(self,simName):
-        # Need to start a thread here
         self.simulations[simName] = SimObject(simName)
         print("New SimObject created in SWA\Simulation\SimManager.py createSimulation() method")
 
@@ -30,8 +29,8 @@ class SimManager:
 
     # Method that starts ALL the missions startM() method for all missions
     def startAllSims(self):
-        for mission in self.simulations:
-            self.startAMission(mission)
+        for sim in self.simulations:
+            self.startASim(sim)
     ##################################################################
 
 sm = SimManager()
