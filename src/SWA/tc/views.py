@@ -66,7 +66,7 @@ def classHome(request, class_name):
     else:
         sims=[]
     ########################################################
-    if request.method == 'POST':
+    """if request.method == 'POST':
         form = SimCreationForm(request.POST)
 
         if form.is_valid():
@@ -87,18 +87,18 @@ def classHome(request, class_name):
                 sim.flight_operators.add(flight_operator)
                 #flight_operator.sim_list.add(sim)
                 # Send notification
-                """send_mail(
+                send_mail(
                     'STaTE Simulation Added to Your Account',
                     'A new simulation, ' + sim.sim_name + ', has been added to your STaTE account.',
                     None,
                     [flight_operator.user.email],
                     fail_silently=False,
-                )"""
+                )
                 return redirect('tc:home/class_name')
             
 
-    form = SimCreationForm()
-    return render(request, 'tc/classHome.html', {"form": form, "class_name": class_name, "sims":sims})
+    form = SimCreationForm()"""
+    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims})
 
 ###############################################################################
 def getGroups(request):
@@ -199,6 +199,19 @@ def tcSim(request, sim):
 
     ############################################################################
 def new(request,class_name):
+    print("hi"+class_name)
+    group = Class.objects.all().filter(class_name = class_name).values_list('sims', flat=True)
+    data = numpy.asarray(group)
+    print(group)
+    if (data.all()!=None):
+        sims = ['']*(len(data))
+        for e in range(len(data)):
+            print(Sim.objects.get(pk=data[e]))
+            sims[e] = Sim.objects.get(pk=data[e])
+        print(sims)
+    else:
+        sims=[]
+    ######################################
     if request.method == 'POST':
         form = SimCreationForm(request.POST)
 
@@ -227,9 +240,9 @@ def new(request,class_name):
                     [flight_operator.user.email],
                     fail_silently=False,
                 )"""
-                return redirect('tc:home/class_name')
+                return redirect('../'+class_name)
             
     form = SimCreationForm()
-    return render(request, 'tc/new.html', {"form": form, "class_name": class_name})
+    return render(request, 'tc/new.html', {"form": form, "class_name": class_name, "sims": sims})
 
 
