@@ -1,40 +1,36 @@
 //get modals
-var modal3 = document.getElementById("modal3");
+var modal5 = document.getElementById("modal5");
 
 //get buttons
-const opbtns = document.getElementsByClassName("operators"); 
+const opbtns = document.getElementsByClassName("op"); 
 
 //get span
-var span3 = document.getElementById("span3");
+var span3 = document.getElementById("span5");
 
 
 for(i=0; i<opbtns.length; i++){
     opbtns[i].onclick = function() {
-        choice = document.getElementsByClassName("classlist")[0].id;
-        document.getElementById("class_test").innerHTML = choice;
-        
-        if(modal2.style.display == "none" && modal1.style.display == "none" && modal3.style.display == "none"){
-            $('#modal3').show();
+        if(modal4.style.display == "none" && modal5.style.display == "none"){
+            $('#modal5').show();
         }else{
-            $('#modal2').hide();
-            $('#modal1').hide(); 
-            $('#modal3').hide(); 
-            $('#modal3').show();
+            $('#modal5').hide();
+            $('#modal4').hide(); 
+            $('#modal4').show();
         }
     }
 }
 
 span3.onclick = function(){
-    $('#modal3').hide();
+    $('#modal5').hide();
 }
 
 window.addEventListener("click", function(event){
     if(event.target == modal3){
-        modal3.style.display = "none";
+        modal5.style.display = "none";
     }else{
-        modal3.style.position = "relative";
-        modal3.style.zIndex = "1";
-        modal3.style.margin = "auto auto";
-        modal3.style.width = ""; 
+        modal5.style.position = "relative";
+        modal5.style.zIndex = "1";
+        modal5.style.margin = "auto auto";
+        modal5.style.width = ""; 
     }
 });

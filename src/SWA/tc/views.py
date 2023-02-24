@@ -94,7 +94,7 @@ def classHome(request, class_name):
                     [flight_operator.user.email],
                     fail_silently=False,
                 )"""
-                return redirect('tc:home')
+                return redirect('tc:home/class_name')
             
 
     form = SimCreationForm()
@@ -198,6 +198,38 @@ def tcSim(request, sim):
     return render(request, 'tc/tcSim.html', {'sim': simobj, 'forms': forms})
 
     ############################################################################
+def new(request,class_name):
+    if request.method == 'POST':
+        form = SimCreationForm(request.POST)
 
+        if form.is_valid():
+            sim_list = form.cleaned_data.get('sim_list')
+            sim_name = form.cleaned_data.get('sim_name')
+            sys_list = form.cleaned_data.get('sys_list')
+            flight_operators = form.cleaned_data.get('flight_operators')
+
+            sim = Sim.objects.create(sim_name = sim_name)
+            Class.objects.get(class_name = class_name).sims.add(sim)
+            for x in sys_list:
+                sim.sys_list.add(x)
+                #sys_list.sim_list.add(sim)
+                #class_belong.sim_list.add(sim)
+            #form.save_m2m()
+            ##gohere
+            for flight_operator in flight_operators:
+                sim.flight_operators.add(flight_operator)
+                #flight_operator.sim_list.add(sim)
+                # Send notification
+                """send_mail(
+                    'STaTE Simulation Added to Your Account',
+                    'A new simulation, ' + sim.sim_name + ', has been added to your STaTE account.',
+                    None,
+                    [flight_operator.user.email],
+                    fail_silently=False,
+                )"""
+                return redirect('tc:home/class_name')
+            
+    form = SimCreationForm()
+    return render(request, 'tc/new.html', {"form": form, "class_name": class_name})
 
 
