@@ -1,0 +1,114 @@
+Engineering Notebook: Jesse Slager
+	 9/13/22:
+		- Met with Prof's Laskey and Garfield
+		- Got a overview and vision statement
+	9/15/22:
+		- met with group, defined backlog, epics, UI roles and login, server-UI relationship and database drafting
+	9/20/22:
+		- met with group and Prof. Akbas, decided to propose limits and specific ways of proceeding to Prof's Garfield and Laskey
+	9/22/22
+		- Tasked with researching different methods of Web App, Mobile App, and LAN-based client-server communication methods
+		- Researching pros and cons of Web App, Mobile App, and LAN-based systems, norifications, etc
+        9/27/22
+	        - Decided on Web App development
+		- Starting researching frameworks and connection ideas
+	10/01/22
+		- Starting programming connection test game to host and connect multiple clients over a web socket on my personal server PC
+		- Successfuly tested game
+	10/06/22
+		- Started development of rough web app and embedded connection test game into a new nav web page
+	10/13/22
+		- (Finally got a requirements doc from Prof. Garfield) conducted research into the control system simulator attributes and subsystems
+		- Research and create data flow diagram (level 0) to start planning system communications and interactive layover between the web app and sim
+	10/18/2022
+		- Create powerpoint presention for first demo 
+      	10/25/2022
+		- Worked on SRS and SDD documentation
+	10/27/2022
+	 	- Researched optimized frameworks; started django python design
+	11/01/2022
+		- Worked on Test Plan documentation
+	11/03/2022
+		- Started Microsoft Azure research/design
+	11/08/2022
+		- Finialized SRS2, SDD2, and UI design
+	11/10/2022
+		- Made first push from github to Azure host
+	11/13/2022
+		- Create powerpoint presentation for second demo
+	11/15/2022
+		- Presented Sprint 2
+	11/17/2022
+		- Helped plan out SWA and Django file priority 
+	11/29/2022
+		- Broke the project in two, was assigned to the simulation side of the project with Jeremy
+		- Did research on how the project will fit together and planned out deadlines
+	12/01/2022
+		- Started planning and development of submodules and physics engine
+		- Started designing the bridge between the front end and python physics engine via SQLite
+	12/06/2022
+		- Continued planning the Payload and Power Distribution subsystem
+		- Met with Professor Garfield over zoom to discuss Demo and SRS(v3)
+	12/08/2022
+		- Created powerpoint presentation for third demo
+		- Presented Sprint 3
+=======================================================================================
+	 1/17/2023
+  		- Goals for the semester
+ 		- Arranged teams
+		- Setup Zenhub
+		- Switched scrum master from Jeff to myself
+		- Started defining backlog
+		- presented what I did over winter break (TC UI Design)
+ 	 1/19/2023 
+  		- setup deadlines for tasks and sprints
+  		- Have weights/times on backlogs/tasks
+  		- Give Dr. Lasky a deadline to setup meeting
+		- Each team worked on defining what they are doing and filling backlog
+  		- Worked with Summer and Jeremy to define necessary subsystems
+	 1/24/2023 
+		- Prepared questions for Dr. Lasky
+		- Worked on making the system modular
+		- Consult and help each team with their current task to make sure it works with other groups
+	 1/26/2023
+		- meeting with Dr. Garfield and Prof Lasky
+		- The project should be mission based NOT anomily based
+		- She will work on providing a script
+		- worked with summer and jeremy a general modular overview with the changes dicussed in the meeting
+		- Consult and help each team with their current task to make sure it works with other groups
+	 1/30/2023 
+		- Researched threads or multiprocessing for the user interactions
+		- Researched possible server hosting platforms
+		- Researched browser cookies between mobile and desktop
+		- Consult and help each team with their current task to make sure it works with other groups
+	 1/31/2023 
+		- We created a more detailed overview of each subsystem and UI designs
+		- Consult and help each team with their current task to make sure it works with other groups
+	  2/2/2023
+		- Changed presentation date from next Tuesday to the following Tuesday
+		- Researched Brython
+		- Helped summer with dictionaries
+		- provided insight on what specific variables and types should be used for different subsystems
+		- Consult and help each team with their current task to make sure it works with other groups
+	  2/7/2023
+		- Prepared group tasks for thursday absense
+		- helped kyle and carly setup demo
+		- Consult and help each team with their current task to make sure it works with other groups
+	  2/9/2023
+	  	- Absent
+	 2/14/2023
+	 	- Started combining group ideas and subsystems
+		- Demo presentation
+		- helped carly with TC UI design
+		- Consult and help each team with their current task to make sure it works with other groups
+	 2/16/2023
+		- Researched Django channels and helped kyle with ajax development and use
+		- Consult and help each team with their current task to make sure it works with other groups
+	 2/21/2023
+	 	- started design for console and group chat for simcrafts
+		- started redesign of TC UI pages, working with Juliana to further FO UI design
+		- Consult and help each team with their current task to make sure it works with other groups
+	 2/23/2023
+	 	- Finished TC UI designs
+		- Helped summer and jeremy define subsystem back-end attributes predefined by TC
+		- Consult and help each team with their current task to make sure it works with other groups
