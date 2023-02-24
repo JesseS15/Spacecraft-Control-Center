@@ -32,7 +32,8 @@ class SimCreationForm(forms.Form):
     sys_list = forms.ModelMultipleChoiceField(
         queryset=Subsystem.objects.all(),
         widget=forms.CheckboxSelectMultiple)
+###################################################################3
+class MissionCreationForm(forms.Form):
 
-
-      
+    mission_name = forms.CharField(max_length = 20)
     
