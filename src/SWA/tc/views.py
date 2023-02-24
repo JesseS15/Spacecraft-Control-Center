@@ -18,8 +18,8 @@ import time
 from .models import Class
 
 from .models import TestConductor, Class
-from simapp.models import Sim, Subsystem
-from .forms import UserRegisterForm, SimCreationForm, ClassForm
+from simapp.models import Sim, Subsystem, Mission
+from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm
 from fo.forms import SubsystemForm
 
 
@@ -65,6 +65,18 @@ def classHome(request, class_name):
         print(sims)
     else:
         sims=[]
+    ##################
+    group2 = Class.objects.all().filter(class_name = class_name).values_list('missions', flat=True)
+    data2 = numpy.asarray(group2)
+    print(group2)
+    if (data2.all()!=None):
+        missions = ['']*(len(data2))
+        for e in range(len(data2)):
+            print(Mission.objects.get(pk=data2[e]))
+            missions[e] = Mission.objects.get(pk=data2[e])
+        print(missions)
+    else:
+        missions=[]
     ########################################################
     """if request.method == 'POST':
         form = SimCreationForm(request.POST)
@@ -98,7 +110,7 @@ def classHome(request, class_name):
             
 
     form = SimCreationForm()"""
-    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims})
+    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims, "missions":missions})
 
 ###############################################################################
 def getGroups(request):
@@ -243,6 +255,20 @@ def new(request,class_name):
                 return redirect('../'+class_name)
             
     form = SimCreationForm()
-    return render(request, 'tc/new.html', {"form": form, "class_name": class_name, "sims": sims})
+    ###############################################3
+    if request.method == 'POST':
+        form2 = MissionCreationForm(request.POST)
+
+        if form2.is_valid():
+            
+            mission_name = form2.cleaned_data.get('mission_name')
+
+            mission = Mission.objects.create(mission_name = mission_name)
+            Class.objects.get(class_name = class_name).missions.add(mission)
+            
+            return redirect('../'+class_name)
+                
+    form2 = MissionCreationForm()
+    return render(request, 'tc/new.html', {"form": form, "form2":form2, "class_name": class_name, "sims": sims})
 
 

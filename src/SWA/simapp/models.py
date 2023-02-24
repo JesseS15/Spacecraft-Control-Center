@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 ###############################################################################
@@ -22,3 +23,11 @@ class Sim(models.Model):
     
     def __str__(self):
         return self.sim_name
+####################################################################
+class Mission(models.Model):
+    mission_name = models.CharField(default='', max_length=15)
+    test_conductor = models.ManyToManyField("tc.TestConductor")
+
+    def __str__(self):
+        return self.mission_name
+
