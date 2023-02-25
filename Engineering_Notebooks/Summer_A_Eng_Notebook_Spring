@@ -92,3 +92,8 @@ Engineering Notebook - Spring Semester
 - Re-worked UML to updated code files
 - Added some necessary classes and re-arranged the structure to be more modular and to fit with the TC interacctions/inputs
 
+2/24/23 - Individual
+- Created more documentation to help keep track of what wach class does and what the attributes/methods do
+- Implemented a new MissionManager class to handle all missions a TC creates
+- Started planning out the programming for anomolies
+
