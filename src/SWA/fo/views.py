@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.mail import send_mail
 from django.http import HttpResponse
@@ -23,15 +24,21 @@ def index(request):
         return redirect('fo:login')
 
 ###############################################################################
+@login_required(login_url='/login/')
 def foHome(request):
     flightOperator = get_object_or_404(FlightOperator, user = request.user)
     return render(request, 'fo/foHome.html', {'flightOperator':flightOperator})
 
 ###############################################################################
+@login_required(login_url='/login/')
 def foSim(request, simkey):
-    simobj = Sim.objects.get(pk=simkey)
 
-    return render(request, 'fo/foSim.html', {'sim': simobj, 'simkey': simkey})
+    simobj = get_object_or_404(Sim, pk=simkey)
+    flightOperator = get_object_or_404(FlightOperator, user = request.user)
+    if simobj in flightOperator.sim_list.all():
+        return render(request, 'fo/foSim.html', {'sim': simobj, 'simkey': simkey})
+    else:
+        return redirect('fo:home')
 
 ###############################################################################
 def joinClass(request):
@@ -51,7 +58,6 @@ def joinClass(request):
     return render(request, 'fo/joinClass.html', {'form':form})
 
 ###############################################################################
-
 def submit(request, simkey):
     if request.method == 'GET':
            syspk = request.GET.get('syspk')
@@ -65,7 +71,6 @@ def submit(request, simkey):
            return HttpResponse("Request method is not a GET")
 
 ###############################################################################
-
 def fetchdata(request, simkey):
     if request.method == 'GET':
         dic = {}

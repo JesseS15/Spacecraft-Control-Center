@@ -34,14 +34,15 @@ def userLogin(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username = username, password = password)
-        form = login(request, user)
 
-        if user is not None and user.is_staff:
-            return redirect('tc:home')
-        if user is not None and not user.is_staff:
-            return redirect('fo:home')
-        else:
+        if user is None:
             messages.info(request, f'account does not exist')
+        elif user.is_staff:
+            form = login(request, user)
+            return redirect('tc:home')
+        elif not user.is_staff:
+            form = login(request, user)
+            return redirect('fo:home')
 
     elif request.user.is_authenticated:
         if request.user.is_staff:

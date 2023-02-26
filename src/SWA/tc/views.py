@@ -32,6 +32,7 @@ def index(request):
         return redirect('home:login')
 
 ###############################################################################
+@login_required(login_url='/login/')
 def tcHome(request):
     classes = Class.objects.all()
    
@@ -52,6 +53,7 @@ def tcHome(request):
     return render(request, 'tc/tcHome.html', {"classes":classes, 'form': form})
   
 ###############################################################################
+@login_required(login_url='/login/')
 def classHome(request, class_name):
 
     group = Class.objects.all().filter(class_name = class_name).values_list('sims', flat=True)
@@ -185,6 +187,7 @@ def getGroups(request):
     return render(request, 'tc/addClass.html', {'form': form, 'title':'Add Class'})"""
 
 ###############################################################################
+@login_required(login_url='/login/')
 def tcSim(request, sim):
     simobj = Sim.objects.get(sim_name=sim)
 
@@ -209,7 +212,8 @@ def tcSim(request, sim):
     forms = [SubsystemForm(prefix=subsystem.sys_name, instance=subsystem) for subsystem in simobj.sys_list.all()]
     return render(request, 'tc/tcSim.html', {'sim': simobj, 'forms': forms})
 
-    ############################################################################
+############################################################################
+@login_required(login_url='/login/')
 def new(request,class_name):
     print("hi"+class_name)
     group = Class.objects.all().filter(class_name = class_name).values_list('sims', flat=True)
