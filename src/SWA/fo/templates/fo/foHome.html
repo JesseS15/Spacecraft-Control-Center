@@ -1,5 +1,6 @@
 
 {% extends "home/index.html" %}
+{% load static %}
 {% block start %}
 {% if flightOperator.user.is_authenticated %}
 
@@ -32,6 +33,32 @@
     {% endfor %}
   
   </ul>
+  <div class="console-container">
+    <div class="console-header">
+      <h1 class="console-title">Live Console</h1>
+    </div>
+    <div class="console-body">
+      
+    </div>
+  </div>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      <h1 class="chat-title">Group Chat</h1>
+    </div>
+    <div class="chat-body">
+      
+    </div>
+  </div>
+  <div class="blank-container">
+    <div class="blank-header">
+      <h1 class="blank-title">Blank</h1>
+    </div>
+    <div class="blank-body">
+      
+    </div>
+  </div>
+
 </center>
 
 {% else %}

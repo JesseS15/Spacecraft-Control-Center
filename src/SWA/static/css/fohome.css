@@ -1,0 +1,78 @@
+.console-container {
+height: 300px;
+width: 25%;
+margin: 30px auto 0px auto;
+background-color: #ffffff;
+border-radius: 30px;
+box-shadow: 3px 3px 10px rgb(188, 188, 188);
+padding: 0px 20px 20px 20px;
+}
+.console-header {
+height: 80px;
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 20px 20px 10px 20px;
+border-bottom: 2px solid rgba(255, 0, 0, 0.59);
+}
+.console-title {
+font-size: 30px;
+font-weight: 600;
+color: rgba(255, 0, 0, 0.59);
+}
+.console-body {
+max-width: 1160px;
+overflow-x: auto;
+padding: 20px;
+}
+
+
+.chat-container {
+height: 300px;
+width: 25%;
+margin: 30px auto 0px auto;
+background-color: #ffffff;
+border-radius: 30px;
+box-shadow: 3px 3px 10px rgb(188, 188, 188);
+padding: 0px 20px 20px 20px;
+}
+.chat-header {
+height: 80px;
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 20px 20px 10px 20px;
+border-bottom: 2px solid rgba(255, 0, 0, 0.59);
+}
+.chat-title {
+font-size: 30px;
+font-weight: 600;
+color: rgba(255, 0, 0, 0.59);
+}
+
+
+.blank-container {
+height: 300px;
+width: 25%;
+margin: 30px auto 0px auto;
+background-color: #ffffff;
+border-radius: 30px;
+box-shadow: 3px 3px 10px rgb(188, 188, 188);
+padding: 0px 20px 20px 20px;
+}
+.blank-header {
+height: 80px;
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 20px 20px 10px 20px;
+border-bottom: 2px solid rgba(255, 0, 0, 0.59);
+}
+.blank-title {
+font-size: 30px;
+font-weight: 600;
+color: rgba(255, 0, 0, 0.59);
+}
