@@ -25,12 +25,12 @@
   #simtable {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    width: 100%;
+    width: 50%;
   }
   
   #simtable td, #simtable th {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 2%;
     background-color: aliceblue;
   }
   
@@ -39,8 +39,8 @@
   #simtable tr:hover {background-color: #ddd;}
   
   #simtable th {
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding-top: 2%;
+    padding-bottom: 2%;
     text-align: left;
     background-color: navy;
     color: white;
@@ -49,12 +49,12 @@
   #missiontable {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    width: 100%;
+    width: 50%;
   }
   
   #missiontable td, #missiontable th {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 2%;
     background-color: aliceblue;
   }
   
@@ -63,8 +63,8 @@
   #missiontable tr:hover {background-color: #ddd;}
   
   #missiontable th {
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding-top: 2%;
+    padding-bottom: 2%;
     text-align: left;
     background-color: navy;
     color: white;
