@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-rq^s8ss^x#o3%+53g%pp5u37e#sf6)#x0o3z_8j#ogih7e#4st
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'fo.apps.FoConfig',
     'tc.apps.TcConfig',
+    'simapp.apps.SimappConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

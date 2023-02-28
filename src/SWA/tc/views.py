@@ -14,10 +14,14 @@ from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth.models import Group, Permission, User
 from django.contrib.contenttypes.models import ContentType
+import time
+from .models import Class
 
-from .models import TestConductor, Sim, Subsystem, Class
-from .forms import UserRegisterForm, SimCreationForm, ClassForm
+from .models import TestConductor, Class
+from simapp.models import Sim, Subsystem, Mission
+from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm
 from fo.forms import SubsystemForm
+
 
 ###############################################################################
 def index(request):
@@ -25,84 +29,37 @@ def index(request):
     if request.user.is_authenticated and request.user.is_staff:
         return redirect('tc:home')
     else:
-        return redirect('tc:login')
-  
-###############################################################################
-def tcRegister(request):
-
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password1')
-            # Send registration confirmation
-            send_mail(
-                'STaTE Registration',
-                'Thank you for registering to STaTE!',
-                None,
-                [email],
-                fail_silently=False,
-            )
-            user = authenticate(request, username = username, password = password)
-            form = login(request, user)
-            TestConductor.objects.create(user = user)
-            user.is_staff=True
-            #user.is_superuser=True
-            user.save();
-            return redirect('tc:home')
-    else:
-        form = UserRegisterForm()
-
-    return render(request, 'tc/register.html', {'form': form, 'title':'register here'})
-  
-###############################################################################
-def tcLogin(request):      
-
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username = username, password = password)
-
-        if user is not None and not user.is_staff:
-            return redirect('fo:login')
-        if user is not None and user.is_staff:
-            form = login(request, user)
-            return redirect('tc:home')
-        else:
-            messages.info(request, f'account does not exist')
-
-    elif request.user.is_authenticated and request.user.is_staff:
-        return redirect('tc:home')
-
-    form = AuthenticationForm()
-    return render(request, 'tc/login.html', {'form':form, 'title':'log in'})
+        return redirect('home:login')
 
 ###############################################################################
-def tcLogout(request):
-    logout(request)
-    return redirect('tc:login')
-
-###############################################################################
+@login_required(login_url='/login/')
 def tcHome(request):
     classes = Class.objects.all()
+   
+    print(classes)
+    if request.method == 'POST':
+        form = ClassForm(request.POST)
+        if form.is_valid():
+            start = time.time()
+            form.save()
+            duration = (time.time() - start) * 1000
+            print('form.name {:.2f} ms'.format(
+            duration
+            ))
+            return redirect('tc:home')
+    else:
+        form = ClassForm()
 
-    return render(request, 'tc/tcHome.html', {"classes":classes})
+    return render(request, 'tc/tcHome.html', {"classes":classes, 'form': form})
   
 ###############################################################################
-<<<<<<< Updated upstream
+@login_required(login_url='/login/')
 def classHome(request, class_name):
-    classobj = Class.objects.get(class_name = class_name)
-    sims = classobj.sims.all()
-    return render(request, 'tc/classHome.html', {"sims": sims, "class_name": classobj})
-=======
-def classHome(request, k):
 
-    group = Group.objects.all().filter(name=k).values_list('sim_list', flat=True)
+    group = Class.objects.all().filter(class_name = class_name).values_list('sims', flat=True)
     data = numpy.asarray(group)
-    print(data)
-    if (data[0]!=None):
+    print(group)
+    if (data.all()!=None):
         sims = ['']*(len(data))
         for e in range(len(data)):
             print(Sim.objects.get(pk=data[e]))
@@ -110,8 +67,52 @@ def classHome(request, k):
         print(sims)
     else:
         sims=[]
-    return render(request, 'tc/classHome.html', {"sims":sims})
->>>>>>> Stashed changes
+    ##################
+    group2 = Class.objects.all().filter(class_name = class_name).values_list('missions', flat=True)
+    data2 = numpy.asarray(group2)
+    print(group2)
+    if (data2.all()!=None):
+        missions = ['']*(len(data2))
+        for e in range(len(data2)):
+            print(Mission.objects.get(pk=data2[e]))
+            missions[e] = Mission.objects.get(pk=data2[e])
+        print(missions)
+    else:
+        missions=[]
+    ########################################################
+    """if request.method == 'POST':
+        form = SimCreationForm(request.POST)
+
+        if form.is_valid():
+            sim_list = form.cleaned_data.get('sim_list')
+            sim_name = form.cleaned_data.get('sim_name')
+            sys_list = form.cleaned_data.get('sys_list')
+            flight_operators = form.cleaned_data.get('flight_operators')
+
+            sim = Sim.objects.create(sim_name = sim_name)
+            Class.objects.get(class_name = class_name).sims.add(sim)
+            for x in sys_list:
+                sim.sys_list.add(x)
+                #sys_list.sim_list.add(sim)
+                #class_belong.sim_list.add(sim)
+            #form.save_m2m()
+            ##gohere
+            for flight_operator in flight_operators:
+                sim.flight_operators.add(flight_operator)
+                #flight_operator.sim_list.add(sim)
+                # Send notification
+                send_mail(
+                    'STaTE Simulation Added to Your Account',
+                    'A new simulation, ' + sim.sim_name + ', has been added to your STaTE account.',
+                    None,
+                    [flight_operator.user.email],
+                    fail_silently=False,
+                )
+                return redirect('tc:home/class_name')
+            
+
+    form = SimCreationForm()"""
+    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims, "missions":missions})
 
 ###############################################################################
 def getGroups(request):
@@ -122,7 +123,10 @@ def getGroups(request):
     return render(request, 'tc: home.html', {"data":data})
 
 ###############################################################################
-def createSim(request, class_name):
+##The following function is commented out because the functionality had 
+##to be added to the classHome so that the classHome page could see this 
+##function and use it during the popup
+"""def createSim(request, class_name):
     
     if request.method == 'POST':
         form = SimCreationForm(request.POST)
@@ -141,15 +145,11 @@ def createSim(request, class_name):
             subsystem3 = Subsystem.objects.create(sys_name = sys3_name)
 
             sim.sys_list.add(subsystem1, subsystem2, subsystem3)
-<<<<<<< Updated upstream
-
-=======
             for class_belong in class_belong:
                 sim.class_belong.add(class_belong)
                 class_belong.sim_list.add(sim)
             form.save_m2m()
             ##gohere
->>>>>>> Stashed changes
             for flight_operator in flight_operators:
                 sim.flight_operators.add(flight_operator)
                 flight_operator.sim_list.add(sim)
@@ -164,23 +164,30 @@ def createSim(request, class_name):
             return redirect('tc:home')
 
     form = SimCreationForm()
-    return render(request, 'tc/createSim.html', {'form': form})
+    return render(request, 'tc/createSim.html', {'form': form})"""
 
 ###############################################################################
-
-def addClass(request):
+##The following function is commented out because the functionality had 
+##to be added to the tcHome so that the tcHome page could see this 
+##function and use it during the popup
+"""def addClass(request):
 
     if request.method == 'POST':
         form = ClassForm(request.POST)
-
         if form.is_valid():
+            start = time.time()
             form.save()
+            duration = (time.time() - start) * 1000
+            print('form.name {:.2f} ms'.format(
+            duration
+            ))
             return redirect('tc:home')
     else:
         form = ClassForm()
-    return render(request, 'tc/addClass.html', {'form': form, 'title':'Add Class'})
+    return render(request, 'tc/addClass.html', {'form': form, 'title':'Add Class'})"""
 
 ###############################################################################
+@login_required(login_url='/login/')
 def tcSim(request, sim):
     simobj = Sim.objects.get(sim_name=sim)
 
@@ -204,3 +211,68 @@ def tcSim(request, sim):
     print(simobj)
     forms = [SubsystemForm(prefix=subsystem.sys_name, instance=subsystem) for subsystem in simobj.sys_list.all()]
     return render(request, 'tc/tcSim.html', {'sim': simobj, 'forms': forms})
+
+############################################################################
+@login_required(login_url='/login/')
+def new(request,class_name):
+    print("hi"+class_name)
+    group = Class.objects.all().filter(class_name = class_name).values_list('sims', flat=True)
+    data = numpy.asarray(group)
+    print(group)
+    if (data.all()!=None):
+        sims = ['']*(len(data))
+        for e in range(len(data)):
+            print(Sim.objects.get(pk=data[e]))
+            sims[e] = Sim.objects.get(pk=data[e])
+        print(sims)
+    else:
+        sims=[]
+    ######################################
+    if request.method == 'POST':
+        form = SimCreationForm(request.POST)
+
+        if form.is_valid():
+            sim_list = form.cleaned_data.get('sim_list')
+            sim_name = form.cleaned_data.get('sim_name')
+            sys_list = form.cleaned_data.get('sys_list')
+            flight_operators = form.cleaned_data.get('flight_operators')
+
+            sim = Sim.objects.create(sim_name = sim_name)
+            Class.objects.get(class_name = class_name).sims.add(sim)
+            for x in sys_list:
+                sim.sys_list.add(x)
+                #sys_list.sim_list.add(sim)
+                #class_belong.sim_list.add(sim)
+            #form.save_m2m()
+            ##gohere
+            for flight_operator in flight_operators:
+                sim.flight_operators.add(flight_operator)
+                #flight_operator.sim_list.add(sim)
+                # Send notification
+                """send_mail(
+                    'STaTE Simulation Added to Your Account',
+                    'A new simulation, ' + sim.sim_name + ', has been added to your STaTE account.',
+                    None,
+                    [flight_operator.user.email],
+                    fail_silently=False,
+                )"""
+                return redirect('../'+class_name)
+            
+    form = SimCreationForm()
+    ###############################################3
+    if request.method == 'POST':
+        form2 = MissionCreationForm(request.POST)
+
+        if form2.is_valid():
+            
+            mission_name = form2.cleaned_data.get('mission_name')
+
+            mission = Mission.objects.create(mission_name = mission_name)
+            Class.objects.get(class_name = class_name).missions.add(mission)
+            
+            return redirect('../'+class_name)
+                
+    form2 = MissionCreationForm()
+    return render(request, 'tc/new.html', {"form": form, "form2":form2, "class_name": class_name, "sims": sims})
+
+

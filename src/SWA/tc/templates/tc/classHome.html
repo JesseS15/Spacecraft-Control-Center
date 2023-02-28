@@ -1,5 +1,5 @@
 
-{% extends "tc/tcNavigate.html" %}
+{% extends "home/index.html" %}
 {% load static %}
 
 {% load crispy_forms_tags %}
@@ -8,7 +8,6 @@
 <head>
     <meta charset="utf-8">
     <title>Test</title> 
-    <link rel="stylesheet" type="text\css" href="{% static "css/paddingBetweenRows.css" %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
 </head>
 <body>
@@ -19,18 +18,58 @@
           <h3>Welcome to {{ class_name }}</h3>
           <div class="box">
             <div class="content">
-              <a href="{% url 'tc:createSim' class_name %}">Create New Simulation</a>
-              <br></br>
-              <h3>Active Simulations:</h3>
-              <ul style="list-style-type:none;padding: 0">
-              {% for sim in sims %}
-    
-                <li><a href="{% url 'tc:sim' sim %}">{{ sim }}</a></li>
-            
+              <p style = "text-align: center; font-size: 16px;"><button id="addsim" onclick="window.location ='{{ class_name }}/new';"><span class="glyphicon glyphicon-plus"></span> &nbsp;New</button></p>
+              <h3 class="list" style="margin-left: 10%;text-align: left;">Sim List<span style="padding-left:50%;">Mission List</span></h3>
+              <table id = "simtable" align = "left" border="2" style="width: 45%; margin-left: 2.5%;">
+                <thead>
+                  <th style="font-size:18px; width: 18%">Name</th>
+                  <th style="font-size:18px; width: 18%">Status</th>
+                  <th style="font-size:18px; width: 54%"></th>
+                </thead>
+                 {% for sim in sims %}
+                <tr style="font-size:16px; max-height: 20px; overflow-y: scroll;">
+                  <td style="font-size:16px;"><a class = "simlist" href="{% url 'tc:sim' sim %}">{{ sim }}</a></td>
+                  <td style="font-size:16px;"></td>
+                  <td style="font-size:16px;"><button type = "button">Manage</button><button type = "button" class="op">Operators</button><button type = "button" class="settings">Reports</button></td>
+                </tr>
               {% endfor %}
-              </ul>
-            </div>
-          </div>
+              </table> 
+              <table id="missiontable" align = "right" border="2" style="width: 45%; margin-right: 2.5%;">
+                <thead>
+                  <th style="font-size:18px; width: 18%">Name</th>
+                  <th style="font-size:18px; width: 18%">Status</th>
+                  <th style="font-size:18px; width: 54%"></th>
+                </thead>
+                 {% for mission in missions %}
+                <tr style="font-size:16px; max-height: 20px; overflow-y: scroll;">
+                  <td style="font-size:16px;"><a class = "missionlist">{{ mission }}</a></td>
+                  <td style="font-size:16px;"></td>
+                  <td style="font-size:16px;"><button type = "button">Manage</button><button type = "button" class="op">Operators</button><button type = "button" class="settings">Reports</button></td>
+                </tr>
+              {% endfor %}
+              </table> 
+
+              <div id="modal4" class="modal">
+                <div class="modal-content"style="width:500px">
+                  <div class="modal-header">
+                    <span class="close" id="span4" onClick="openForm()">&times;</span>
+                    <h2>Add New Simulation</h2>
+                  </div>
+                <div class="popup-body">
+                  <form name = "SimCreationForm" method="POST" style="color: black; padding:10%; border-radius:1%;width: 60vw; border-color: black;">
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                      {{ form|crispy}}
+                    </fieldset>
+                      <button style="background: black; padding:2%; font-size: 2rem; color:white;" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-check"></span> &nbsp;Add Sim</button>
+                    <br />
+                      <a href="{% url 'tc:home' %}" style="text-decoration: underline; color: white; padding:2%; cursor:pointer;">Exit</a></sub>
+                  </form>
+                   
+                </div>
+                </div>
+              </div>
+              
         </center>
         {% else %}
 

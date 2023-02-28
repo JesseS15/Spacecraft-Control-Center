@@ -10,5 +10,90 @@ Engineering Notebook - Spring Semester
   - SCRUM meetings during class with prof, what we've done, what we are planning to do, problems we are having
   - Make sure to work on documentation and ask for comments before its due
   - Watch deadlines
+- Team Meeting:
+  - Jesse arranged teams
+  - My job is the physics engine with Jeremy and doing OO to make sure its modular
  
+ 1/19/23 - Class/Team Meeting
+ - Prof Akbas notes:
+  - Make sure to have deadlines
+  - Have weights/times on backlogs/tasks
+  - Everyone should be saying what there are going to be working on in the upcoming week(s)
+  - Give Dr. Lasky a deadline to contact or at least send them what we are doing
+    - Do eveything we can to contact her until a certain point when we have to just move forward without her input
+- Team Meeting - 
+  - Each mini-team worked on defining what they are doing and filling backlog
+  - I worked with Jesse and Jeremy to define necessary subsystems
+
+1/24/23 - Class/Team Meeting
+- Prepared questions for Dr. Lasky
+- Worked on making the system modular
+
+1/26/23 - Class/Team Meeting
+- Had a meeting with Dr. Garfield and Prof Lasky
+  - The project should be mission based NOT anomily based
+  - She will work on providing a script
+  - We don't need to worry about math that much
+- I created a general modular overview with the changes dicussed in the meeting
+
+1/30/23 - Individual
+- I looked into using threads or multiprocessing for the user interactions
+
+1/31/23 - Class/Team Meeting
+- Dr. Akbas notes:
+  - Basically we need to work faster, dont focus on the unecessary things
+- We created a more detailed overview of each subsystem and UI designs
+- I took that plan made during the meeting and created a solid first draft of a UML for the subsystems
+- I also created a potential UI design for adding generic subsystems which led me to create an even 
+  better modular design of the UML
+- Carly was sick :(
+
+2/1/23 - Individual
+- I worked on making my designs from yesterday even better
+
+2/2/23 - Class/Team Meeting
+- Prof. Akbas note:
+  - Don't forget about documentation, but also don't have all of us working on it
+  - Changed presentation date from next Tuesday to the following Tuesday
+- Jessie found Brython which solves a lot of our issues
+- We will be using python Dictionaries to sort attributes which will help keep it modular
+- Started the formal UML design in Draw.io
+  - Jessie, Jeremy, and Kyle provided insight on what specific variables and types should be used for different subsystems
+- Sidenote: why are dictionaries hard to add to UML's??
+
+2/3/23 - Individual
+- Finished the UML version 1
+- Worked out a few design issues
+
+2/7/23 - Class/Team Meeting
+- Worked with Jeremy to implement UML
+- Was able to get the Simulation code set up and ready for database interaction
+- Worked with Kyle to figure out threads and database interacctions
+
+2/9/23 - Class/Team Meeting
+- Worked with Jeremy to add more functionality to the subsystems
+- Hammered out some good UI designs 
+
+2/14/23 - Class/Team Meeting
+- Sprint 1 presentation
+- Continued working on subsystem interactions
+
+2/16/23 - Class/Team Meeting
+- Once again re-worked UI design
+
+2/21/23 - Class/Team Meeting
+- I was sick :(
+
+2/23/23 - Class/Team Meeting
+- Got caught up on changes made from last meeting
+- Made list of TC inputs that apply to my portion of the project
+
+2/23/23 - Individul
+- Re-worked UML to updated code files
+- Added some necessary classes and re-arranged the structure to be more modular and to fit with the TC interacctions/inputs
+
+2/24/23 - Individual
+- Created more documentation to help keep track of what wach class does and what the attributes/methods do
+- Implemented a new MissionManager class to handle all missions a TC creates
+- Started planning out the programming for anomolies
 

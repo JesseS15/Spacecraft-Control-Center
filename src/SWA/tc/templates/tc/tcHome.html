@@ -1,5 +1,4 @@
-
-{% extends "tc/tcNavigate.html" %}
+{% extends "home/index.html" %}
 {% load static %}
 
 {% load crispy_forms_tags %}
@@ -21,28 +20,98 @@
           <a href="{% url 'admin:index' %}">View Admin Page</a>
           <div class="box">
             <div class="content">
-              <h3 class="list">Class List</h3>
-              <table border="1" style="width: 30vw;">
+              <p  style = "text-align: right; margin-right: 10%; font-size: 16px;"><button id="addclass"data-toggle="modal" data-target = "modal2"><span class="glyphicon glyphicon-plus"></span> &nbsp;Add New Class</button></p>
+              <h3 class="list" style="margin-left: 10%;text-align: left;">Class List</h3>
+              <table id= "classtable" border="2" style="width: 80%;">
                 <thead>
-                  <th>Name</th>
-                  <th>Status</th>
+                  <th style="width:5%"></th>
+                  <th style="font-size:18px; width: 26%">Name</th>
+                  <th style="font-size:18px; width: 26%">Status</th>
+                  <th style="font-size:18px; width: 26%">Code</th>
+                  <th style="width:15%"></th>
                 </thead>
                  {% for class_name in classes %}
-                <tr>
-                  <td><a href="{% url 'tc:classHome' class_name %}">{{class_name}}</a></td>
-                  <td>{{class_name.status}}</td>
+                <tr style="font-size:16px; max-height: 20px; overflow-y: scroll;">
+                  <td style="text-align:center;"><button type = "button" data-toggle = "modal" data-target = "modal1" class="settings"><span class="glyphicon glyphicon-wrench"></span></button></td>
+                  <td style="font-size:16px;"><a id = {{class_name}} class = "classlist" href="{% url 'tc:classHome' class_name %}">{{class_name}}</a></td>
+                  <td style="font-size:16px;">{{class_name.status}}</td>
+                  <td style="font-size:16px;">{{class_name.code}}</td>
+                  <td style="text-align:center; font-size: 16px;">
+                    {% for x in class_name.flight_operators.all %}
+                    <li style = "list-style-type: none;">{{x}}</li>
+                    {% endfor %}
+                  </td>
                 </tr>
               {% endfor %}
               </table> 
+
+              <div id="modal1" class="modal">
+
+                <div class="modal-content"style="width:500px">
+                  <div class="modal-header">
+                    <span class="close" id="span1">&times;</span>
+                    <h2>Edit Classss</h2>
+                  </div>
+                  <div class="popup-body">
+                    <h3 style="text-align: left;"><label style="margin-right: 3.4%" for="enteredText">Class Name:</label>
+                    <input type="text" id="textbox" name="enteredText"></h3>
+                    <h3 style="margin-right: 2.8%;"><label style="margin-right: 4.4%"for="enteredText">Status:</label>
+                    <input type="text" id="textbox" name="enteredText"></h3>
+                    <h3 style="text-align: left;"><label style="margin-right: 4.4%"for="enteredText">Class Code:</label>
+                    <input type="text" id="textbox" name="enteredText"></h3>
+                    <script src = "/static/js/settingspopup.js"></script>
+                    <h3><button style = "margin-left: 15%" class="submitBtn" onClick="displayData()">Generate New Code</button></h3>
+                    <h3><button class="submitBtn" onClick="displayData()">Save</button></h3>
+                  </div>
+                </div>
+                </div>
+              
+              <div id="modal2" class="modal">
+                <div class="modal-content"style="width:500px">
+                  <div class="modal-header">
+                    <span class="close" id="span2" onClick="openForm()">&times;</span>
+                    <h2>Add New Class</h2>
+                  </div>
+                <div class="popup-body">
+                  <form name = "ClassForm" method="POST" style="color: black; padding:10%; border-radius:1%;width: 60vw; border-color: black;">
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                      {{ form|crispy}}
+                    </fieldset>
+                      <button style="background: black; padding:2%; font-size: 2rem; color:white;" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-check"></span> &nbsp;Add Class</button>
+                    <br />
+                      <a href="{% url 'tc:home' %}" style="text-decoration: underline; color: white; padding:2%; cursor:pointer;">Exit</a></sub>
+                  </form>
+                    <script src = "/static/js/addnewclasspopup.js"></script>
+                </div>
+                </div>
+              </div>
+
+              <div id="modal3" class="modal">
+                <div class="modal-content"style="width:500px">
+                  <div class="modal-header">
+                    <span class="close" id="span3">&times;</span>
+                    <h2>Operators</h2>
+                  </div>
+                  <div class="popup-body">
+                    <li>{{class_test}}</li>
+                    {% for x in class_test.flight_operators.all %}
+                    <li>hi</li>
+                    {% endfor %}
+                    <h3><button id = "save" class="submitBtn" onClick="displayData()">Save</button></h3>
+                    <script src = "/static/js/operatorspopup.js"></script>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
-
         </center>
         {% else %}
         <center><h1>Successfully Logged Out</h1></center>
         {% endif %}
         {% endblock %}
       </div>
-      
+          
 </body>
 </html>

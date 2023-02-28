@@ -7,12 +7,11 @@ from django.contrib.auth import views as auth
 app_name = 'tc'
 urlpatterns = [
     path('', views.index, name ='index'),
-    path('login/', views.tcLogin, name ='login'),
-    path('logout/', views.tcLogout, name ='logout'),
-    path('register/', views.tcRegister, name ='register'),
     path('home/', views.tcHome, name ='home'),
-    path('addClass/', views.addClass, name ='addClass'),
+    path('home/<str:class_name>/new', views.new, name='new'),
+    #path('addClass/', views.addClass, name ='addClass'),# ##unused because moved##
     path('home/<str:class_name>', views.classHome, name='classHome'),
-    path('create/<str:class_name>', views.createSim, name='createSim'),
+    #path('create/<str:class_name>', views.createSim, name='createSim'),# ##unused because moved##
     path('<str:sim>/', views.tcSim, name ='sim'),
+    
 ]

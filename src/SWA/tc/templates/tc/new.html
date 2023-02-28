@@ -1,0 +1,53 @@
+{% extends "home/index.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+    <meta charset="utf-8"/>
+</head>
+<body>
+    {% block start %}
+    {% if user.is_authenticated %}
+    <div class="split left">
+        <center>
+            <div class = header>
+                <h2>Add New Simulation</h2>
+            </div>
+        </center>
+        <div class="centered">
+            <form name = "SimCreationForm" method="POST" style="color: black; width: 35vw; ">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    {{ form|crispy}}
+                </fieldset>
+                <button style="background: black; font-size: 2rem; padding:1%; color: white;" class="btn btn-outline-info" type="submit">Submit</button>
+            </form>
+            
+        </div>
+    </div>
+        
+    <div class="split right">
+        <center>
+            <div class = header>
+                <h2>Add New Mission</h2>
+            </div>
+        </center>
+        <div class="centered">
+            <form name = "MissionCreationForm" method="POST" style="color: black; width: 35vw; ">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    {{ form2|crispy}}
+                </fieldset>
+                <button style="background: black; font-size: 2rem; padding:1%; color: white;" class="btn btn-outline-info" type="submit">Submit</button>
+            </form>
+            
+        </div>
+    </div>
+    {% else %}
+
+    {% endif %}
+    {% endblock %}
+</body>
+</html>

@@ -1,4 +1,73 @@
-.paddingBetweenRows td
-{
-    padding:0 15px 0 15px;
-}
+#classtable {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #classtable td, #classtable th {
+    border: 0px solid #ddd;
+    padding: 8px;
+    background-color: aliceblue;
+  }
+  
+  #classtable tr:nth-child(even){background-color: white;}
+  
+  #classtable tr:hover {background-color: #ddd;}
+  
+  #classtable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: navy;
+    color: white;
+  }
+
+  #simtable {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 50%;
+  }
+  
+  #simtable td, #simtable th {
+    border: 1px solid #ddd;
+    padding: 2%;
+    background-color: aliceblue;
+  }
+  
+  #simtable tr:nth-child(even){background-color: white;}
+  
+  #simtable tr:hover {background-color: #ddd;}
+  
+  #simtable th {
+    padding-top: 2%;
+    padding-bottom: 2%;
+    text-align: left;
+    background-color: navy;
+    color: white;
+  }
+
+  #missiontable {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 50%;
+  }
+  
+  #missiontable td, #missiontable th {
+    border: 1px solid #ddd;
+    padding: 2%;
+    background-color: aliceblue;
+  }
+  
+  #missiontable tr:nth-child(even){background-color: white;}
+  
+  #missiontable tr:hover {background-color: #ddd;}
+  
+  #missiontable th {
+    padding-top: 2%;
+    padding-bottom: 2%;
+    text-align: left;
+    background-color: navy;
+    color: white;
+  }
+
+  
