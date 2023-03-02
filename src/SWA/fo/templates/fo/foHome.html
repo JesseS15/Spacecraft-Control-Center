@@ -1,6 +1,8 @@
 
 {% extends "home/index.html" %}
 {% load static %}
+
+{% load crispy_forms_tags %}
 {% block start %}
 {% if flightOperator.user.is_authenticated %}
 
@@ -21,9 +23,54 @@
 
   <h3>Welcome Back {{user.username}}!</h3>
 
-  <a href="{% url 'fo:join' %}">Join Class</a>
-  <br></br>
+ <!---<a href="{% url 'fo:join' %}">Join Class</a>-->
+  <div class="box">
+    <div class="content">
+      <p  style = "text-align: right; margin-right: 10%; font-size: 16px;"><button id="joinclass"data-toggle="modal" data-target = "modal2"><span class="glyphicon glyphicon-plus"></span> &nbsp;Join New Class</button></p>
+      <h3 class="list" style="margin-left: 10%;text-align: left;">Class List</h3>
+      <table id= "classtable" border="2" style="width: 80%;">
+        <thead>
+          <th style="width:5%"></th>
+          <th style="font-size:18px; width: 26%">Name</th>
+          <th style="font-size:18px; width: 26%">Status</th>
+          <th style="font-size:18px; width: 26%">Code</th>
+          <th style="width:15%"></th>
+        </thead>
+         {% for class_name in classes %}
+        <tr style="font-size:16px; max-height: 20px; overflow-y: scroll;">
+          <td style="text-align:center;"><button type = "button" data-toggle = "modal" data-target = "modal1" class="settings"><span class="glyphicon glyphicon-wrench"></span></button></td>
+          <td style="font-size:16px;"><a id = {{class_name}} class = "classlist" href="{% url 'fo:classHome' class_name %}">{{class_name}}</a></td>
+          <td style="font-size:16px;">{{class_name.status}}</td>
+          <td style="font-size:16px;">{{class_name.code}}</td>
+          <td style="text-align:center; font-size: 16px;">
+            {% for x in class_name.flight_operators.all %}
+            <li style = "list-style-type: none;">{{x}}</li>
+            {% endfor %}
+          </td>
+        </tr>
+      {% endfor %}
+      </table> 
 
+      <div id="modal1" class="modal">
+        <div class="modal-content"style="width: 60%">
+          <div class="modal-header">
+            <span class="close" id="span1" onClick="openForm()">&times;</span>
+            <h2>Join New Class</h2>
+          </div>
+        <div class="popup-body">
+          <form name = "JoinClassForm" method="POST" style="color: black; padding:10%; border-radius:1%;width: 60vw; border-color: black;">
+            {% csrf_token %}
+            <fieldset class="form-group">
+              {{ form|crispy}}
+            </fieldset>
+              <button style="background: black; padding:2%; font-size: 2rem; color:white;" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-check"></span> &nbsp;Add Class</button>
+            <br />
+              <a href="{% url 'tc:home' %}" style="text-decoration: underline; color: white; padding:2%; cursor:pointer;">Exit</a></sub>
+          </form>
+            <script src = "/static/js/joinnewclass.js"></script>
+        </div>
+        </div>
+      </div>  
   <h3>Active Simulations:</h3>
   <ul style="list-style-type:none;padding: 0">
     {% for sim in flightOperator.sim_list.all %}
