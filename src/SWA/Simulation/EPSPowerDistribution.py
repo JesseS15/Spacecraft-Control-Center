@@ -1,6 +1,5 @@
-import numpy as np
-import EPSInitializing as EPSStart
-import EPSSolarPanelCharging as charging
+
+
 
 '''
 Goal:
@@ -20,32 +19,62 @@ Thoughts:
     Taking in two args (name of subsystem, amount of power needed)
     Store these values somewhere somehow
 
-    N
+Notes:
+    This system has four global variables:
+        avaialblePower - total amount of power available for subsytems to request
+        expendedPower - total amount of power be consumed
+        simcraftSubsystemPower - dictionary containing subsystem names and the corresponding max amount of power they need
+        powerDistributed - dictionary containing subysystem names and the corresponding power they are currently consuming
 
 '''
 
 #Global variable
-totalPower = EPSStart.initialize()     
+availablePower = 0.0
+expendedPower = 0.0
+simcraftSubsystemPower = {}
+powerDistributed = {}
 
-def checkPowerRequirements():
-    global totalPower
-    totalPower = EPSStart.initialize()
+def initialize(inputWatts=200):
+    global availablePower
+    availablePower = inputWatts
 
-def subsystemPowerRequirements(subsystemName, subsystemRequiredPower):
-    simcraftSubsystemPower = {subsystemName : subsystemRequiredPower}
+def subsystemPowerRequirements(subsystemName, subsystemRequiredPower):  #Dictionary of all the subsystems and their power requirements
+    global simcraftSubsystemPower
+    simcraftSubsystemPower[subsystemName] = subsystemRequiredPower
 
-def requestPower(powerRequested):
-    pass
+def checkPower(requestedPower, subsystemName):  #Checks to see if the power requested is a valid amount that subsytem can request
+    global simcraftSubsystemPower, powerDistributed
+    maxPower = simcraftSubsystemPower[subsystemName]
+    if maxPower < requestedPower: 
+        pass
+    else: 
+        return False
+    if powerDistributed[subsystemName] + requestedPower < maxPower:
+        return True
+    else:
+        return False 
 
-def checkPower():
-    pass
+def sendPower(requestedPower, subsystemName):  #Updates global variables
+    global availablePower, expendedPower, powerDistributed
+    availablePower -= requestedPower
+    expendedPower += requestedPower
+    powerDistributed[subsystemName] += requestedPower
+    return requestedPower
 
-def sendPower(requestedPower):
-    power = 0
-    return power
+def requestPower(requestedPower, subsystemName):    #Primary callable function to request power that checks if the request is valid
+    if not checkPower(requestedPower, subsystemName): 
+        print('Requesting too much power')
+        return 
+    return sendPower(requestedPower,subsystemName)
+
+def returnPower(returnedPower, subsystemName):  #Returning power back to the EPS 
+    global availablePower, expendedPower, powerDistributed
+    availablePower += returnedPower
+    expendedPower -= returnedPower
+    powerDistributed[subsystemName] -= returnedPower
 
 def main():
-    checkPowerRequirements()
+    initialize()
 
 if __name__ == "__main__":
     main()
