@@ -6,7 +6,7 @@ from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
-from .forms import UserRegisterForm, SubsystemForm, JoinClassForm
+from .forms import JoinClassForm
 from .models import FlightOperator
 from tc.models import Class
 from simapp.models import Sim, Subsystem
@@ -60,23 +60,19 @@ def joinClass(request):
 ###############################################################################
 def submit(request, simkey):
     if request.method == 'GET':
-           syspk = request.GET.get('syspk')
-           val = request.GET.get('value') # JSON string
-           value = json.loads(val) # Boolean value
-           sys = Subsystem.objects.get(pk = syspk)
-           sys.button_value = value
-           sys.save()
-           return HttpResponse(val) # Sending an success response
+           command = request.GET.get('cmd')  # String
+           sim = Sim.objects.get(pk = simkey)
+           #sim.command = command
+           #sim.save()
+           #print("py " + command)
+           return HttpResponse("todo") # Sending an success response
     else:
            return HttpResponse("Request method is not a GET")
 
 ###############################################################################
 def fetchdata(request, simkey):
     if request.method == 'GET':
-        dic = {}
         simobj = Sim.objects.get(pk = simkey)
-        for sys in simobj.sys_list.all():
-            dic.update({sys.pk : sys.button_value})
-        return HttpResponse(json.dumps(dic)) # Sending an success response
+        return HttpResponse("todo") # Sending an success response
     else:
         return HttpResponse("Request method is not GET")
