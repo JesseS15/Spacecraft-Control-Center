@@ -8,6 +8,12 @@ class Subsystem:
 	def __init__(self, dictionaries):
 		self.dicts = dictionaries
 	
+	def getInput(self, userInput):
+		print("User input is:" + userInput)
+
+	def sendDisplay(self):
+		return "Display words"
+
 	def subsysWorking(self):
 		print("Subsystem Working")
 
