@@ -3,47 +3,44 @@
 {% load crispy_forms_tags %}
 {% block start %}
 
-<script src=  "/static/js/jquery.min.js"></script>
-<script src = "/static/js/fosim.js"></script>
-
-<p id = "message">{{ sim }}<p>
+<!--<p id = "message">{{ sim }}<p>
 {% for sys in sim.sys_list.all %}
 
   <div style="background-color:Red; border-radius: 25px;height: 15%;width: 25vw;display: inline-block;">
     <center>
       <p>{{ sys }}</p>
-      <input type='checkbox' class='syscheck' id="{{ sys.pk }}">
+      <input type="{{ sys.input }}" class='syscheck' id="{{ sys.pk }}">
+      <p id="{{ sys.pk }}" class = "val" >Value: {{ sys.value }}</p>
       <input type="submit" class='submit' id="{{ sys.pk }}" syscheck-id="{{ sys.pk }}">
-      <p>{{ sys.pk }}</p>
     </center>
   </div>
 {% endfor %}
 
-<div style="background-color:Red; border-radius: 25px">
-  <center>
-    <input type="number" class='syscheck'>
-  </center>
+</div>-->
+
+<div class="resizable">
+  <div class="left-side">
+    <div class="title-wrapper">
+      <div class="title">Spacecraft</div>
+    </div>
+    <div class="content-wrapper">
+      <div id="terminal1" class="terminal"></div>
+    </div>
+  </div>
+  <div class="right-side">
+    <div class="title-wrapper">
+      <div class="title">Subsystem</div>
+    </div>
+    <div class="content-wrapper">
+      <div id="terminal2" class="terminal"></div>
+    </div>
+    <div class="input-container">
+      <input type="text" id="input" autofocus />
+    </div>
+  </div>
+  <div class="resizable-handle"></div>
 </div>
-<div style="background-color:Red; border-radius: 25px">
-  <center>    
-    <input type="range" class='syscheck'>
-  </center>
-</div>
-<div style="background-color:Red; border-radius: 25px">
-  <center>
-    <input type="reset" class='syscheck'>
-  </center>
-</div>
-<div style="background-color:Red; border-radius: 25px">
-  <center>    
-    <input type="submit" class='syscheck'>
-  </center>
-</div>
-<div style="background-color:Red; border-radius: 25px">
-  <center>    
-    <input type="text" class='syscheck'>
-  </center>
-</div>
+
 
 <script src=  "/static/js/jquery.min.js"></script>
 <script src = "/static/js/fosim.js"></script>
