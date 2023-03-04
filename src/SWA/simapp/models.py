@@ -51,7 +51,7 @@ class Subsystem(models.Model):
     button_value = models.BooleanField(default=True)
     subsys_console_buffer = models.ManyToManyField("Console_Buffer", verbose_name=("Subsystem Console buffer"))
 
-    subsys_menu = models.ManyToManyField("ACS_Menu", verbose_name=("ACS Menu"))
+    #subsys_menu = models.ManyToManyField("ACS_Menu", verbose_name=("ACS Menu"))
 
     def __str__(self):
         return self.sys_name
@@ -67,13 +67,16 @@ class Mission(models.Model):
 ###############################################################################
 class Sim(models.Model):
     sim_name = models.CharField(default='', max_length=15)
-    mission_script = models.ManyToManyField("Mission", verbose_name=("Mission Script"))
+    # Verbose_name is the name it shows up on the admin page under Sim
+    
+    mission_script = models.ForeignKey(Mission, default=1, on_delete=models.CASCADE)
+
     flight_operators = models.ManyToManyField("fo.FlightOperator", verbose_name=("Flight Operators"))
 
     #subsys_list = models.ManyToManyField(Subsystem)
-    acs_subsys = models.ManyToManyField("Subsystem", verbose_name=("ACS Subsystem"))
+    #acs_subsys = models.ManyToManyField("Subsystem", verbose_name=("ACS Subsystem"))
 
-    command_buffer = models.ManyToManyField("Console_Buffer", verbose_name=("console buffer"))
+    #command_buffer = models.ManyToManyField("Console_Buffer", verbose_name=("console buffer"))
     
     def __str__(self):
         return self.sim_name
