@@ -11,3 +11,4 @@ class FlightOperator(models.Model):
     class_list = models.ManyToManyField("tc.Class", verbose_name = ("Class"), blank = True)
     def __str__(self):
         return self.user.username
+    
