@@ -60,7 +60,7 @@ class Subsystem(models.Model):
 class Mission(models.Model):
     mission_name = models.CharField(default='', max_length=15)
     # Mission form needs to be created in tc forms
-
+    
     def __str__(self):
         return self.mission_name
 

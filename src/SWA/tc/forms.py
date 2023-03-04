@@ -19,7 +19,8 @@ class UserRegisterForm(UserCreationForm):
 class ClassForm(forms.ModelForm):
     class Meta:
         model = Class
-        fields = ['class_name','status']
+        # NEED TO ADD MORE FIELDS TO MATCH THE CLASS IN MODELS
+        fields = ['class_name','status','missions','sims']
 
 ###############################################################################
 class SimCreationForm(forms.Form):
