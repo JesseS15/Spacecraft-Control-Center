@@ -1,7 +1,7 @@
 import numpy as np
 
 #Goal: Simplify the below code to be a more useful calculator
-
+totalPower = 0.0
 def ISSCellGenerates(): #Amount of power each cell generates on the ISS (realistic number)
     totalSolarCells = 262400
     totalElectricityGenerated = 240E3 #Number in Watts
@@ -28,15 +28,9 @@ def initialize(inputWatts=200):
     powerRatio = 0.4                                                            #Percentage of generated power that is used by simcraft during charging
 
     eachCellGenerates, eachCellArea = ISSCellGenerates()                        #We are assuming that this simcraft is running similar specs to the ISS
+    global totalPower
     totalPower = totalPowerNeeded(simcraftWatts,powerRatio)                     #Total Power that Simcraft generates
     cellsNeeded = calculateCellsNeeded(totalPower, eachCellGenerates)           #How many cells are needed (optional)
     cellArea = calculateCellsArea(cellsNeeded, eachCellArea)                    #How many square feet of solar panels are needed (optional)
 
     return totalPower
-
-def main():
-    pass
-
-if __name__ == "__main__":
-    main()
-

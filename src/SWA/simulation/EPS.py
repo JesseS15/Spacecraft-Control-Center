@@ -1,7 +1,7 @@
 from Subsystem import Subsystem
-import EPSSolarPanelCharging
-import EPSInitializing
-import EPSPowerDistribution
+import EPSSolarPanelCharging as Charging
+import EPSInitializing as EPSStart
+import EPSPowerDistribution as PD
 
 class EPS(Subsystem):
 
@@ -10,9 +10,11 @@ class EPS(Subsystem):
         super().__init__(dicts)
         print("New instance of EPS class created")
 
-    def requestPower(self):
+    def requestPower(self, requestedPower, subsystemName):
         # Call method in the EPSPowerDistribution
-        pass    
+        requestedPower = PD.requestPower(requestedPower, subsystemName)
+        if requestedPower is None: return 0
+        return requestedPower
 
     def powerDistributionError(self):
         print("Error with power distribution")

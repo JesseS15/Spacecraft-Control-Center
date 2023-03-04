@@ -22,7 +22,7 @@ Thoughts:
 Notes:
     This system has four global variables:
         avaialblePower - total amount of power available for subsytems to request
-        expendedPower - total amount of power be consumed
+        expendedPower - total amount of power being consumed
         simcraftSubsystemPower - dictionary containing subsystem names and the corresponding max amount of power they need
         powerDistributed - dictionary containing subysystem names and the corresponding power they are currently consuming
 
@@ -64,7 +64,7 @@ def sendPower(requestedPower, subsystemName):  #Updates global variables
 def requestPower(requestedPower, subsystemName):    #Primary callable function to request power that checks if the request is valid
     if not checkPower(requestedPower, subsystemName): 
         print('Requesting too much power')
-        return 
+        return None
     return sendPower(requestedPower,subsystemName)
 
 def returnPower(returnedPower, subsystemName):  #Returning power back to the EPS 

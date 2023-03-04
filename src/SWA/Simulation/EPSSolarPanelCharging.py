@@ -35,7 +35,8 @@ MAIN FUNCTION:
     is that these are spherical coordinates and all inputs should be in radians. 
 '''
 
-chargeRate = EPSStart.initialize()     #This is the maximum amount of charge the solar panels will draw, right now it's 2500
+chargeRate = EPSStart.totalPower        #This is the maximum amount of charge the solar panels will draw, right now it's 2500
+batteryCapacity = 0.0
 tol = 1e-3
 
 def reasonableNumbers(input):
