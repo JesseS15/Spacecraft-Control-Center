@@ -22,6 +22,7 @@ class Class(models.Model):
     code = models.CharField(default='', max_length=15, blank=True)
     status = models.CharField(default='',max_length=15, blank = True)
     flight_operators = models.ManyToManyField("fo.FlightOperator", verbose_name=("Flight Operator"), blank= True)
+    # Classses only want sims, which have a mission
     sims = models.ManyToManyField("simapp.Sim", verbose_name=("Sim"), blank=True)
     missions = models.ManyToManyField("simapp.Mission", verbose_name=("Mission"))
 

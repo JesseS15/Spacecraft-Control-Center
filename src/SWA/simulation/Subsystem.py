@@ -13,6 +13,9 @@ class Subsystem:
 
 	def sendDisplay(self):
 		return "Display words"
+	
+	def subsysMenu():
+		pass
 
 	def subsysWorking(self):
 		print("Subsystem Working")

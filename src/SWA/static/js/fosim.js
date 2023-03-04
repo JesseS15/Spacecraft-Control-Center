@@ -1,62 +1,77 @@
 // fosim.js
 // Purpose: Refresh simcraft attributes and submit flight operator inputs on the fo sim page.
 
-fetchdata();
+const terminal1 = document.getElementById('terminal1');
+const terminal2 = document.getElementById('terminal2');
+const input = document.getElementById('input');
 
-// Submit Subsystem Input
-$('.submit').click(function(){
-    var pk;
-    var val;
-    pk  = $(this).attr('id');
-    cb = document.getElementById($(this).attr("syscheck-id"));
-    val = cb.checked;
+input.addEventListener('keyup', function (event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    const command = this.value.trim();
+    this.value = '';
+    const output = document.createElement('p');
+    output.textContent = `$ ${command}`;
+    terminal2.appendChild(output);
+    terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
+
     $.ajax(
-    {
-        // fo/views.submit
-        url: 'submit',
-        type: 'GET',
-        dataType: 'json',
-        data:{
-            syspk: pk,
-            value: val,
-        },
-
-        success: function( data )
         {
-            cb.checked = data;
-        }
-     })
+            // fo/views.submit
+            url: 'submit',
+            type: 'GET',
+            //dataType: 'json',
+            data:{
+                cmd: command,
+            },
+    
+            success: function( data )
+            {
+                console.log("js " + data);
+            }
+         })
+  }
 });
+
+// Resize
+
+const resizable = document.querySelector('.resizable');
+const handle = document.querySelector('.resizable-handle');
+
+handle.addEventListener('mousedown', initResize);
+
+function initResize(e) {
+  e.preventDefault();
+  window.addEventListener('mousemove', resize);
+  window.addEventListener('mouseup', stopResize);
+}
+
+function resize(e) {
+  resizable.style.height = `${window.innerHeight - e.clientY}px`;
+}
+
+function stopResize(e) {
+  window.removeEventListener('mousemove', resize);
+  window.removeEventListener('mouseup', stopResize);
+}
 
 // Refresh SimCraft Attributes
-function fetchdata(){
-    $.ajax({
-        // fo/views.fetchdata
-        url: 'fetchdata',
-        type: 'GET',
-        dataType: 'json',
-
-        success: (data) => {
-            // All syscheck checkbox elements in the document
-            const collection = document.getElementsByClassName("syscheck");
-            for (let i = 0; i < collection.length; i++) {
-
-                let sysvalue = data[collection[i].id];
-                // Set checkbox to subsystem value found in database
-                collection[i].checked = sysvalue;
-                console.log(collection[i].value);
-                // Set parent div background color
-                if(sysvalue) {
-                    collection[i].parentElement.parentElement.style.backgroundColor = 'Green';
-                }
-                else {
-                    collection[i].parentElement.parentElement.style.backgroundColor = 'Red';
-                }
-            }
-        }
-    });
-}
+//function fetchdata(){
+//    $.ajax({
+//        // fo/views.fetchdata
+//        url: 'fetchdata',
+//        type: 'GET',
+//
+//        success: (data) => {
+//            const output = document.createElement('p');
+//            output.textContent = data;
+//            terminal1.appendChild(output);
+//            terminal1.parentElement.scrollTop = terminal1.parentElement.scrollHeight;
+//            console.log(data);
+//        }
+//    });
+//}
 // Set Refresh Rate
-$(document).ready(function(){
-    setInterval(fetchdata,5000);
-});
+//$(document).ready(function(){
+//    setInterval(fetchdata,5000);
+//});

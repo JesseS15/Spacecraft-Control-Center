@@ -19,7 +19,8 @@ class UserRegisterForm(UserCreationForm):
 class ClassForm(forms.ModelForm):
     class Meta:
         model = Class
-        fields = ['class_name','status']
+        # NEED TO ADD MORE FIELDS TO MATCH THE CLASS IN MODELS
+        fields = ['class_name','status','missions','sims']
 
 ###############################################################################
 class SimCreationForm(forms.Form):
@@ -34,6 +35,7 @@ class SimCreationForm(forms.Form):
         widget=forms.CheckboxSelectMultiple)
 ###################################################################3
 class MissionCreationForm(forms.Form):
-
     mission_name = forms.CharField(max_length = 20)
     
+class SubsystemForm(forms.Form):
+    sys_name = forms.CharField(max_length=15)
