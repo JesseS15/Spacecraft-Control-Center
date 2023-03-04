@@ -34,6 +34,7 @@ class SimCreationForm(forms.Form):
         widget=forms.CheckboxSelectMultiple)
 ###################################################################3
 class MissionCreationForm(forms.Form):
-
     mission_name = forms.CharField(max_length = 20)
     
+class SubsystemForm(forms.Form):
+    sys_name = forms.CharField(max_length=15)
