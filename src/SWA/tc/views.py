@@ -19,7 +19,7 @@ from .models import Class
 
 from .models import TestConductor, Class
 from simapp.models import Sim, Subsystem, Mission
-from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm
+from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm, SubsystemForm
 
 
 ###############################################################################

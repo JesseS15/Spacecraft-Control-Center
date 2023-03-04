@@ -13,7 +13,9 @@ class Buffer_Item(models.Model):
 
 ###############################################################################
 class Console_Buffer(models.Model):
-    buffer_list = models.ManyToManyField(Buffer_Item)
+    console_buffer_name = models.CharField(default='', max_length=15)
+    buffer_list = models.ManyToManyField("Buffer_Item", verbose_name=("Buffer list"))
+
     #print(buffer_list)
     def __str__(self):
         return self.buffer_list
@@ -49,9 +51,9 @@ class ACS_Menu(models.Model):
 class Subsystem(models.Model):
     sys_name = models.CharField(default='', max_length=15)
     button_value = models.BooleanField(default=True)
-    subsys_console_buffer = models.OneToOneField(Console_Buffer, on_delete=models.CASCADE)
+    subsys_console_buffer = models.ManyToManyField("Console_Buffer", verbose_name=("Console Buffer"))
 
-    subsys_menu = models.OneToOneField(ACS_Menu, on_delete=models.CASCADE)
+    subsys_menu = models.ManyToManyField("ACS_Menu", verbose_name=("ACS Menu"))
 
     def __str__(self):
         return self.sys_name
@@ -67,13 +69,13 @@ class Mission(models.Model):
 ###############################################################################
 class Sim(models.Model):
     sim_name = models.CharField(default='', max_length=15)
-    mission_script = models.OneToOneField(Mission, on_delete=models.CASCADE)
+    mission_script = models.ManyToManyField("Mission", verbose_name=("Mission Script"))
     flight_operators = models.ManyToManyField("fo.FlightOperator", verbose_name=("Flight Operators"))
 
     #subsys_list = models.ManyToManyField(Subsystem)
-    acs_subsys = models.OneToOneField(Subsystem, on_delete=models.CASCADE)
+    #acs_subsys = models.OneToOneField(Subsystem, on_delete=models.CASCADE)
 
-    command_buffer = models.OneToOneField(Console_Buffer, on_delete=models.CASCADE)
+    #command_buffer = models.OneToOneField(Console_Buffer, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.sim_name
