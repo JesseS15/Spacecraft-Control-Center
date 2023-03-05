@@ -1,4 +1,6 @@
 from django.contrib import admin
-from .models import Question
+from .models import Sim, DisplayBufferItem, CommandBufferItem
 
-admin.site.register(Question)
+admin.site.register(Sim)
+admin.site.register(DisplayBufferItem)
+admin.site.register(CommandBufferItem)
