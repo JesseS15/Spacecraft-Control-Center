@@ -18,8 +18,16 @@
           <h3>Welcome to {{ class_name }}</h3>
           <div class="box">
             <div class="content">
-              <p style = "text-align: center; font-size: 16px;"><button id="addsim" onclick="window.location ='{{ class_name }}/new';"><span class="glyphicon glyphicon-plus"></span> &nbsp;New</button></p>
-              <h3 class="list" style="margin-left: 10%;text-align: left;">Sim List<span style="padding-left:50%;">Mission List</span></h3>
+              <br>
+              <table id = "invisibleHeader" align = "center" border = "0" style="width: 80%; margin-left: 2.5%">
+              <thead>
+                <th style="font-size:18px; width: 10%; padding-left:1%">Sim List</th>
+                <th style="font-size:15px; width: 53%; padding-left:3%"><button id="addsim" onclick="window.location ='{{ class_name }}/newSim';"><span class="glyphicon glyphicon-plus"></span> &nbsp;New Sim</button></th>
+                <th style="font-size:18px; width: 10%; padding-left:0%">Mission List</th>
+                <th style="font-size:15px; width: 40%; padding-left:1%"><button id="addsim" onclick="window.location ='{{ class_name }}/newMission';"><span class="glyphicon glyphicon-plus"></span> &nbsp;New Mission</button></th>
+              </thead>
+              </table>
+              
               <table id = "simtable" align = "left" border="2" style="width: 45%; margin-left: 2.5%;">
                 <thead>
                   <th style="font-size:18px; width: 18%">Name</th>

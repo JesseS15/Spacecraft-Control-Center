@@ -66,8 +66,9 @@ def classHome(request, class_name):
         print(sims)
     else:
         sims=[]
-    ##################
-    group2 = Class.objects.all().filter(class_name = class_name).values_list('missions', flat=True)
+    #############################################################################
+    # 3/5/23 commented out so that creating a class does not require a mission
+    """ group2 = Class.objects.all().filter(class_name = class_name).values_list('missions', flat=True)
     data2 = numpy.asarray(group2)
     print(group2)
     if (data2.all()!=None):
@@ -77,8 +78,8 @@ def classHome(request, class_name):
             missions[e] = Mission.objects.get(pk=data2[e])
         print(missions)
     else:
-        missions=[]
-    ########################################################
+        missions=[] """
+    ###############################################################################
     """if request.method == 'POST':
         form = SimCreationForm(request.POST)
 
@@ -111,7 +112,8 @@ def classHome(request, class_name):
             
 
     form = SimCreationForm()"""
-    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims, "missions":missions})
+    # 3/5/23 Removed "missions":missions
+    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims})
 
 ###############################################################################
 def getGroups(request):
@@ -213,7 +215,7 @@ def tcSim(request, sim):
 
 ############################################################################
 @login_required(login_url='/login/')
-def new(request,class_name):
+def newSim(request,class_name):
     print("hi"+class_name)
     group = Class.objects.all().filter(class_name = class_name).values_list('sims', flat=True)
     data = numpy.asarray(group)
@@ -227,19 +229,20 @@ def new(request,class_name):
     else:
         sims=[]
     ######################################
+    #form = SimCreationForm()
     if request.method == 'POST':
         form = SimCreationForm(request.POST)
 
         if form.is_valid():
             sim_list = form.cleaned_data.get('sim_list')
             sim_name = form.cleaned_data.get('sim_name')
-            sys_list = form.cleaned_data.get('sys_list')
+            #sys_list = form.cleaned_data.get('sys_list')
             flight_operators = form.cleaned_data.get('flight_operators')
 
             sim = Sim.objects.create(sim_name = sim_name)
             Class.objects.get(class_name = class_name).sims.add(sim)
-            for x in sys_list:
-                sim.sys_list.add(x)
+            #for x in sys_list:
+            #    sim.sys_list.add(x)
                 #sys_list.sim_list.add(sim)
                 #class_belong.sim_list.add(sim)
             #form.save_m2m()
@@ -248,16 +251,24 @@ def new(request,class_name):
                 sim.flight_operators.add(flight_operator)
                 #flight_operator.sim_list.add(sim)
                 # Send notification
-                """send_mail(
-                    'STaTE Simulation Added to Your Account',
-                    'A new simulation, ' + sim.sim_name + ', has been added to your STaTE account.',
-                    None,
-                    [flight_operator.user.email],
-                    fail_silently=False,
-                )"""
-                return redirect('../'+class_name)
+            """send_mail(
+                'STaTE Simulation Added to Your Account',
+                'A new simulation, ' + sim.sim_name + ', has been added to your STaTE account.',
+                None,
+                [flight_operator.user.email],
+                fail_silently=False,
+            )"""
+            return redirect('../'+class_name)
             
     form = SimCreationForm()
+    
+    return render(request, 'tc/newSim.html', {"form": form, "class_name": class_name, "sims": sims})
+
+#########################################################################################################
+@login_required(login_url='/login/')
+def newMission(request,class_name):
+    print("hi"+class_name)
+    
     ###############################################3
     if request.method == 'POST':
         form2 = MissionCreationForm(request.POST)
@@ -272,6 +283,4 @@ def new(request,class_name):
             return redirect('../'+class_name)
                 
     form2 = MissionCreationForm()
-    return render(request, 'tc/new.html', {"form": form, "form2":form2, "class_name": class_name, "sims": sims})
-
-
+    return render(request, 'tc/newMission.html', {"form2":form2, "class_name": class_name})
