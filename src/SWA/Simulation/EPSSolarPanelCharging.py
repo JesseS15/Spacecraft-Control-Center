@@ -1,6 +1,9 @@
 import numpy as np
 import EPSInitializing as EPSStart
 import time
+from timezonefinder import TimezoneFinder
+from datetime import datetime, time
+import pytz
 
 #Goal:
 '''
@@ -40,11 +43,32 @@ chargeRate = EPSStart.totalPower        #This is the maximum amount of charge th
 CurrentCharge = 0.0
 batteryCapacity = 0.0
 timeOfLastCheck = np.floor(time.time())
+currentTime = 0.0
 tol = 1e-3
 
 def checkTime():
     global timeOfLastCheck
     timeOfLastCheck = np.floor(time.time())
+
+def checkCurrentTime():
+    global currentTime
+    currentTime = np.floor(time.time())
+
+def checkTimeAtSimcraftPosition(lat, lng):
+    tf = TimezoneFinder()
+    lat = lat
+    lng = lng
+    timezoneName = tf.timezone_at(lng=lng,lat=lat)
+    utcTime = datetime.utcnow()
+    utcZone = pytz.utc
+    localZone = pytz.timezone(timezoneName)
+    localTime = utcZone.localize(utcTime).astimezone(localZone)
+    startTime = time(18,0,0)
+    endTime = time(6,0,0)
+    timeWithinRange = False
+    if localTime.time() >= startTime or localTime.time <= endTime:
+        timeWithinRange = True
+    return timeWithinRange
 
 def reasonableNumbers(input):
     if input < tol:
@@ -67,20 +91,22 @@ def deltaAngle(angle1, angle2):
 
 def incidentPower(params, chargeRate):  #Puts out a proportional amount of charge generated based on the two angles
     if params['polar'] >= np.pi or params['azimuth'] >= np.pi: return 0.0 #In physical terms, this checks if the sun is behind the face of the solar panels
-    currentTime = np.floor(time.time())
+    if checkTimeAtSimcraftPosition(params['lat'], params['lng']) : return 0.0 #If is night time, then no power is generated
     dt = currentTime - timeOfLastCheck
     energyGenerated = chargeRate * np.sin(params['polar']) * np.sin(params['azimuth']) * dt
     energyGenerated = reasonableNumbers(energyGenerated)
-    chargeBatteries()
+    chargeBatteries(energyGenerated)
     return energyGenerated
 
-def getEnergyGenerated(angle1Sim, angle2Sim, angle1Sun, angle2Sun): #Defaults one second for dt
+def getEnergyGenerated(angle1Sim, angle2Sim, angle1Sun, angle2Sun, lat=0.0, lng=0.0): 
     params =  { 'angle1Sim' : angle1Sim,
                 'angle2Sim' : angle2Sim,
                 'angle1Sun' : angle1Sun,
                 'angle2Sun' : angle2Sun,
                 'polar' : None,
-                'azimuth' : None}
+                'azimuth' : None,
+                'lat' : lat,
+                'lng' : lng}
     params['polar'] = deltaAngle(params['angle1Sim'], params['angle1Sun'])
     params['azimuth'] = deltaAngle(params['angle2Sim'], params['angle2Sun'])
     energyGenerated = incidentPower(params, chargeRate)
@@ -93,17 +119,26 @@ def setupBatteries(period=3600):    #Default period of one hour in seconds
 
 def drainBatteries(energyDrained):
     global CurrentCharge
-    checkTime()
     CurrentCharge -= energyDrained
     if CurrentCharge < 0.0:
         CurrentCharge = 0.0
 
 def chargeBatteries(energyGenerated):
     global CurrentCharge
-    checkTime()
     CurrentCharge += energyGenerated
     if CurrentCharge > batteryCapacity:
         CurrentCharge = batteryCapacity
+
+def calculateEnergyDrained(drainRate):
+    energyDrained = (timeOfLastCheck - currentTime) * drainRate
+    return energyDrained
+
+def updateBatteryStatus(angle1Sim, angle2Sim, angle1Sun, angle2Sun, drainRate=0.0):
+    checkCurrentTime()
+    getEnergyGenerated(angle1Sim, angle2Sim, angle1Sun, angle2Sun)
+    drainBatteries(calculateEnergyDrained(drainRate))
+    checkTime()
+    return CurrentCharge
 
 def testcheckAngle():
     print("Testing checkAngle...")

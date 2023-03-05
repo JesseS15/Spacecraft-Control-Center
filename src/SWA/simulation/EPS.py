@@ -10,8 +10,9 @@ class EPS(Subsystem):
         super().__init__(dicts)
         print("New instance of EPS class created")
 
-    def EPSStartup(inputWatts=200):
+    def EPSStartup(inputWatts=200, period=3600):
         EPSStart.initialize(inputWatts)   #Takes input watts and buffer as an argument
+        Charging.setupBatteries(period)
         PD.initialize(inputWatts)         #Takes input watts as an argument
 
     def requestPower(self, requestedPower, subsystemName):

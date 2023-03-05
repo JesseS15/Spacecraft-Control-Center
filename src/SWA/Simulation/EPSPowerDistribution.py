@@ -1,4 +1,4 @@
-import time
+import EPSSolarPanelCharging as Charging
 
 '''
 Goal:
@@ -40,6 +40,9 @@ def initialize(inputWatts=200):
 def subsystemPowerRequirements(subsystemName, subsystemRequiredPower):  #Dictionary of all the subsystems and their power requirements
     global simcraftSubsystemPower
     simcraftSubsystemPower[subsystemName] = subsystemRequiredPower
+
+def checkBatteries(angle1Sim, angle2Sim, angle1Sun, angle2Sun):
+    return Charging.updateBatteryStatus(angle1Sim, angle2Sim, angle1Sun, angle2Sun, expendedPower)
 
 def checkPower(requestedPower, subsystemName):  #Checks to see if the power requested is a valid amount that subsytem can request
     global simcraftSubsystemPower, powerDistributed
