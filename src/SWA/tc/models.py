@@ -27,9 +27,6 @@ class Class(models.Model):
     # Classses only want sims, which have a mission
     sims = models.ManyToManyField("simapp.Sim", verbose_name=("Sim"), blank=True)
 
-    # 3/5/23 removed because it was forcing a class to have a mission
-    
-
     def __str__(self):
         return self.class_name
 

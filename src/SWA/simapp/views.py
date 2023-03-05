@@ -1,9 +1,12 @@
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 # Importing models from simaapp/views.py
 
 from .models import Buffer_Item, Sim, Mission
 from tc.forms import *
 from tc.models import *
+from tc.models import TestConductor
 import numpy
 from django.contrib.auth.decorators import login_required
 

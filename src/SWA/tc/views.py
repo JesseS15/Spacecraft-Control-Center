@@ -67,7 +67,6 @@ def classHome(request, class_name):
     else:
         sims=[]
     #############################################################################
-    # 3/5/23 commented out so that creating a class does not require a mission
     group2 = TestConductor.objects.all().values_list('missions', flat=True)
     data2 = numpy.asarray(group2)
     print(group2)
@@ -113,7 +112,7 @@ def classHome(request, class_name):
 
     form = SimCreationForm()"""
     # 3/5/23 Removed "missions":missions
-    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims, "missions":missions})
+    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims, "missions": missions})
 
 ###############################################################################
 def getGroups(request):
@@ -212,4 +211,3 @@ def tcSim(request, sim):
     print(simobj)
     forms = [SubsystemForm(prefix=subsystem.sys_name, instance=subsystem) for subsystem in simobj.sys_list.all()]
     return render(request, 'tc/tcSim.html', {'sim': simobj, 'forms': forms})
-
