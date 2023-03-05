@@ -1,5 +1,6 @@
 import numpy as np
 import EPSInitializing as EPSStart
+import time
 
 #Goal:
 '''
@@ -36,8 +37,14 @@ MAIN FUNCTION:
 '''
 
 chargeRate = EPSStart.totalPower        #This is the maximum amount of charge the solar panels will draw, right now it's 2500
+CurrentCharge = 0.0
 batteryCapacity = 0.0
+timeOfLastCheck = np.floor(time.time())
 tol = 1e-3
+
+def checkTime():
+    global timeOfLastCheck
+    timeOfLastCheck = np.floor(time.time())
 
 def reasonableNumbers(input):
     if input < tol:
@@ -58,12 +65,16 @@ def deltaAngle(angle1, angle2):
     deltaAngle = checkAngle(deltaAngle)     #Doesn't change math, but for bug checking it's nice to look at angles
     return deltaAngle
 
-def incidentPower(params, chargeRate, dt):  #Puts out a proportional amount of charge generated based on the two angles
+def incidentPower(params, chargeRate):  #Puts out a proportional amount of charge generated based on the two angles
+    if params['polar'] >= np.pi or params['azimuth'] >= np.pi: return 0.0 #In physical terms, this checks if the sun is behind the face of the solar panels
+    currentTime = np.floor(time.time())
+    dt = currentTime - timeOfLastCheck
     energyGenerated = chargeRate * np.sin(params['polar']) * np.sin(params['azimuth']) * dt
     energyGenerated = reasonableNumbers(energyGenerated)
+    chargeBatteries()
     return energyGenerated
 
-def getEnergyGenerated(angle1Sim, angle2Sim, angle1Sun, angle2Sun, dt=1): #Defaults one second for dt
+def getEnergyGenerated(angle1Sim, angle2Sim, angle1Sun, angle2Sun): #Defaults one second for dt
     params =  { 'angle1Sim' : angle1Sim,
                 'angle2Sim' : angle2Sim,
                 'angle1Sun' : angle1Sun,
@@ -72,8 +83,27 @@ def getEnergyGenerated(angle1Sim, angle2Sim, angle1Sun, angle2Sun, dt=1): #Defau
                 'azimuth' : None}
     params['polar'] = deltaAngle(params['angle1Sim'], params['angle1Sun'])
     params['azimuth'] = deltaAngle(params['angle2Sim'], params['angle2Sun'])
-    energyGenerated = incidentPower(params, chargeRate, dt)
+    energyGenerated = incidentPower(params, chargeRate)
     return energyGenerated
+
+def setupBatteries(period=3600):    #Default period of one hour in seconds
+    #Period is total amount of time taken to do a full orbit, and batteries need to be able to store charge during half the period where the simcraft has no sun
+    global batteryCapacity
+    batteryCapacity = np.ceil(chargeRate * (period / 2))   #If there is a buffer, it is already included
+
+def drainBatteries(energyDrained):
+    global CurrentCharge
+    checkTime()
+    CurrentCharge -= energyDrained
+    if CurrentCharge < 0.0:
+        CurrentCharge = 0.0
+
+def chargeBatteries(energyGenerated):
+    global CurrentCharge
+    checkTime()
+    CurrentCharge += energyGenerated
+    if CurrentCharge > batteryCapacity:
+        CurrentCharge = batteryCapacity
 
 def testcheckAngle():
     print("Testing checkAngle...")
