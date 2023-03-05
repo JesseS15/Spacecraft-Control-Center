@@ -13,6 +13,8 @@ class TestConductor(models.Model):
         on_delete=models.CASCADE,
     )
 
+    missions = models.ManyToManyField("simapp.Mission", verbose_name=("Mission"), blank=True)
+
     def __str__(self):
         return self.user.username
 
@@ -26,7 +28,7 @@ class Class(models.Model):
     sims = models.ManyToManyField("simapp.Sim", verbose_name=("Sim"), blank=True)
 
     # 3/5/23 removed because it was forcing a class to have a mission
-    missions = models.ManyToManyField("simapp.Mission", verbose_name=("Mission"), blank=True)
+    
 
     def __str__(self):
         return self.class_name

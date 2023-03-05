@@ -30,6 +30,7 @@ class SimCreationForm(forms.Form):
     flight_operators = forms.ModelMultipleChoiceField(
         queryset=FlightOperator.objects.all(),
         widget=forms.CheckboxSelectMultiple, blank=True)
+    
     #sys_list = forms.ModelMultipleChoiceField(
     #    queryset=Subsystem.objects.all(),
     #    widget=forms.CheckboxSelectMultiple)

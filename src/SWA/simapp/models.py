@@ -80,3 +80,4 @@ class Sim(models.Model):
     
     def __str__(self):
         return self.sim_name
+    
