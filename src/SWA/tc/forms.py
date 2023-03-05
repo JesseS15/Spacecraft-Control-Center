@@ -19,8 +19,8 @@ class UserRegisterForm(UserCreationForm):
 class ClassForm(forms.ModelForm):
     class Meta:
         model = Class
-        # NEED TO ADD MORE FIELDS TO MATCH THE CLASS IN MODELS
-        fields = ['class_name','status','missions','sims']
+        # 3/5/23 Removed 'mission' so it was not required
+        fields = ['class_name','status','sims']
 
 ###############################################################################
 class SimCreationForm(forms.Form):
@@ -29,10 +29,10 @@ class SimCreationForm(forms.Form):
 
     flight_operators = forms.ModelMultipleChoiceField(
         queryset=FlightOperator.objects.all(),
-        widget=forms.CheckboxSelectMultiple)
-    sys_list = forms.ModelMultipleChoiceField(
-        queryset=Subsystem.objects.all(),
-        widget=forms.CheckboxSelectMultiple)
+        widget=forms.CheckboxSelectMultiple, blank=True)
+    #sys_list = forms.ModelMultipleChoiceField(
+    #    queryset=Subsystem.objects.all(),
+    #    widget=forms.CheckboxSelectMultiple)
 ###################################################################3
 class MissionCreationForm(forms.Form):
     mission_name = forms.CharField(max_length = 20)

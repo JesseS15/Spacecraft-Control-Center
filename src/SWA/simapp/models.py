@@ -71,7 +71,7 @@ class Sim(models.Model):
     
     mission_script = models.ForeignKey(Mission, default=1, on_delete=models.CASCADE)
 
-    flight_operators = models.ManyToManyField("fo.FlightOperator", verbose_name=("Flight Operators"))
+    flight_operators = models.ManyToManyField("fo.FlightOperator", verbose_name=("Flight Operators"), blank=True)
 
     #subsys_list = models.ManyToManyField(Subsystem)
     #acs_subsys = models.ManyToManyField("Subsystem", verbose_name=("ACS Subsystem"))
