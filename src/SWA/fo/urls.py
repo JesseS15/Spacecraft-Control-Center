@@ -7,7 +7,6 @@ from django.contrib.auth import views as auth
 app_name = 'fo'
 urlpatterns = [
     path('home/', views.foHome, name ='home'),
-
     path('join/', views.joinClass, name ='join'),
     path('home/<str:class_name>', views.foClass, name ='classHome'),
     path('<str:simkey>/', views.foSim, name ='sim'),
