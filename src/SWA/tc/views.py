@@ -112,7 +112,7 @@ def classHome(request, class_name):
 
     form = SimCreationForm()"""
     # 3/5/23 Removed "missions":missions
-    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims, "missions": missions})
+    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims, "missions":missions})
 
 ###############################################################################
 def getGroups(request):

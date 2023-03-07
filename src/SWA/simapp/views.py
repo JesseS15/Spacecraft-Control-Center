@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 # Importing models from simaapp/views.py
 
-from .models import Buffer_Item, Sim, Mission
+from .models import Sim, Mission
 from tc.forms import *
 from tc.models import *
 from tc.models import TestConductor
@@ -44,10 +44,11 @@ def newSim(request,class_name):
                 #class_belong.sim_list.add(sim)
             #form.save_m2m()
             ##gohere
-            for flight_operator in flight_operators:
-                sim.flight_operators.add(flight_operator)
-                #flight_operator.sim_list.add(sim)
-                # Send notification
+            if (flight_operators != None):
+                for flight_operator in flight_operators:
+                    sim.flight_operators.add(flight_operator)
+                    #flight_operator.sim_list.add(sim)
+                    # Send notification
             """send_mail(
                 'STaTE Simulation Added to Your Account',
                 'A new simulation, ' + sim.sim_name + ', has been added to your STaTE account.',

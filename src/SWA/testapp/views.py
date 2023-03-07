@@ -108,3 +108,6 @@ def fetchdata(request, simkey):
         return HttpResponse(json.dumps(display_list)) # Sending an success response
     else:
         return HttpResponse("Request method is not GET")
+
+
+

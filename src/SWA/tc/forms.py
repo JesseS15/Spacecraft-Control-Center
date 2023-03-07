@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import UserCreationForm
 
 from fo.models import FlightOperator
-from simapp.models import Subsystem
+from simapp.models import Subsystem, Sim
 from .models import Class
  
  ###############################################################################
@@ -22,18 +22,11 @@ class ClassForm(forms.ModelForm):
         fields = ['class_name','status','sims']
 
 ###############################################################################
-class SimCreationForm(forms.Form):
+class SimCreationForm(forms.ModelForm):
+    class Meta:
+        model = Sim
+        fields = ['sim_name', 'flight_operators']
 
-    sim_name = forms.CharField(max_length = 20)
-
-    flight_operators = forms.ModelMultipleChoiceField(
-        queryset=FlightOperator.objects.all(),
-        widget=forms.CheckboxSelectMultiple, blank=True)
-    
-    
-    #sys_list = forms.ModelMultipleChoiceField(
-    #    queryset=Subsystem.objects.all(),
-    #    widget=forms.CheckboxSelectMultiple)
 ###################################################################3
 class MissionCreationForm(forms.Form):
     mission_name = forms.CharField(max_length = 20)
