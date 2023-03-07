@@ -69,7 +69,7 @@ class Sim(models.Model):
     sim_name = models.CharField(default='', max_length=15)
     # Verbose_name is the name it shows up on the admin page under Sim
     
-    mission_script = models.ForeignKey(Mission, default=1, on_delete=models.CASCADE)
+    mission_script = models.ForeignKey(Mission, null=True, on_delete=models.CASCADE)
 
     flight_operators = models.ManyToManyField("fo.FlightOperator", verbose_name=("Flight Operators"), blank=True)
 
