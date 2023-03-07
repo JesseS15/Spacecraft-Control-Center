@@ -7,9 +7,11 @@ from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
-from .forms import SimForm
+from .forms import SimForm, MissionCreationForm
 
-from .models import Sim, DisplayBufferItem
+from .models import Sim, DisplayBufferItem, Mission
+
+from tc.models import TestConductor
 
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -36,6 +38,47 @@ def testappHome(request):
     form = SimForm()
     sims = Sim.objects.all()
     return render(request, 'testapp/testapphome.html', {"sims": sims, "form": form})
+
+############################################################################
+def newSim(request):
+
+    if request.method == 'POST':
+        form = SimForm(request.POST)
+
+        if form.is_valid():
+            sim_name = form.cleaned_data.get('sim_name')
+
+            sim = Sim.objects.create(sim_name = sim_name)
+            
+            init_display = DisplayBufferItem.objects.create(buffer_item = sim_name + ' initialized')
+            sim.display_buffer.add(init_display)
+
+            sim.save()
+
+            return redirect('../home')
+    sims = Sim.objects.all()
+    form = SimForm()
+    
+    return render(request, 'testapp/newSim.html', {"form": form, "sims": sims})
+
+#########################################################################################################
+def newMission(request):
+    
+    ###############################################3
+    if request.method == 'POST':
+        form2 = MissionCreationForm(request.POST)
+
+        if form2.is_valid():
+            
+            mission_name = form2.cleaned_data.get('mission_name')
+
+            mission = Mission.objects.create(mission_name = mission_name)
+            TestConductor.objects.get(pk = 1).missions.add(mission)
+            
+            return redirect('../home')
+                
+    form2 = MissionCreationForm()
+    return render(request, 'tc/newMission.html', {"form2":form2,})
 
 ###############################################################################
 def testappSim(request, simkey):

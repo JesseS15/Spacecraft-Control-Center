@@ -5,6 +5,8 @@ const terminal1 = document.getElementById('terminal1');
 const terminal2 = document.getElementById('terminal2');
 const input = document.getElementById('input');
 
+fetchdata();
+
 input.addEventListener('keyup', function (event) {
   if (event.keyCode === 13) {
     event.preventDefault();
