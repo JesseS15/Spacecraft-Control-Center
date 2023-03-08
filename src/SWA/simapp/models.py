@@ -55,10 +55,10 @@ class Sim(models.Model):
     mission_script = models.ForeignKey(Mission, null=True, on_delete=models.CASCADE)
     
     flight_director = models.ManyToManyField("fo.FlightOperator", default='', verbose_name=("Flight Director"), blank=True)
-    #COMMS_fo = models.ManyToManyField("fo.FlightOperator", default='', verbose_name=("Comms Flight Operator"), blank=True)
-    #ACS_fo = models.ManyToManyField("fo.FlightOperator", default='', verbose_name=("ACS Flight Operator"), blank=True)
-    #EPS_fo = models.ManyToManyField("fo.FlightOperator", default='', verbose_name=("EPS Flight Operator"), blank=True)
-    #TCS_fo = models.ManyToManyField("fo.FlightOperator", default='', verbose_name=("TCS Flight Operator"), blank=True)
+    COMMS_fo = models.ManyToManyField("fo.FlightOperator", related_name="comms_fo",default='', verbose_name=("Comms Flight Operator"), blank=True)
+    ACS_fo = models.ManyToManyField("fo.FlightOperator", related_name="acs_fo",default='', verbose_name=("ACS Flight Operator"), blank=True)
+    EPS_fo = models.ManyToManyField("fo.FlightOperator", related_name="eps_fo",default='', verbose_name=("EPS Flight Operator"), blank=True)
+    TCS_fo = models.ManyToManyField("fo.FlightOperator", related_name="tcs_fo",default='', verbose_name=("TCS Flight Operator"), blank=True)
     sys_list = models.ManyToManyField(Subsystem, verbose_name=("Subsystem"), blank=True)
 
     display_buffer = models.ManyToManyField("DisplayBufferItem", verbose_name=("Display buffer"), blank = True)
