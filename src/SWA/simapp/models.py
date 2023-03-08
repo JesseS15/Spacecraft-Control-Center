@@ -49,18 +49,26 @@ class Mission(models.Model):
 
 ###############################################################################
 class Sim(models.Model):
+
     sim_name = models.CharField(default='', max_length=15)
     
     mission_script = models.ForeignKey(Mission, null=True, on_delete=models.CASCADE)
-
-    flight_operators = models.ManyToManyField("fo.FlightOperator", default='', verbose_name=("Flight Operators"), blank=True)
-
+    
+    flight_director = models.ManyToManyField("fo.FlightOperator", default='', verbose_name=("Flight Director"), blank=True)
+    #COMMS_fo = models.ManyToManyField("fo.FlightOperator", default='', verbose_name=("Comms Flight Operator"), blank=True)
+    #ACS_fo = models.ManyToManyField("fo.FlightOperator", default='', verbose_name=("ACS Flight Operator"), blank=True)
+    #EPS_fo = models.ManyToManyField("fo.FlightOperator", default='', verbose_name=("EPS Flight Operator"), blank=True)
+    #TCS_fo = models.ManyToManyField("fo.FlightOperator", default='', verbose_name=("TCS Flight Operator"), blank=True)
     sys_list = models.ManyToManyField(Subsystem, verbose_name=("Subsystem"), blank=True)
-    
+
     display_buffer = models.ManyToManyField("DisplayBufferItem", verbose_name=("Display buffer"), blank = True)
-    
+
+
     def __str__(self):
         self.sim_object = SimObject(self.sim_name)
         return self.sim_name
+#################################################
+
+    
     
     

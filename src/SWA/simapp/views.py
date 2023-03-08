@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 from .models import Sim, Mission
 from tc.forms import *
 from tc.models import *
-from tc.models import TestConductor
+from tc.models import TestConductor, Class
 import numpy
 from django.contrib.auth.decorators import login_required
 
@@ -25,17 +25,29 @@ def newSim(request,class_name):
         print(sims)
     else:
         sims=[]
+ 
+    this = Class.objects.all().filter(class_name = class_name).values_list('flight_operators', flat = True)
+    flight = numpy.asarray(this)
+    if (flight.all()!=None):
+        fos = ['']*(len(flight))
+        for m in range(len(flight)):
+            print(FlightOperator.objects.get(pk=flight[m]))
+            fos[m] = FlightOperator.objects.get(pk=flight[m])
+        print(fos)
+    else:
+        fos=[]
+    
     ######################################
     #form = SimCreationForm()
     if request.method == 'POST':
-        form = SimCreationForm(request.POST)
+        form = SimCreationForm(class_name,request.POST)
 
         if form.is_valid():
             sim_list = form.cleaned_data.get('sim_list')
             sim_name = form.cleaned_data.get('sim_name')
             #sys_list = form.cleaned_data.get('sys_list')
-            flight_operators = form.cleaned_data.get('flight_operators')
-
+            flight_director = form.cleaned_data.get('flight_director')
+            COMMS_fo = form.cleaned_data.get('COMMS_fo')
             sim = Sim.objects.create(sim_name = sim_name)
             Class.objects.get(class_name = class_name).sims.add(sim)
             #for x in sys_list:
@@ -44,9 +56,9 @@ def newSim(request,class_name):
                 #class_belong.sim_list.add(sim)
             #form.save_m2m()
             ##gohere
-            if (flight_operators != None):
-                for flight_operator in flight_operators:
-                    sim.flight_operators.add(flight_operator)
+            if (flight_director != None):
+                for flight_operator in flight_director:
+                    sim.flight_director.add(flight_operator)
                     flight_operator.sim_list.add(sim)
                     # Send notification
             """send_mail(
@@ -58,7 +70,7 @@ def newSim(request,class_name):
             )"""
             return redirect('../'+class_name)
             
-    form = SimCreationForm()
+    form = SimCreationForm(class_name)
     
     return render(request, 'tc/newSim.html', {"form": form, "class_name": class_name, "sims": sims})
 

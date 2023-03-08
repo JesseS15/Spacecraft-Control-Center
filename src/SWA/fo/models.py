@@ -7,6 +7,7 @@ class FlightOperator(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
+
     sim_list = models.ManyToManyField("simapp.Sim", verbose_name=("Sim"), blank=True)
     class_list = models.ManyToManyField("tc.Class", verbose_name = ("Class"), blank = True)
     def __str__(self):
