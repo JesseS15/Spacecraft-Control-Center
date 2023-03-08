@@ -1,4 +1,5 @@
-from Subsystem import Subsystem
+from Simulation.Subsystem import Subsystem
+
 class payload(Subsystem):
 
     payloadName = "Payload"

@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.db import models
+from Simulation.SimObject import SimObject
+from Simulation.MissionScript import MissionScript
 
 #settings.configure()
 
@@ -31,10 +33,7 @@ class Subsys_Menu(models.Model):
 class Subsystem(models.Model):
     sys_name = models.CharField(default='', max_length=15)
     button_value = models.BooleanField(default=True)
-    #subsys_console_buffer = models.ManyToManyField("Console_Buffer", verbose_name=("Subsystem Console buffer"))
     command_buffer = models.ManyToManyField("CommandBufferItem", verbose_name=("command buffer"), blank = True)
-
-    #subsys_menu = models.ManyToManyField("ACS_Menu", verbose_name=("ACS Menu"))
 
     def __str__(self):
         return self.sys_name
@@ -45,6 +44,7 @@ class Mission(models.Model):
     # Mission form needs to be created in tc forms
     
     def __str__(self):
+        self.mission_object = MissionScript(self.mission_name)
         return self.mission_name
 
 ###############################################################################
@@ -53,12 +53,14 @@ class Sim(models.Model):
     
     mission_script = models.ForeignKey(Mission, null=True, on_delete=models.CASCADE)
 
-    flight_operators = models.ManyToManyField("fo.FlightOperator", verbose_name=("Flight Operators"), blank=True)
+    flight_operators = models.ManyToManyField("fo.FlightOperator", default='', verbose_name=("Flight Operators"), blank=True)
 
     sys_list = models.ManyToManyField(Subsystem, verbose_name=("Subsystem"), blank=True)
     
     display_buffer = models.ManyToManyField("DisplayBufferItem", verbose_name=("Display buffer"), blank = True)
     
     def __str__(self):
+        self.sim_object = SimObject(self.sim_name)
         return self.sim_name
+    
     

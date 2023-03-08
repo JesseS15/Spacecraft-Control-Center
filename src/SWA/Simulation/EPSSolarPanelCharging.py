@@ -1,5 +1,5 @@
 import numpy as np
-import EPSInitializing as EPSStart
+from Simulation import EPSInitializing as EPSStart
 import time
 from timezonefinder import TimezoneFinder
 from datetime import datetime, time
@@ -42,17 +42,17 @@ MAIN FUNCTION:
 chargeRate = EPSStart.totalPower        #This is the maximum amount of charge the solar panels will draw, right now it's 2500
 CurrentCharge = 0.0
 batteryCapacity = 0.0
-timeOfLastCheck = np.floor(time.time())
+timeOfLastCheck = datetime.now()
 currentTime = 0.0
 tol = 1e-3
 
 def checkTime():
     global timeOfLastCheck
-    timeOfLastCheck = np.floor(time.time())
+    timeOfLastCheck = datetime.now()
 
 def checkCurrentTime():
     global currentTime
-    currentTime = np.floor(time.time())
+    currentTime = datetime.now()
 
 def checkTimeAtSimcraftPosition(lat, lng):
     tf = TimezoneFinder()

@@ -82,18 +82,3 @@ def newMission(request,class_name):
                 
     form2 = MissionCreationForm()
     return render(request, 'tc/newMission.html', {"form2":form2, "class_name": class_name})
-
-""" # Adding a command to the Command buffer thats in the Sim
-def addItemToCommandBuffer(request):
-    newItem = ''
-    if (checkInput):
-        cmd = models.new(Buffer_Item, buffer_item=newItem)
-        Sim.command_buffer.add(cmd)
-    else:
-        return "****INVALID INPUT****"
-    
-def displayACSMenu(request):
-    print(Sim.acs_subsys.main_menu)
-
-def checkInput(menu, userInput):
-    return True """

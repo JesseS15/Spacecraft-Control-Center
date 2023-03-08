@@ -1,4 +1,4 @@
-from Subsystem import Subsystem
+from Simulation.Subsystem import Subsystem
 
 class COMMS(Subsystem):
 

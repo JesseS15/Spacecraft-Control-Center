@@ -5,8 +5,8 @@ class Subsystem:
 
 	dicts = { }
 
-	def __init__(self, dictionaries):
-		self.dicts = dictionaries
+	def __init__(self, dicts):
+		self.dicts = dicts
 	
 	def getInput(self, userInput):
 		print("User input is:" + userInput)

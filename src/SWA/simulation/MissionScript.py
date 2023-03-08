@@ -1,4 +1,4 @@
-from Dicts import Dicts
+from Simulation.Dicts import Dicts
 
 class MissionScript:
 
@@ -10,12 +10,8 @@ class MissionScript:
     ####### CONSTRUCTOR ##########
     def __init__(self, mName):
         self.missionName = mName
-        self.createDicts()
-        print("New Mission Script Created")  
-
-    # Creating the simulation dictionaries
-    def createDicts(self):
         self.dicts = Dicts().dicts
+        print("New Mission Script Created")  
 
     # Setting the starting values of the dictionaries for missions of this type
     def initalizeDicts(self):
