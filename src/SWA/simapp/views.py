@@ -47,7 +47,7 @@ def newSim(request,class_name):
             if (flight_operators != None):
                 for flight_operator in flight_operators:
                     sim.flight_operators.add(flight_operator)
-                    #flight_operator.sim_list.add(sim)
+                    flight_operator.sim_list.add(sim)
                     # Send notification
             """send_mail(
                 'STaTE Simulation Added to Your Account',
