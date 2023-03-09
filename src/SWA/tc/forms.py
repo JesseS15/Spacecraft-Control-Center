@@ -33,21 +33,10 @@ class SimCreationForm(forms.ModelForm):
         super(SimCreationForm, self).__init__(*args, **kwargs)
         test = Class.objects.all().filter(class_name = class_name).values_list("flight_operators__user__username", flat="True")
         self.fields['flight_director'].queryset = test
-    def __init__(self, class_name, *args, **kwargs):
-        super(SimCreationForm, self).__init__(*args, **kwargs)
-        test = Class.objects.all().filter(class_name = class_name).values_list("flight_operators__user__username", flat="True")
         self.fields['COMMS_fo'].queryset = test
-    def __init__(self, class_name, *args, **kwargs):
-        super(SimCreationForm, self).__init__(*args, **kwargs)
-        test = Class.objects.all().filter(class_name = class_name).values_list("flight_operators__user__username", flat="True")
         self.fields['ACS_fo'].queryset = test
-    def __init__(self, class_name, *args, **kwargs):
-        super(SimCreationForm, self).__init__(*args, **kwargs)
-        test = Class.objects.all().filter(class_name = class_name).values_list("flight_operators__user__username", flat="True")
         self.fields['EPS_fo'].queryset = test
-    def __init__(self, class_name, *args, **kwargs):
-        super(SimCreationForm, self).__init__(*args, **kwargs)
-        test = Class.objects.all().filter(class_name = class_name).values_list("flight_operators__user__username", flat="True")
+
         self.fields['TCS_fo'].queryset = test
         #FlightOperator.objects.filter(user_class_list__icontains=class_name).values()
 
