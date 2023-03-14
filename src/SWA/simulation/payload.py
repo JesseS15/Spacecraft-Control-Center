@@ -1,4 +1,4 @@
-from Simulation.Subsystem import Subsystem
+from simulation.Subsystem import Subsystem
 
 class payload(Subsystem):
 

@@ -1,8 +1,8 @@
-from Simulation.MissionScript import MissionScript
-from Simulation.ACS import ACS
-from Simulation.TCS import TCS
-from Simulation.EPS import EPS
-from Simulation.COMMS import COMMS
+from simulation.MissionScript import MissionScript
+from simulation.ACS import ACS
+from simulation.TCS import TCS
+from simulation.EPS import EPS
+from simulation.COMMS import COMMS
 
 class SimObject():
 

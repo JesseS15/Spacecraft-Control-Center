@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% block start %}
 
-<link rel="stylesheet" href="../../../static/css/fosim.css">
+<link rel="stylesheet" href="../../../static/css/fosim_acs.css" >
 
 <!--<p id = "message">{{ sim }}<p>
 {% for sys in sim.sys_list.all %}
@@ -19,110 +19,126 @@
 
 </div>-->
 
-<div class="main-container">
-  <div class="navcontainer">
-    <nav class="nav">
-      <div class="nav-upper-options">
-        <div class="nav-option option1">
-          <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
-            class="nav-img"
-            alt="dashboard">
-          <h3> Altitude and Orbit Control</h3>
+<!-- left navigation bar -->
+<div class="main-container1">
+	<div class="navcontainerleft">
+	  <nav class="navleft">
+	
+		  <div class="navleft-option option1">
+			<img src= "../../../static/images/acs_icon.png" class="nav-img" alt="dashboard">
+			<h3> ACS </h3>
+		  </div>
+  
+		  <div class="navleft-option option2">
+			<img src=
+  "../../../static/images/eps_icon.png"
+			  class="nav-img"
+			  alt="articles">
+			<h3> EPS </h3>
+		  </div>
+  
+		  <div class="navleft-option option3">
+			<img src=
+  "../../../static/images/tcs_icon.png"
+			  class="nav-img"
+			  alt="repor">
+			<h3> TCS </h3>
+		  </div>
+  
+		  <div class="navleft-option option4">
+			<img src=
+  "../../../static/images/comms_icon.png"
+			  class="nav-img"
+			  alt="institution">
+			<h3> COMMs </h3>
+		  </div>
+  
+		  <div class="navleft-option option5">
+			<img src=
+  "../../../static/images/payload_icon.png"
+			  class="nav-img"
+			  alt="blog">
+			<h3> Payload </h3>
+		  </div>
+		</div>
+	  </nav>
+	</div>
+	  
+  <!-- body panels-->
+
+  
+  <div id="panelgrid">
+    <div id="item1">
+      <div class="panel-header">
+        <h1 class="panel-title">Attribute #1</h1>
         </div>
-
-        <div class="option2 nav-option">
-          <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
-            class="nav-img"
-            alt="articles">
-          <h3> Power Distrbution</h3>
+        <div class="panel-body">
+        <p></p>
         </div>
-
-        <div class="nav-option option3">
-          <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/5.png"
-            class="nav-img"
-            alt="repor">
-          <h3> Thermal Control</h3>
+    </div>
+    <div id="item2">
+      <div class="panel-header">
+        <h1 class="panel-title">Attribute #2</h1>
         </div>
-
-        <div class="nav-option option4">
-          <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/6.png"
-            class="nav-img"
-            alt="institution">
-          <h3> Data Comms</h3>
+        <div class="panel-body">
+        <p></p>
         </div>
-
-        <div class="nav-option option5">
-          <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210183323/10.png"
-            class="nav-img"
-            alt="blog">
-          <h3> Payload Control</h3>
+    </div>
+    <div id="item3">
+      <div class="panel-header">
+        <h1 class="panel-title">Attribute #3</h1>
         </div>
-
-
-      </div>
-    </nav>
-  </div>
-    
-  <div class="console-container">
-    <div class="console-header">
-      <h1 class="console-title">Live Console</h1>
+        <div class="panel-body">
+        <p></p>
+        </div>
     </div>
-    <div class="console-body">
-      
+    <div id="item4">
+      <div class="panel-header">
+        <h1 class="panel-title">Attribute #4</h1>
+        </div>
+        <div class="panel-body">
+        <p></p>
+        </div>
     </div>
-  </div>
-
-  <div class="chat-container">
-    <div class="chat-header">
-      <h1 class="chat-title">Group Chat</h1>
-    </div>
-    <div class="chat-body">
-      
+    <div id="item5">
+      <div class="panel-header">
+        <h1 class="panel-title">Attribute #5</h1>
+        </div>
+        <div class="panel-body">
+        <p></p>
+        </div>
     </div>
   </div>
-  <div class="blank-container">
-    <div class="blank-header">
-      <h1 class="blank-title">Blank</h1>
-    </div>
-    <div class="blank-body">
-      
-    </div>
-  </div>
-</div>
 
 
-<div class="resizable">
-  <div class="left-side">
-    <div class="title-wrapper">
-      <div class="title">{{ sim }}</div>
-    </div>
-    <div class="content-wrapper">
-      <div id="terminal1" class="terminal"></div>
-    </div>
-    <div class="input-container">
-    </div>
-  </div>
-  <div class="right-side">
-    <div class="title-wrapper">
-      <div class="title">Subsystem</div>
-    </div>
-    <div class="content-wrapper">
-      <div id="terminal2" class="terminal"></div>
-    </div>
-    <div class="input-container">
-      <input type="text" id="input" autofocus />
-    </div>
-  </div>
-  <div class="resizable-handle"></div>
-</div>
-
-
-<script src=  "/static/js/jquery.min.js"></script>
-<script src = "/static/js/testappsim.js"></script>
+  <!-- bottom console -->
+  <div class="resizable">
+	<div class="left-side">
+	  <div class="title-wrapper">
+		<div class="title">{{ sim }}</div>
+	  </div>
+	  <div class="content-wrapper">
+		<div id="terminal1" class="terminal"></div>
+	  </div>
+	  <div class="input-container">
+	  </div>
+	</div>
+	<div class="right-side">
+	  <div class="title-wrapper">
+		<div class="title">Subsystem</div>
+	  </div>
+	  <div class="content-wrapper">
+		<div id="terminal2" class="terminal"></div>
+	  </div>
+	  <div class="input-container">
+		<input type="text" id="input" autofocus />
+	  </div>
+	</div>
+	<div class="resizable-handle"></div>
+  </div> 
+  
+  <script src=  "/static/js/jquery.min.js"></script>
+  <script src = "/static/js/testappsim.js"></script>
+  
 
 {% endblock start %}

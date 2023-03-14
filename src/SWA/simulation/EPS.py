@@ -1,7 +1,7 @@
-from Simulation.Subsystem import Subsystem
-from Simulation import EPSSolarPanelCharging as Charging
-from Simulation import EPSInitializing as EPSStart
-from Simulation import EPSPowerDistribution as PD
+from simulation.Subsystem import Subsystem
+from simulation import EPSSolarPanelCharging as Charging
+from simulation import EPSInitializing as EPSStart
+from simulation import EPSPowerDistribution as PD
 
 class EPS(Subsystem):
 

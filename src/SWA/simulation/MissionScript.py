@@ -1,4 +1,4 @@
-from Simulation.Dicts import Dicts
+from simulation.Dicts import Dicts
 
 class MissionScript:
 
