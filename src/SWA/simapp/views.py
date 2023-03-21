@@ -46,7 +46,7 @@ def newSim(request,class_name):
             sim_list = form.cleaned_data.get('sim_list')
             sim_name = form.cleaned_data.get('sim_name')
             #sys_list = form.cleaned_data.get('sys_list')
-            flight_director = form.cleaned_data.get('flight_director')
+            fd = form.cleaned_data.get('flight_director__user__username')
             COMMS_fo = form.cleaned_data.get('COMMS_fo')
             sim = Sim.objects.create(sim_name = sim_name)
             Class.objects.get(class_name = class_name).sims.add(sim)
@@ -56,10 +56,12 @@ def newSim(request,class_name):
                 #class_belong.sim_list.add(sim)
             #form.save_m2m()
             ##gohere
-            if (flight_director != None):
-                for flight_operator in flight_director:
-                    sim.flight_director.add(flight_operator)
-                    flight_operator.sim_list.add(sim)
+            print(sim)
+            if fd.exists():
+                print("caryyyyy")
+                
+                #fd.sim_list.add(sim)
+                #for flight_operator in flight_director:
                     # Send notification
             """send_mail(
                 'STaTE Simulation Added to Your Account',

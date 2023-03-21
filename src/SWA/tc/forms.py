@@ -36,7 +36,6 @@ class SimCreationForm(forms.ModelForm):
         self.fields['COMMS_fo'].queryset = test
         self.fields['ACS_fo'].queryset = test
         self.fields['EPS_fo'].queryset = test
-
         self.fields['TCS_fo'].queryset = test
         #FlightOperator.objects.filter(user_class_list__icontains=class_name).values()
 
