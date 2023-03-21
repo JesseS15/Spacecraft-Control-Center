@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
-
+from simulation.SimObject import SimObject
+from simulation.MissionScript import MissionScript
 
 #settings.configure()
 
