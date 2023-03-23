@@ -1,5 +1,5 @@
 import numpy as np
-from simulation import EPSInitializing as EPSStart
+from Simulation import EPSInitializing as EPSStart
 import time
 from timezonefinder import TimezoneFinder
 from datetime import datetime, time
