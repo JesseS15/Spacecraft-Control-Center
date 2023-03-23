@@ -1,4 +1,4 @@
-from simulation import EPSSolarPanelCharging as Charging
+from Simulation import EPSSolarPanelCharging as Charging
 
 '''
 Goal:
