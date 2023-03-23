@@ -7,10 +7,13 @@ from .models import Sim, Mission
 from tc.forms import *
 from tc.models import *
 from tc.models import TestConductor, Class
-import numpy
+import numpy, random
 from django.contrib.auth.decorators import login_required
 from tc.forms import SimCreationForm
 from fo.models import FlightOperator
+from simulation.SimObject import SimObject
+
+All_Sims_Dict = { }
 
 ############################################################################
 @login_required(login_url='/login/')
@@ -55,7 +58,20 @@ def newSim(request,class_name):
             ACS_fo = form.cleaned_data.get('ACS_fo')
             EPS_fo = form.cleaned_data.get('EPS_fo')
             TCS_fo = form.cleaned_data.get('TCS_fo')
+            
+            ### Setting the unique number identifier for the SimObject object and models sim_identifier ###
+            unique_number = random.randint(10000,50000)
+            unique_check = False
+            while (unique_check == False):
+                if unique_number not in All_Sims_Dict:
+                    unique_check = True
+                    All_Sims_Dict[unique_number] = SimObject(simName=sim_name)
+
+            print(All_Sims_Dict)
+
             sim = Sim.objects.create(sim_name = sim_name)
+            sim.sim_identifier = unique_number
+
             sim.flight_director.set(flight_director)
             sim.COMMS_fo.set(COMMS_fo)
             sim.ACS_fo.set(ACS_fo)

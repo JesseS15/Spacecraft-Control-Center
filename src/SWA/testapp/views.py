@@ -11,12 +11,17 @@ from .forms import SimForm, MissionCreationForm
 
 from .models import Sim, DisplayBufferItem, Mission
 
-from tc.models import TestConductor
+from tc.models import TestConductor, Class
 
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 import json
 
+from simulation.SimObject import SimObject
+
+
+import random
+AllSims = { }
 ###############################################################################
 def index(request):
 
@@ -24,6 +29,18 @@ def index(request):
         return redirect('fo:home')
     else:
         return redirect('fo:login')
+    
+def loadAllClassSims():
+    group = Sim.objects.all().values_list('sim_identifier', flat=True)
+    data = numpy.asarray(group)
+    print(group)
+    if (data.all()!=None):
+        for e in range(len(data)):
+            sim = Sim.objects.get(pk=data[e])
+            sim_id = sim.sim_identifier
+            print('\n  SIM IDENTIFIER : ',sim_id,'\n')
+            AllSims[sim_id] = SimObject()
+    print(AllSims)
 
 ###############################################################################
 def testappHome(request):
@@ -46,10 +63,25 @@ def newSim(request):
         form = SimForm(request.POST)
 
         if form.is_valid():
+            #loadAllClassSims()
             sim_name = form.cleaned_data.get('sim_name')
+            
+            
+
+            unique_number = random.randint(10000,50000)
+            unique_check = False
+            while (unique_check == False):
+                if unique_number not in AllSims:
+                    unique_check = True
+                    AllSims[unique_number] = SimObject(simName=sim_name)
 
             sim = Sim.objects.create(sim_name = sim_name)
-            
+            sim.sim_identifier = unique_number
+            print('UNIWUE: ', sim.sim_identifier)
+            print(AllSims)
+            AllSims[unique_number].startSim()
+            print()
+
             init_display = DisplayBufferItem.objects.create(buffer_item = sim_name + ' initialized')
             sim.display_buffer.add(init_display)
 

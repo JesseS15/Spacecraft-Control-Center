@@ -1,7 +1,9 @@
 from django.conf import settings
 from django.db import models
+from simulation.SimObject import SimObject
 
 #settings.configure()
+
 
 
 ###############################################################################
@@ -61,11 +63,17 @@ class Sim(models.Model):
     sim_name = models.CharField(default='', max_length=15)
     # Verbose_name is the name it shows up on the admin page under Sim
 
+    #### THIS ONE
+    sim_identifier = models.IntegerField(default=0, blank=True, editable=False)
+    ####
+    
+
     command_buffer = models.ManyToManyField("CommandBufferItem", verbose_name=("command buffer"), blank = True)
     display_buffer = models.ManyToManyField("DisplayBufferItem", verbose_name=("display buffer"), blank = True)
-    
+
     def __str__(self):
         return self.sim_name
+    
 
 ###############################################################################
 class Mission(models.Model):

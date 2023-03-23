@@ -15,6 +15,7 @@ class SimObject():
 
     def __init__(self, simName):
         self.simName = simName
+        print('\n  !!! NEW SIM', simName, 'CREATED !!!\n')
 
     # Assinging a mission script to the sim
     # Setting dictionaries to the inital dictionaries set in the mission.

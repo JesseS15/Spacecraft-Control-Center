@@ -63,10 +63,10 @@ class Sim(models.Model):
     sys_list = models.ManyToManyField(Subsystem, verbose_name=("Subsystem"), blank=True)
 
     display_buffer = models.ManyToManyField("DisplayBufferItem", verbose_name=("Display buffer"), blank = True)
-        
+
+    sim_identifier = models.IntegerField(default=0, blank=True, editable=False)
 
     def __str__(self):
-        self.sim_object = SimObject(self.sim_name)
         return self.sim_name
 
 #################################################
