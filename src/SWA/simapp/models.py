@@ -1,10 +1,11 @@
 from django.conf import settings
 from django.db import models
-from simulation.SimObject import SimObject
-from simulation.MissionScript import MissionScript
-
+from Simulation.SimObject import SimObject
+from Simulation.MissionScript import MissionScript
 #settings.configure()
 
+#class emptyfd(models.Model):
+    #flight_director = models.ManyToManyField("fo.FlightOperator", related_name="flight_director",default='', verbose_name=("Flight Director"), blank=True)
 
 ###############################################################################
 class CommandBufferItem(models.Model):
@@ -46,15 +47,15 @@ class Mission(models.Model):
     def __str__(self):
         self.mission_object = MissionScript(self.mission_name)
         return self.mission_name
+##########################################################################
 
 ###############################################################################
 class Sim(models.Model):
 
     sim_name = models.CharField(default='', max_length=15)
-    
     mission_script = models.ForeignKey(Mission, null=True, on_delete=models.CASCADE)
-    
-    flight_director = models.ManyToManyField("fo.FlightOperator", default='', verbose_name=("Flight Director"), blank=True)
+
+    flight_director = models.ManyToManyField("fo.FlightOperator", related_name="flight_director",default='', verbose_name=("Flight Director"), blank=True)
     COMMS_fo = models.ManyToManyField("fo.FlightOperator", related_name="comms_fo",default='', verbose_name=("Comms Flight Operator"), blank=True)
     ACS_fo = models.ManyToManyField("fo.FlightOperator", related_name="acs_fo",default='', verbose_name=("ACS Flight Operator"), blank=True)
     EPS_fo = models.ManyToManyField("fo.FlightOperator", related_name="eps_fo",default='', verbose_name=("EPS Flight Operator"), blank=True)
@@ -62,11 +63,12 @@ class Sim(models.Model):
     sys_list = models.ManyToManyField(Subsystem, verbose_name=("Subsystem"), blank=True)
 
     display_buffer = models.ManyToManyField("DisplayBufferItem", verbose_name=("Display buffer"), blank = True)
-
+        
 
     def __str__(self):
         self.sim_object = SimObject(self.sim_name)
         return self.sim_name
+
 #################################################
 
     

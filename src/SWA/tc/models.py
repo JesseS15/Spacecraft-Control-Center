@@ -29,7 +29,7 @@ class Class(models.Model):
 
     def __str__(self):
         return self.class_name
-
+    
     class Meta:
        verbose_name_plural = "Classes"
 #############################################################

@@ -24,23 +24,29 @@ class ClassForm(forms.ModelForm):
 ###############################################################################
 class SimCreationForm(forms.ModelForm):
 
-    flight_dir = forms.SelectMultiple()
-    class Meta:
-        model = Sim
-        fields = ['sim_name', 'flight_director', 'COMMS_fo', 'ACS_fo', 'TCS_fo', 'EPS_fo']
-
+    #flight_director = forms.ModelChoiceField(queryset=None)
+    #flight_director = forms.MultipleChoiceField(widget=forms.SelectMultiple,label="Select the devices you want to delete:")
     def __init__(self, class_name, *args, **kwargs):
-        super(SimCreationForm, self).__init__(*args, **kwargs)
-        test = Class.objects.all().filter(class_name = class_name).values_list("flight_operators__user__username", flat="True")
+        super().__init__(*args, **kwargs)
+        #test = Class.objects.all().filter(class_name = class_name).values_list("flight_operators__user__username", flat="True")
+
+        testa = Class.objects.get(class_name = class_name)
+        test = testa.flight_operators.all()
+
         self.fields['flight_director'].queryset = test
         self.fields['COMMS_fo'].queryset = test
         self.fields['ACS_fo'].queryset = test
         self.fields['EPS_fo'].queryset = test
-
         self.fields['TCS_fo'].queryset = test
+        #self.test = test
+   
+    #flight_director = forms.MultipleChoiceField(widget=forms.SelectMultiple,label="Select the devices you want to delete:", choices = test)
+
+    class Meta:
+        model = Sim
+        fields = ['sim_name', 'flight_director', 'COMMS_fo','ACS_fo', 'EPS_fo', 'TCS_fo']
+    
         #FlightOperator.objects.filter(user_class_list__icontains=class_name).values()
-
-
 ###################################################################3
 class MissionCreationForm(forms.Form):
     mission_name = forms.CharField(max_length = 20)
