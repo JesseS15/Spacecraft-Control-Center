@@ -55,3 +55,5 @@ virtualenv==20.18.0
 websocket-client==1.5.1
 wsproto==1.2.0
 zope.interface==5.5.2
+pytz==2022.7.1
+timezonefinder==6.1.9
