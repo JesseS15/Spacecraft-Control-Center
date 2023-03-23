@@ -69,6 +69,9 @@ def register(request):
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password1')
             # Send registration confirmation
+            user = authenticate(request, username = username, password = password)
+            form = login(request, user)
+            FlightOperator.objects.create(user = user)
             send_mail(
                 'STaTE Registration',
                 'Thank you, ' + username + ' for registering to STaTE!',
@@ -76,9 +79,6 @@ def register(request):
                 [email],
                 fail_silently=False,
             )
-            user = authenticate(request, username = username, password = password)
-            form = login(request, user)
-            FlightOperator.objects.create(user = user)
             return redirect('fo:home')
     else:
         form = UserRegisterForm()

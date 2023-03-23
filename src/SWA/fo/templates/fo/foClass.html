@@ -27,7 +27,7 @@
                 </thead>
                  {% for sim in sims %}
                 <tr style="font-size:16px; max-height: 20px; overflow-y: scroll;">
-                  <td style="font-size:16px;"><a class = "simlist" href="{% url 'tc:sim' sim %}">{{ sim }}</a></td>
+                  <td style="font-size:16px;"><a class = "simlist" href="{% url 'fo:sim' sim %}">{{ sim }}</a></td>
                   <td style="font-size:16px;"></td>
                   <td style="font-size:16px;"><button type = "button">Manage</button><button type = "button" class="op">Operators</button><button type = "button" class="settings">Reports</button></td>
                 </tr>

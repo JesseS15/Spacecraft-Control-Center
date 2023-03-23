@@ -50,7 +50,7 @@ def foHome(request):
 @login_required(login_url='/login/')
 def foSim(request, simkey):
 
-    simobj = get_object_or_404(Sim, pk=simkey)
+    simobj = get_object_or_404(Sim, sim_name=simkey)
     flightOperator = get_object_or_404(FlightOperator, user = request.user)
     if simobj in flightOperator.sim_list.all():
         return render(request, 'fo/foSim.html', {'sim': simobj, 'simkey': simkey})
@@ -80,7 +80,7 @@ def joinClass(request):
 def submit(request, simkey):
     if request.method == 'GET':
            command = request.GET.get('cmd')  # String
-           sim = Sim.objects.get(pk = simkey)
+           sim = Sim.objects.get(sim_name = simkey)
            #sim.command = command
            #sim.save()
            #print("py " + command)
@@ -91,7 +91,7 @@ def submit(request, simkey):
 ###############################################################################
 def fetchdata(request, simkey):
     if request.method == 'GET':
-        simobj = Sim.objects.get(pk = simkey)
+        simobj = Sim.objects.get(sim_name = simkey)
         return HttpResponse("todo") # Sending an success response
     else:
         return HttpResponse("Request method is not GET")
