@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import UserCreationForm
 
 from fo.models import FlightOperator
-from simapp.models import Subsystem, Sim
+from simapp.models import Subsystem, Sim, Mission
 from .models import Class, TestConductor
  
  ###############################################################################
@@ -35,7 +35,6 @@ class SimCreationForm(forms.ModelForm):
         missionA = TestConductor.objects.get().missions.all()
 
         self.fields['mission_script'].queryset = missionA
-
         self.fields['flight_director'].queryset = test
         self.fields['COMMS_fo'].queryset = test
         self.fields['ACS_fo'].queryset = test
@@ -51,8 +50,12 @@ class SimCreationForm(forms.ModelForm):
     
         #FlightOperator.objects.filter(user_class_list__icontains=class_name).values()
 ###################################################################3
-class MissionCreationForm(forms.Form):
+class MissionCreationForm(forms.ModelForm):
     mission_name = forms.CharField(max_length = 20)
-    
+
+    class Meta:
+        model = Mission
+        fields = ['mission_name', 'final_roll', 'final_pitch', 'final_yaw', 'start_longitude', 'final_longitude']
+
 class SubsystemForm(forms.Form):
     sys_name = forms.CharField(max_length=15)

@@ -8,9 +8,10 @@ class SimObject():
 
     simName = ""
     mission = ""
-   
+    dictObject = Dicts()
     # Creats a new instance of the Attribute Dictionaries
-    attributeDict = Dicts().dicts
+    attributeDict = dictObject.dicts
+    finalDict = dictObject.finalValues
 
     # All the subsystem objects
     subsystems = { "ACS": 0, "TCS": 0, "COMMS": 0, "EPS": 0 }

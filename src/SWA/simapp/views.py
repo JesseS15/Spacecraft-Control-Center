@@ -20,6 +20,15 @@ All_Sims_Dict = { }
 ############################################################################
 @login_required(login_url='/login/')
 def newSim(request,class_name):
+
+    missions = TestConductor.objects.get().missions.all()
+    marray = numpy.asarray(missions)
+    print('   MISSIONGS ',marray)
+    if (len(marray)==0):
+        return redirect('../'+class_name+'/newMission')
+
+
+
     print("hi"+class_name)
     group = Class.objects.all().filter(class_name = class_name).values_list('sims', flat=True)
     data = numpy.asarray(group)
@@ -44,6 +53,8 @@ def newSim(request,class_name):
     else:
         fos=[]
 
+       
+
     ######################################
     #form = SimCreationForm()
     if request.method == 'POST':
@@ -55,6 +66,7 @@ def newSim(request,class_name):
            # sim_list = form.cleaned_data.get('sim_list')y
             sim_name = form.cleaned_data.get('sim_name')
             #sys_list = form.cleaned_data.get('sys_list')
+            mission = form.cleaned_data.get('mission_script')
             flight_director = form.cleaned_data.get('flight_director')
             COMMS_fo = form.cleaned_data.get('COMMS_fo')
             ACS_fo = form.cleaned_data.get('ACS_fo')
@@ -64,18 +76,28 @@ def newSim(request,class_name):
             RegularFunctions.repopulateAllSimsDict(All_Sims_Dict)
             unique_number = RegularFunctions.getUniqueValue(All_Sims_Dict)
             All_Sims_Dict[unique_number] = SimObject(simName=sim_name)
+            
 
             print('Dictionary: ',All_Sims_Dict)
 
-            sim = Sim.objects.create(sim_name = sim_name)
+            sim = Sim.objects.create(sim_name = sim_name, mission_script = mission)
             sim.sim_identifier = unique_number
             print('SIM ID views: ',sim.sim_identifier)
 
             sim.flight_director.set(flight_director)
+            #sim.mission_script = mission
             sim.COMMS_fo.set(COMMS_fo)
             sim.ACS_fo.set(ACS_fo)
             sim.TCS_fo.set(EPS_fo)
             sim.EPS_fo.set(TCS_fo)
+
+            m = sim.mission_script
+            final_values = {}
+            final_values["roll"] = m.final_roll
+            final_values["pitch"] = m.final_pitch
+            final_values["yaw"] = m.final_yaw
+            final_values["longitude"] = m.final_longitude
+            All_Sims_Dict[sim.sim_identifier].finalDict = final_values
 
             Class.objects.get(class_name = class_name).sims.add(sim)
             flight_operators = FlightOperator.objects.all()
@@ -123,8 +145,20 @@ def newMission(request,class_name):
         if form2.is_valid():
             
             mission_name = form2.cleaned_data.get('mission_name')
+            final_roll = form2.cleaned_data.get('final_roll')
+            final_pitch = form2.cleaned_data.get('final_pitch')
+            final_yaw = form2.cleaned_data.get('final_yaw')
+            final_longitude = form2.cleaned_data.get('final_longitude')
+            start_longitude = form2.cleaned_data.get('start_longitude')
 
             mission = Mission.objects.create(mission_name = mission_name)
+
+            mission.final_roll = final_roll
+            mission.final_pitch = final_pitch
+            mission.final_yaw = final_yaw
+            mission.final_longitude = final_longitude
+            mission.start_longitude = start_longitude
+
             TestConductor.objects.get().missions.add(mission)
             
             return redirect('../'+class_name)

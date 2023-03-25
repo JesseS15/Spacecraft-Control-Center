@@ -2,6 +2,13 @@ from django.conf import settings
 from django.db import models
 from simulation.SimObject import SimObject
 
+import random
+from django.core.validators import MinValueValidator, MaxValueValidator
+#settings.configure()
+
+#class emptyfd(models.Model):
+    #flight_director = models.ManyToManyField("fo.FlightOperator", related_name="flight_director",default='', verbose_name=("Flight Director"), blank=True)
+
 ###############################################################################
 class CommandBufferItem(models.Model):
     buffer_item = models.CharField(default='', max_length=10)
@@ -28,17 +35,28 @@ class Subsystem(models.Model):
 ###############################################################################
 class Mission(models.Model):
     mission_name = models.CharField(default='', max_length=15)
-    # Mission form needs to be created in tc forms
+    
+    # Roll range: -180, 180
+    # Pitch range: -90, 90
+    # Yaw rangeL -180, 180
+    final_roll = models.IntegerField(default=random.randint(-180,180), validators=[MinValueValidator(-180),MaxValueValidator(180)], blank=True)
+    final_pitch = models.IntegerField(default=random.randint(-90,90), validators=[MinValueValidator(-90),MaxValueValidator(90)], blank=True)
+    final_yaw = models.IntegerField(default=random.randint(-180,180), validators=[MinValueValidator(-180),MaxValueValidator(180)], blank=True)
+
+    # 0 is prime meridian
+    start_longitude = models.IntegerField(default=random.randint(-180,180), validators=[MinValueValidator(-180),MaxValueValidator(180)], blank=True)
+    final_longitude = models.IntegerField(default=random.randint(-180,180), validators=[MinValueValidator(-180),MaxValueValidator(180)], blank=True)
     
     def __str__(self):
         return self.mission_name
+    
 ##########################################################################
 
 ###############################################################################
 class Sim(models.Model):
 
     sim_name = models.CharField(default='', max_length=15)
-    mission_script = models.ForeignKey(Mission, null=True, on_delete=models.CASCADE, blank=True)
+    mission_script = models.ForeignKey(Mission, null=True, on_delete=models.CASCADE)
 
     flight_director = models.ManyToManyField("fo.FlightOperator", related_name="flight_director",default='', verbose_name=("Flight Director"), blank=True)
     COMMS_fo = models.ManyToManyField("fo.FlightOperator", related_name="comms_fo",default='', verbose_name=("Comms Flight Operator"), blank=True)

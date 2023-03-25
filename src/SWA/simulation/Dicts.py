@@ -58,6 +58,13 @@ class Dicts():
 		"tempRateOfChange": 0.0
 	}
 
+	finalValues = {
+		"roll": 0,
+		"pitch": 0,
+		"yaw": 0,
+		"longitude": 0
+	}
+
 	dicts = { 
 		"ACS": ACSDict,
 		"EPS": EPSDict,

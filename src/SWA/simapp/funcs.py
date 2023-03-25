@@ -2,7 +2,7 @@ from simapp.models import Sim
 from simulation.SimObject import SimObject
 import random
 
-def repopulatAllSimsDict(all_sims_dict):
+def repopulateAllSimsDict(all_sims_dict):
     ## Repopulating the sim dictionary if it is empty and there are no sims in the dictionary
     sims = Sim.objects.all()
     if ((sims != None) and (len(all_sims_dict) == 0)):
@@ -21,3 +21,6 @@ def getUniqueValue(all_sims_dict):
         if unique_number not in all_sims_dict:
             unique_check = True
     return unique_number
+
+
+
