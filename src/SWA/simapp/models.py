@@ -53,7 +53,7 @@ class Mission(models.Model):
 class Sim(models.Model):
 
     sim_name = models.CharField(default='', max_length=15)
-    mission_script = models.ForeignKey(Mission, null=True, on_delete=models.CASCADE)
+    mission_script = models.ForeignKey(Mission, null=True, on_delete=models.CASCADE, blank=True)
 
     flight_director = models.ManyToManyField("fo.FlightOperator", related_name="flight_director",default='', verbose_name=("Flight Director"), blank=True)
     COMMS_fo = models.ManyToManyField("fo.FlightOperator", related_name="comms_fo",default='', verbose_name=("Comms Flight Operator"), blank=True)
@@ -64,7 +64,7 @@ class Sim(models.Model):
 
     display_buffer = models.ManyToManyField("DisplayBufferItem", verbose_name=("Display buffer"), blank = True)
 
-    sim_identifier = models.IntegerField(default=0, blank=True, editable=False)
+    sim_identifier = models.IntegerField(default=0, blank=True)
 
     def __str__(self):
         return self.sim_name

@@ -71,40 +71,6 @@
         </div>
         </div>
       </div>  
-  <h3>Active Simulations:</h3>
-  <ul style="list-style-type:none;padding: 0">
-    {% for sim in flightOperator.sim_list.all %}
-
-      <li><a href="{% url 'fo:sim' sim.pk %}">{{ sim }}</a></li>
-
-    {% endfor %}
-  
-  </ul>
-  <div class="console-container">
-    <div class="console-header">
-      <h1 class="console-title">Live Console</h1>
-    </div>
-    <div class="console-body">
-      
-    </div>
-  </div>
-
-  <div class="chat-container">
-    <div class="chat-header">
-      <h1 class="chat-title">Group Chat</h1>
-    </div>
-    <div class="chat-body">
-      
-    </div>
-  </div>
-  <div class="blank-container">
-    <div class="blank-header">
-      <h1 class="blank-title">Blank</h1>
-    </div>
-    <div class="blank-body">
-      
-    </div>
-  </div>
 
 </center>
 

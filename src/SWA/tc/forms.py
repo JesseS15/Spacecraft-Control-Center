@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 from fo.models import FlightOperator
 from simapp.models import Subsystem, Sim
-from .models import Class, Sim
+from .models import Class, TestConductor
  
  ###############################################################################
 class UserRegisterForm(UserCreationForm):
@@ -32,6 +32,9 @@ class SimCreationForm(forms.ModelForm):
 
         testa = Class.objects.get(class_name = class_name)
         test = testa.flight_operators.all()
+        missionA = TestConductor.objects.get().missions.all()
+
+        self.fields['mission_script'].queryset = missionA
 
         self.fields['flight_director'].queryset = test
         self.fields['COMMS_fo'].queryset = test
@@ -44,7 +47,7 @@ class SimCreationForm(forms.ModelForm):
 
     class Meta:
         model = Sim
-        fields = ['sim_name', 'flight_director', 'COMMS_fo','ACS_fo', 'EPS_fo', 'TCS_fo']
+        fields = ['sim_name', 'mission_script', 'flight_director', 'COMMS_fo','ACS_fo', 'EPS_fo', 'TCS_fo']
     
         #FlightOperator.objects.filter(user_class_list__icontains=class_name).values()
 ###################################################################3

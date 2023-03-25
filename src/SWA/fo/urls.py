@@ -9,7 +9,8 @@ urlpatterns = [
     path('home/', views.foHome, name ='home'),
     path('join/', views.joinClass, name ='join'),
     path('home/<str:class_name>', views.foClass, name ='classHome'),
-    path('<str:simkey>/', views.foSim, name ='sim'),
+    path('<str:simkey>/', views.acs, name ='acs'),
+    path('<str:simkey>/', views.eps, name ='eps'),
     path('<str:simkey>/fetchdata/', views.fetchdata, name='fetchdata'),
     path('<str:simkey>/submit', views.submit, name='submit'),
 ]

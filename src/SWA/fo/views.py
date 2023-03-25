@@ -48,15 +48,25 @@ def foHome(request):
 
 ###############################################################################
 @login_required(login_url='/login/')
-def foSim(request, simkey):
+def acs(request, simkey):
 
     simobj = get_object_or_404(Sim, sim_name=simkey)
     flightOperator = get_object_or_404(FlightOperator, user = request.user)
     if simobj in flightOperator.sim_list.all():
-        return render(request, 'fo/foSim.html', {'sim': simobj, 'simkey': simkey})
+        return render(request, 'fo/acs.html', {'sim': simobj, 'simkey': simkey})
     else:
         return redirect('fo:home')
+###############################################################################
+@login_required(login_url='/login/')
+def eps(request, simkey):
 
+    simobj = get_object_or_404(Sim, sim_name=simkey)
+    flightOperator = get_object_or_404(FlightOperator, user = request.user)
+    if simobj in flightOperator.sim_list.all():
+        return render(request, 'fo/eps.html', {'sim': simobj, 'simkey': simkey})
+    else:
+        return redirect('fo:home')
+    
 ###############################################################################
 def joinClass(request):
     
