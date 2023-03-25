@@ -13,6 +13,8 @@ from tc.forms import SimCreationForm
 from fo.models import FlightOperator
 from simulation.SimObject import SimObject
 
+import simapp.funcs as RegularFunctions
+
 All_Sims_Dict = { }
 
 ############################################################################
@@ -58,19 +60,16 @@ def newSim(request,class_name):
             ACS_fo = form.cleaned_data.get('ACS_fo')
             EPS_fo = form.cleaned_data.get('EPS_fo')
             TCS_fo = form.cleaned_data.get('TCS_fo')
-            
-            ### Setting the unique number identifier for the SimObject object and models sim_identifier ###
-            unique_number = random.randint(10000,50000)
-            unique_check = False
-            while (unique_check == False):
-                if unique_number not in All_Sims_Dict:
-                    unique_check = True
-                    All_Sims_Dict[unique_number] = SimObject(simName=sim_name)
 
-            print(All_Sims_Dict)
+            RegularFunctions.repopulateAllSimsDict(All_Sims_Dict)
+            unique_number = RegularFunctions.getUniqueValue(All_Sims_Dict)
+            All_Sims_Dict[unique_number] = SimObject(simName=sim_name)
+
+            print('Dictionary: ',All_Sims_Dict)
 
             sim = Sim.objects.create(sim_name = sim_name)
             sim.sim_identifier = unique_number
+            print('SIM ID views: ',sim.sim_identifier)
 
             sim.flight_director.set(flight_director)
             sim.COMMS_fo.set(COMMS_fo)
@@ -132,3 +131,5 @@ def newMission(request,class_name):
                 
     form2 = MissionCreationForm()
     return render(request, 'tc/newMission.html', {"form2":form2, "class_name": class_name})
+
+#########################################################################################################

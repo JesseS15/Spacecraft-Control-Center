@@ -45,7 +45,6 @@ class Mission(models.Model):
     # Mission form needs to be created in tc forms
     
     def __str__(self):
-        self.mission_object = MissionScript(self.mission_name)
         return self.mission_name
 ##########################################################################
 
