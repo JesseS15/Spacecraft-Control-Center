@@ -1,11 +1,6 @@
 from django.conf import settings
 from django.db import models
 from simulation.SimObject import SimObject
-from simulation.MissionScript import MissionScript
-#settings.configure()
-
-#class emptyfd(models.Model):
-    #flight_director = models.ManyToManyField("fo.FlightOperator", related_name="flight_director",default='', verbose_name=("Flight Director"), blank=True)
 
 ###############################################################################
 class CommandBufferItem(models.Model):
@@ -20,15 +15,6 @@ class DisplayBufferItem(models.Model):
     print(buffer_item)
     def __str__(self):
         return self.buffer_item
-
-###############################################################################
-class Subsys_Menu(models.Model):
-    main_menu = {}
-    sub_menu_1 = {}
-    sub_menu_2 = {}
-    sub_menu_3 = {}
-    def __str__(self):
-        return self.main_menu
     
 ###############################################################################
 class Subsystem(models.Model):

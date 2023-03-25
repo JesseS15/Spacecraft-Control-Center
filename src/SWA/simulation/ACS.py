@@ -1,25 +1,7 @@
-
 from simulation.Subsystem import Subsystem
 import random
 
 class ACS(Subsystem):
-
-    isWorking = False
-    isActive = False
-    hasPower = False
-    powerUsage = 0.0
-    powerRange = [0,10]
-    tempAcceptable = False
-    tempValue = 0.0
-    tempRange = [0,10]
-    altitude = 0.0
-    orbit = 0.0
-    roll = random.randint(-180,180)
-    pitch = random.randint(-90,90)
-    yaw = random.randint(-180,180)
-    finalRoll = 0
-    finalPitch = 0
-    finalYaw = 0
 
     def __init__(self, dicts):
         self.dicts = dicts

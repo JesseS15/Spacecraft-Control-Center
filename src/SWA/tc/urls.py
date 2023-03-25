@@ -11,9 +11,7 @@ urlpatterns = [
     path('home/', views.tcHome, name ='home'),
     path('home/<str:class_name>/newMission', simappViews.newMission, name='new'),
     path('home/<str:class_name>/newSim', simappViews.newSim, name='new'),
-    #path('addClass/', views.addClass, name ='addClass'),# ##unused because moved##
     path('home/<str:class_name>', views.classHome, name='classHome'),
-    #path('create/<str:class_name>', views.createSim, name='createSim'),# ##unused because moved##
     path('<str:sim>/', views.tcSim, name ='sim'),
     
 ]
