@@ -14,6 +14,7 @@ from fo.models import FlightOperator
 from simulation.SimObject import SimObject
 
 import simapp.funcs as RegularFunctions
+import threading
 
 All_Sims_Dict = { }
 
@@ -61,9 +62,11 @@ def newSim(request,class_name):
         form = SimCreationForm(class_name, request.POST)
         
         if form.is_valid():
+            
+            # Get sim values from form
             #form.save()
             print(form.cleaned_data)
-           # sim_list = form.cleaned_data.get('sim_list')y
+            # sim_list = form.cleaned_data.get('sim_list')y
             sim_name = form.cleaned_data.get('sim_name')
             #sys_list = form.cleaned_data.get('sys_list')
             mission = form.cleaned_data.get('mission_script')
@@ -73,16 +76,17 @@ def newSim(request,class_name):
             EPS_fo = form.cleaned_data.get('EPS_fo')
             TCS_fo = form.cleaned_data.get('TCS_fo')
 
+            # Create new Sim Database object
+            sim = Sim.objects.create(sim_name = sim_name, mission_script = mission)
+
+            # Create and start new sim thread
+            simThread = SimObject(simName=sim_name)
+            simThread.start()
             RegularFunctions.repopulateAllSimsDict(All_Sims_Dict)
-            unique_number = RegularFunctions.getUniqueValue(All_Sims_Dict)
-            All_Sims_Dict[unique_number] = SimObject(simName=sim_name)
-            
+            All_Sims_Dict[sim.sim_identifier] = simThread
+            All_Sims_Dict[sim.sim_identifier].check()
 
             print('Dictionary: ',All_Sims_Dict)
-
-            sim = Sim.objects.create(sim_name = sim_name, mission_script = mission)
-            sim.sim_identifier = unique_number
-            print('SIM ID views: ',sim.sim_identifier)
 
             sim.flight_director.set(flight_director)
             #sim.mission_script = mission
@@ -120,8 +124,8 @@ def newSim(request,class_name):
             if (EPS_fo != None):
                 for x in flight_operators:
                     x.sim_list.add(sim)
-    
-                   # Send notification
+
+            # Send notification
             """send_mail(
                 'STaTE Simulation Added to Your Account',
                 'A new simulation, ' + sim.sim_name + ', has been added to your STaTE account.',

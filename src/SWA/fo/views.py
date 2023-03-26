@@ -15,6 +15,7 @@ from simapp.models import Sim, Subsystem
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 import json
+import threading
 
 ###############################################################################
 def index(request):
@@ -53,7 +54,8 @@ def acs(request, simkey):
     simobj = get_object_or_404(Sim, sim_name=simkey)
     flightOperator = get_object_or_404(FlightOperator, user = request.user)
     if simobj in flightOperator.sim_list.all():
-        return render(request, 'fo/acs.html', {'sim': simobj, 'simkey': simkey})
+        subsystem = _get_fo_subsystem(simobj, flightOperator)
+        return render(request, 'fo/acs.html', {'sim': simobj, 'simkey': simkey, 'flightoperator': flightOperator, 'subsystem': subsystem})
     else:
         return redirect('fo:home')
 ###############################################################################
@@ -102,6 +104,10 @@ def submit(request, simkey):
 def fetchdata(request, simkey):
     if request.method == 'GET':
         simobj = Sim.objects.get(sim_name = simkey)
+        thread_id = simobj.sim_identifier
+        for thread in threading.enumerate():
+            if thread.ident == thread_id:
+                thread.check()  # Call a method on the thread object
         return HttpResponse("todo") # Sending an success response
     else:
         return HttpResponse("Request method is not GET")
@@ -119,3 +125,23 @@ def foClass(request, class_name):
             sims.append(sim)
 
     return render(request, 'fo/foClass.html', {'sims':sims})
+
+def _get_fo_subsystem(simobj, flightOperator):
+    if simobj.flight_director.all():
+        if flightOperator == simobj.flight_director.all()[0]:
+            subsystem = 'DIRECTOR'
+    if simobj.COMMS_fo.all():
+        if flightOperator == simobj.COMMS_fo.all()[0]:
+            subsystem = 'Comms'
+    if simobj.ACS_fo.all():
+        if flightOperator == simobj.ACS_fo.all()[0]:
+            subsystem = 'ACS'
+    if simobj.EPS_fo.all():
+        if flightOperator == simobj.EPS_fo.all()[0]:
+            subsystem = 'EPS'
+    if simobj.TCS_fo.all():   
+        if flightOperator == simobj.TCS_fo.all()[0]:
+            subsystem = 'TCS'
+    if subsystem == None:
+        subsystem = 'UNKNOWN'
+    return subsystem

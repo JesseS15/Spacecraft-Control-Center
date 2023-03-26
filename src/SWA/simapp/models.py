@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.db import models
-from simulation.SimObject import SimObject
 
 import random
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -49,8 +48,6 @@ class Mission(models.Model):
     
     def __str__(self):
         return self.mission_name
-    
-##########################################################################
 
 ###############################################################################
 class Sim(models.Model):

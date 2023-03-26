@@ -3,70 +3,8 @@
 {% block start %}
 
 <link rel="stylesheet" href="../../../static/css/fosim_acs.css" >
-
-<!--<p id = "message">{{ sim }}<p>
-{% for sys in sim.sys_list.all %}
-
-  <div style="background-color:Red; border-radius: 25px;height: 15%;width: 25vw;display: inline-block;">
-    <center>
-      <p>{{ sys }}</p>
-      <input type="{{ sys.input }}" class='syscheck' id="{{ sys.pk }}">
-      <p id="{{ sys.pk }}" class = "val" >Value: {{ sys.value }}</p>
-      <input type="submit" class='submit' id="{{ sys.pk }}" syscheck-id="{{ sys.pk }}">
-    </center>
-  </div>
-{% endfor %}
-
-</div>-->
-
-<!-- left navigation bar -->
-<div class="main-container1">
-	<div class="navcontainerleft">
-	  <nav class="navleft">
-	
-		  <div class="navleft-option option1">
-			<img src= "../../../static/images/acs_icon.png" class="nav-img" alt="dashboard">
-			<h3> penis </h3>
-		  </div>
-  
-		  <div class="navleft-option option2">
-			<img src=
-  "../../../static/images/eps_icon.png"
-			  class="nav-img"
-			  alt="articles">
-			<h3> EPS </h3>
-		  </div>
-  
-		  <div class="navleft-option option3">
-			<img src=
-  "../../../static/images/tcs_icon.png"
-			  class="nav-img"
-			  alt="repor">
-			<h3> TCS </h3>
-		  </div>
-  
-		  <div class="navleft-option option4">
-			<img src=
-  "../../../static/images/comms_icon.png"
-			  class="nav-img"
-			  alt="institution">
-			<h3> COMMs </h3>
-		  </div>
-  
-		  <div class="navleft-option option5">
-			<img src=
-  "../../../static/images/payload_icon.png"
-			  class="nav-img"
-			  alt="blog">
-			<h3> Payload </h3>
-		  </div>
-		</div>
-	  </nav>
-	</div>
 	  
   <!-- body panels-->
-
-  
   <div id="panelgrid">
     <div id="item1">
       <div class="panel-header">
@@ -110,35 +48,4 @@
     </div>
   </div>
 
-
-  <!-- bottom console -->
-  <div class="resizable">
-	<div class="left-side">
-	  <div class="title-wrapper">
-		<div class="title">{{ sim }}</div>
-	  </div>
-	  <div class="content-wrapper">
-		<div id="terminal1" class="terminal"></div>
-	  </div>
-	  <div class="input-container">
-	  </div>
-	</div>
-	<div class="right-side">
-	  <div class="title-wrapper">
-		<div class="title">Subsystem</div>
-	  </div>
-	  <div class="content-wrapper">
-		<div id="terminal2" class="terminal"></div>
-	  </div>
-	  <div class="input-container">
-		<input type="text" id="input" autofocus />
-	  </div>
-	</div>
-	<div class="resizable-handle"></div>
-  </div> 
-  
-  <script src=  "/static/js/jquery.min.js"></script>
-  <script src = "/static/js/testappsim.js"></script>
-  
-
-{% endblock start %}
+{% endblock body %}
