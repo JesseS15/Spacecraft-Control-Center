@@ -23,6 +23,11 @@ class EPS(Subsystem):
         self.checks = {'Uplink' : random.choice([True, False]),
                        'Bus Connection' : random.choice([True, False]),
                        'Articulation Gear' : random.choice([True, False])}
+        self.params['simcraft power restrictions']['ACS'] = self.params['total power'] * (self.dicts["ACS"]['max power'] / 100)
+        self.params['simcraft power restrictions']['EPS'] = self.params['total power'] * (self.dicts["EPS"]['max power'] / 100)
+        self.params['simcraft power restrictions']['TCS'] = self.params['total power'] * (self.dicts["TCS"]['max power'] / 100)
+        self.params['simcraft power restrictions']['COMMS'] = self.params['total power'] * (self.dicts["COMMS"]['max power'] / 100)
+
         self.verifyStatus = False
         print("New instance of EPS class created")
 
@@ -36,6 +41,14 @@ class EPS(Subsystem):
     def updateTimeParams(self):
         self.params['time of last check'] = datetime.now()
 
+    #EPS Power Generating ###############################################
+    def updateBatteryStatus(self):
+        self.params['current battery charge'] = Charging.updateBatteryStatus(self.params)
+        self.updateTimeParams()
+
+    #EPS Solar Panel Angle
+    def articulateAngle(self, delta):
+        self.params['solar panel angle'] += delta
 
     #EPS Power Distribution #############################################
     def requestPower(self, requestedPower, subsystemName):
@@ -51,16 +64,7 @@ class EPS(Subsystem):
         availablePower, expendedPower, powerDistributed = PD.returnPower(returnedPower, self.params, subsystemName)
         self.updatePowerParams(availablePower, expendedPower, powerDistributed, subsystemName)
 
-    #EPS Power Generating ###############################################
-    def updateBatteryStatus(self):
-        self.params['current battery charge'] = Charging.updateBatteryStatus(self.params)
-        self.updateTimeParams()
-
-    #EPS Solar Panel Angle
-    def articulateAngle(self, delta):
-        self.params['solar panel angle'] += delta
-    
-    #EPS Console Commands##################################################
+    #EPS Console Commands ##################################################
     def systemChecks(self):
         badChecks = [key for key, value in self.checks.items() if not value]
         if not badChecks:
@@ -107,7 +111,7 @@ class EPS(Subsystem):
         else:
             print("Verification process for EPS not completed")
     
-    #Comms calls this function
+    #Comms calls this function #######################################
     def commsConfirmation(self):
         if self.verify:
             return True
