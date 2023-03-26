@@ -34,7 +34,10 @@ def index(request):
 @login_required(login_url='/login/')
 def tcHome(request):
     classes = Class.objects.all()
-   
+    
+    if not TestConductor.objects.all():
+        TestConductor.objects.create(user = request.user).save()
+
     print(classes)
     if request.method == 'POST':
         form = ClassForm(request.POST)
