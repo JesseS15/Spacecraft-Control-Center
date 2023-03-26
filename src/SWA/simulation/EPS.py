@@ -7,7 +7,6 @@ import random
 
 class EPS(Subsystem):
 
-    
     def __init__(self, dicts):
         super().__init__(dicts)
         self.params = {'total power' : EPSStart.initialize(),
@@ -23,11 +22,11 @@ class EPS(Subsystem):
         self.checks = {'Uplink' : random.choice([True, False]),
                        'Bus Connection' : random.choice([True, False]),
                        'Articulation Gear' : random.choice([True, False])}
+        self.allChecks = False
         self.params['simcraft power restrictions']['ACS'] = self.params['total power'] * (self.dicts["ACS"]['max power'] / 100)
         self.params['simcraft power restrictions']['EPS'] = self.params['total power'] * (self.dicts["EPS"]['max power'] / 100)
         self.params['simcraft power restrictions']['TCS'] = self.params['total power'] * (self.dicts["TCS"]['max power'] / 100)
         self.params['simcraft power restrictions']['COMMS'] = self.params['total power'] * (self.dicts["COMMS"]['max power'] / 100)
-
         self.verifyStatus = False
         print("New instance of EPS class created")
 
@@ -69,6 +68,7 @@ class EPS(Subsystem):
         badChecks = [key for key, value in self.checks.items() if not value]
         if not badChecks:
             print("No errors found")
+            self.allChecks = True
         else:
             print("ERROR FOUND with :")
             for key,value in badChecks:
@@ -80,6 +80,9 @@ class EPS(Subsystem):
         self.checks = {key: True for key in self.checks}
 
     def verify(self):
+        if not self.allChecks:
+            print('All system checks not completed')
+            return
         print("Verifying Spacecraft power level. Please wait .....")
         expendedPower = self.params['expended power']
         totalPower = self.params['total power']
