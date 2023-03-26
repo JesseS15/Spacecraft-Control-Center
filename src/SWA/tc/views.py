@@ -35,7 +35,7 @@ def index(request):
 def tcHome(request):
     classes = Class.objects.all()
     
-    if not TestConductor.objects.all():
+    if request.user not in TestConductor.objects.all():
         TestConductor.objects.create(user = request.user).save()
 
     print(classes)
