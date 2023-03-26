@@ -2,6 +2,7 @@ import numpy
 from django.db import models
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -32,10 +33,11 @@ def index(request):
 
 ###############################################################################
 @login_required(login_url='/login/')
+@staff_member_required
 def tcHome(request):
     classes = Class.objects.all()
     
-    if request.user not in TestConductor.objects.all():
+    if not TestConductor.objects.filter(user = request.user).exists():
         TestConductor.objects.create(user = request.user).save()
 
     print(classes)
@@ -56,6 +58,7 @@ def tcHome(request):
   
 ###############################################################################
 @login_required(login_url='/login/')
+@staff_member_required
 def classHome(request, class_name):
 
     group = Class.objects.all().filter(class_name = class_name).values_list('sims', flat=True)
@@ -127,6 +130,7 @@ def getGroups(request):
 
 ###############################################################################
 @login_required(login_url='/login/')
+@staff_member_required
 def tcSim(request, sim):
     simobj = Sim.objects.get(sim_name=sim)
 
