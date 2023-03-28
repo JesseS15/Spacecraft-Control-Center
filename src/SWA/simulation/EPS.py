@@ -53,7 +53,7 @@ class EPS(Subsystem):
 
     #EPS Solar Panel Angle
     def articulateAngle(self, delta):
-        self.params['solar panel angle'] += delta
+        self.params['solar panel angle'] += Charging.checkAngleDeg(delta)
 
     #EPS Power Distribution #############################################
     def requestPower(self, requestedPower, subsystemName):
