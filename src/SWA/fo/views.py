@@ -108,6 +108,7 @@ def fetchdata(request, simkey):
         for thread in threading.enumerate():
             if thread.ident == thread_id:
                 thread.check()  # Call a method on the thread object
+                # JESSE DONT TOUCH IT... IM WATCHING YOU
                 # TODO Add thread.update() fcn
         return HttpResponse("todo") # Sending an success response
     else:
