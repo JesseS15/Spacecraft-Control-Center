@@ -11,7 +11,6 @@ class ACS(Subsystem):
         self.roll += random.randint(-10,10)
         self.pitch += random.randint(-10,10)
         self.yaw += random.randint(-10,10)
-        return 
     
     def userChosenRllPitchYaw(self, r, p, y):
         self.roll = r
@@ -30,6 +29,10 @@ class ACS(Subsystem):
     def updateYaw(self, newYaw):
         self.yaw = newYaw
         return ("Yaw updated by" + newYaw + "degrees")
+
+    def update():
+        ACS.randomRollPitchYaw()
+
 
     def checkFinalRPY(self):
         if ((self.roll == self.finalRoll) and 

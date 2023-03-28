@@ -12,6 +12,9 @@ class COMMS(Subsystem):
         self.verify = False
         print('New instance of COMMS class created')
 
+    def update():
+        pass
+
     #Comms Console Commands #######################################
     def verifySignalLock(self):
         if self.checks['signal']:

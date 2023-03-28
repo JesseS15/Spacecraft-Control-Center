@@ -10,3 +10,6 @@ class TCS(Subsystem):
 
     def regulationError(self):
         print("Error with tempurature regulation in TCS")
+
+    def update():
+        pass

@@ -30,6 +30,12 @@ class EPS(Subsystem):
         self.verifyStatus = False
         print("New instance of EPS class created")
 
+    def update():
+        EPS.updateTimeParams()
+        EPS.updatePowerParams()
+        EPS.updateBatteryStatus()
+        
+
     #EPS function for easy power updating ###############################
     def updatePowerParams(self, availablePower, expendedPower, powerDistributed, subsystemName):
         self.params['avialble power'] = availablePower
