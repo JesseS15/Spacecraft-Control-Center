@@ -11,6 +11,7 @@ urlpatterns = [
     path('home/<str:class_name>', views.foClass, name ='classHome'),
     path('<str:simkey>/acs/', views.acs, name ='acs'),
     path('<str:simkey>/eps/', views.eps, name ='eps'),
-    path('<str:simkey>/fetchdata/', views.fetchdata, name='fetchdata'),
+    path('<str:simkey>/acs/fetchdata/', views.fetchdata, name='fetchdata'),
+    path('<str:simkey>/eps/fetchdata/', views.fetchdata, name='fetchdata'),
     path('<str:simkey>/submit', views.submit, name='submit'),
 ]
