@@ -17,10 +17,9 @@ class TCS(Subsystem):
     def regulationError(self):
         print("Error with tempurature regulation in TCS")
 
-<<<<<<< Updated upstream
     def update():
         pass
-=======
+    
     #TCS Console commands ##############################################
     def systemChecks(self):
         badChecks = [key for key, value in self.checks.items() if not value]
@@ -46,4 +45,3 @@ class TCS(Subsystem):
         print("Verifying Thermals...")
         
     
->>>>>>> Stashed changes
