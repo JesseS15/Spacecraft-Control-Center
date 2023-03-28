@@ -91,11 +91,12 @@ Jeremy Mog Engineering Notebook
 3/16/2023
 	-
 3/21/2023
-	-
+	-Fixed issue with github repo. For some reason we had 2 simulation directories and it should have only been 1.
 3/23/2023
-	-
+	-Carly stood on a chair...idr what else happened
+	-oh like 3 hrs of work I did was not useful because we changed the design a bit
 3/28/2023
-	-
+	-Worked on update functions for subsystems that each thread will be using
 3/30/2023
 	-
 	
