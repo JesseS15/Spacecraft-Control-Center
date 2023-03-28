@@ -13,14 +13,11 @@ class COMMS(Subsystem):
         self.verify = False
         print('New instance of COMMS class created')
 
-<<<<<<< Updated upstream
     def update():
         pass
-=======
     def gainControl(self, input):
         self.gain = input
         print("Gain has been adjusted")
->>>>>>> Stashed changes
 
     #Comms Console Commands #######################################
     def verifySignalLock(self):
