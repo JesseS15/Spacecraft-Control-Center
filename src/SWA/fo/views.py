@@ -108,7 +108,6 @@ def fetchdata(request, simkey):
         for thread in threading.enumerate():
             if thread.ident == thread_id:
                 thread.check()  # Call a method on the thread object
-                # TODO Add thread.update() fcn
         return HttpResponse("todo") # Sending an success response
     else:
         return HttpResponse("Request method is not GET")

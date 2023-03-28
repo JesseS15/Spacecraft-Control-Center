@@ -101,6 +101,7 @@ input[type="text"] {
   align-items: center;
 }
 .navleft-option:hover {
+  width: 200px;
   border-left: 5px solid #b77979;
   background-color: #dadada;
   cursor: pointer;
@@ -115,6 +116,7 @@ input[type="text"] {
   cursor: pointer;
 }
 .option1:hover {
+  width: 200px;
   border-left: 5px solid #010058af;
   background-color: var(--Border-color);
 }
