@@ -20,7 +20,7 @@ from .models import Class
 
 from .models import TestConductor, Class
 from simapp.models import Sim, Subsystem, Mission
-from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm, SubsystemForm
+from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm, SubsystemForm, ClassEditForm
 
 
 ###############################################################################
@@ -32,29 +32,64 @@ def index(request):
         return redirect('home:login')
 
 ###############################################################################
+
+##########################################
 @login_required(login_url='/login/')
 @staff_member_required
 def tcHome(request):
-    classes = Class.objects.all()
     
+    classes = Class.objects.all()
+
     if not TestConductor.objects.filter(user = request.user).exists():
         TestConductor.objects.create(user = request.user).save()
 
     print(classes)
     if request.method == 'POST':
         form = ClassForm(request.POST)
+        form2 = ClassEditForm(request.POST)
+        classes1 = Class.objects.all()
+        classes = numpy.asarray(classes1)
+        var = False
         if form.is_valid():
-            start = time.time()
-            form.save()
-            duration = (time.time() - start) * 1000
-            print('form.name {:.2f} ms'.format(
-            duration
-            ))
+            print("count")
+            class_namef = form.cleaned_data.get('class_name')
+            print(class_namef)
+
+            if(len(classes)<=0):
+                form.save()
+                
+            for classi in classes:
+                    print(classi == class_namef)
+                    if(classi == class_namef):
+                        classget = Class.objects.get(class_name = class_namef)
+                        classget.status = form2.cleaned_data.get('status')
+                        classget.save()
+                        return redirect('tc:home')
+
+            #form.save
+            #start = time.time()
+            #duration = (time.time() - start) * 1000
+            #print('form.name {:.2f} ms'.format(
+            #duration
+            #))
             return redirect('tc:home')
     else:
         form = ClassForm()
+        form2 = ClassEditForm()
 
-    return render(request, 'tc/tcHome.html', {"classes":classes, 'form': form})
+    """if request.method == 'POST':
+        form2 = ClassEditForm(request.POST)
+        if form2.is_valid():
+            #form2.save()
+            classnamef = form2.cleaned_data.get('class_name')
+            print('welcome')
+            print(classnamef)
+            
+    else:
+        form2 = ClassEditForm()"""
+    
+
+    return render(request, 'tc/tcHome.html', {"classes":classes, 'form': form, 'form2': form2})
   
 ###############################################################################
 @login_required(login_url='/login/')

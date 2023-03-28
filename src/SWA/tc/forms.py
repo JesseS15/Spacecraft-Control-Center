@@ -59,3 +59,10 @@ class MissionCreationForm(forms.ModelForm):
 
 class SubsystemForm(forms.Form):
     sys_name = forms.CharField(max_length=15)
+################################################################
+class ClassEditForm(forms.ModelForm):
+    #status = forms.CharField(widget=forms.HiddenInput(), initial=Class.status) 
+    #code  = forms.CharField(widget=forms.HiddenInput(), initial=123)
+    class Meta:
+        model = Class
+        fields = ['status','code']
