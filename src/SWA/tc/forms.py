@@ -17,6 +17,7 @@ class UserRegisterForm(UserCreationForm):
 
 ###############################################################################
 class ClassForm(forms.ModelForm):
+    class_name = forms.CharField(initial='') 
     class Meta:
         model = Class
         fields = ['class_name','status','sims']

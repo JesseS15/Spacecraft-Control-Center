@@ -57,7 +57,7 @@
                       {% csrf_token %}
                       <fieldset class="form-group">
                         <h2 id = "test" name = 'test'></h2>
-                        <input id="myInput" type="text" name="class_name" value='default' />
+                        <input id="myInput" type="text" name="class_name" value='default' readonly/>
                         {{ form2|crispy}}
                       </fieldset>
                         <button style="background: black; padding:2%; font-size: 2rem; color:white;" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-check"></span> &nbsp;Save and Apply</button>

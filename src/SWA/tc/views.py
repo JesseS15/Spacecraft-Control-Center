@@ -17,7 +17,7 @@ from django.contrib.auth.models import Group, Permission, User
 from django.contrib.contenttypes.models import ContentType
 import time
 from .models import Class
-
+from django.contrib import messages
 from .models import TestConductor, Class
 from simapp.models import Sim, Subsystem, Mission
 from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm, SubsystemForm, ClassEditForm
@@ -50,22 +50,33 @@ def tcHome(request):
         classes1 = Class.objects.all()
         classes = numpy.asarray(classes1)
         var = False
-        if form.is_valid():
+        if(form.is_valid() and form2.is_valid()):
             print("count")
             class_namef = form.cleaned_data.get('class_name')
+            classesstr = str(classes)
+            print(type(classes))
             print(class_namef)
 
             if(len(classes)<=0):
                 form.save()
-                
-            for classi in classes:
-                    print(classi == class_namef)
-                    if(classi == class_namef):
+            print(class_namef not in classesstr)
+            if(len(classes)>0 and (class_namef not in classesstr) ==True):
+                form.save()
+            if(len(classes)>0 and (class_namef not in classesstr) ==False):
+                messages.info(request, 'Class Already Exists. Add Class UNSUCCESSFUL!')
+
+            else: 
+                for classi in classes:
+                    classstr = str(classi)
+                    print(type(classstr))
+                    print(classi)
+                    print(classstr == class_namef)
+                    if(str(classstr) == class_namef):
                         classget = Class.objects.get(class_name = class_namef)
                         classget.status = form2.cleaned_data.get('status')
                         classget.save()
                         return redirect('tc:home')
-
+                    
             #form.save
             #start = time.time()
             #duration = (time.time() - start) * 1000
