@@ -26,6 +26,13 @@ def checkAngle(angle):
         angle = angle + 2*np.pi
     return np.rad2deg(angle)
 
+def checkAngleDeg(angle):
+    while angle >= 360:
+        angle = angle - 360
+    while angle < 0:
+        angle = angle + 360
+    return angle
+
 def deltaAngle(angle1, angle2):
     deltaAngle = np.abs(angle1 - angle2)
     deltaAngle = checkAngle(deltaAngle)     #Doesn't change math, but for bug checking it's nice to look at angles

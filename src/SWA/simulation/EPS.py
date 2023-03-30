@@ -30,6 +30,12 @@ class EPS(Subsystem):
         self.verifyStatus = False
         print("New instance of EPS class created")
 
+    def update():
+        EPS.updateTimeParams()
+        EPS.updatePowerParams()
+        EPS.updateBatteryStatus()
+        
+
     #EPS function for easy power updating ###############################
     def updatePowerParams(self, availablePower, expendedPower, powerDistributed, subsystemName):
         self.params['avialble power'] = availablePower
@@ -47,7 +53,7 @@ class EPS(Subsystem):
 
     #EPS Solar Panel Angle
     def articulateAngle(self, delta):
-        self.params['solar panel angle'] += delta
+        self.params['solar panel angle'] += Charging.checkAngleDeg(delta)
 
     #EPS Power Distribution #############################################
     def requestPower(self, requestedPower, subsystemName):

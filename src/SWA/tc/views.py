@@ -17,10 +17,10 @@ from django.contrib.auth.models import Group, Permission, User
 from django.contrib.contenttypes.models import ContentType
 import time
 from .models import Class
-
+from django.contrib import messages
 from .models import TestConductor, Class
 from simapp.models import Sim, Subsystem, Mission
-from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm, SubsystemForm
+from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm, SubsystemForm, ClassEditForm
 
 
 ###############################################################################
@@ -32,29 +32,90 @@ def index(request):
         return redirect('home:login')
 
 ###############################################################################
+
+##########################################
 @login_required(login_url='/login/')
 @staff_member_required
 def tcHome(request):
-    classes = Class.objects.all()
     
+    classes = Class.objects.all()
+
     if not TestConductor.objects.filter(user = request.user).exists():
         TestConductor.objects.create(user = request.user).save()
 
     print(classes)
     if request.method == 'POST':
         form = ClassForm(request.POST)
-        if form.is_valid():
-            start = time.time()
-            form.save()
-            duration = (time.time() - start) * 1000
-            print('form.name {:.2f} ms'.format(
-            duration
-            ))
+        form2 = ClassEditForm(request.POST)
+        classes1 = Class.objects.all()
+        classes = numpy.asarray(classes1)
+        var = False
+        if(form.is_valid() and form2.is_valid()):
+            print("count")
+            class_namef = form.cleaned_data.get('class_name')
+            test = form.cleaned_data.get('test')
+            delete = form2.cleaned_data.get('delete')
+            #test1 = form2.cleaned_data.get('test')
+            classesstr = str(classes)
+            print(type(classes))
+            print(class_namef)
+            print('xxxxxxxx')
+            print(delete==True)
+            
+            if(len(classes)<=0):
+                form.save()
+            print(class_namef not in classesstr)
+            ifequal = 0
+            for classi in classes:
+                classstr = str(classi)
+                if(str(classstr) == class_namef):
+                    ifequal = ifequal+1
+
+            print(ifequal)    
+            if(len(classes)>0 and ifequal==0 and test==True):
+                form.save()
+            if(len(classes)>0 and ifequal==1 and test ==True):
+               messages.info(request, 'Class Already Exists. Add Class UNSUCCESSFUL')
+            if(len(classes)>0 and (class_namef not in classesstr) ==False and test ==False):
+                for classi in classes:
+                    classstr = str(classi)
+                    print(type(classstr))
+                    print(classi)
+                    print(classstr == class_namef)
+                    if(str(classstr) == class_namef):
+                        classget = Class.objects.get(class_name = class_namef)
+                        if(delete==False):
+                            classget.status = form2.cleaned_data.get('code')
+                            classget.save()
+                            return redirect('tc:home')
+                        else:
+                            classget.delete()
+                            print('sucess')
+                
+            #form.save
+            #start = time.time()
+            #duration = (time.time() - start) * 1000
+            #print('form.name {:.2f} ms'.format(
+            #duration
+            #))
             return redirect('tc:home')
     else:
         form = ClassForm()
+        form2 = ClassEditForm()
 
-    return render(request, 'tc/tcHome.html', {"classes":classes, 'form': form})
+    """if request.method == 'POST':
+        form2 = ClassEditForm(request.POST)
+        if form2.is_valid():
+            #form2.save()
+            classnamef = form2.cleaned_data.get('class_name')
+            print('welcome')
+            print(classnamef)
+            
+    else:
+        form2 = ClassEditForm()"""
+    
+
+    return render(request, 'tc/tcHome.html', {"classes":classes, 'form': form, 'form2': form2})
   
 ###############################################################################
 @login_required(login_url='/login/')

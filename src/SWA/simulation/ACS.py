@@ -49,6 +49,10 @@ class ACS(Subsystem):
         self.orient['yaw'] += newYaw
         return ("Yaw updated by" + newYaw + "degrees")
 
+    def update():
+        ACS.randomRollPitchYaw()
+
+
     def checkFinalRPY(self):
         if self.orient['roll'] in range(self.orientEqual['roll']-70,self.orientEqual['roll']+70):
             print("ROLL: VALID")

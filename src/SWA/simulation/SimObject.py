@@ -4,6 +4,7 @@ from simulation.TCS import TCS
 from simulation.EPS import EPS
 from simulation.COMMS import COMMS
 from simulation.Dicts import Dicts
+from simulation.payload import payload
 import threading
 import time
 
@@ -36,6 +37,13 @@ class SimObject(threading.Thread):
 
     def check(self):
         print('Sim Thread for '+ self.simName+' is reachable')
+
+    def update():
+        ACS.update()
+        EPS.update()
+        TCS.update()
+        COMMS.update()
+        payload.update()
 
     def run(self):
         simobj = Sim.objects.get(sim_name = self.simName)

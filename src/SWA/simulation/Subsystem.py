@@ -1,7 +1,6 @@
+from abc import ABC, abstractmethod
 
-# Need to create
-
-class Subsystem:
+class Subsystem(ABC):
 
 	dicts = { }
 
@@ -15,6 +14,10 @@ class Subsystem:
 		return "Display words"
 	
 	def subsysMenu():
+		pass
+
+	@abstractmethod
+	def update():
 		pass
 
 	def subsysWorking(self):

@@ -6,11 +6,18 @@ class COMMS(Subsystem):
     def __init__(self, dicts):
         super().__init__(dicts)
         self.attributes = self.dicts['COMMS']
+        self.gain = 1
         self.checks = {'signal' : random.choice([True, False]),
                        'telem' : False,
                        'processing' : False}
         self.verify = False
         print('New instance of COMMS class created')
+
+    def update():
+        pass
+    def gainControl(self, input):
+        self.gain = input
+        print("Gain has been adjusted")
 
     #Comms Console Commands #######################################
     def verifySignalLock(self):

@@ -17,9 +17,12 @@ class UserRegisterForm(UserCreationForm):
 
 ###############################################################################
 class ClassForm(forms.ModelForm):
+    class_name = forms.CharField(initial='') 
+    test = True
     class Meta:
         model = Class
-        fields = ['class_name','status','sims']
+        fields = ['class_name','status','sims', 'test']
+        widgets = {'test': forms.HiddenInput(), 'status': forms.HiddenInput()}
 
 ###############################################################################
 class SimCreationForm(forms.ModelForm):
@@ -59,3 +62,14 @@ class MissionCreationForm(forms.ModelForm):
 
 class SubsystemForm(forms.Form):
     sys_name = forms.CharField(max_length=15)
+################################################################
+class ClassEditForm(forms.ModelForm):
+    test = False
+    delete = forms.BooleanField(initial = False, required=False)
+    #test = forms.BooleanField(widget=forms.HiddenInput(), initial=False)
+    #status = forms.CharField(widget=forms.HiddenInput(), initial=Class.status) 
+    #code  = forms.CharField(widget=forms.HiddenInput(), initial=123)
+    class Meta:
+        model = Class
+        fields = ['status','code']
+        widgets = {'status': forms.HiddenInput()}

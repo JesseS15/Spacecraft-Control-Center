@@ -85,3 +85,6 @@ class payload(Subsystem):
         else:
             self.telemtryTransfer()
             return False    
+        
+    def update():
+        pass

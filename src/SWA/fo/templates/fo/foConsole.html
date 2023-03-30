@@ -1,58 +1,10 @@
-{% extends "home/index.html" %}
 {% load crispy_forms_tags %}
-{% block start %}
+{% block console %}
 
-<link rel="stylesheet" href="../../../static/css/fosim_acs.css" >
-
-<!-- left navigation bar -->
-<div class="main-container1">
-	<div class="navcontainerleft">
-	  <nav class="navleft">
-
-      
-      <div class="navleft-option option1">
-			<img src= "../../../static/images/acs_icon.png" class="nav-img" alt="acs_icon">
-			<h3> ACS </h3>
-		  </div>
-
-      <div class="navleft-option option2">
-        <img src= "../../../static/images/eps_icon.png" class="nav-img" alt="articles">
-        <div onclick="{% url 'tc:home' %};" style="cursor: pointer;"><h3> EPS </h3></div>
-      </div>
-
-		  <div class="navleft-option option3">
-			<img src=
-  "../../../static/images/tcs_icon.png"
-			  class="nav-img"
-			  alt="repor">
-			<h3> TCS </h3>
-		  </div>
-  
-		  <div class="navleft-option option4">
-			<img src=
-  "../../../static/images/comms_icon.png"
-			  class="nav-img"
-			  alt="institution">
-			<h3> COMMs </h3>
-		  </div>
-  
-		  <div class="navleft-option option5">
-			<img src=
-  "../../../static/images/payload_icon.png"
-			  class="nav-img"
-			  alt="blog">
-			<h3> Payload </h3>
-		  </div>
-		</div>
-	  </nav>
-	</div>
-
-  {% block body %}
-
-  {% endblock %}
+<link rel="stylesheet" href="../../../static/css/console.css">
 
   <!-- bottom console -->
-  <div class="resizable">
+  <div class="resizable" style = "z-index: 3;">
 	<div class="left-side">
 	  <div class="title-wrapper">
 		<div class="title">{{ sim }}</div>
@@ -80,5 +32,4 @@
 <script src=  "/static/js/jquery.min.js"></script>
 <script src = "/static/js/fosim.js"></script>
   
-
-{% endblock start %}
+{% endblock console %}

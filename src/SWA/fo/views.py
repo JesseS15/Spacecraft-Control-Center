@@ -68,6 +68,36 @@ def eps(request, simkey):
         return render(request, 'fo/eps.html', {'sim': simobj, 'simkey': simkey})
     else:
         return redirect('fo:home')
+###############################################################################
+@login_required(login_url='/login/')
+def tcs(request, simkey):
+
+    simobj = get_object_or_404(Sim, sim_name=simkey)
+    flightOperator = get_object_or_404(FlightOperator, user = request.user)
+    if simobj in flightOperator.sim_list.all():
+        return render(request, 'fo/tcs.html', {'sim': simobj, 'simkey': simkey})
+    else:
+        return redirect('fo:home')
+###############################################################################
+@login_required(login_url='/login/')
+def payload(request, simkey):
+
+    simobj = get_object_or_404(Sim, sim_name=simkey)
+    flightOperator = get_object_or_404(FlightOperator, user = request.user)
+    if simobj in flightOperator.sim_list.all():
+        return render(request, 'fo/payload.html', {'sim': simobj, 'simkey': simkey})
+    else:
+        return redirect('fo:home')
+###############################################################################
+@login_required(login_url='/login/')
+def comms(request, simkey):
+
+    simobj = get_object_or_404(Sim, sim_name=simkey)
+    flightOperator = get_object_or_404(FlightOperator, user = request.user)
+    if simobj in flightOperator.sim_list.all():
+        return render(request, 'fo/comms.html', {'sim': simobj, 'simkey': simkey})
+    else:
+        return redirect('fo:home')
     
 ###############################################################################
 def joinClass(request):
@@ -108,6 +138,7 @@ def fetchdata(request, simkey):
         for thread in threading.enumerate():
             if thread.ident == thread_id:
                 thread.check()  # Call a method on the thread object
+                # TODO Add thread.update() fcn
         return HttpResponse("todo") # Sending an success response
     else:
         return HttpResponse("Request method is not GET")
