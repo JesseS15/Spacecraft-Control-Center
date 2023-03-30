@@ -1,0 +1,35 @@
+/* body panels */
+#panelgrid {
+  height: 100px;
+  display: grid;
+  grid-gap: 50px;
+  grid-template-columns: repeat( auto-fit, minmax(250px, 1fr) );
+  row-gap: 20px;
+  height: 275px;
+  padding-left: 220px;
+  padding-right: 50px;
+}
+#panelgrid > div {
+  height: 240px;
+  width: 300px;
+  background-color: #ffffff;
+  border-radius: 30px;
+  box-shadow: 3px 3px 10px rgb(188, 188, 188);
+  z-index: 1;
+}
+.panel-header {
+  height: 60px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px 10px 20px;
+  border-bottom: 2px solid rgba(255, 0, 0, 0.59);
+}
+.panel-title {
+  font-size: 16pt;
+  font-weight: bold;
+}
+.panel-body {
+  height: 30px;
+}

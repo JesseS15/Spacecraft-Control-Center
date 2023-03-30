@@ -1,0 +1,35 @@
+/* left navigation bar */
+.main-container1 {
+    display: flex;
+    width: 100vw;
+    position: relative;
+    z-index: 1;
+}
+.navleft {
+    min-height: 100%;
+    width: 180px;
+    background-color: var(--background-color2);
+    position: absolute;
+    box-shadow: 1px 1px 10px #000000aa;
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    }
+.navleft-option {
+    width: 180px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    border-left: 7px solid #ffffffaf;
+    background-color: var(--Border-color);
+    color: #000000af;
+    cursor: pointer;
+}
+.navleft-option:hover {
+    width: 180px;
+    background-color: #dadada;
+    cursor: pointer;
+}
+.nav-img {
+    height: 60px;
+}

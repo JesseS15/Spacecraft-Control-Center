@@ -1,50 +1,54 @@
-{% extends "fo/foConsole.html" %}
+{% extends "home/index.html" %}
 {% load crispy_forms_tags %}
-{% block body %}
+{% block acs %}
 
-	  
-  <!-- body panels-->
-  <div id="panelgrid">
-    <div id="item1">
-      <div class="panel-header">
-        <h1 class="panel-title">Attribute #1</h1>
-        </div>
-        <div class="panel-body">
-        <p></p>
-        </div>
+  {% include "fo/foConsole.html" %}
+  {% include "fo/leftnav.html" %}
+  <link rel="stylesheet" href="../../../static/css/fosim_panels.css">
+  <link rel="stylesheet" href="../../../static/css/leftnav_acs.css">
+      
+    <!-- body panels-->
+    <div id="panelgrid" style="margin-top: -60px;">
+      <div id="item1">
+        <div class="panel-header">
+          <h1 class="panel-title">Attribute #1</h1>
+          </div>
+          <div class="panel-body">
+          <p></p>
+          </div>
+      </div>
+      <div id="item2">
+        <div class="panel-header">
+          <h1 class="panel-title">Attribute #2</h1>
+          </div>
+          <div class="panel-body">
+          <p></p>
+          </div>
+      </div>
+      <div id="item3">
+        <div class="panel-header">
+          <h1 class="panel-title">Attribute #3</h1>
+          </div>
+          <div class="panel-body">
+          <p></p>
+          </div>
+      </div>
+      <div id="item4">
+        <div class="panel-header">
+          <h1 class="panel-title">Attribute #4</h1>
+          </div>
+          <div class="panel-body">
+          <p></p>
+          </div>
+      </div>
+      <div id="item5">
+        <div class="panel-header">
+          <h1 class="panel-title">Attribute #5</h1>
+          </div>
+          <div class="panel-body">
+          <p></p>
+          </div>
+      </div>
     </div>
-    <div id="item2">
-      <div class="panel-header">
-        <h1 class="panel-title">Attribute #2</h1>
-        </div>
-        <div class="panel-body">
-        <p></p>
-        </div>
-    </div>
-    <div id="item3">
-      <div class="panel-header">
-        <h1 class="panel-title">Attribute #3</h1>
-        </div>
-        <div class="panel-body">
-        <p></p>
-        </div>
-    </div>
-    <div id="item4">
-      <div class="panel-header">
-        <h1 class="panel-title">Attribute #4</h1>
-        </div>
-        <div class="panel-body">
-        <p></p>
-        </div>
-    </div>
-    <div id="item5">
-      <div class="panel-header">
-        <h1 class="panel-title">Attribute #5</h1>
-        </div>
-        <div class="panel-body">
-        <p></p>
-        </div>
-    </div>
-  </div>
   
-{% endblock body %}
+{% endblock acs %}
