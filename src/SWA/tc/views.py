@@ -53,6 +53,8 @@ def tcHome(request):
         if(form.is_valid() and form2.is_valid()):
             print("count")
             class_namef = form.cleaned_data.get('class_name')
+            test = form.cleaned_data.get('test')
+            test1 = form2.cleaned_data.get('test1')
             classesstr = str(classes)
             print(type(classes))
             print(class_namef)
@@ -63,20 +65,19 @@ def tcHome(request):
             if(len(classes)>0 and (class_namef not in classesstr) ==True):
                 form.save()
             if(len(classes)>0 and (class_namef not in classesstr) ==False):
-                messages.info(request, 'Class Already Exists. Add Class UNSUCCESSFUL!')
+               messages.info(request, 'Class Already Exists. Add Class UNSUCCESSFUL')
 
-            else: 
-                for classi in classes:
-                    classstr = str(classi)
-                    print(type(classstr))
-                    print(classi)
-                    print(classstr == class_namef)
-                    if(str(classstr) == class_namef):
-                        classget = Class.objects.get(class_name = class_namef)
-                        classget.status = form2.cleaned_data.get('status')
-                        classget.save()
-                        return redirect('tc:home')
-                    
+            for classi in classes:
+                classstr = str(classi)
+                print(type(classstr))
+                print(classi)
+                print(classstr == class_namef)
+                if(str(classstr) == class_namef):
+                    classget = Class.objects.get(class_name = class_namef)
+                    classget.status = form2.cleaned_data.get('status')
+                    classget.save()
+                    return redirect('tc:home')
+                
             #form.save
             #start = time.time()
             #duration = (time.time() - start) * 1000

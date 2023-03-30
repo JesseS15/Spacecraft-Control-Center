@@ -62,6 +62,9 @@ class SubsystemForm(forms.Form):
     sys_name = forms.CharField(max_length=15)
 ################################################################
 class ClassEditForm(forms.ModelForm):
+    
+    #delete = forms.BooleanField(initial = False, required=False)
+    #test = forms.BooleanField(widget=forms.HiddenInput(), initial=False)
     #status = forms.CharField(widget=forms.HiddenInput(), initial=Class.status) 
     #code  = forms.CharField(widget=forms.HiddenInput(), initial=123)
     class Meta:
