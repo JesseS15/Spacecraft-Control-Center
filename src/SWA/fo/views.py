@@ -10,7 +10,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import JoinClassForm
 from .models import FlightOperator
 from tc.models import Class
-from simapp.models import Sim, Subsystem
+from simapp.models import Sim, Subsystem, CommandBufferItem
 
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -121,14 +121,29 @@ def joinClass(request):
 ###############################################################################
 def submit(request, simkey):
     if request.method == 'GET':
-           command = request.GET.get('cmd')  # String
-           sim = Sim.objects.get(sim_name = simkey)
-           #sim.command = command
-           #sim.save()
-           #print("py " + command)
-           return HttpResponse("todo") # Sending an success response
+        # Create command object for db
+        command = request.GET.get('cmd')  # String
+        commandobj = CommandBufferItem.objects.create(buffer_item = command)
+        commandobj.save()
+
+        # Add command to buffer
+        sim = Sim.objects.get(sim_name = simkey)
+        flightOperator = get_object_or_404(FlightOperator, user = request.user)
+        subsystem = _get_fo_subsystem(sim, flightOperator)
+        if subsystem == 'DIRECTOR':
+            sim.director_command_buffer.add(commandobj)
+        elif subsystem == 'Comms':
+            sim.COMMS_command_buffer.add(commandobj)
+        elif subsystem == 'ACS':
+            sim.ACS_command_buffer.add(commandobj)
+        elif subsystem == 'EPS':
+            sim.EPS_command_buffer.add(commandobj)
+        elif subsystem == 'TCS':
+            sim.TCS_command_buffer.add(commandobj)
+
+        return HttpResponse(command + " command recieved") # Sending an success response
     else:
-           return HttpResponse("Request method is not a GET")
+        return HttpResponse("Request method is not a GET")
 
 ###############################################################################
 def fetchdata(request, simkey):

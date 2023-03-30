@@ -40,6 +40,7 @@ def tcHome(request):
     
     classes = Class.objects.all()
 
+    # Create new TestConductor object if none exists for current staff user
     if not TestConductor.objects.filter(user = request.user).exists():
         TestConductor.objects.create(user = request.user).save()
 
