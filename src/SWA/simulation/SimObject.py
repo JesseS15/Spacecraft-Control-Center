@@ -53,4 +53,5 @@ class SimObject(threading.Thread):
         while True:
             print('thread ' + self.simName)
             print(threading.get_ident())
+            self.update()
             time.sleep(5)

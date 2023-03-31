@@ -193,8 +193,8 @@ def getGroups(request):
 ###############################################################################
 @login_required(login_url='/login/')
 @staff_member_required
-def tcSim(request, sim):
-    simobj = Sim.objects.get(sim_name=sim)
+def tcSim(request, simkey):
+    simobj = Sim.objects.get(pk = simkey)
 
     if request.method == 'POST':
 

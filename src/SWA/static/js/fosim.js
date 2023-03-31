@@ -20,7 +20,7 @@ input.addEventListener('keyup', function (event) {
     $.ajax(
         {
             // fo/views.submit
-            url: 'submit',
+            url: '../submit',
             type: 'GET',
             //dataType: 'json',
             data:{
