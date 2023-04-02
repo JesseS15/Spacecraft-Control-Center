@@ -65,11 +65,12 @@ class SubsystemForm(forms.Form):
 ################################################################
 class ClassEditForm(forms.ModelForm):
     test = False
+    randomizecode = forms.BooleanField(initial = False, required=False, label="Randomize Code")
     delete = forms.BooleanField(initial = False, required=False)
     #test = forms.BooleanField(widget=forms.HiddenInput(), initial=False)
     #status = forms.CharField(widget=forms.HiddenInput(), initial=Class.status) 
-    #code  = forms.CharField(widget=forms.HiddenInput(), initial=123)
+    code  = forms.CharField(initial='', required=False)
     class Meta:
         model = Class
-        fields = ['status','code']
+        fields = ['randomizecode','code']
         widgets = {'status': forms.HiddenInput()}

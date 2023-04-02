@@ -30,12 +30,14 @@
               
               <table id = "simtable" align = "left" border="2" style="width: 45%; margin-left: 2.5%;">
                 <thead>
-                  <th style="font-size:18px; width: 18%">Name</th>
-                  <th style="font-size:18px; width: 18%">Status</th>
-                  <th style="font-size:18px; width: 54%"></th>
+                  <th style="font-size:18px; width: 7%"></th>
+                  <th style="font-size:18px; width: 17%">Name</th>
+                  <th style="font-size:18px; width: 17%">Status</th>
+                  <th style="font-size:18px; width: 49%"></th>
                 </thead>
                  {% for sim in sims %}
                 <tr style="font-size:16px; max-height: 20px; overflow-y: scroll;">
+                  <td style="font-size:16px;"></td>
                   <td style="font-size:16px;"><a class = "simlist" href="{% url 'tc:sim' sim %}">{{ sim }}</a></td>
                   <td style="font-size:16px;"></td>
                   <td style="font-size:16px;"><button type = "button">Start Sim</button><button type = "button" class="op">End Sim</button></td>

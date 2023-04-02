@@ -31,13 +31,14 @@ def foHome(request):
     flightOperator = get_object_or_404(FlightOperator, user = request.user)
     classes = flightOperator.class_list.all()
     if request.method == 'POST':
-        class_name = request.POST['class_name']
+        code = request.POST['code']
         class_names = [classobj.class_name for classobj in Class.objects.all()]
-        if class_name in class_names:
-            classobj = Class.objects.get(class_name = class_name)
+        codes = [classobj.code for classobj in Class.objects.all()]
+        if code in codes:
+            classobj = Class.objects.get(code = code)
             classobj.flight_operators.add(FlightOperator.objects.get(user = request.user))
             test = FlightOperator.objects.get(user = request.user)
-            test.class_list.add(Class.objects.get(class_name = class_name))
+            test.class_list.add(Class.objects.get(code = code))
             return redirect('fo:home')
             
         else:

@@ -1,4 +1,6 @@
 import numpy
+import string
+import random
 from django.db import models
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -55,6 +57,7 @@ def tcHome(request):
             class_namef = form.cleaned_data.get('class_name')
             test = form.cleaned_data.get('test')
             delete = form2.cleaned_data.get('delete')
+            randomizecode = form2.cleaned_data.get('randomizecode')
             #test1 = form2.cleaned_data.get('test')
             classesstr = str(classes)
             print(type(classes))
@@ -63,6 +66,7 @@ def tcHome(request):
             print(delete==True)
             
             if(len(classes)<=0):
+                
                 form.save()
             print(class_namef not in classesstr)
             ifequal = 0
@@ -85,9 +89,15 @@ def tcHome(request):
                     if(str(classstr) == class_namef):
                         classget = Class.objects.get(class_name = class_namef)
                         if(delete==False):
-                            classget.status = form2.cleaned_data.get('code')
-                            classget.save()
-                            return redirect('tc:home')
+                            if(randomizecode == False):
+                                classget.code = form2.cleaned_data.get('code')
+                                classget.save()
+                                return redirect('tc:home')
+                            else:
+                                rcg = ''.join(random.choices(string.ascii_uppercase +string.digits, k=8))
+                                classget.code = rcg
+                                classget.save()
+                                return redirect('tc:home')
                         else:
                             classget.delete()
                             print('sucess')
