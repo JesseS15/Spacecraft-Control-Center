@@ -1,4 +1,12 @@
 window.setInterval(function(){
+    $('#time').text(function(){
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return ("Current Time: " + time + " EST");
+    })
+}, 1000)
+
+window.setInterval(function(){
     var active = true;
     $('.signalacs').css('border-color', function(){
         if (active = true) {
