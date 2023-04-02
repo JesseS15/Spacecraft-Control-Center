@@ -42,6 +42,7 @@ def tcHome(request):
     
     classes = Class.objects.all()
 
+    # Create new TestConductor object if none exists for current staff user
     if not TestConductor.objects.filter(user = request.user).exists():
         TestConductor.objects.create(user = request.user).save()
 
@@ -202,8 +203,8 @@ def getGroups(request):
 ###############################################################################
 @login_required(login_url='/login/')
 @staff_member_required
-def tcSim(request, sim):
-    simobj = Sim.objects.get(sim_name=sim)
+def tcSim(request, simkey):
+    simobj = Sim.objects.get(pk = simkey)
 
     if request.method == 'POST':
 
