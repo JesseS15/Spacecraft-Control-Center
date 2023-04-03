@@ -28,23 +28,45 @@
               </thead>
               </table>
               
-              <table id = "simtable" align = "left" border="2" style="width: 45%; margin-left: 2.5%;">
+              <table id = "simtable" align = "left" border="2" style="width: 45%; margin-left: 2.5%; margin-right: 2.5%;">
                 <thead>
-                  <th style="font-size:18px; width: 7%"></th>
+                  <th style="font-size:18px; width: 19%"></th>
                   <th style="font-size:18px; width: 17%">Name</th>
                   <th style="font-size:18px; width: 17%">Status</th>
-                  <th style="font-size:18px; width: 49%"></th>
+                  <th style="font-size:18px; width: 39%"></th>
                 </thead>
                  {% for sim in sims %}
                 <tr style="font-size:16px; max-height: 20px; overflow-y: scroll;">
-                  <td style="font-size:16px;"></td>
+                  <td style="text-align:center;"><button id = {{sim}} type = "button" data-toggle = "modal" data-target = "modal1" class="edit"><span class="glyphicon glyphicon-wrench"></span></button><button id = {{sim}} type = "button" data-toggle = "modal" data-target = "modal1" class="download"><span class="glyphicon glyphicon-save"></span></button></td>
                   <td style="font-size:16px;"><a class = "simlist" href="{% url 'tc:sim' sim.pk %}">{{ sim }}</a></td>
                   <td style="font-size:16px;"></td>
-                  <td style="font-size:16px;"><button type = "button">Start Sim</button><button type = "button" class="op">End Sim</button></td>
+                  <td style="font-size:16px;"><button type = "button">Start</button><button type = "button" class="op">End</button></td>
                 </tr>
               {% endfor %}
+              <div id="modal4" class="modal">
+                <div class="modal-content"style="width: 60%">
+                  <div class="modal-header">
+                    <span class="close" id="span1">&times;</span>
+                    
+                  </div>
+                  <div class="popup-body">
+                    <form name = "SimEditForm" method="POST" style="color: black; padding:10%; border-radius:1%;width: 60vw; border-color: black;">
+                      {% csrf_token %}
+                      <fieldset class="form-group">
+                        <h2 id = "test" name = 'test'></h2>
+                        <input id="myInput" type="text" name="sim_name" value='default' readonly/>
+                        {{ form3|crispy}}
+                      </fieldset>
+                        <button style="background: black; padding:2%; font-size: 2rem; color:white;" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-check"></span> &nbsp;Save and Apply</button>
+                      <br />
+                        <a href="{% url 'tc:home' %}" style="text-decoration: underline; color: white; padding:2%; cursor:pointer;">Exit</a></sub>
+                    </form>
+                    <script src = "/static/js/classHome.js"></script>
+                  </div>
+                </div>
+              </div>
               </table> 
-              <table id="missiontable" align = "right" border="2" style="width: 45%; margin-right: 2.5%;">
+              <table id="missiontable" align = "right" border="2" style="width: 45%; margin-left: 2.5%; margin-right: 2.5%;">
                 <thead>
                   <th style="font-size:18px; width: 18%">Name</th>
                   <th style="font-size:18px; width: 18%">Status</th>
@@ -58,28 +80,8 @@
                 </tr>
               {% endfor %}
               </table> 
-
-              <div id="modal4" class="modal">
-                <div class="modal-content"style="width:500px">
-                  <div class="modal-header">
-                    <span class="close" id="span4" onClick="openForm()">&times;</span>
-                    <h2>Add New Simulation</h2>
-                  </div>
-                <div class="popup-body">
-                  <form name = "SimCreationForm" method="POST" style="color: black; padding:10%; border-radius:1%;width: 60vw; border-color: black;">
-                    {% csrf_token %}
-                    <fieldset class="form-group">
-                      {{ form|crispy}}
-                    </fieldset>
-                      <button style="background: black; padding:2%; font-size: 2rem; color:white;" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-check"></span> &nbsp;Add Sim</button>
-                    <br />
-                      <a href="{% url 'tc:home' %}" style="text-decoration: underline; color: white; padding:2%; cursor:pointer;">Exit</a></sub>
-                  </form>
-                   
-                </div>
-                </div>
-              </div>
-              
+            </div>
+          
         </center>
         {% else %}
 

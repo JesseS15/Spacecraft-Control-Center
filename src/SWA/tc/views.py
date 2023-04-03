@@ -22,7 +22,7 @@ from .models import Class
 from django.contrib import messages
 from .models import TestConductor, Class
 from simapp.models import Sim, Subsystem, Mission
-from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm, SubsystemForm, ClassEditForm
+from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm, SubsystemForm, ClassEditForm, SimEditForm
 
 
 ###############################################################################
@@ -35,7 +35,7 @@ def index(request):
 
 ###############################################################################
 
-##########################################
+######################################################
 @login_required(login_url='/login/')
 @staff_member_required
 def tcHome(request):
@@ -156,6 +156,27 @@ def classHome(request, class_name):
         print(missions)
     else:
         missions=[] 
+    ######################sim edit page#########################################
+    if request.method == 'POST':
+        form3 = SimEditForm(request.POST)
+        if form3.is_valid():
+            sim_namef = request.POST.get('sim_name')
+            print("xxxx")
+            print(sim_namef)
+            delete = form3.cleaned_data.get('delete')
+            simget = Sim.objects.get(sim_name = sim_namef)
+            if(delete==False):
+                simget.save()
+            else:
+                simget.delete()
+                print('sucess')
+        return redirect('../home/'+class_name)
+    else:
+        form3 = SimEditForm()
+    #if(form3.is_valid()):
+     #   return redirect('tc:home')
+    ##   form3 = SimEditForm()
+
     ###############################################################################
     """if request.method == 'POST':
         form = SimCreationForm(request.POST)
@@ -190,7 +211,7 @@ def classHome(request, class_name):
 
     form = SimCreationForm()"""
     # 3/5/23 Removed "missions":missions
-    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims, "missions":missions})
+    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims, "missions":missions, "form3":form3})
 
 ###############################################################################
 def getGroups(request):

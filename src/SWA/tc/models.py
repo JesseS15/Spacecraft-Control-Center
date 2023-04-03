@@ -36,7 +36,10 @@ class Class(models.Model):
     sims = models.ManyToManyField("simapp.Sim", verbose_name=("Sim"), blank=True)
 
     def __str__(self):
+        if self.class_name:
+            self.class_name = self.class_name.strip(' ')
         return self.class_name
+    
     
     class Meta:
        verbose_name_plural = "Classes"
