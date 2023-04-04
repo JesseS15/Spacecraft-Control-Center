@@ -15,5 +15,5 @@ class UserRegisterForm(UserCreationForm):
 
 ###############################################################################
 class JoinClassForm(forms.Form):
-    class_name = forms.CharField(max_length = 15)
-    fields = ['class_name']
+    code = forms.CharField(max_length = 8)
+    fields = ['code']

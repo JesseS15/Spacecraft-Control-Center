@@ -26,8 +26,9 @@ for(i=0; i<btns.length; i++){
 
 for(let i=0; i<btns.length; i++){
     btns[i].onclick = function() {
-        var test = btns[i].id
-        document.getElementById("myInput").value = test;
+        var test1 = btns[i].id
+        window.alert()
+        document.getElementById("myInput").value = test1;
         //document.getElementById("test").innerHTML = '';
         if(modal2.style.display == "none" && modal3.style.display =="none"){
             var myDiv = document.getElementById("test").innerHTML = "Edit " + btns[i].id;

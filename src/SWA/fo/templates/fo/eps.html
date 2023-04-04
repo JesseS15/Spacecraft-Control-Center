@@ -6,12 +6,28 @@
   {% include "fo/leftnav.html" %}
   <link rel="stylesheet" href="../../../static/css/fosim_panels.css">
   <link rel="stylesheet" href="../../../static/css/leftnav_eps.css">
-      
+
+  <div style="height: 130vh">
+    <!-- Header -->
+    <div id="epsheader" style="margin-top:-70px; margin-left: 225px; z-index:7; border-bottom: solid;">
+      <table>
+        <tr>
+          <td><div id="epsheader" style="padding-right: 50px;">
+            <h2><b>Electrical and Power Subsystem (EPS)</b></h2>
+          </div></td>
+          <td><div id="break" style="width: 32vw;"></div></td>
+          <td><div id="displaytime" style="border-style: solid; ; padding-left: 5px; padding-right: 5px">
+            <div id="time"></div>
+          </div></td>
+        </tr>
+      </table>
+    </div>
+
     <!-- body panels-->
-    <div id="panelgrid" style="margin-top: -60px;">
+    <div id="panelgrid" style="margin-top: 15px;">
       <div id="item1">
         <div class="panel-header">
-          <h1 class="panel-title">Attribute #1</h1>
+          <h3 class="panel-title">ACS Power Distribution</h3>
           </div>
           <div class="panel-body">
           <p></p>
@@ -19,36 +35,54 @@
       </div>
       <div id="item2">
         <div class="panel-header">
-          <h1 class="panel-title">Attribute #2</h1>
+          <h3 class="panel-title">EPS Power Distribution</h3>
           </div>
           <div class="panel-body">
-          <p></p>
+            <p></p>
           </div>
       </div>
       <div id="item3">
         <div class="panel-header">
-          <h1 class="panel-title">Attribute #3</h1>
+          <h3 class="panel-title">TCS Power Distribution</h3>
           </div>
           <div class="panel-body">
-          <p></p>
+            <p></p>
           </div>
       </div>
       <div id="item4">
         <div class="panel-header">
-          <h1 class="panel-title">Attribute #4</h1>
+          <h3 class="panel-title">COMMs Power Distribution</h3>
           </div>
           <div class="panel-body">
-          <p></p>
+            <p></p>
           </div>
       </div>
       <div id="item5">
         <div class="panel-header">
-          <h1 class="panel-title">Attribute #5</h1>
+          <h3 class="panel-title">Payload Power Distribution</h3>
           </div>
           <div class="panel-body">
-          <p></p>
+            <p></p>
+          </div>
+      </div>
+      <div id="item6">
+        <div class="panel-header">
+          <h3 class="panel-title">Telemetry Transfer</h3>
+          </div>
+          <div class="panel-body">
+            <br><div class="epstelemtry" style="text-align:center";></div>
+          </div>
+      </div>
+      <div id="item7">
+        <div class="panel-header">
+          <h3 class="panel-title">Signal Status</h3>
+          </div>
+          <div class="panel-body">
+            <div class="signaleps" style="text-align:center";></div><br>
+            <div class="verifyeps" style="text-align:center";></div>
           </div>
       </div>
     </div>
-  
+  </div>
+  <script src = "/static/js/epsAttributes.js"></script>
 {% endblock eps %}

@@ -10,7 +10,7 @@ def repopulateAllSimsDict(all_sims_dict):
             s_id = s.sim_identifier
             if s_id == 0:
                 s.sim_identifier = getUniqueValue(all_sims_dict)
-                all_sims_dict[s.sim_identifier] = SimObject(simName=s.sim_name)
+                all_sims_dict[s.sim_identifier] = SimObject(pk=s.pk)
     print('\nAll Sims dictionary repopulated:')
     print(all_sims_dict,'\n')
 

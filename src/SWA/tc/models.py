@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models 
 from django.contrib.auth.models import Group
+import string
+import random
 
 from simapp.models import Sim
 
@@ -26,7 +28,7 @@ STATUS_CHOICES= (
 class Class(models.Model):
     class_name = models.CharField(default='', max_length=15, null=False)
     test = models.BooleanField(default=True)
-    code = models.CharField(default='', max_length=15, blank=True)
+    code = models.CharField(max_length=8, blank=True)
     status = models.CharField(default='ACTIVE',max_length=15, blank = True, choices=STATUS_CHOICES)
     flight_operators = models.ManyToManyField("fo.FlightOperator", verbose_name=("Flight Operator"), blank= True)
     # Classses only want sims, which have a mission

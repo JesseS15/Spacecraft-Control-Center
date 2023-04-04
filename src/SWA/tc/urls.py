@@ -12,6 +12,6 @@ urlpatterns = [
     path('home/<str:class_name>/newMission', simappViews.newMission, name='new'),
     path('home/<str:class_name>/newSim', simappViews.newSim, name='new'),
     path('home/<str:class_name>', views.classHome, name='classHome'),
-    path('<str:sim>/', views.tcSim, name ='sim'),
+    path('<int:simkey>/', views.tcSim, name ='sim'),
     
 ]

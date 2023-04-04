@@ -1,4 +1,6 @@
 import numpy
+import string
+import random
 from django.db import models
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -20,7 +22,7 @@ from .models import Class
 from django.contrib import messages
 from .models import TestConductor, Class
 from simapp.models import Sim, Subsystem, Mission
-from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm, SubsystemForm, ClassEditForm
+from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm, SubsystemForm, ClassEditForm, SimEditForm
 
 
 ###############################################################################
@@ -33,87 +35,100 @@ def index(request):
 
 ###############################################################################
 
-##########################################
+######################################################
 @login_required(login_url='/login/')
 @staff_member_required
 def tcHome(request):
     
     classes = Class.objects.all()
-
+    # Create new TestConductor object if none exists for current staff user
     if not TestConductor.objects.filter(user = request.user).exists():
         TestConductor.objects.create(user = request.user).save()
 
     print(classes)
     if request.method == 'POST':
         form = ClassForm(request.POST)
-        form2 = ClassEditForm(request.POST)
         classes1 = Class.objects.all()
         classes = numpy.asarray(classes1)
         var = False
-        if(form.is_valid() and form2.is_valid()):
-            print("count")
+        if(form.is_valid()):
             class_namef = form.cleaned_data.get('class_name')
             test = form.cleaned_data.get('test')
-            delete = form2.cleaned_data.get('delete')
             #test1 = form2.cleaned_data.get('test')
             classesstr = str(classes)
             print(type(classes))
             print(class_namef)
-            print('xxxxxxxx')
-            print(delete==True)
-            
-            if(len(classes)<=0):
-                form.save()
-            print(class_namef not in classesstr)
+
             ifequal = 0
             for classi in classes:
                 classstr = str(classi)
                 if(str(classstr) == class_namef):
                     ifequal = ifequal+1
-
-            print(ifequal)    
-            if(len(classes)>0 and ifequal==0 and test==True):
+            
+            if(len(classes)<=0):
                 form.save()
-            if(len(classes)>0 and ifequal==1 and test ==True):
+                classget = Class.objects.get(class_name = class_namef)
+                rcg = ''.join(random.choices(string.ascii_uppercase +string.digits, k=8))
+                classget.code = rcg
+                classget.save()
+                return redirect('tc:home')
+            elif(len(classes)>0 and ifequal==0 and test==True):
+                form.save()
+                classget = Class.objects.get(class_name = class_namef)
+                rcg = ''.join(random.choices(string.ascii_uppercase +string.digits, k=8))
+                classget.code = rcg
+                classget.save()
+                return redirect('tc:home')
+            elif(len(classes)>0 and ifequal>=1 and test ==True):
                messages.info(request, 'Class Already Exists. Add Class UNSUCCESSFUL')
-            if(len(classes)>0 and (class_namef not in classesstr) ==False and test ==False):
+               return redirect('tc:home')
+    else:
+        form = ClassForm()
+
+    if request.method == 'POST':
+        form2 = ClassEditForm(request.POST)
+        classes1 = Class.objects.all()
+        classes = numpy.asarray(classes1)
+        if(form2.is_valid()):
+            class_namef = form.cleaned_data.get('class_name')
+            test = form2.cleaned_data.get('test')
+            delete = form2.cleaned_data.get('delete')
+            randomizecode = form2.cleaned_data.get('randomizecode')
+            #test1 = form2.cleaned_data.get('test')
+            print('xxxxxxxx')
+            print(class_namef)
+            print(len(form2.cleaned_data.get('code')))
+            print(test)
+
+            ifequal = 0
+            for classi in classes:
+                classstr = str(classi)
+                if(str(classstr) == class_namef):
+                    ifequal = ifequal+1
+            
+            if(len(classes)>0 and ifequal>=1):
                 for classi in classes:
-                    classstr = str(classi)
-                    print(type(classstr))
-                    print(classi)
-                    print(classstr == class_namef)
-                    if(str(classstr) == class_namef):
+                    if(str(classi) == class_namef):
                         classget = Class.objects.get(class_name = class_namef)
                         if(delete==False):
-                            classget.status = form2.cleaned_data.get('code')
-                            classget.save()
-                            return redirect('tc:home')
+                            if(randomizecode == False):
+                                if(len(form2.cleaned_data.get('code'))>0):
+                                    classget.code = form2.cleaned_data.get('code')
+                                    classget.save()
+                                    return redirect('tc:home')
+                                else:
+                                    messages.info(request, 'Code choice must be made. Edit UNSUCCESSFUL')  
+                            else:
+                                rcg = ''.join(random.choices(string.ascii_uppercase +string.digits, k=8))
+                                classget.code = rcg
+                                classget.save()
+                                return redirect('tc:home')
                         else:
                             classget.delete()
                             print('sucess')
-                
-            #form.save
-            #start = time.time()
-            #duration = (time.time() - start) * 1000
-            #print('form.name {:.2f} ms'.format(
-            #duration
-            #))
             return redirect('tc:home')
     else:
-        form = ClassForm()
         form2 = ClassEditForm()
-
-    """if request.method == 'POST':
-        form2 = ClassEditForm(request.POST)
-        if form2.is_valid():
-            #form2.save()
-            classnamef = form2.cleaned_data.get('class_name')
-            print('welcome')
-            print(classnamef)
-            
-    else:
-        form2 = ClassEditForm()"""
-    
 
     return render(request, 'tc/tcHome.html', {"classes":classes, 'form': form, 'form2': form2})
   
@@ -145,6 +160,27 @@ def classHome(request, class_name):
         print(missions)
     else:
         missions=[] 
+    ######################sim edit page#########################################
+    if request.method == 'POST':
+        form3 = SimEditForm(request.POST)
+        if form3.is_valid():
+            sim_namef = request.POST.get('sim_name')
+            print("xxxx")
+            print(sim_namef)
+            delete = form3.cleaned_data.get('delete')
+            simget = Sim.objects.get(sim_name = sim_namef)
+            if(delete==False):
+                simget.save()
+            else:
+                simget.delete()
+                print('sucess')
+        return redirect('../home/'+class_name)
+    else:
+        form3 = SimEditForm()
+    #if(form3.is_valid()):
+     #   return redirect('tc:home')
+    ##   form3 = SimEditForm()
+
     ###############################################################################
     """if request.method == 'POST':
         form = SimCreationForm(request.POST)
@@ -179,7 +215,7 @@ def classHome(request, class_name):
 
     form = SimCreationForm()"""
     # 3/5/23 Removed "missions":missions
-    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims, "missions":missions})
+    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims, "missions":missions, "form3":form3})
 
 ###############################################################################
 def getGroups(request):
@@ -192,8 +228,8 @@ def getGroups(request):
 ###############################################################################
 @login_required(login_url='/login/')
 @staff_member_required
-def tcSim(request, sim):
-    simobj = Sim.objects.get(sim_name=sim)
+def tcSim(request, simkey):
+    simobj = Sim.objects.get(pk = simkey)
 
     if request.method == 'POST':
 

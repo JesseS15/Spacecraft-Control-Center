@@ -1,22 +1,24 @@
  /* Split the screen in half */
  .split {
-    height: 70%;
-    width: 50%;
     position: fixed;
     z-index: 1;
-    overflow-x: hidden;
+    overflow-x: auto;
   }
   
   /* Control the left side */
   .left {
+    height: 100vh;
+    width: 48vw;
     left: 0;
-    background-color: silver;
+
   }
   
   /* Control the right side */
   .right {
+    height: 100vh;
+    width: 48vw;
     right: 0;
-    background-color: red;
+
   }
   
   /* If you want the content centered horizontally and vertically */

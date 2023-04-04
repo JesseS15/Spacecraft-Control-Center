@@ -1,6 +1,10 @@
 from django import forms
+import re
+import random
+import string
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
 
 from fo.models import FlightOperator
 from simapp.models import Subsystem, Sim, Mission
@@ -18,6 +22,11 @@ class UserRegisterForm(UserCreationForm):
 ###############################################################################
 class ClassForm(forms.ModelForm):
     class_name = forms.CharField(initial='') 
+    
+    #def clean_msg(self):
+     #   class_name = self.cleaned_data['class_name']
+      ##     raise ValidationError("Spaces not allowed")
+       # return class_name
     test = True
     class Meta:
         model = Class
@@ -26,7 +35,7 @@ class ClassForm(forms.ModelForm):
 
 ###############################################################################
 class SimCreationForm(forms.ModelForm):
-
+    sim_name = forms.CharField(initial='')
     #flight_director = forms.ModelChoiceField(queryset=None)
     #flight_director = forms.MultipleChoiceField(widget=forms.SelectMultiple,label="Select the devices you want to delete:")
     def __init__(self, class_name, *args, **kwargs):
@@ -43,6 +52,7 @@ class SimCreationForm(forms.ModelForm):
         self.fields['ACS_fo'].queryset = test
         self.fields['EPS_fo'].queryset = test
         self.fields['TCS_fo'].queryset = test
+        
         #self.test = test
    
     #flight_director = forms.MultipleChoiceField(widget=forms.SelectMultiple,label="Select the devices you want to delete:", choices = test)
@@ -65,11 +75,22 @@ class SubsystemForm(forms.Form):
 ################################################################
 class ClassEditForm(forms.ModelForm):
     test = False
+    randomizecode = forms.BooleanField(initial = False, required=False, label="Randomize Code")
     delete = forms.BooleanField(initial = False, required=False)
     #test = forms.BooleanField(widget=forms.HiddenInput(), initial=False)
     #status = forms.CharField(widget=forms.HiddenInput(), initial=Class.status) 
-    #code  = forms.CharField(widget=forms.HiddenInput(), initial=123)
+    code  = forms.CharField(initial='', required=False)
     class Meta:
         model = Class
-        fields = ['status','code']
+        fields = ['randomizecode','code']
+        widgets = {'status': forms.HiddenInput()}
+######################################################
+class SimEditForm(forms.ModelForm):
+    test = False
+    delete = forms.BooleanField(initial = False, required=False)
+    #test = forms.BooleanField(widget=forms.HiddenInput(), initial=False)
+    #status = forms.CharField(widget=forms.HiddenInput(), initial=Class.status) 
+    class Meta:
+        model = Sim
+        fields = []
         widgets = {'status': forms.HiddenInput()}

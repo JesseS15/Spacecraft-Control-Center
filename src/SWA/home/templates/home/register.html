@@ -8,7 +8,7 @@
     <div>
       <form method="POST" style="width: 60vw;color: white; border-radius:1%;">
         {% csrf_token %}
-        <fieldset class="form-group">
+        <fieldset class="form-group" style="border: transparent;">
           {{ form|crispy}}
         </fieldset>
           <button style="background: black; font-size: 2rem; color:white;" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-check"></span> &nbsp;Sign Up</button>
