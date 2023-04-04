@@ -97,10 +97,7 @@
     text-size-adjust: auto;
     width: fit-content;
   }
-  #simtable .one{
-    width: 20%;
-    align-content: center;
-  }
+
   /*@media only screen and (max-width: 480px) {*/
     /* horizontal scrollbar for tables if mobile screen */
 
