@@ -68,6 +68,7 @@ def tcHome(request):
             
             if(len(classes)<=0):
                 form.save()
+                return redirect('tc:home')
 
             print(class_namef not in classesstr)
             ifequal = 0

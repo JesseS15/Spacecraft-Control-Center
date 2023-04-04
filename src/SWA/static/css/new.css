@@ -9,12 +9,16 @@
   
   /* Control the left side */
   .left {
+    height: 100vh;
+    width: 50vw;
     left: 0;
 
   }
   
   /* Control the right side */
   .right {
+    height: 100vh;
+    width: 50vw;
     right: 0;
 
   }

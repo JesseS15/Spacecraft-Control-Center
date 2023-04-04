@@ -101,10 +101,10 @@
     width: 20%;
     align-content: center;
   }
-  @media only screen and (max-width: 480px) {
+  /*@media only screen and (max-width: 480px) {*/
     /* horizontal scrollbar for tables if mobile screen */
 
-    #simtable {
+    /*#simtable {
       width: 100%;
       table-layout: fixed;
       margin-left: 0%;
