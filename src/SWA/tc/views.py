@@ -67,8 +67,8 @@ def tcHome(request):
             print(delete==True)
             
             if(len(classes)<=0):
-                
                 form.save()
+
             print(class_namef not in classesstr)
             ifequal = 0
             for classi in classes:
@@ -79,9 +79,11 @@ def tcHome(request):
             print(ifequal)    
             if(len(classes)>0 and ifequal==0 and test==True):
                 form.save()
-            if(len(classes)>0 and ifequal==1 and test ==True):
+                return redirect('tc:home')
+            if(len(classes)>0 and ifequal>=1 and test ==True):
                messages.info(request, 'Class Already Exists. Add Class UNSUCCESSFUL')
-            if(len(classes)>0 and (class_namef not in classesstr) ==False and test ==False):
+               return redirect('tc:home')
+            if(len(classes)>0 and ifequal>=1 and test ==False):
                 for classi in classes:
                     classstr = str(classi)
                     print(type(classstr))
