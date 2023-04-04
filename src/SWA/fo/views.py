@@ -173,13 +173,39 @@ def submit(request, simkey):
 ###############################################################################
 def fetchdata(request, simkey):
     if request.method == 'GET':
-        simobj = Sim.objects.get(pk = simkey)
-        thread_id = simobj.sim_identifier
+        sim = Sim.objects.get(pk = simkey)
+        flightOperator = get_object_or_404(FlightOperator, user = request.user)
+        subsystem = _get_fo_subsystem(sim, flightOperator)
+        
+        data = {}
+        data['output'] = []
+        data['input'] = []
+        
+        for item in sim.display_buffer.all():
+            data['output'].append(item.buffer_item)
+
+        if subsystem == 'DIRECTOR':
+            for item in sim.director_command_buffer.all():
+                data['input'].append(item.buffer_item)
+        elif subsystem == 'Comms':
+            for item in sim.COMMS_command_buffer.all():
+                data['input'].append(item.buffer_item)
+        elif subsystem == 'ACS':
+            for item in sim.ACS_command_buffer.all():
+                data['input'].append(item.buffer_item)
+        elif subsystem == 'EPS':
+            for item in sim.EPS_command_buffer.all():
+                data['input'].append(item.buffer_item)
+        elif subsystem == 'TCS':
+            for item in sim.TCS_command_buffer.all():
+                data['input'].append(item.buffer_item)
+        
+        thread_id = sim.sim_identifier
         for thread in threading.enumerate():
             if thread.ident == thread_id:
                 thread.check()  # Call a method on the thread object
                 # TODO Add thread.update() fcn
-        return HttpResponse("todo") # Sending an success response
+        return HttpResponse(json.dumps(data)) # Sending an success response
     else:
         return HttpResponse("Request method is not GET")
 

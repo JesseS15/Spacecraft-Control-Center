@@ -66,14 +66,26 @@ function fetchdata(){
         dataType: 'json',
 
         success: (data) => {
-          if (data.length > terminal1.children.length){
+          console.log(data);
+          if (data['output'].length > terminal1.children.length){
             terminal1.replaceChildren();
-            for (var i = 0; i < data.length; i++) {
+            for (var i = 0; i < data['output'].length; i++) {
               const output = document.createElement('p');
-              output.textContent = `$ ${data[i]}`;
+              output.textContent = `$ ${data['output'][i]}`;
               terminal1.appendChild(output);
             }
             terminal1.parentElement.scrollTop = terminal1.parentElement.scrollHeight;
+            console.log(data);
+          }
+    
+          if (data['input'].length > terminal2.children.length){
+            terminal2.replaceChildren();
+            for (var i = 0; i < data['input'].length; i++) {
+              const output = document.createElement('p');
+              output.textContent = `$ ${data['input'][i]}`;
+              terminal2.appendChild(output);
+            }
+            terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
             console.log(data);
           }
         }
