@@ -1,5 +1,7 @@
 from django import forms
 import re
+import random
+import string
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
@@ -20,6 +22,7 @@ class UserRegisterForm(UserCreationForm):
 ###############################################################################
 class ClassForm(forms.ModelForm):
     class_name = forms.CharField(initial='') 
+    
     #def clean_msg(self):
      #   class_name = self.cleaned_data['class_name']
       ##     raise ValidationError("Spaces not allowed")

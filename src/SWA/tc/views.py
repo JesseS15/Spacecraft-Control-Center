@@ -52,10 +52,8 @@ def tcHome(request):
         classes = numpy.asarray(classes1)
         var = False
         if(form.is_valid()):
-            print("count")
             class_namef = form.cleaned_data.get('class_name')
             test = form.cleaned_data.get('test')
-
             #test1 = form2.cleaned_data.get('test')
             classesstr = str(classes)
             print(type(classes))
@@ -69,9 +67,17 @@ def tcHome(request):
             
             if(len(classes)<=0):
                 form.save()
+                classget = Class.objects.get(class_name = class_namef)
+                rcg = ''.join(random.choices(string.ascii_uppercase +string.digits, k=8))
+                classget.code = rcg
+                classget.save()
                 return redirect('tc:home')
             elif(len(classes)>0 and ifequal==0 and test==True):
                 form.save()
+                classget = Class.objects.get(class_name = class_namef)
+                rcg = ''.join(random.choices(string.ascii_uppercase +string.digits, k=8))
+                classget.code = rcg
+                classget.save()
                 return redirect('tc:home')
             elif(len(classes)>0 and ifequal>=1 and test ==True):
                messages.info(request, 'Class Already Exists. Add Class UNSUCCESSFUL')
@@ -83,29 +89,26 @@ def tcHome(request):
         form2 = ClassEditForm(request.POST)
         classes1 = Class.objects.all()
         classes = numpy.asarray(classes1)
-        var = False
         if(form2.is_valid()):
-            print("count")
-            class_namef = form2.cleaned_data.get('class_name')
+            class_namef = form.cleaned_data.get('class_name')
             test = form2.cleaned_data.get('test')
             delete = form2.cleaned_data.get('delete')
             randomizecode = form2.cleaned_data.get('randomizecode')
             #test1 = form2.cleaned_data.get('test')
-            classesstr = str(classes)
-            print(type(classes))
-            print(class_namef)
             print('xxxxxxxx')
-            print(delete==True)
+            print(class_namef)
+            print(len(form2.cleaned_data.get('code')))
+            print(test)
 
-            print(class_namef not in classesstr)
             ifequal = 0
             for classi in classes:
                 classstr = str(classi)
                 if(str(classstr) == class_namef):
                     ifequal = ifequal+1
-            if(len(classes)>0 and ifequal>=1 and test ==False):
+            
+            if(len(classes)>0 and ifequal>=1):
                 for classi in classes:
-                    if(str(classstr) == class_namef):
+                    if(str(classi) == class_namef):
                         classget = Class.objects.get(class_name = class_namef)
                         if(delete==False):
                             if(randomizecode == False):
@@ -123,7 +126,6 @@ def tcHome(request):
                         else:
                             classget.delete()
                             print('sucess')
-                
             return redirect('tc:home')
     else:
         form2 = ClassEditForm()
