@@ -1,4 +1,4 @@
-from simapp.models import Sim
+from simapp.models import Sim, DisplayBufferItem
 from simulation.ACS import ACS
 from simulation.TCS import TCS
 from simulation.EPS import EPS
@@ -38,7 +38,7 @@ class SimObject(threading.Thread):
     def check(self):
         print('Sim Thread for '+ self.simName+' is reachable')
 
-    def update():
+    def update(self):
         ACS.update()
         EPS.update()
         TCS.update()
@@ -53,5 +53,9 @@ class SimObject(threading.Thread):
         while True:
             print('thread ' + self.simName)
             print(threading.get_ident())
-            self.update()
+            #self.update()
+            
+            displayobj = DisplayBufferItem.objects.create(buffer_item = self.simName + " updates")
+            displayobj.save()
+            simobj.display_buffer.add(displayobj)
             time.sleep(5)
