@@ -3,6 +3,8 @@ var modal4 = document.getElementById("modal4");
 const dbtns = document.getElementsByClassName("download"); 
 const ebtns = document.getElementsByClassName("edit"); 
 
+var span4 = document.getElementById("span4");
+
 for(let i=0; i<ebtns.length; i++){
     ebtns[i].onclick = function() {
         var test1 = ebtns[i].id
@@ -14,10 +16,11 @@ for(let i=0; i<ebtns.length; i++){
         //document.getElementById("test").innerHTML = '';
     }  
 }
-/*span1.onclick = function(){
+span4.onclick = function(){
     //document.getElementById("test").innerHTML = '';
-    $('#modal1').hide();
-}*/
+    $('#modal4').hide();
+}
+
 
 window.addEventListener("click", function(event){
     if(event.target == modal4){

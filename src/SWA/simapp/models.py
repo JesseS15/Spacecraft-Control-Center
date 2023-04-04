@@ -52,7 +52,7 @@ class Mission(models.Model):
 ###############################################################################
 class Sim(models.Model):
 
-    sim_name = models.CharField(default='', max_length=15)
+    sim_name = models.CharField(default='', max_length=10)
     mission_script = models.ForeignKey(Mission, null=True, on_delete=models.CASCADE)
 
     flight_director = models.ManyToManyField("fo.FlightOperator", related_name="flight_director",default='', verbose_name=("Flight Director"), blank=True)

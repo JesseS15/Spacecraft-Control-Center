@@ -1,93 +1,103 @@
-
 {% extends "home/index.html" %}
 {% load static %}
-
 {% load crispy_forms_tags %}
-<!DOCTYPE html>
-<html lang="eng"></html>
-<head>
-    <meta charset="utf-8">
-    <title>Test</title> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
-</head>
-<body>
-      <div class="row">
-        {% block start %}
-        {% if user.is_authenticated %}
-        <center>
-          <h3>Welcome to {{ class_name }}</h3>
-          <div class="box">
-            <div class="content">
-              <br>
-              <table id = "invisibleHeader" align = "center" border = "0" style="width: 80%; margin-left: 2.5%">
-              <thead>
-                <th style="font-size:18px; width: 10%; padding-left:1%">Sim List</th>
-                <th style="font-size:15px; width: 53%; padding-left:3%"><button id="addsim" onclick="window.location ='{{ class_name }}/newSim';"><span class="glyphicon glyphicon-plus"></span> &nbsp;New Sim</button></th>
-                <th style="font-size:18px; width: 10%; padding-left:0%">Mission List</th>
-                <th style="font-size:15px; width: 40%; padding-left:1%"><button id="addsim" onclick="window.location ='{{ class_name }}/newMission';"><span class="glyphicon glyphicon-plus"></span> &nbsp;New Mission</button></th>
-              </thead>
-              </table>
-              
-              <table id = "simtable" align = "left" border="2" style="width: 45%; margin-left: 2.5%; margin-right: 2.5%;">
-                <thead>
-                  <th style="font-size:18px; width: 19%"></th>
-                  <th style="font-size:18px; width: 17%">Name</th>
-                  <th style="font-size:18px; width: 17%">Status</th>
-                  <th style="font-size:18px; width: 39%"></th>
-                </thead>
-                 {% for sim in sims %}
-                <tr style="font-size:16px; max-height: 20px; overflow-y: scroll;">
-                  <td style="text-align:center;"><button id = {{sim}} type = "button" data-toggle = "modal" data-target = "modal1" class="edit"><span class="glyphicon glyphicon-wrench"></span></button><button id = {{sim}} type = "button" data-toggle = "modal" data-target = "modal1" class="download"><span class="glyphicon glyphicon-save"></span></button></td>
-                  <td style="font-size:16px;"><a class = "simlist" href="{% url 'tc:sim' sim.pk %}">{{ sim }}</a></td>
-                  <td style="font-size:16px;"></td>
-                  <td style="font-size:16px;"><button type = "button">Start</button><button type = "button" class="op">End</button></td>
-                </tr>
-              {% endfor %}
-              <div id="modal4" class="modal">
-                <div class="modal-content"style="width: 60%">
-                  <div class="modal-header">
-                    <span class="close" id="span1">&times;</span>
-                    
-                  </div>
-                  <div class="popup-body">
-                    <form name = "SimEditForm" method="POST" style="color: black; padding:10%; border-radius:1%;width: 60vw; border-color: black;">
-                      {% csrf_token %}
-                      <fieldset class="form-group">
-                        <h2 id = "test" name = 'test'></h2>
-                        <input id="myInput" type="text" name="sim_name" value='default' readonly/>
-                        {{ form3|crispy}}
-                      </fieldset>
-                        <button style="background: black; padding:2%; font-size: 2rem; color:white;" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-check"></span> &nbsp;Save and Apply</button>
-                      <br />
-                        <a href="{% url 'tc:home' %}" style="text-decoration: underline; color: white; padding:2%; cursor:pointer;">Exit</a></sub>
-                    </form>
-                    <script src = "/static/js/classHome.js"></script>
-                  </div>
-                </div>
-              </div>
-              </table> 
-              <table id="missiontable" align = "right" border="2" style="width: 45%; margin-left: 2.5%; margin-right: 2.5%;">
-                <thead>
-                  <th style="font-size:18px; width: 18%">Name</th>
-                  <th style="font-size:18px; width: 18%">Status</th>
-                  <th style="font-size:18px; width: 54%"></th>
-                </thead>
-                 {% for mission in missions %}
-                <tr style="font-size:16px; max-height: 20px; overflow-y: scroll;">
-                  <td style="font-size:16px;"><a class = "missionlist">{{ mission }}</a></td>
-                  <td style="font-size:16px;"></td>
-                  <td style="font-size:16px;"><button type = "button">Manage</button><button type = "button" class="op">Operators</button><button type = "button" class="settings">Reports</button></td>
-                </tr>
-              {% endfor %}
-              </table> 
-            </div>
-          
-        </center>
-        {% else %}
 
-        {% endif %}
-        {% endblock %}
-      </div>
-      
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+    <meta charset="utf-8"/>
+</head>
+{% block start %}
+<body style="background-image: url({% static 'images/stars.jpg' %}); height: 100vh;">
+    {% if user.is_authenticated %}
+    <center><h1 style = "color: white; font-family: Arial, Helvetica, sans-serif;">Welcome to {{ class_name }}</h1></center>
+    <div class="split left">
+        <center>
+            <div class = "header" id = "header">
+              <table class ="invisibleheader" id = "invisibleHeader" align = "center" border = "0" style="width: 95%; margin-left: 5%; font-size: 18px;">
+                <thead>
+                  <th style = "color: white;">Sim List</th>
+                  <th><button class = "button" id="addsim" onclick="window.location ='{{ class_name }}/newSim';"><span class="glyphicon glyphicon-plus"></span>&nbsp;New Sim</button></th>
+                </thead>
+              </table>     
+            </div>
+        </center>
+        <div class="notcentered">
+          <table id = "simtable" align = "left" border="2">
+            <thead>
+              <th class="one"></th>
+              <th class="two">Name</th>
+              <th>Status</th>
+              <th class="four"></th>
+            </thead>
+             {% for sim in sims %}
+            <tr>
+              <td><button id = {{sim}} type = "button" data-toggle = "modal" data-target = "modal1" class="edit"><span class="glyphicon glyphicon-wrench"></span></button><button id = {{sim}} type = "button" data-toggle = "modal" data-target = "modal1" class="download"><span class="glyphicon glyphicon-save"></span></button></td>
+              <td class="five"><a class = "simlist" href="{% url 'tc:sim' sim.pk %}">{{ sim }}</a></td>
+              <td></td>
+              <td><button type = "button" class="op">Start</button><button type = "button" class="op">End</button></td>
+            </tr>
+          {% endfor %}
+          <div id="modal4" class="modal">
+            <div class="modal-content"style="width: 95%">
+              <div class="modal-header">
+                <span class="close" id="span4">&times;</span>
+                
+              </div>
+              <div class="popup-body">
+                <form name = "SimEditForm" method="POST" style="color: black; padding:2%; border-radius:1%;width: 60vw; border-color: black;">
+                  {% csrf_token %}
+                  <fieldset class="form-group">
+                    <h2 id = "test" name = 'test'></h2>
+                    <div>
+                    <input id="myInput" type="text" name="sim_name" value='default' readonly/>
+                    {{ form3|crispy}}
+                  </fieldset>
+                    <button style="background: black; padding:2%; text-size-adjust: auto; color:white; width:95%" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-check"></span> &nbsp;Save and Apply</button>
+                </div>
+                  <br />
+                    <a href="{% url 'tc:home' %}" style="text-decoration: underline; color: white; padding:2%; cursor:pointer;">Exit</a></sub>
+                </form>
+                <script src = "/static/js/classHome.js"></script>
+              </div>
+            </div>
+          </div>
+          </table> 
+            
+        </div>
+    </div>
+        
+    <div class="split right">
+        <center>
+          <div class = header>
+            <table class="invisibleheader" id = "invisibleHeader" align = "center" border = "0" style="width: 95%; margin-left: 5%; font-size: 18px;">
+              <thead>
+                <th style="color: white">Mission List</th>
+                <th><button class = "button" id="addsim" onclick="window.location ='{{ class_name }}/newMission';"><span class="glyphicon glyphicon-plus"></span>&nbsp;New Mission</button></th>
+              </thead>
+            </table>     
+          </div>
+        </center>
+        <div class="notcentered">
+          <table id="missiontable" align = "right" border="2">
+            <thead>
+              <th>Name</th>
+              <th>Status</th>
+              <th></th>
+            </thead>
+             {% for mission in missions %}
+            <tr>
+              <td><a class = "missionlist">{{ mission }}</a></td>
+              <td></td>
+              <td><button type = "button">Manage</button><button type = "button" class="op">Operators</button><button type = "button" class="settings">Reports</button></td>
+            </tr>
+          {% endfor %}
+          </table> 
+        </div>
+    </div>
+    {% else %}
+
+    {% endif %}
+    {% endblock %}
 </body>
 </html>
