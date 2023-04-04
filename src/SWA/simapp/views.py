@@ -80,7 +80,7 @@ def newSim(request,class_name):
             sim = Sim.objects.create(sim_name = sim_name, mission_script = mission)
 
             # Create and start new sim thread
-            simThread = SimObject(simName=sim_name)
+            simThread = SimObject(pk=sim.pk)
             simThread.start()
             RegularFunctions.repopulateAllSimsDict(All_Sims_Dict)
             All_Sims_Dict[sim.sim_identifier] = simThread

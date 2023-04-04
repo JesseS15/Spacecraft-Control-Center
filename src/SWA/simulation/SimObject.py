@@ -12,6 +12,7 @@ class SimObject(threading.Thread):
 
     simName = ""
     mission = ""
+    pk = 0
     dictObject = Dicts()
     # Creats a new instance of the Attribute Dictionaries
     attributeDict = dictObject.dicts
@@ -19,10 +20,12 @@ class SimObject(threading.Thread):
     # All the subsystem objects
     subsystems = { "ACS": 0, "TCS": 0, "COMMS": 0, "EPS": 0 }
 
-    def __init__(self, simName):
+    def __init__(self, pk):
         threading.Thread.__init__(self)
-        self.simName = simName
-        print('\n  !!! NEW SIM', simName, 'CREATED !!!\n')
+        sim = Sim.objects.get(pk = pk)
+        self.pk = sim.pk
+        self.simName = sim.sim_name
+        print('\n  !!! NEW SIM', self.simName, 'CREATED !!!\n')
 
     # Method to update dictionaries. 
     def updateDictionaries(self, updateDict):
@@ -46,7 +49,7 @@ class SimObject(threading.Thread):
         payload.update()
 
     def run(self):
-        simobj = Sim.objects.get(sim_name = self.simName)
+        simobj = Sim.objects.get(pk = self.pk)
         simobj.sim_identifier = threading.get_ident()
         simobj.save()
 
