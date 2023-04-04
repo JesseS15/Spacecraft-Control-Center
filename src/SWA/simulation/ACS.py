@@ -1,4 +1,4 @@
-from Subsystem import Subsystem
+from simulation.Subsystem import Subsystem
 import random
 
 class ACS(Subsystem):
@@ -11,6 +11,7 @@ class ACS(Subsystem):
             'pitch' : 0,
             'yaw' : 0
         }
+         ##NEEDS TO BE CHANGED BASED ON TEST CONDUCTOR INPUT -- just have it set as a random goal for now
         self.orientGoal = {
             'roll' : random.randint(0,360),
             'pitch' : random.randint(0,360),
@@ -52,7 +53,6 @@ class ACS(Subsystem):
     def update():
         ACS.randomRollPitchYaw()
 
-
     def checkFinalRPY(self):
         if self.orient['roll'] in range(self.orientEqual['roll']-70,self.orientEqual['roll']+70):
             print("ROLL: VALID")
@@ -71,7 +71,7 @@ class ACS(Subsystem):
             return False
         return True
     
-##console commands##
+    ###################ACS CONSOLE COMMANDS #######################
     def systemChecks(self):
         badChecks = [key for key,value in self.checks.items() if not value]
         print(badChecks)
