@@ -13,9 +13,9 @@ class ACS(Subsystem):
         }
          ##NEEDS TO BE CHANGED BASED ON TEST CONDUCTOR INPUT -- just have it set as a random goal for now
         self.orientGoal = {
-            'roll' : random.randint(0,360),
-            'pitch' : random.randint(0,360),
-            'yaw' : random.randint(0,360)
+            'roll' : random.randint(-180,180),
+            'pitch' : random.randint(-180,180),
+            'yaw' : random.randint(0,90)
         }
 
         self.orientEqual = True
