@@ -30,15 +30,13 @@
       <h3 class="list" style="margin-left: 10%;text-align: left;">Class List</h3>
       <table id= "classtable" border="2" style="width: 80%;">
         <thead>
-          <th style="width:5%"></th>
           <th style="font-size:18px; width: 26%">Name</th>
           <th style="font-size:18px; width: 26%">Status</th>
           <th style="font-size:18px; width: 26%">Code</th>
-          <th style="width:15%"></th>
+          <th style="width:20%"></th>
         </thead>
          {% for class_name in classes %}
         <tr style="font-size:16px; max-height: 20px; overflow-y: scroll;">
-          <td style="text-align:center;"><button type = "button" data-toggle = "modal" data-target = "modal1" class="settings"><span class="glyphicon glyphicon-wrench"></span></button></td>
           <td style="font-size:16px;"><a id = {{class_name}} class = "classlist" href="{% url 'fo:classHome' class_name %}">{{class_name}}</a></td>
           <td style="font-size:16px;">{{class_name.status}}</td>
           <td style="font-size:16px;">{{class_name.code}}</td>
