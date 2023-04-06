@@ -1,4 +1,4 @@
-from simulation.Subsystem import Subsystem
+from Subsystem import Subsystem
 import random
 
 class TCS(Subsystem):
@@ -35,6 +35,7 @@ class TCS(Subsystem):
                              'Activate Heating Procedure' : False}
         self.verifyStatus = False
         print('New instance of TCS class created')
+        self.randomThermal()
 
     def randomThermal(self):
         for key,value in self.orient:
@@ -82,8 +83,9 @@ class TCS(Subsystem):
         self.orient['Solar Panels'] += newSolar
         return ("Propulsion temperatures heated to" + newSolar + "degrees")
 
-    def update():
-        TCS.randomThermal()
+    def update(self):
+        for key,value in self.orient:
+            self.orient[key] += round(random.uniform(-.5,5), 1)
 
     ########## FINAL TEMP CHECK ###############
     def checkFinalTemp(self):

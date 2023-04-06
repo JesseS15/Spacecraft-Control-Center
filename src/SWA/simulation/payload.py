@@ -1,12 +1,12 @@
-from simulation.Subsystem import Subsystem
+from Subsystem import Subsystem
 import random
 
 class payload(Subsystem):
 
     payloadName = "Payload"
 
-    def __init__(self, payloadName):
-        super().__init__()
+    def __init__(self, payloadName, dicts):
+        super().__init__(dicts)
         self.payloadName = payloadName
         self.checks = {'Optical Electronics' : random.choice([True, False]),
                        'Bus Connection' : random.choice([True, False]),

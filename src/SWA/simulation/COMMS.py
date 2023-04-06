@@ -1,11 +1,10 @@
-from simulation.Subsystem import Subsystem
+from Subsystem import Subsystem
 import random
 
 class COMMS(Subsystem):
 
     def __init__(self, dicts):
         super().__init__(dicts)
-        self.attributes = self.dicts['COMMS']
         self.gain = 1
         self.requiredGain = random.randint(1, 10)
         self.checks = {'signal' : random.choice([True, False]),
