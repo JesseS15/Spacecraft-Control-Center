@@ -1,7 +1,6 @@
  /* Split the screen in half */
  .split {
     position: fixed;
-    z-index: 1;
     overflow-x: auto;
   }
   
@@ -10,7 +9,6 @@
     height: 100vh;
     width: 48vw;
     left: 0;
-
   }
   
   /* Control the right side */

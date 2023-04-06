@@ -29,7 +29,7 @@
     margin-left: 4.5%;
     table-layout: fixed;
     text-size-adjust: auto;
-
+    z-index: 3;
   }
   
   #simtable td, #simtable th {
