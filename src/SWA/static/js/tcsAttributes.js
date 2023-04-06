@@ -8,7 +8,7 @@ window.setInterval(function(){
 
 window.setInterval(function(){
     var active = true;
-    $('.signalacs').css('border-color', function(){
+    $('.signaltcs').css('border-color', function(){
         if (active = true) {
             return 'green';
         } else {
@@ -25,7 +25,7 @@ window.setInterval(function(){
 
 window.setInterval(function(){
     var active1 = true;
-    $('.verifyacs').css('border-color', function(){
+    $('.verifytcs').css('border-color', function(){
         if (active1 = true) {
             return 'green';
         } else {
@@ -42,7 +42,7 @@ window.setInterval(function(){
 
 window.setInterval(function(){
     var active1 = true;
-    $('.acstelemtry').css('border-color', function(){
+    $('.tcstelemtry').css('border-color', function(){
         if (active1 = true) {
             return 'red';
         } else {
