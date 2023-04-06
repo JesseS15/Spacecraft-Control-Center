@@ -1,7 +1,8 @@
+{% load static %}
 {% load crispy_forms_tags %}
 {% block console %}
 
-<link rel="stylesheet" href="../../../static/css/console.css">
+<link rel="stylesheet" href="{% static "/css/fosim_console.css" %}">
 
   <!-- bottom console -->
   <div class="resizable" style = "z-index: 3;">
@@ -27,9 +28,9 @@
 	  </div>
 	</div> 
 	<div class="resizable-handle"></div>
-  </div> 
+  </div>
 
-<script src=  "/static/js/jquery.min.js"></script>
-<script src = "/static/js/fosim.js"></script>
+<script src=  "{% static "/js/jquery.min.js" %}"></script>
+<script src = "{% static "/js/fosim.js" %}"></script>
   
 {% endblock console %}

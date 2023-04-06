@@ -10,7 +10,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import JoinClassForm
 from .models import FlightOperator
 from tc.models import Class
-from simapp.models import Sim, Subsystem
+from simapp.models import Sim, Subsystem, CommandBufferItem
 
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -31,13 +31,14 @@ def foHome(request):
     flightOperator = get_object_or_404(FlightOperator, user = request.user)
     classes = flightOperator.class_list.all()
     if request.method == 'POST':
-        class_name = request.POST['class_name']
+        code = request.POST['code']
         class_names = [classobj.class_name for classobj in Class.objects.all()]
-        if class_name in class_names:
-            classobj = Class.objects.get(class_name = class_name)
+        codes = [classobj.code for classobj in Class.objects.all()]
+        if code in codes:
+            classobj = Class.objects.get(code = code)
             classobj.flight_operators.add(FlightOperator.objects.get(user = request.user))
             test = FlightOperator.objects.get(user = request.user)
-            test.class_list.add(Class.objects.get(class_name = class_name))
+            test.class_list.add(Class.objects.get(code = code))
             return redirect('fo:home')
             
         else:
@@ -49,9 +50,29 @@ def foHome(request):
 
 ###############################################################################
 @login_required(login_url='/login/')
+def sim(request, simkey):
+    
+    sim = get_object_or_404(Sim, pk = simkey)
+    flightOperator = get_object_or_404(FlightOperator, user = request.user)
+    subsystem = _get_fo_subsystem(sim, flightOperator)
+    if subsystem == 'DIRECTOR':
+        return redirect('fo:acs', simkey)
+    elif subsystem == 'Comms':
+        return redirect('fo:comms', simkey)
+    elif subsystem == 'ACS':
+        return redirect('fo:acs', simkey)
+    elif subsystem == 'EPS':
+        return redirect('fo:eps', simkey)
+    elif subsystem == 'TCS':
+        return redirect('fo:tcs', simkey)
+    else:
+        return redirect('fo:home')
+    
+###############################################################################
+@login_required(login_url='/login/')
 def acs(request, simkey):
 
-    simobj = get_object_or_404(Sim, sim_name=simkey)
+    simobj = get_object_or_404(Sim, pk = simkey)
     flightOperator = get_object_or_404(FlightOperator, user = request.user)
     if simobj in flightOperator.sim_list.all():
         subsystem = _get_fo_subsystem(simobj, flightOperator)
@@ -62,40 +83,44 @@ def acs(request, simkey):
 @login_required(login_url='/login/')
 def eps(request, simkey):
 
-    simobj = get_object_or_404(Sim, sim_name=simkey)
+    simobj = get_object_or_404(Sim, pk = simkey)
     flightOperator = get_object_or_404(FlightOperator, user = request.user)
     if simobj in flightOperator.sim_list.all():
-        return render(request, 'fo/eps.html', {'sim': simobj, 'simkey': simkey})
+        subsystem = _get_fo_subsystem(simobj, flightOperator)
+        return render(request, 'fo/eps.html', {'sim': simobj, 'simkey': simkey, 'flightoperator': flightOperator, 'subsystem': subsystem})
     else:
         return redirect('fo:home')
 ###############################################################################
 @login_required(login_url='/login/')
 def tcs(request, simkey):
 
-    simobj = get_object_or_404(Sim, sim_name=simkey)
+    simobj = get_object_or_404(Sim, pk = simkey)
     flightOperator = get_object_or_404(FlightOperator, user = request.user)
     if simobj in flightOperator.sim_list.all():
-        return render(request, 'fo/tcs.html', {'sim': simobj, 'simkey': simkey})
+        subsystem = _get_fo_subsystem(simobj, flightOperator)
+        return render(request, 'fo/tcs.html', {'sim': simobj, 'simkey': simkey, 'flightoperator': flightOperator, 'subsystem': subsystem})
     else:
         return redirect('fo:home')
 ###############################################################################
 @login_required(login_url='/login/')
 def payload(request, simkey):
 
-    simobj = get_object_or_404(Sim, sim_name=simkey)
+    simobj = get_object_or_404(Sim, pk = simkey)
     flightOperator = get_object_or_404(FlightOperator, user = request.user)
     if simobj in flightOperator.sim_list.all():
-        return render(request, 'fo/payload.html', {'sim': simobj, 'simkey': simkey})
+        subsystem = _get_fo_subsystem(simobj, flightOperator)
+        return render(request, 'fo/payload.html', {'sim': simobj, 'simkey': simkey, 'flightoperator': flightOperator, 'subsystem': subsystem})
     else:
         return redirect('fo:home')
 ###############################################################################
 @login_required(login_url='/login/')
 def comms(request, simkey):
 
-    simobj = get_object_or_404(Sim, sim_name=simkey)
+    simobj = get_object_or_404(Sim, pk = simkey)
     flightOperator = get_object_or_404(FlightOperator, user = request.user)
     if simobj in flightOperator.sim_list.all():
-        return render(request, 'fo/comms.html', {'sim': simobj, 'simkey': simkey})
+        subsystem = _get_fo_subsystem(simobj, flightOperator)
+        return render(request, 'fo/comms.html', {'sim': simobj, 'simkey': simkey, 'flightoperator': flightOperator, 'subsystem': subsystem})
     else:
         return redirect('fo:home')
     
@@ -121,25 +146,66 @@ def joinClass(request):
 ###############################################################################
 def submit(request, simkey):
     if request.method == 'GET':
-           command = request.GET.get('cmd')  # String
-           sim = Sim.objects.get(sim_name = simkey)
-           #sim.command = command
-           #sim.save()
-           #print("py " + command)
-           return HttpResponse("todo") # Sending an success response
+        # Create command object for db
+        command = request.GET.get('cmd')  # String
+        commandobj = CommandBufferItem.objects.create(buffer_item = command)
+        commandobj.save()
+
+        # Add command to buffer
+        sim = Sim.objects.get(pk = simkey)
+        flightOperator = get_object_or_404(FlightOperator, user = request.user)
+        subsystem = _get_fo_subsystem(sim, flightOperator)
+        if subsystem == 'DIRECTOR':
+            sim.director_command_buffer.add(commandobj)
+        elif subsystem == 'Comms':
+            sim.COMMS_command_buffer.add(commandobj)
+        elif subsystem == 'ACS':
+            sim.ACS_command_buffer.add(commandobj)
+        elif subsystem == 'EPS':
+            sim.EPS_command_buffer.add(commandobj)
+        elif subsystem == 'TCS':
+            sim.TCS_command_buffer.add(commandobj)
+
+        return HttpResponse(command + " command recieved") # Sending an success response
     else:
-           return HttpResponse("Request method is not a GET")
+        return HttpResponse("Request method is not a GET")
 
 ###############################################################################
 def fetchdata(request, simkey):
     if request.method == 'GET':
-        simobj = Sim.objects.get(sim_name = simkey)
-        thread_id = simobj.sim_identifier
+        sim = Sim.objects.get(pk = simkey)
+        flightOperator = get_object_or_404(FlightOperator, user = request.user)
+        subsystem = _get_fo_subsystem(sim, flightOperator)
+        
+        data = {}
+        data['output'] = []
+        data['input'] = []
+        
+        for item in sim.display_buffer.all():
+            data['output'].append(item.buffer_item)
+
+        if subsystem == 'DIRECTOR':
+            for item in sim.director_command_buffer.all():
+                data['input'].append(item.buffer_item)
+        elif subsystem == 'Comms':
+            for item in sim.COMMS_command_buffer.all():
+                data['input'].append(item.buffer_item)
+        elif subsystem == 'ACS':
+            for item in sim.ACS_command_buffer.all():
+                data['input'].append(item.buffer_item)
+        elif subsystem == 'EPS':
+            for item in sim.EPS_command_buffer.all():
+                data['input'].append(item.buffer_item)
+        elif subsystem == 'TCS':
+            for item in sim.TCS_command_buffer.all():
+                data['input'].append(item.buffer_item)
+        
+        thread_id = sim.sim_identifier
         for thread in threading.enumerate():
             if thread.ident == thread_id:
                 thread.check()  # Call a method on the thread object
                 # TODO Add thread.update() fcn
-        return HttpResponse("todo") # Sending an success response
+        return HttpResponse(json.dumps(data)) # Sending an success response
     else:
         return HttpResponse("Request method is not GET")
 
@@ -158,6 +224,7 @@ def foClass(request, class_name):
     return render(request, 'fo/foClass.html', {'sims':sims})
 
 def _get_fo_subsystem(simobj, flightOperator):
+    subsystem = 'UNKNOWN'
     if simobj.flight_director.all():
         if flightOperator == simobj.flight_director.all()[0]:
             subsystem = 'DIRECTOR'
@@ -173,6 +240,4 @@ def _get_fo_subsystem(simobj, flightOperator):
     if simobj.TCS_fo.all():   
         if flightOperator == simobj.TCS_fo.all()[0]:
             subsystem = 'TCS'
-    if subsystem == None:
-        subsystem = 'UNKNOWN'
     return subsystem

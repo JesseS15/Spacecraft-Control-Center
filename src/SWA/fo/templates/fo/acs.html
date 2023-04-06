@@ -6,49 +6,64 @@
   {% include "fo/leftnav.html" %}
   <link rel="stylesheet" href="../../../static/css/fosim_panels.css">
   <link rel="stylesheet" href="../../../static/css/leftnav_acs.css">
-      
-    <!-- body panels-->
-    <div id="panelgrid" style="margin-top: -60px;">
-      <div id="item1">
-        <div class="panel-header">
-          <h1 class="panel-title">Attribute #1</h1>
-          </div>
-          <div class="panel-body">
-          <p></p>
-          </div>
-      </div>
-      <div id="item2">
-        <div class="panel-header">
-          <h1 class="panel-title">Attribute #2</h1>
-          </div>
-          <div class="panel-body">
-          <p></p>
-          </div>
-      </div>
-      <div id="item3">
-        <div class="panel-header">
-          <h1 class="panel-title">Attribute #3</h1>
-          </div>
-          <div class="panel-body">
-          <p></p>
-          </div>
-      </div>
-      <div id="item4">
-        <div class="panel-header">
-          <h1 class="panel-title">Attribute #4</h1>
-          </div>
-          <div class="panel-body">
-          <p></p>
-          </div>
-      </div>
-      <div id="item5">
-        <div class="panel-header">
-          <h1 class="panel-title">Attribute #5</h1>
-          </div>
-          <div class="panel-body">
-          <p></p>
-          </div>
+  
+  <div style="height: 130vh">
+    <!-- Header -->
+    <div id="acsheader" style="margin-top:-70px; margin-left: 225px; z-index:7; border-bottom: solid;">
+      <table>
+        <tr>
+          <td><div id="acsheader" style="padding-right: 50px;">
+            <h2><b>Attitude and Control Subsystem (ACS)</b></h2>
+          </div></td>
+          <td><div id="break" style="width: 32vw;"></div></td>
+          <td><div id="displaytime" style="border-style: solid; ; padding-left: 5px; padding-right: 5px">
+            <div id="time"></div>
+          </div></td>
+        </tr>
+      </table>
+    </div>
+
+      <!-- body panels-->
+      <div id="panelgrid" style="margin-top: 15px;">
+        <div id="item1">
+          <div class="panel-header">
+            <h3 class="panel-title">Orientation</h3>
+            </div>
+            <div class="panel-body">
+            <p><u><b>Roll (x):</u> [θ°]</b></p><br>
+            <p><u><b>Pitch (y):</u> [θ°]</b></p><br>
+            <p><u><b>Yaw (z):</u> [θ°]</b></p><br>
+            </div>
+        </div>
+        <div id="item2">
+          <div class="panel-header">
+            <h3 class="panel-title">Control Moment Gyroscope (CMG)</h3>
+            </div>
+            <div class="panel-body">
+            <p><u><b>Roll (x):</u> [Inactive]</b></p>
+            <p><u><b>Pitch (y):</u> [Inactive]</b></p>
+            <p><u><b>Yaw (z):</u> [Inactive]</b></p><br>
+            <p><u><b>Status: </u> [Active]</b></u></p>
+            </div>
+        </div>
+        <div id="item3">
+          <div class="panel-header">
+            <h3 class="panel-title">Signal Status</h3>
+            </div>
+            <div class="panel-body">
+              <div class="signalacs" style="text-align:center";></div><br>
+              <div class="verifyacs" style="text-align:center";></div>
+            </div>
+        </div>
+        <div id="item4">
+          <div class="panel-header">
+            <h3 class="panel-title">Telemetry Transfer</h3>
+            </div>
+            <div class="panel-body">
+              <br><div class="acstelemtry" style="text-align:center";></div>
+            </div>
+        </div>
       </div>
     </div>
-  
+    <script src = "/static/js/acsAttributes.js"></script>
 {% endblock acs %}

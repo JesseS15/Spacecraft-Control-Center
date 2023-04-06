@@ -6,7 +6,7 @@
   
   #classtable td, #classtable th {
     border: 0px solid #ddd;
-    padding: 8px;
+    padding: 2%;
     background-color: aliceblue;
   }
   
@@ -25,13 +25,21 @@
   #simtable {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    width: 50%;
+    width: 95.5%;
+    margin-left: 4.5%;
+    table-layout: fixed;
+    text-size-adjust: auto;
+
   }
   
   #simtable td, #simtable th {
     border: 1px solid #ddd;
-    padding: 2%;
+    padding: 1%;
     background-color: aliceblue;
+    height: fit-content;
+    width: fit-content;
+    text-size-adjust: auto;
+
   }
   
   #simtable tr:nth-child(even){background-color: white;}
@@ -39,23 +47,30 @@
   #simtable tr:hover {background-color: #ddd;}
   
   #simtable th {
-    padding-top: 2%;
-    padding-bottom: 2%;
-    text-align: left;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    text-align: center;
     background-color: navy;
     color: white;
+    text-size-adjust: auto;
   }
 
   #missiontable {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    width: 50%;
+    width: 95.5%;
+    margin-right: 4.5%;
+    table-layout: fixed;
+    text-size-adjust: auto;
   }
   
   #missiontable td, #missiontable th {
     border: 1px solid #ddd;
-    padding: 2%;
+    padding: 1%;
     background-color: aliceblue;
+    height: fit-content;
+    width: fit-content;
+    text-size-adjust: auto;
   }
   
   #missiontable tr:nth-child(even){background-color: white;}
@@ -63,11 +78,75 @@
   #missiontable tr:hover {background-color: #ddd;}
   
   #missiontable th {
-    padding-top: 2%;
-    padding-bottom: 2%;
-    text-align: left;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    text-align: center;
     background-color: navy;
     color: white;
+    text-size-adjust: auto;
   }
 
-  
+  #simtable button {
+    width: fit-content;
+    padding: .5vh, .5vw;
+  }
+
+  #missiontable button {
+    width: fit-content;
+    padding: .5vh, .5vw;
+    text-size-adjust: 10%;
+  }
+
+  /*@media only screen and (max-width: 480px) {*/
+    /* horizontal scrollbar for tables if mobile screen */
+
+    /*#simtable {
+      width: 100%;
+      table-layout: fixed;
+      margin-left: 0%;
+      margin-right: 0%;
+    }
+    #simtable button {
+      padding: 0%;
+      font-size: 80%;
+      margin-left: 0%;
+    }
+
+    #simtable .one{
+      width: 13%;
+    }
+    #simtable .four{
+      width: 20%;
+    }
+    #simtable .five{
+      word-wrap: break-word;
+    }
+
+    #missiontable {
+      width: 100%;
+      table-layout: fixed;
+      margin-left: 0%;
+      margin-right: 0%;
+    }
+    #missiontable button {
+      padding: 0%;
+      font-size: 80%;
+      margin-left: 0%;
+    }
+
+    #missiontable .one{
+      width: 13%;
+    }
+    #simtable .four{
+      width: 20%;
+    }
+    #missiontable .five{
+      word-wrap: break-word;
+    }
+
+    #invisibleHeader .button{
+      font-size: small;
+      padding: 0%;
+      margin-left: 0%;
+    }
+  }

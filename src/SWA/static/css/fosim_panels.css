@@ -1,3 +1,28 @@
+.signalacs {
+  height: 3em;
+  border: 8px solid #ffffff;
+}
+.verifyacs {
+  height: 3em;
+  border: 8px solid #ffffff;
+}
+.acstelemtry {
+  height: 3em;
+  border: 8px solid #ffffff;
+}
+.signaleps {
+  height: 3em;
+  border: 8px solid #ffffff;
+}
+.verifyeps {
+  height: 3em;
+  border: 8px solid #ffffff;
+}
+.epstelemtry {
+  height: 3em;
+  border: 8px solid #ffffff;
+}
+
 /* body panels */
 #panelgrid {
   height: 100px;
@@ -10,7 +35,7 @@
   padding-right: 50px;
 }
 #panelgrid > div {
-  height: 240px;
+  height: 220px;
   width: 300px;
   background-color: #ffffff;
   border-radius: 30px;
@@ -18,12 +43,12 @@
   z-index: 1;
 }
 .panel-header {
-  height: 60px;
+  height: 50px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 20px 10px 20px;
+  padding: 10px 10px 10px 20px;
   border-bottom: 2px solid rgba(255, 0, 0, 0.59);
 }
 .panel-title {
