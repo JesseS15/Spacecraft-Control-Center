@@ -105,29 +105,30 @@ def newSim(request,class_name):
 
             Class.objects.get(class_name = class_name).sims.add(sim)
             flight_operators = FlightOperator.objects.all()
-            if (flight_director != None):
+            print(type(flight_operators))
+            if (flight_director.exists()):
                 for x in flight_operators:
-                    if(flight_director==x):
+                    if(str(x) == str((flight_director[0]))):
                         x.sim_list.add(sim)
 
-            if (COMMS_fo != None):
+            if (COMMS_fo.exists()):
                 for x in flight_operators:
-                    if(COMMS_fo==x):
+                    if(str(x) == str((COMMS_fo[0]))):
                         x.sim_list.add(sim)
         
-            if (ACS_fo != None):
+            if (ACS_fo.exists()):
                 for x in flight_operators:
-                    if(ACS_fo==x):
+                    if(str(x) == str((ACS_fo[0]))):
                         x.sim_list.add(sim)
             
-            if (TCS_fo != None):
+            if (TCS_fo.exists()):
                 for x in flight_operators:
-                    if(TCS_fo==x):
+                    if(str(x) == str((TCS_fo[0]))):
                         x.sim_list.add(sim)
             
-            if (EPS_fo != None):
+            if (EPS_fo.exists()):
                 for x in flight_operators:
-                    if(EPS_fo==x):
+                    if(str(x) == str((EPS_fo[0]))):
                         x.sim_list.add(sim)
 
             # Send notification
