@@ -84,12 +84,6 @@ Jeremy Mog Engineering Notebook
 3/7/2023
 	-Presented Demo
 	-Worked on some ACS stuff after
-3/9/2023
-	-
-3/14/2023
-	-
-3/16/2023
-	-
 3/21/2023
 	-Fixed issue with github repo. For some reason we had 2 simulation directories and it should have only been 1.
 3/23/2023
@@ -98,5 +92,12 @@ Jeremy Mog Engineering Notebook
 3/28/2023
 	-Worked on update functions for subsystems that each thread will be using
 3/30/2023
-	-
+	-Worked on update functions for subsystems that each thread will be using
+4/4/2023
+	-Worked on update functions for subsystems that each thread will be using
+	-Had to stop because I needed other functionality from Jules
+4/6/2023
+	-Waka waka Africa
+	-Worked on update functions for subsystems that each thread will be using
+	-Our dicts dont work like we thought they were going to so we need to refactor the code to work among the subsystems
 	
