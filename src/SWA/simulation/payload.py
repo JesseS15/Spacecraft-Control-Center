@@ -20,7 +20,14 @@ class payload(Subsystem):
         print("New instance of Payload class created")
 
     def payloadAction(self):
-        print("Payload acction")
+        print("Payload action")
+
+    #Returns for UI ##########################################################################
+    def UIReturns(self):
+        UI = {'payload checks' : self.checks,
+              'target status' : self.targetStatus,
+              'payload telem status' : self.verifyStatus}
+        return UI
 
     #Payload console commands ################################################################
 

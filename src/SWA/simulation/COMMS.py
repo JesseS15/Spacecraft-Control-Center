@@ -7,17 +7,46 @@ class COMMS(Subsystem):
         super().__init__(dicts)
         self.attributes = self.dicts['COMMS']
         self.gain = 1
+        self.requiredGain = random.randint(1, 10)
         self.checks = {'signal' : random.choice([True, False]),
                        'telem' : False,
                        'processing' : False}
+        self.RPY = {'roll' : 0.0,
+                    'pitch' : 0.0,
+                    'yaw' : 0.0}
+        self.systemChecksList = {'EPS' : False,
+                                 'TCS' : False,
+                                 'ACS' : False,
+                                 'COMMS' : False}
+        self.payloadCheck = False
         self.verify = False
         print('New instance of COMMS class created')
 
     def update():
         pass
-    def gainControl(self, input):
-        self.gain = input
+
+    #Comms Attribute internal commands
+    def updateGain(self, update):
+        self.gain = update
         print("Gain has been adjusted")
+
+    #Comms Attribute external commands
+    def updateRPY(self, r, p, y):
+        self.RPY['roll'] = r
+        self.RPY['pitch'] = p
+        self.RPY['yaw'] = y
+
+    def systemChecks(self, subsystemName, status):
+        self.systemChecksList[subsystemName] = status
+
+    #Returns for UI################################################
+    def UIReturns(self):
+        UI = {'subsystem telemetry status' : self.systemChecksList,
+              'gain' : self.gain,
+              'RPY': self.RPY,
+              'comms telem status' : self.checks['telem']
+              }
+        return UI
 
     #Comms Console Commands #######################################
     def verifySignalLock(self):
@@ -33,11 +62,11 @@ class COMMS(Subsystem):
         self.checks['signal'] = True
         print('Antenna gain adjustment commencing. Please wait...')
         print('Ku-Band signal is transmitting nominally')
-
-    def verifyTelemDownload(self):
         if not self.checks['signal']:
             print('Ku-Band signal is unstable, please fix this before attempting')
             return
+
+    def verifyTelemDownload(self):
         print('Imaging download being interrogated. Please wait...')
         print('Imaging telemtry downloaded nominally')
         self.checks['telem'] = True
