@@ -22,6 +22,18 @@
   height: 3em;
   border: 8px solid #ffffff;
 }
+.signaltcs {
+  height: 3em;
+  border: 8px solid #ffffff;
+}
+.verifytcs {
+  height: 3em;
+  border: 8px solid #ffffff;
+}
+.tcstelemtry {
+  height: 3em;
+  border: 8px solid #ffffff;
+}
 
 /* body panels */
 #panelgrid {
