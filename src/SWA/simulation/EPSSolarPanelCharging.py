@@ -1,7 +1,7 @@
 import numpy as np
 import math
 import random
-import EPSInitializing as EPSStart
+from simulation import EPSInitializing as EPSStart
 from datetime import datetime
 
 currentTime = 0.0
