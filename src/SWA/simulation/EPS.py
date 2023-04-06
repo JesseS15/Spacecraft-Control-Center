@@ -1,7 +1,7 @@
-from simulation.Subsystem import Subsystem
-from simulation import EPSSolarPanelCharging as Charging
-from simulation import EPSInitializing as EPSStart
-from simulation import EPSPowerDistribution as PD
+from Subsystem import Subsystem
+import EPSSolarPanelCharging as Charging
+import EPSInitializing as EPSStart
+import EPSPowerDistribution as PD
 from datetime import datetime
 import random
 
@@ -15,7 +15,11 @@ class EPS(Subsystem):
                        'battery capacity' : Charging.setupBatteries(),
                        'current battery charge' : Charging.setupBatteries(),
                        'time of last check' : datetime.now(),
-                       'simcraft power restrictions' : {},
+                       'simcraft power restrictions' : {'EPS' : 0.0,
+                                                        'TCS' : 0.0,
+                                                        'COMMS' : 0.0,
+                                                        'ACS' : 0.0,
+                                                        'Payload' : 0.0},
                        'power distribution' : {'EPS' : 0.0,
                                                'TCS' : 0.0,
                                                'COMMS' : 0.0,
@@ -27,10 +31,10 @@ class EPS(Subsystem):
                        'Bus Connection' : random.choice([True, False]),
                        'Articulation Gear' : random.choice([True, False])}
         self.allChecks = False
-        self.params['simcraft power restrictions']['ACS'] = self.params['total power'] * (self.dicts["ACS"]['max power'] / 100)
-        self.params['simcraft power restrictions']['EPS'] = self.params['total power'] * (self.dicts["EPS"]['max power'] / 100)
-        self.params['simcraft power restrictions']['TCS'] = self.params['total power'] * (self.dicts["TCS"]['max power'] / 100)
-        self.params['simcraft power restrictions']['COMMS'] = self.params['total power'] * (self.dicts["COMMS"]['max power'] / 100)
+        self.params['simcraft power restrictions']['ACS'] = self.params['total power'] * 0.2
+        self.params['simcraft power restrictions']['EPS'] = self.params['total power'] * 0.2
+        self.params['simcraft power restrictions']['TCS'] = self.params['total power'] * 0.2
+        self.params['simcraft power restrictions']['COMMS'] = self.params['total power'] * 0.2
         self.verifyStatus = False
         print("New instance of EPS class created")
 

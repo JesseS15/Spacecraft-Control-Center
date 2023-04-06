@@ -1,4 +1,4 @@
-from simulation.Subsystem import Subsystem
+from Subsystem import Subsystem
 import random
 
 class ACS(Subsystem):
