@@ -1,4 +1,4 @@
-from Subsystem import Subsystem
+from simulation.Subsystem import Subsystem
 import random
 
 class TCS(Subsystem):
