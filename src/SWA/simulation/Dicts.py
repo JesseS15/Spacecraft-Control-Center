@@ -12,7 +12,9 @@ class Dicts():
 		"tempRange": [0,10],
 		"altitude": 0.0,
 		"orbit": 0.0,
-		"orientation": [0,1,2]
+		"roll" : 0,
+        "pitch" : 0,
+        "yaw" : 0
 	}
 
 	COMMSDict = {

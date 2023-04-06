@@ -7,9 +7,9 @@ class ACS(Subsystem):
         super().__init__(dicts)
         self.dicts = dicts
         self.orient = {
-            'roll' : 0,
-            'pitch' : 0,
-            'yaw' : 0
+           "roll":0,
+           "pitch":0,
+           "yaw": 0
         }
          ##NEEDS TO BE CHANGED BASED ON TEST CONDUCTOR INPUT -- just have it set as a random goal for now
         self.orientGoal = {
@@ -32,6 +32,7 @@ class ACS(Subsystem):
                              'Verify Alignment' : False}
         self.verifyStatus = False
         print("New instance of ACS class created")
+        self.randomRollPitchYaw()
 
     def randomRollPitchYaw(self):
         for key,value in self.orient:
@@ -50,8 +51,17 @@ class ACS(Subsystem):
         self.orient['yaw'] += newYaw
         return ("Yaw updated by" + newYaw + "degrees")
 
-    def update():
-        ACS.randomRollPitchYaw()
+    def update(self):
+        for key,value in self.orient:
+            self.orient[key] += random.randint(-1,1)
+            if (self.orient[key]>180) or (self.orient[key]<-180):
+                self.orient[key]=0
+        self.orient['pitch'] += random.randint(-1,1)
+        if (self.orient[key]>90):
+            self.orient[key]=0
+        elif(self.orient[key]<0):
+            self.orient[key]=90
+
 
     def checkFinalRPY(self):
         if self.orient['roll'] in range(self.orientEqual['roll']-70,self.orientEqual['roll']+70):
@@ -145,15 +155,4 @@ class ACS(Subsystem):
             self.telemtryTransfer()
             return False 
 
-        
-
-
-
-
-
-
-    
-        
-
-
-    
+            

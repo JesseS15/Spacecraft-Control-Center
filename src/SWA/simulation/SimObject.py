@@ -25,6 +25,7 @@ class SimObject(threading.Thread):
         sim = Sim.objects.get(pk = pk)
         self.pk = sim.pk
         self.simName = sim.sim_name
+        self.createSubsys()
         print('\n  !!! NEW SIM', self.simName, 'CREATED !!!\n')
 
     # Method to update dictionaries. 
