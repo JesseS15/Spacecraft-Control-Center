@@ -11,13 +11,7 @@ class ACS(Subsystem):
            "pitch":0,
            "yaw": 0
         }
-         ##NEEDS TO BE CHANGED BASED ON TEST CONDUCTOR INPUT -- just have it set as a random goal for now
-        self.orientGoal = {
-            'roll' : random.randint(-180,180),
-            'pitch' : random.randint(-180,180),
-            'yaw' : random.randint(0,90)
-        }
-
+        
         self.orientEqual = True
 
         self.checks = {
@@ -34,10 +28,32 @@ class ACS(Subsystem):
         print("New instance of ACS class created")
         self.randomRollPitchYaw()
 
-    def randomRollPitchYaw(self):
-        for key,value in self.orient:
-            self.orient[key] = random.randint(-180,180)
-        self.orient['pitch'] = random.randint(-90,90)
+    def updateRPY(self, orientation):
+        orientation["roll"]+=random.randint(-1,1)
+        if (orientation["roll"]>=180):
+            orientation["roll"]=-179
+        if (orientation["roll"]<=-180):
+            orientation["roll"]=179
+
+        orientation["yaw"]+=random.randint(-1,1)
+        if (orientation["yaw"]>=90):
+            orientation["yaw"]=-89
+        if (orientation["yaw"]<=-90):
+            orientation["yaw"]=89
+
+        orientation["yaw"]+=random.randint(-1,1)
+        if (orientation["yaw"]>=180):
+            orientation["yaw"]=-179
+        if (orientation["yaw"]<=-180):
+            orientation["yaw"]=179
+        
+        return orientation
+
+        
+    
+    ###############################################################################################
+    # everything here that needs orient has to now be passed orientation dict from the sim object #
+    ###############################################################################################
     
     def updateRoll(self, newRoll):
         self.orient['roll'] += newRoll
@@ -134,13 +150,6 @@ class ACS(Subsystem):
         else:
             print('Please reenter a valid response')
             self.cmgActivate()
-        
-    def compareOutcome(self):
-        for k in self.orient:
-            if not self.orient[k] == self.orientGoal[k]:
-                print(f'{k} are not equal')
-                return
-        self.verifyStatus = True
    
     def telemtryTransfer(self):
         if self.verifyStatus:
