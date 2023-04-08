@@ -2,10 +2,8 @@ from abc import ABC, abstractmethod
 
 class Subsystem(ABC):
 
-	dicts = { }
-
-	def __init__(self, dicts):
-		self.dicts = dicts
+	def __init__(self):
+		pass
 	
 	def getInput(self, userInput):
 		print("User input is:" + userInput)

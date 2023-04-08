@@ -3,8 +3,8 @@ import random
 
 class TCS(Subsystem):
 
-    def __init__(self, dicts):
-        super().__init__(dicts)
+    def __init__(self):
+        super().__init__()
         self.orient = {
             'Batteries' : 0,
             'On-Board Computer' : 0,

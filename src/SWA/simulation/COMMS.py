@@ -3,8 +3,8 @@ import random
 
 class COMMS(Subsystem):
 
-    def __init__(self, dicts):
-        super().__init__(dicts)
+    def __init__(self):
+        super().__init__()
         self.gain = 1
         self.requiredGain = random.randint(1, 10)
         self.checks = {'signal' : random.choice([True, False]),

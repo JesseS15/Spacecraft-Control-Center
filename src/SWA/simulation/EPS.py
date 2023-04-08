@@ -7,8 +7,8 @@ import random
 
 class EPS(Subsystem):
 
-    def __init__(self, dicts):
-        super().__init__(dicts)
+    def __init__(self):
+        super().__init__()
         self.params = {'total power' : EPSStart.initialize(),
                        'available power' : EPSStart.initialize(),
                        'expended power' : 0.0,

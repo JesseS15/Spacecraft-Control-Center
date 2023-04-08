@@ -79,8 +79,14 @@ def newSim(request,class_name):
             # Create new Sim Database object
             sim = Sim.objects.create(sim_name = sim_name, mission_script = mission)
 
+            m = sim.mission_script
+            final_values = {}
+            final_values["roll"] = m.final_roll
+            final_values["pitch"] = m.final_pitch
+            final_values["yaw"] = m.final_yaw
+
             # Create and start new sim thread
-            simThread = SimObject(pk=sim.pk)
+            simThread = SimObject(final_values, pk=sim.pk)
             simThread.start()
             RegularFunctions.repopulateAllSimsDict(All_Sims_Dict)
             All_Sims_Dict[sim.sim_identifier] = simThread
@@ -94,14 +100,6 @@ def newSim(request,class_name):
             sim.ACS_fo.set(ACS_fo)
             sim.TCS_fo.set(EPS_fo)
             sim.EPS_fo.set(TCS_fo)
-
-            m = sim.mission_script
-            final_values = {}
-            final_values["roll"] = m.final_roll
-            final_values["pitch"] = m.final_pitch
-            final_values["yaw"] = m.final_yaw
-            final_values["longitude"] = m.final_longitude
-            All_Sims_Dict[sim.sim_identifier].finalDict = final_values
 
             Class.objects.get(class_name = class_name).sims.add(sim)
             flight_operators = FlightOperator.objects.all()

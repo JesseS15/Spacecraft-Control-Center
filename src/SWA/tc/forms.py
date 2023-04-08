@@ -68,7 +68,7 @@ class MissionCreationForm(forms.ModelForm):
 
     class Meta:
         model = Mission
-        fields = ['mission_name', 'final_roll', 'final_pitch', 'final_yaw', 'start_longitude', 'final_longitude']
+        fields = ['mission_name', 'final_roll', 'final_pitch', 'final_yaw']
 
 class SubsystemForm(forms.Form):
     sys_name = forms.CharField(max_length=15)
