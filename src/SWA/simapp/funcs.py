@@ -8,9 +8,14 @@ def repopulateAllSimsDict(all_sims_dict):
     if ((sims != None) and (len(all_sims_dict) == 0)):
         for s in sims:
             s_id = s.sim_identifier
+            m = s.mission_script
+            final_values = {}
+            final_values["roll"] = m.final_roll
+            final_values["pitch"] = m.final_pitch
+            final_values["yaw"] = m.final_yaw
             if s_id == 0:
                 s.sim_identifier = getUniqueValue(all_sims_dict)
-                all_sims_dict[s.sim_identifier] = SimObject(pk=s.pk)
+                all_sims_dict[s.sim_identifier] = SimObject(final_values, pk=s.pk)
     print('\nAll Sims dictionary repopulated:')
     print(all_sims_dict,'\n')
 
