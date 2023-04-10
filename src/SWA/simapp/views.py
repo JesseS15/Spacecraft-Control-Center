@@ -156,16 +156,12 @@ def newMission(request,class_name):
             final_roll = form2.cleaned_data.get('final_roll')
             final_pitch = form2.cleaned_data.get('final_pitch')
             final_yaw = form2.cleaned_data.get('final_yaw')
-            final_longitude = form2.cleaned_data.get('final_longitude')
-            start_longitude = form2.cleaned_data.get('start_longitude')
 
             mission = Mission.objects.create(mission_name = mission_name)
 
             mission.final_roll = final_roll
             mission.final_pitch = final_pitch
             mission.final_yaw = final_yaw
-            mission.final_longitude = final_longitude
-            mission.start_longitude = start_longitude
 
             TestConductor.objects.get().missions.add(mission)
             
