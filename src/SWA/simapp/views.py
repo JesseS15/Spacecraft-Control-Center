@@ -14,13 +14,12 @@ from fo.models import FlightOperator
 from simulation.SimObject import SimObject
 
 import simapp.funcs as RegularFunctions
-import threading
 
 All_Sims_Dict = { }
 
 ############################################################################
 @login_required(login_url='/login/')
-def newSim(request,class_name):
+def newSim(request, class_name):
 
     missions = TestConductor.objects.get().missions.all()
     marray = numpy.asarray(missions)
@@ -78,6 +77,12 @@ def newSim(request,class_name):
 
             # Create new Sim Database object
             sim = Sim.objects.create(sim_name = sim_name, mission_script = mission)
+            sim.flight_director.set(flight_director)
+            #sim.mission_script = mission
+            sim.COMMS_fo.set(COMMS_fo)
+            sim.ACS_fo.set(ACS_fo)
+            sim.TCS_fo.set(EPS_fo)
+            sim.EPS_fo.set(TCS_fo)
 
             m = sim.mission_script
             final_values = {}
@@ -93,13 +98,6 @@ def newSim(request,class_name):
             All_Sims_Dict[sim.sim_identifier].check()
 
             print('Dictionary: ',All_Sims_Dict)
-
-            sim.flight_director.set(flight_director)
-            #sim.mission_script = mission
-            sim.COMMS_fo.set(COMMS_fo)
-            sim.ACS_fo.set(ACS_fo)
-            sim.TCS_fo.set(EPS_fo)
-            sim.EPS_fo.set(TCS_fo)
 
             Class.objects.get(class_name = class_name).sims.add(sim)
             flight_operators = FlightOperator.objects.all()

@@ -1,4 +1,4 @@
-from simapp.models import Sim, DisplayBufferItem
+from simapp.models import Sim
 from simulation.ACS import ACS
 from simulation.TCS import TCS
 from simulation.EPS import EPS
@@ -27,20 +27,21 @@ class SimObject(threading.Thread):
 
     def __init__(self, final_values, pk):
         threading.Thread.__init__(self)
-        self.finalValue = final_values
+        #self.finalValues = final_values
         sim = Sim.objects.get(pk = pk)
         self.pk = sim.pk
         self.simName = sim.sim_name
-        self.createSubsys
+        self.createSubsys(sim)
         print('\n  !!! NEW SIM', self.simName, 'CREATED !!!\n')
 
     # Creating all the subsystems and passing them the dictionaries
-    def createSubsys(self):
+    def createSubsys(self, sim):
         self.subsystems["ACS"] = ACS(self.finalValues["finalLongitude"])
-        self.subsystems["EPS"] = EPS()
-        self.subsystems["COMMS"] = COMMS()
-        self.subsystems["TCS"] = TCS()
-        self.subsystems["Payload"] = payload()
+        
+        #self.subsystems["EPS"] = EPS()
+        #self.subsystems["COMMS"] = COMMS()
+        #self.subsystems["TCS"] = TCS()
+        #self.subsystems["Payload"] = payload()
 
     def checkTelemetry(self):
         self.telemetry["ACS"] = self.subsystems["ACS"].telemetryTransfer()
@@ -64,11 +65,11 @@ class SimObject(threading.Thread):
             print('thread ' + self.simName)
             print(threading.get_ident())
             #Probably put stuff in this block under self.update function 
+<<<<<<< Updated upstream
             self.update()
+=======
+            self.telemetry = self.subsystems["ACS"].updateRPY()
+>>>>>>> Stashed changes
             
             #End block here
-
-            displayobj = DisplayBufferItem.objects.create(buffer_item = self.simName + " updates")
-            displayobj.save()
-            simobj.display_buffer.add(displayobj)
             time.sleep(5)

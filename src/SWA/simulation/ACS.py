@@ -23,7 +23,72 @@ class ACS(Subsystem):
         self.startLongitude = random.randint(finalLongitude+50, finalLongitude+90)
         self.finalLongitude = finalLongitude
         self.currentLongitude = self.startLongitude
+<<<<<<< Updated upstream
         self.prograde = bool(random.getrandbits(1))
+=======
+        self.menu = "tl" # can be tl, cmgRoll, cmgPitch, or cmgYaw
+        self.commandLog = []
+        
+        self.initializeCommandLog()
+        
+    def command(self, command):
+        
+        response = {
+            'inputConsole' : self.commandLog,
+            'outputConsole': [],
+        }
+        command_split = command.lower().split(" ")
+        
+        if self.menu == "tl":
+            if command_split[0] == "1":
+                pass
+            elif command_split[0] == "2":
+                pass
+            elif command_split[0] == "3":
+                self.menu = "cmgRoll"
+                response['inputConsole'].append("How much do you want to change the Roll by (in Degrees)?")
+            elif command_split[0] == "4":
+                self.menu = "cmgPitch"
+                response['inputConsole'].append("How much do you want to change the Pitch by (in Degrees)?")
+            elif command_split[0] == "5":
+                self.menu = "cmgYaw"
+                response['inputConsole'].append("How much do you want to change the Yaw by (in Degrees)?")
+            elif command_split[0] == "6":
+                pass
+            else:
+                response['inputConsole'].append("Invalid Command " + command)
+
+        elif self.menu == "cmgRoll":
+            self.menu = "tl"
+            self.appendCommandList()
+        
+        elif self.menu == "cmgPitch":
+            self.menu = "tl"
+            self.appendCommandList()
+        
+        elif self.menu == "cmgYaw":
+            self.menu = "tl"
+            self.appendCommandList()
+        
+        else:
+            self.menu = "tl"
+        
+        return response
+
+    def initializeCommandLog(self):
+        self.commandLog.append("WELCOME TO THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE")
+        self.appendCommandList()
+        return
+    
+    def appendCommandList(self):
+        self.commandLog.append("1.) System Checks")
+        self.commandLog.append("2.) Verify Alignment ")
+        self.commandLog.append("3.) CMG Activate Roll")
+        self.commandLog.append("4.) CMG Activate Pitch")
+        self.commandLog.append("5.) CMG Activate Yaw")
+        self.commandLog.append("6.) Transfer Telemetry")
+        return
+>>>>>>> Stashed changes
 
     def updateRPY(self):
         self.orientation["roll"] += random.randint(-1,1)
@@ -81,7 +146,6 @@ class ACS(Subsystem):
             newYaw = 10
         self.orientation['yaw'] += newYaw
         return ("Yaw updated by" + newYaw + "degrees")
-    ###############################################
 
     ###### Checking final orientation, passed from SimObject ###############
     def verifyAlignment(self, finalValues):
@@ -92,7 +156,6 @@ class ACS(Subsystem):
             return True
         else:
             return False, rollDifference, bitchDifference, yawDifference
-    #########################################################################
 
     def systemChecks(self):
         align = self.verifyAlignment

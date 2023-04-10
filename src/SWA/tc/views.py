@@ -21,8 +21,8 @@ import time
 from .models import Class
 from django.contrib import messages
 from .models import TestConductor, Class
-from simapp.models import Sim, Subsystem, Mission
-from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm, SubsystemForm, ClassEditForm, SimEditForm
+from simapp.models import Sim, Mission
+from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm, ClassEditForm, SimEditForm
 
 
 ###############################################################################
@@ -237,22 +237,7 @@ def tcSim(request, simkey):
     simobj = Sim.objects.get(pk = simkey)
 
     if request.method == 'POST':
-
-        for subsystem in simobj.sys_list.all():
-            if subsystem.sys_name in request.POST:
-                form = SubsystemForm(request.POST, prefix=subsystem.sys_name, instance=subsystem)
-                if form.is_valid():
-                    #form.save_m2m()
-                    form.save()
-                    for flight_operator in simobj.flight_operators.all():
-                        # Send notification
-                        send_mail(
-                            'STaTE: ' + sim,
-                            'An anomoly has occured on your SimCraft: ' + sim + '.',
-                            None,
-                            [flight_operator.user.email],
-                            fail_silently=False,
-                        )
+        pass
     print(simobj)
-    forms = [SubsystemForm(prefix=subsystem.sys_name, instance=subsystem) for subsystem in simobj.sys_list.all()]
+    forms = []
     return render(request, 'tc/tcSim.html', {'sim': simobj, 'forms': forms})

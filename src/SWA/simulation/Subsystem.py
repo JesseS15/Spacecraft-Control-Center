@@ -14,7 +14,6 @@ class Subsystem(ABC):
 	def subsysMenu():
 		pass
 
-	@abstractmethod
 	def update():
 		pass
 

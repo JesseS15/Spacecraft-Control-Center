@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
 from fo.models import FlightOperator
-from simapp.models import Subsystem, Sim, Mission
+from simapp.models import Sim, Mission
 from .models import Class, TestConductor
  
  ###############################################################################
@@ -70,8 +70,6 @@ class MissionCreationForm(forms.ModelForm):
         model = Mission
         fields = ['mission_name', 'final_roll', 'final_pitch', 'final_yaw']
 
-class SubsystemForm(forms.Form):
-    sys_name = forms.CharField(max_length=15)
 ################################################################
 class ClassEditForm(forms.ModelForm):
     test = False

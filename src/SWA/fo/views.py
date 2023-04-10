@@ -10,7 +10,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import JoinClassForm
 from .models import FlightOperator
 from tc.models import Class
-from simapp.models import Sim, Subsystem, CommandBufferItem
+from simapp.models import Sim
 
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -148,19 +148,25 @@ def submit(request, simkey):
     if request.method == 'GET':
         # Create command object for db
         command = request.GET.get('cmd')  # String
-        commandobj = CommandBufferItem.objects.create(buffer_item = command)
-        commandobj.save()
 
-        # Add command to buffer
+        # Determine Flight Operator's Subsystem
         sim = Sim.objects.get(pk = simkey)
         flightOperator = get_object_or_404(FlightOperator, user = request.user)
         subsystem = _get_fo_subsystem(sim, flightOperator)
+        
+        # Get simcraft thread
+        thread_id = sim.sim_identifier
+        for thread in threading.enumerate():
+            if thread.ident == thread_id:
+                simThread = thread
+        
+        # Pass command to simcraft thread subsystem and add input console response
         if subsystem == 'DIRECTOR':
             sim.director_command_buffer.add(commandobj)
         elif subsystem == 'Comms':
             sim.COMMS_command_buffer.add(commandobj)
         elif subsystem == 'ACS':
-            sim.ACS_command_buffer.add(commandobj)
+            response = simThread.subsystems['ACS'].command(command)
         elif subsystem == 'EPS':
             sim.EPS_command_buffer.add(commandobj)
         elif subsystem == 'TCS':
@@ -173,38 +179,41 @@ def submit(request, simkey):
 ###############################################################################
 def fetchdata(request, simkey):
     if request.method == 'GET':
+        # Get sim and flight operator subsystem
         sim = Sim.objects.get(pk = simkey)
         flightOperator = get_object_or_404(FlightOperator, user = request.user)
         subsystem = _get_fo_subsystem(sim, flightOperator)
         
+        # Define data strucutre to be returned
         data = {}
         data['output'] = []
         data['input'] = []
         
-        for item in sim.display_buffer.all():
-            data['output'].append(item.buffer_item)
-
-        if subsystem == 'DIRECTOR':
-            for item in sim.director_command_buffer.all():
-                data['input'].append(item.buffer_item)
-        elif subsystem == 'Comms':
-            for item in sim.COMMS_command_buffer.all():
-                data['input'].append(item.buffer_item)
-        elif subsystem == 'ACS':
-            for item in sim.ACS_command_buffer.all():
-                data['input'].append(item.buffer_item)
-        elif subsystem == 'EPS':
-            for item in sim.EPS_command_buffer.all():
-                data['input'].append(item.buffer_item)
-        elif subsystem == 'TCS':
-            for item in sim.TCS_command_buffer.all():
-                data['input'].append(item.buffer_item)
-        
+        # Get simcraft thread
+        simThread = None
         thread_id = sim.sim_identifier
         for thread in threading.enumerate():
             if thread.ident == thread_id:
-                thread.check()  # Call a method on the thread object
-                # TODO Add thread.update() fcn
+                simThread = thread
+        
+        if simThread == None:
+            data['output'].append("Spacecraft Simulation for " + sim.sim_name + " has terminated execution")
+            data['input'].append("Spacecraft Simulation for " + sim.sim_name + " has terminated execution")
+        #if subsystem == 'DIRECTOR':
+        #    for item in sim.director_command_buffer.all():
+        #        data['input'].append(item.buffer_item)
+        #elif subsystem == 'Comms':
+        #    for item in sim.COMMS_command_buffer.all():
+        #        data['input'].append(item.buffer_item)
+        elif subsystem == 'ACS':
+            data['input'] = simThread.subsystems['ACS'].commandLog
+        #elif subsystem == 'EPS':
+        #    for item in sim.EPS_command_buffer.all():
+        #        data['input'].append(item.buffer_item)
+        #elif subsystem == 'TCS':
+        #    for item in sim.TCS_command_buffer.all():
+        #        data['input'].append(item.buffer_item)
+        
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:
         return HttpResponse("Request method is not GET")
