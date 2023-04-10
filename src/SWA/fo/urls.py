@@ -19,6 +19,11 @@ urlpatterns = [
     path('<int:simkey>/tcs/fetchdata/', views.fetchdata, name='fetchdata'),
     path('<int:simkey>/payload/fetchdata/', views.fetchdata, name='fetchdata'),
     path('<int:simkey>/comms/fetchdata/', views.fetchdata, name='fetchdata'),
+    path('<int:simkey>/acs/fetchcommands/', views.fetchcommands, name='fetchcommands'),
+    path('<int:simkey>/eps/fetchcommands/', views.fetchcommands, name='fetchcommands'),
+    path('<int:simkey>/tcs/fetchcommands/', views.fetchcommands, name='fetchcommands'),
+    path('<int:simkey>/payload/fetchcommands/', views.fetchcommands, name='fetchcommands'),
+    path('<int:simkey>/comms/fetchcommands/', views.fetchcommands, name='fetchcommands'),
     path('<int:simkey>/submit', views.submit, name='submit'),
     path('<int:simkey>/sim', views.sim, name ='sim'),
 ]

@@ -162,15 +162,18 @@ def submit(request, simkey):
         
         # Pass command to simcraft thread subsystem and add input console response
         if subsystem == 'DIRECTOR':
-            sim.director_command_buffer.add(commandobj)
+            pass
         elif subsystem == 'Comms':
-            sim.COMMS_command_buffer.add(commandobj)
+            pass
         elif subsystem == 'ACS':
-            response = simThread.subsystems['ACS'].command(command)
+            data = simThread.subsystems['ACS'].command(command)
         elif subsystem == 'EPS':
-            sim.EPS_command_buffer.add(commandobj)
+            pass
         elif subsystem == 'TCS':
-            sim.TCS_command_buffer.add(commandobj)
+            pass
+
+        return HttpResponse(command + " command recieved") # Sending an success response
+        return HttpResponse(json.dumps(data)) # Sending an success response
 
         return HttpResponse(command + " command recieved") # Sending an success response
     else:
@@ -218,7 +221,48 @@ def fetchdata(request, simkey):
     else:
         return HttpResponse("Request method is not GET")
 
-#######################################################################3
+#######################################################################
+def fetchcommands(request, simkey):
+    if request.method == 'GET':
+        # Get sim and flight operator subsystem
+        sim = Sim.objects.get(pk = simkey)
+        flightOperator = get_object_or_404(FlightOperator, user = request.user)
+        subsystem = _get_fo_subsystem(sim, flightOperator)
+        
+        # Define data strucutre to be returned
+        data = {
+            'commands' : [],
+        }
+        
+        # Get simcraft thread
+        simThread = None
+        thread_id = sim.sim_identifier
+        for thread in threading.enumerate():
+            if thread.ident == thread_id:
+                simThread = thread
+        
+        if simThread == None:
+            data['commands'].append("Spacecraft Simulation for " + sim.sim_name + " has terminated execution")
+        #if subsystem == 'DIRECTOR':
+        #    for item in sim.director_command_buffer.all():
+        #        data['input'].append(item.buffer_item)
+        #elif subsystem == 'Comms':
+        #    for item in sim.COMMS_command_buffer.all():
+        #        data['input'].append(item.buffer_item)
+        elif subsystem == 'ACS':
+            data['commands'] = simThread.subsystems['ACS'].commands
+        #elif subsystem == 'EPS':
+        #    for item in sim.EPS_command_buffer.all():
+        #        data['input'].append(item.buffer_item)
+        #elif subsystem == 'TCS':
+        #    for item in sim.TCS_command_buffer.all():
+        #        data['input'].append(item.buffer_item)
+        
+        return HttpResponse(json.dumps(data)) # Sending an success response
+    else:
+        return HttpResponse("Request method is not GET")
+
+#######################################################################
 @login_required(login_url='/login/')
 def foClass(request, class_name):
     getFO = FlightOperator.objects.get(user = request.user)

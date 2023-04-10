@@ -7,30 +7,32 @@
   <!-- bottom console -->
   <div class="resizable" style = "z-index: 3;">
 	<div class="left-side">
-	  <div class="title-wrapper">
-		<div class="title">{{ sim }}</div>
+		<div class="title-wrapper">
+			<div class="title">{{ sim }}</div>
+		  </div>
+		  <div class="content-wrapper">
+		  <div class="left-content-wrapper">
+			<div id="terminal1" class="terminal"></div>
+		  </div>
+		  <div class="input-container">
+		  </div>
+		</div>
+		<div class="right-side">
+		  <div class="title-wrapper">
+			<div class="title">{{ subsystem }}</div>
+		  </div>
+		  <div class="content-wrapper">
+		  <div class="right-content-wrapper">
+			<div id="terminal2" class="terminal"></div>
+		  </div>
+		  <div class="input-container">
+			<input type="text" id="input" autofocus />
+		  </div>
+		</div> 
+		<div class="resizable-handle"></div>
 	  </div>
-	  <div class="content-wrapper">
-		<div id="terminal1" class="terminal"></div>
-	  </div>
-	  <div class="input-container">
-	  </div>
-	</div>
-	<div class="right-side">
-	  <div class="title-wrapper">
-		<div class="title">{{ subsystem }}</div>
-	  </div>
-	  <div class="content-wrapper">
-		<div id="terminal2" class="terminal"></div>
-	  </div>
-	  <div class="input-container">
-		<input type="text" id="input" autofocus />
-	  </div>
-	</div> 
-	<div class="resizable-handle"></div>
-  </div>
-
-<script src=  "{% static "/js/jquery.min.js" %}"></script>
-<script src = "{% static "/js/fosim.js" %}"></script>
-  
-{% endblock console %}
+	
+	<script src=  "{% static "/js/jquery.min.js" %}"></script>
+	<script src = "{% static "/js/fosim.js" %}"></script>
+	  
+	{% endblock console %}

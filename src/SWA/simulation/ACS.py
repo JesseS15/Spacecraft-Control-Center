@@ -23,17 +23,23 @@ class ACS(Subsystem):
         self.startLongitude = random.randint(-180, 180)
         self.finalLongitude = finalLongitude
         self.currentLongitude = self.startLongitude
-        self.prograde = bool(random.getrandbits(1))
-        self.menu = "tl" # can be tl, cmgRoll, cmgPitch, or cmgYaw
+        self.commands = [
+            "WELCOME TO THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE",
+            "Your task is to rotate the satellite for proper payload alignment with the imagery target on the earth’s surface",
+            "1.) System Checks",
+            "2.) Verify Alignment",
+            "3.) CMG Activate Roll",
+            "4.) CMG Activate Pitch",
+            "5.) CMG Activate Yaw",
+            "6.) Transfer Telemetry",
+        ]
         self.commandLog = []
-        
-        self.initializeCommandLog()
         
     def command(self, command):
         
         response = {
-            'inputConsole' : self.commandLog,
-            'outputConsole': [],
+            'consoleCommand' : command,
+            'consoleResponse': [],
         }
         command_split = command.lower().split(" ")
         
@@ -44,48 +50,31 @@ class ACS(Subsystem):
                 pass
             elif command_split[0] == "3":
                 self.menu = "cmgRoll"
-                response['inputConsole'].append("How much do you want to change the Roll by (in Degrees)?")
+                response['consoleResponse'].append("How much do you want to change the Roll by (in Degrees)?")
             elif command_split[0] == "4":
                 self.menu = "cmgPitch"
-                response['inputConsole'].append("How much do you want to change the Pitch by (in Degrees)?")
+                response['consoleResponse'].append("How much do you want to change the Pitch by (in Degrees)?")
             elif command_split[0] == "5":
                 self.menu = "cmgYaw"
-                response['inputConsole'].append("How much do you want to change the Yaw by (in Degrees)?")
+                response['consoleResponse'].append("How much do you want to change the Yaw by (in Degrees)?")
             elif command_split[0] == "6":
                 pass
             else:
-                response['inputConsole'].append("Invalid Command " + command)
+                response['consoleCommand'] = "Invalid Command " + command
 
         elif self.menu == "cmgRoll":
             self.menu = "tl"
-            self.appendCommandList()
         
         elif self.menu == "cmgPitch":
             self.menu = "tl"
-            self.appendCommandList()
         
         elif self.menu == "cmgYaw":
             self.menu = "tl"
-            self.appendCommandList()
         
         else:
             self.menu = "tl"
         
         return response
-
-    def initializeCommandLog(self):
-        self.commandLog.append("WELCOME TO THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE")
-        self.appendCommandList()
-        return
-    
-    def appendCommandList(self):
-        self.commandLog.append("1.) System Checks")
-        self.commandLog.append("2.) Verify Alignment ")
-        self.commandLog.append("3.) CMG Activate Roll")
-        self.commandLog.append("4.) CMG Activate Pitch")
-        self.commandLog.append("5.) CMG Activate Yaw")
-        self.commandLog.append("6.) Transfer Telemetry")
-        return
 
     def updateRPY(self):
         self.orientation["roll"] += random.randint(-1,1)
