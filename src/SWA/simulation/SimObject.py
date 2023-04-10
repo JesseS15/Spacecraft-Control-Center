@@ -31,7 +31,7 @@ class SimObject(threading.Thread):
 
         # Longitude of 81 is ERAU Daytona Beach campus
         self.finalValues["finalLongitude"] = 81
-        
+
         sim = Sim.objects.get(pk = pk)
         self.pk = sim.pk
         self.simName = sim.sim_name
@@ -44,22 +44,34 @@ class SimObject(threading.Thread):
         #self.subsystems["EPS"] = EPS()
         self.subsystems["COMMS"] = COMMS()
         self.subsystems["TCS"] = TCS()
-        #self.subsystems["Payload"] = payload()
+        self.subsystems["Payload"] = payload()
 
     def checkTelemetry(self):
+        # Using flag telemetryTransferComplete rather than calling function (that is for user command)
         self.telemetry["ACS"] = self.subsystems["ACS"].telemetryTransferComplete
         #self.telemetry["EPS"] = self.subsystems["EPS"].telemetryTransfer()
         self.telemetry["TCS"] = self.subsystems["TCS"].telemetryTransferComplete
+        self.telemetry["Payload"] = self.subsystems["Payload"].telemetryTransferComplete
+
+    def checkPayloadReady(self):
+        acs = self.telemetry["ACS"]
+        eps = self.telemetry["EPS"]
+        tcs = self.telemetry["TCS"]
+        long = self.subsystems["ACS"].checkLongitude()
+        if acs and eps and tcs and long:
+            self.subsystems["Payload"].ready = True
 
     def check(self):
         print('Sim Thread for '+ self.simName+' is reachable')
 
     def update(self):
+        # Checking payload is good to take picture
+        self.checkPayloadReady()
+        self.subsystems["COMMS"].allTelemetryData = self.telemetry
         self.subsystems["ACS"].update()
         self.subsystems["EPS"].update()
         self.subsystems["TCS"].update()
         self.subsystems["COMMS"].update()
-        self.subsystems["Payload"].update()
 
     def run(self):
         simobj = Sim.objects.get(pk = self.pk)

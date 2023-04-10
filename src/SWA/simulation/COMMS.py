@@ -15,6 +15,7 @@ class COMMS(Subsystem):
     gainRange = [25, 30]
 
     allTelemetryDataGood = False
+    allTelemetryData = {"ACS": False, "EPS": False, "TCS": False, "Payload": False}
 
     def __init__(self):
         super().__init__()
@@ -62,12 +63,12 @@ class COMMS(Subsystem):
 
     # Main menu option 5
     # telemetryData needs to be passed from SimObject
-    def downloadTelemetryData(self, telemetryData):
+    def downloadTelemetryData(self):
         output = []
         index = 1
         self.allTelemetryDataGood = True
-        for key in telemetryData:
-            if telemetryData[key]:
+        for key in self.allTelemetryData:
+            if self.allTelemetryData[key]:
                 output[index] = "" + key + " Telemetry...COMPLETE!"
             else:
                 output[index] = "" + key + " Telemetry...INCOMPLETE!"
