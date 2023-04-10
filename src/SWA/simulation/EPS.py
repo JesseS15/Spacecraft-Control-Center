@@ -36,6 +36,16 @@ class EPS(Subsystem):
     allChecks = False
     verifyStatus = False
 
+    commands = [
+        "WELCOME TO THE ELECTRICAL POWER SYSTEMS (EPS) CONSOLE!",
+        "Your task is to command the satellite to full power before the payload can be operated.",
+        "1.) Status Checks",
+        "2.) Verify Power Distribution System",
+        "3.) Full Power",
+        "4.) Articulate Panel",
+        "5.) Transfer Telemetry"
+    ]
+
     def __init__(self):
         super().__init__()
         self.params['simcraft power restrictions']['ACS'] = self.params['total power'] * 0.16
