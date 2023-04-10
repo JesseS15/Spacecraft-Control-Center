@@ -34,7 +34,7 @@ class ACS(Subsystem):
         self.startLongitude = random.randint(-180, 180)
         self.finalLongitude = finalLongitude
         self.currentLongitude = self.startLongitude
-        self.prograde = bool(random.getrandbits(1))
+
         
         self.menu = "tl" # can be tl, cmgRoll, cmgPitch, or cmgYaw
         self.commandLog = []
@@ -49,7 +49,9 @@ class ACS(Subsystem):
         
         if self.menu == "tl":
             if command_split[0] == "1":
-                pass
+                response['consoleResponse'] = "Checking Attitude Systems… \nThe SimCraft’s current Longitude is"
+                + self.currentLongitude + "eta: " + self.longMin() + "minutes.\n" 
+                + "The SimCraft’s current Alignment is " + self.verifyAlignment() 
             elif command_split[0] == "2":
                 pass
             elif command_split[0] == "3":
@@ -100,14 +102,15 @@ class ACS(Subsystem):
             self.orientation["yaw"] = 179
 
     def updateLongitude(self):
-        if self.prograde:
-            self.currentLongitude += 1
-            if (self.currentLongitude == 180):
-                self.currentLongitude = -180
-        else:
-            self.currentLongitude -= 1
-            if (self.currentLongitude == -180):
-                self.currentLongitude = 180
+        self.currentLongitude += 1
+        if (self.currentLongitude == 180):
+            self.currentLongitude = -180
+        elif (self.currentLongitude == -180):
+            self.currentLongitude = 180
+
+    def longMin(self):
+        timeLeft = self.finalLongitude - self.currentLongitude
+        return abs(timeLeft)
 
     def checkLongitude(self):
         if (self.currentLongitude == self.finalLongitude):
@@ -143,9 +146,11 @@ class ACS(Subsystem):
         bitchDifference = finalValues["pitch"] - self.orientation["pitch"]
         yawDifference = finalValues["yaw"] - self.orientation["yaw"]
         if (abs(rollDifference) <= 10) and (abs(bitchDifference) <= 10) and (abs(yawDifference) <= 10):
-            return True
+            return "Reached"
         else:
-            return False, rollDifference, bitchDifference, yawDifference
+            errorAlignment = "Not Reached...\n The roll is off by " + rollDifference
+            + "\nThe Pitch is off by " + bitchDifference +"The Yaw is off by " + yawDifference
+            return errorAlignment
 
     def systemChecks(self):
         align = self.verifyAlignment

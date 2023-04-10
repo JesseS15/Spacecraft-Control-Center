@@ -1,7 +1,7 @@
-import Subsystem
-import EPSSolarPanelCharging as Charging
-import EPSInitializing as EPSStart
-import EPSPowerDistribution as PD
+from simulation.Subsystem import Subsystem
+import simulation.EPSSolarPanelCharging as Charging
+import simulation.EPSInitializing as EPSStart
+import simulation.EPSPowerDistribution as PD
 from datetime import datetime
 import random
 

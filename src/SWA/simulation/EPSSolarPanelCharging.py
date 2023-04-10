@@ -1,6 +1,6 @@
 import numpy as np
 import random
-import EPSInitializing as EPSStart
+import simulation.EPSInitializing as EPSStart
 from datetime import datetime
 
 currentTime = 0.0

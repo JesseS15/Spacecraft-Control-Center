@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.db import models
-from simulation.SimObject import SimObject
 
 #settings.configure()
 
