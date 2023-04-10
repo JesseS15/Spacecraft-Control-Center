@@ -68,9 +68,13 @@ class TCS(Subsystem):
         super().__init__()
         print('New instance of TCS class created')
 
-##### LAST PART ########## increase by 1 degree every 5 seconds
     def randomThermal(self):
-        pass
+        for subsys in self.SubsystemThermal:
+            for item in self.SubsystemThermal[subsys]:
+                self.SubsystemThermal[subsys][item] += 1
+
+    def update(self):
+        self.randomThermal
 
     ###################TCS CONSOLE COMMANDS #######################
     # Main menu option 1
