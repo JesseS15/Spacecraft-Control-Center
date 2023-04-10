@@ -9,9 +9,11 @@ class COMMS(Subsystem):
     }
 
     frequency = random.randrange(12.0, 18.0)
-    gain = random.randrange(25, 30)
     frequencyRange = [12.0, 18.0]
+
+    gain = random.randrange(25, 30)
     gainRange = [25, 30]
+
     allTelemetryDataGood = False
 
     def __init__(self):
@@ -19,7 +21,8 @@ class COMMS(Subsystem):
         print('New instance of COMMS class created')
 
     def update(self):
-        pass
+        self.frequency += random.randrange(-5.0, 5.0)
+        self.gain += random.randrange(-5.0, 5.0)
 
     # Main menu option 1
     def systemChecks(self):
@@ -63,7 +66,7 @@ class COMMS(Subsystem):
     def downloadTelemetryData(self, telemetryData):
         output = []
         index = 1
-        self.allTelemetryDataGood
+        self.allTelemetryDataGood = True
         for key in telemetryData:
             if telemetryData[key]:
                 output[index] = "" + key + " Telemetry...COMPLETE!"
@@ -85,6 +88,18 @@ class COMMS(Subsystem):
             return "Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task."
 
     # Main menu option 7
+    ### NOT DONE!! NEED IMAGE URL ####
     def displayImage(self):
-        pass
+        if self.allTelemetryDataGood:
+            output = []
+            output[0] = "All telemetry data has been successfully processed!"
+            output[1] = "Click the link to view the image!"
+            # Rick roll link for shits and giggles
+            output[2] = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            output[3] = "GREAT WORK ON THE COMMS SYSTEM CONSOLE"
+            output[4] = "Mission accomplished!"
+            output[5] = "Just kidding...heres the actual image: CARLY_MAKE_URL"
+            return output
+        else:
+            return "Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task."
 
