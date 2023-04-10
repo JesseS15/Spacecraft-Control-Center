@@ -23,38 +23,45 @@ class ACS(Subsystem):
         self.startLongitude = random.randint(finalLongitude+50, finalLongitude+90)
         self.finalLongitude = finalLongitude
         self.currentLongitude = self.startLongitude
+        self.prograde = bool(random.getrandbits(1))
 
     def updateRPY(self):
         self.orientation["roll"] += random.randint(-1,1)
-        if (self.orientation["roll"] >= 180):
-            self.orientation["roll"] = 179
-        if (self.orientation["roll"] <= -180):
+        if (self.orientation["roll"] > 180):
             self.orientation["roll"] = -179
+        if (self.orientation["roll"] < -180):
+            self.orientation["roll"] = 179
 
         self.orientation["pitch"] += random.randint(-1,1)
-        if (self.orientation["pitch"] >= 90):
-            self.orientation["pitch"] = 89
-        if (self.orientation["pitch"] <= -90):
+        if (self.orientation["pitch"] > 90):
             self.orientation["pitch"] = -89
+        if (self.orientation["pitch"] < -90):
+            self.orientation["pitch"] = 89
 
         self.orientation["yaw"] += random.randint(-1,1)
-        if (self.orientation["yaw"] >= 180):
-            self.orientation["yaw"] = 179
-        if (self.orientation["yaw"] <= -180):
+        if (self.orientation["yaw"] > 180):
             self.orientation["yaw"] = -179
+        if (self.orientation["yaw"] < -180):
+            self.orientation["yaw"] = 179
 
     def updateLongitude(self):
-        self.currentLongitude += 1
-        if (self.currentLongitude == 180):
-            self.currentLongitude = -180
-        elif (self.currentLongitude == -180):
-            self.currentLongitude = 180
+        if self.prograde:
+            self.currentLongitude += 1
+            if (self.currentLongitude == 180):
+                self.currentLongitude = -180
+        else:
+            self.currentLongitude -= 1
+            if (self.currentLongitude == -180):
+                self.currentLongitude = 180
 
     def checkLongitude(self):
         if (self.currentLongitude == self.finalLongitude):
             return True
         else:
             return False
+        
+    def update(self):
+        self.updateRPY()
     
     ############# CMG : User input updates ##############
     def updateRoll(self, newRoll):
