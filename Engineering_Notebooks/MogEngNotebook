@@ -100,4 +100,9 @@ Jeremy Mog Engineering Notebook
 	-Waka waka Africa
 	-Worked on update functions for subsystems that each thread will be using
 	-Our dicts dont work like we thought they were going to so we need to refactor the code to work among the subsystems
+4/8/2023
+	-As it turns out a lot of the functionality of subsystems is not useful and needs to be redone
+	-Started redesigning most of the backend, a lot of stuff is usable but needs to be slightly changed
+4/10/2023
+	-Met to try and fix all the stuff before tomorrow
 	

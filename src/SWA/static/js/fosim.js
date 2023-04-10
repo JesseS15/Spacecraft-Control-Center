@@ -6,32 +6,38 @@ const terminal2 = document.getElementById('terminal2');
 const input = document.getElementById('input');
 
 fetchdata();
+fetchcommands();
 
 input.addEventListener('keyup', function (event) {
   if (event.keyCode === 13) {
     event.preventDefault();
     const command = this.value.trim();
     this.value = '';
-    const output = document.createElement('p');
-    output.textContent = `$ ${command}`;
-    terminal2.appendChild(output);
-    terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
 
     $.ajax(
         {
-            // fo/views.submit
-            url: '../submit',
-            type: 'GET',
-            //dataType: 'json',
-            data:{
-                cmd: command,
-            },
-    
-            success: function( data )
-            {
-                console.log("js " + data);
+          // fo/views.submit
+          url: '../submit',
+          type: 'GET',
+          dataType: 'json',
+          
+          data:{
+              cmd: command,
+          },
+
+          success: function( data )
+          {
+            const output = document.createElement('p');
+            output.textContent = `$ ${data['consoleCommand']}`;
+            terminal2.appendChild(output);
+            for (var i = 0; i < data['consoleResponse'].length; i++) {
+              const output = document.createElement('p');
+              output.textContent = `${data['consoleResponse'][i]}`;
+              terminal2.appendChild(output);
             }
-         })
+            terminal1.parentElement.scrollTop = terminal1.parentElement.scrollHeight;
+          }
+        })
   }
 });
 
@@ -57,6 +63,25 @@ function stopResize(e) {
   window.removeEventListener('mouseup', stopResize);
 }
 
+// Get Simcraft Commands
+function fetchcommands(){
+  $.ajax({
+      // fo/views.fetchcommands
+      url: 'fetchcommands',
+      type: 'GET',
+      dataType: 'json',
+
+      success: (data) => {
+          for (var i = 0; i < data['commands'].length; i++) {
+            const output = document.createElement('p');
+            output.textContent = `${data['commands'][i]}`;
+            terminal1.appendChild(output);
+          }
+          terminal1.parentElement.scrollTop = terminal1.parentElement.scrollHeight;
+      }
+  });
+}
+
 // Refresh SimCraft Attributes
 function fetchdata(){
     $.ajax({
@@ -66,17 +91,6 @@ function fetchdata(){
         dataType: 'json',
 
         success: (data) => {
-          console.log(data);
-          if (data['output'].length > terminal1.children.length){
-            terminal1.replaceChildren();
-            for (var i = 0; i < data['output'].length; i++) {
-              const output = document.createElement('p');
-              output.textContent = `$ ${data['output'][i]}`;
-              terminal1.appendChild(output);
-            }
-            terminal1.parentElement.scrollTop = terminal1.parentElement.scrollHeight;
-            console.log(data);
-          }
     
           if (data['input'].length > terminal2.children.length){
             terminal2.replaceChildren();
@@ -86,11 +100,11 @@ function fetchdata(){
               terminal2.appendChild(output);
             }
             terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
-            console.log(data);
           }
         }
     });
 }
+
 // Set Refresh Rate
 $(document).ready(function(){
     setInterval(fetchdata,5000);

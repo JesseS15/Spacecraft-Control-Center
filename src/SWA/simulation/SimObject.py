@@ -1,53 +1,77 @@
-from simapp.models import Sim, DisplayBufferItem
+from simapp.models import Sim
 from simulation.ACS import ACS
 from simulation.TCS import TCS
 from simulation.EPS import EPS
 from simulation.COMMS import COMMS
-from simulation.Dicts import Dicts
 from simulation.payload import payload
 import threading
 import time
+import random
 
 class SimObject(threading.Thread):
 
-    simName = ""
-    mission = ""
-    pk = 0
-    dictObject = Dicts()
-    # Creats a new instance of the Attribute Dictionaries
-    attributeDict = dictObject.dicts
-    finalDict = dictObject.finalValues
-    # All the subsystem objects
-    subsystems = { "ACS": 0, "TCS": 0, "COMMS": 0, "EPS": 0 }
+    finalValues = {
+		"roll": 0,
+		"pitch": 0,
+		"yaw": 0,
+		"finalLongitude": 0
+	}
 
-    def __init__(self, pk):
+    simName = ""
+    pk = 0
+    
+    # Dictionary to hold all the subsystem objects
+    subsystems = { "ACS": 0, "TCS": 0, "COMMS": 0, "EPS": 0, "Payload": 0 }
+
+    telemetry = {"ACS": False, "TCS": False, "EPS": False, "Payload": False}
+
+    def __init__(self, final_values, pk):
         threading.Thread.__init__(self)
+        self.finalValues = final_values
+
+        # Longitude of 81 is ERAU Daytona Beach campus
+        self.finalValues["finalLongitude"] = 81
+
         sim = Sim.objects.get(pk = pk)
         self.pk = sim.pk
         self.simName = sim.sim_name
-        self.createSubsys()
+        self.createSubsys(sim)
         print('\n  !!! NEW SIM', self.simName, 'CREATED !!!\n')
 
-    # Method to update dictionaries. 
-    def updateDictionaries(self, updateDict):
-        self.dicts.update(updateDict)
+    # Creating all the subsystem objects and adding them to the subsystem dictionary
+    def createSubsys(self, sim):
+        self.subsystems["ACS"] = ACS(self.finalValues["finalLongitude"])
+        #self.subsystems["EPS"] = EPS()
+        self.subsystems["COMMS"] = COMMS()
+        self.subsystems["TCS"] = TCS()
+        self.subsystems["Payload"] = payload()
 
-    # Creating all the subsystems and passing them the dictionaries
-    def createSubsys(self):
-        self.subsystems["ACS"] = ACS(self.attributeDict)
-        self.subsystems["EPS"] = EPS(self.attributeDict)
-        self.subsystems["COMMS"] = COMMS(self.attributeDict)
-        self.subsystems["TCS"] = TCS(self.attributeDict)
+    def checkTelemetry(self):
+        # Using flag telemetryTransferComplete rather than calling function (that is for user command)
+        self.telemetry["ACS"] = self.subsystems["ACS"].telemetryTransferComplete
+        #self.telemetry["EPS"] = self.subsystems["EPS"].telemetryTransfer()
+        self.telemetry["TCS"] = self.subsystems["TCS"].telemetryTransferComplete
+        self.telemetry["Payload"] = self.subsystems["Payload"].telemetryTransferComplete
+
+    def checkPayloadReady(self):
+        acs = self.telemetry["ACS"]
+        eps = self.telemetry["EPS"]
+        tcs = self.telemetry["TCS"]
+        long = self.subsystems["ACS"].checkLongitude()
+        if acs and eps and tcs and long:
+            self.subsystems["Payload"].ready = True
 
     def check(self):
         print('Sim Thread for '+ self.simName+' is reachable')
 
     def update(self):
-        ACS.update()
-        EPS.update()
-        TCS.update()
-        COMMS.update()
-        payload.update()
+        # Checking payload is good to take picture
+        self.checkPayloadReady()
+        self.subsystems["COMMS"].allTelemetryData = self.telemetry
+        self.subsystems["ACS"].update()
+        self.subsystems["EPS"].update()
+        self.subsystems["TCS"].update()
+        self.subsystems["COMMS"].update()
 
     def run(self):
         simobj = Sim.objects.get(pk = self.pk)
@@ -57,9 +81,9 @@ class SimObject(threading.Thread):
         while True:
             print('thread ' + self.simName)
             print(threading.get_ident())
+            #Probably put stuff in this block under self.update function 
             #self.update()
+            self.telemetry = self.subsystems["ACS"].updateRPY()
             
-            displayobj = DisplayBufferItem.objects.create(buffer_item = self.simName + " updates")
-            displayobj.save()
-            simobj.display_buffer.add(displayobj)
+            #End block here
             time.sleep(5)

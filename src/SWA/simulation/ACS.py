@@ -3,156 +3,159 @@ import random
 
 class ACS(Subsystem):
 
-    def __init__(self, dicts):
-        super().__init__(dicts)
-        self.dicts = dicts
-        self.orient = {
-           "roll":0,
-           "pitch":0,
-           "yaw": 0
-        }
-         ##NEEDS TO BE CHANGED BASED ON TEST CONDUCTOR INPUT -- just have it set as a random goal for now
-        self.orientGoal = {
-            'roll' : random.randint(-180,180),
-            'pitch' : random.randint(-180,180),
-            'yaw' : random.randint(0,90)
-        }
+    orientation = {
+        "roll":0,
+        "pitch":0,
+        "yaw": 0
+    }
 
-        self.orientEqual = True
+    telemetryTransferComplete = False
+    startLongitude = 0
+    finalLongitude = 0
+    currentLongitude = 0
 
-        self.checks = {
-                       'Control Moment Gyros' : random.choice([True, False]),
-                       'Attitude Stability' : random.choice([True, False]),
-                       'S-Band Antenna B' : random.choice([True, False])
+    commands = [
+        "WELCOME TO THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE",
+        "Your task is to rotate the satellite for proper payload alignment with the imagery target on the earth’s surface",
+        "1.) System Checks",
+        "2.) Verify Alignment",
+        "3.) CMG Activate Roll",
+        "4.) CMG Activate Pitch",
+        "5.) CMG Activate Yaw",
+        "6.) Transfer Telemetry",
+    ]
+
+    def __init__(self, finalLongitude):
+        super().__init__()
+        self.orientation["roll"] = random.randint(-180,180)
+        self.orientation["pitch"] = random.randint(-90,90)
+        self.orientation["yaw"] = random.randint(-180,180)
+        # setting starting longitude to random number from final longitude +50 to final longitude +90 (random magic numbers, dont be mad)
+        self.startLongitude = random.randint(-180, 180)
+        self.finalLongitude = finalLongitude
+        self.currentLongitude = self.startLongitude
+        self.prograde = bool(random.getrandbits(1))
+        
+        self.menu = "tl" # can be tl, cmgRoll, cmgPitch, or cmgYaw
+        self.commandLog = []
+        
+    def command(self, command):
+        
+        response = {
+            'consoleCommand' : command,
+            'consoleResponse': [],
         }
-        self.allChecks = False
-        self.targetStatus = {'Ready' : False,
-                             'Verify CMG Status' : False,
-                             'Activate CMG Maneuver' : False,
-                             'Verify Alignment' : False}
-        self.verifyStatus = False
-        print("New instance of ACS class created")
-        self.randomRollPitchYaw()
+        command_split = command.lower().split(" ")
+        
+        if self.menu == "tl":
+            if command_split[0] == "1":
+                pass
+            elif command_split[0] == "2":
+                pass
+            elif command_split[0] == "3":
+                self.menu = "cmgRoll"
+                response['consoleResponse'].append("How much do you want to change the Roll by (in Degrees)?")
+            elif command_split[0] == "4":
+                self.menu = "cmgPitch"
+                response['consoleResponse'].append("How much do you want to change the Pitch by (in Degrees)?")
+            elif command_split[0] == "5":
+                self.menu = "cmgYaw"
+                response['consoleResponse'].append("How much do you want to change the Yaw by (in Degrees)?")
+            elif command_split[0] == "6":
+                pass
+            else:
+                response['consoleCommand'] = "Invalid Command " + command
 
-    def randomRollPitchYaw(self):
-        for key,value in self.orient:
-            self.orient[key] = random.randint(-180,180)
-        self.orient['pitch'] = random.randint(-90,90)
+        elif self.menu == "cmgRoll":
+            self.menu = "tl"
+        
+        elif self.menu == "cmgPitch":
+            self.menu = "tl"
+        
+        elif self.menu == "cmgYaw":
+            self.menu = "tl"
+        
+        else:
+            self.menu = "tl"
+        
+        return response
+
+    def updateRPY(self):
+        self.orientation["roll"] += random.randint(-1,1)
+        if (self.orientation["roll"] > 180):
+            self.orientation["roll"] = -179
+        if (self.orientation["roll"] < -180):
+            self.orientation["roll"] = 179
+
+        self.orientation["pitch"] += random.randint(-1,1)
+        if (self.orientation["pitch"] > 90):
+            self.orientation["pitch"] = -89
+        if (self.orientation["pitch"] < -90):
+            self.orientation["pitch"] = 89
+
+        self.orientation["yaw"] += random.randint(-1,1)
+        if (self.orientation["yaw"] > 180):
+            self.orientation["yaw"] = -179
+        if (self.orientation["yaw"] < -180):
+            self.orientation["yaw"] = 179
+
+    def updateLongitude(self):
+        if self.prograde:
+            self.currentLongitude += 1
+            if (self.currentLongitude == 180):
+                self.currentLongitude = -180
+        else:
+            self.currentLongitude -= 1
+            if (self.currentLongitude == -180):
+                self.currentLongitude = 180
+
+    def checkLongitude(self):
+        if (self.currentLongitude == self.finalLongitude):
+            return True
+        else:
+            return False
+        
+    def update(self):
+        self.updateRPY()
     
+    ############# CMG : User input updates ##############
     def updateRoll(self, newRoll):
-        self.orient['roll'] += newRoll
+        if (newRoll > 10):
+            newRoll = 10
+        self.orientation['roll'] += newRoll
         return ("Roll updated by" + newRoll + "degrees")
     
     def updatePitch(self, newPitch):
-        self.orient['pitch'] += newPitch
+        if (newPitch > 10):
+            newPitch = 10
+        self.orientation['pitch'] += newPitch
         return ("Pitch updated by" + newPitch + "degrees")
     
     def updateYaw(self, newYaw):
-        self.orient['yaw'] += newYaw
+        if (newYaw > 10):
+            newYaw = 10
+        self.orientation['yaw'] += newYaw
         return ("Yaw updated by" + newYaw + "degrees")
 
-    def update(self):
-        for key,value in self.orient:
-            self.orient[key] += random.randint(-1,1)
-            if (self.orient[key]>180) or (self.orient[key]<-180):
-                self.orient[key]=0
-        self.orient['pitch'] += random.randint(-1,1)
-        if (self.orient[key]>90):
-            self.orient[key]=0
-        elif(self.orient[key]<0):
-            self.orient[key]=90
-
-
-    def checkFinalRPY(self):
-        if self.orient['roll'] in range(self.orientEqual['roll']-70,self.orientEqual['roll']+70):
-            print("ROLL: VALID")
-        else:
-            print(f"ROLL: INVALID, currently {self.orient['roll']} needs to be between -70 and 70")
-            return False
-        if self.orient['pitch'] in range(self.orientEqual['pitch']-90,self.orientEqual['pitch']+65):
-            print("PITCH: VALID")
-        else:
-            print(f"PITCH: INVALID, currently {self.orient['pitch']} needs to be between -90 and 65")
-            return False
-        if self.orient['yaw'] in range(self.orientEqual['yaw']-25,self.orientEqual['yaw']+15):
-            print("YAW: VALID")
-        else:
-            print(f"YAW: INVALID, currently {self.orient['YAW']} needs to be between -25 and 15")
-            return False
-        return True
-    
-    ###################ACS CONSOLE COMMANDS #######################
-    def systemChecks(self):
-        badChecks = [key for key,value in self.checks.items() if not value]
-        print(badChecks)
-        if not badChecks:
-            print("No errors found")
-            self.allChecks = True
-        else:
-            print("ERROR FOUND with :")
-            for key in badChecks:
-                print(key)
-            print("Enter 'refresh' to reset the system and re-start system checks")
-        print("Enter 'go' if all systems are ready")
-
-    def refresh(self):
-        self.checks = {key: True for key in self.checks}
-
-    def verify(self):
-        if not self.allChecks:
-            print('All system checks not completed')
-            return
-        self.targetStatus['Ready'] = True
-        print('Verifying ACS...')
-        print('ACS now ready for use')
-
-    def cmgStatus(self):
-        if not self.targetStatus['Ready']:
-            print('Please verify the system before attempting to initialize CMG status')
-            return
-        print('Verifying CMG status. Please wait...')
-        if self.checkFinalRPY():
-            self.targetStatus['Verify CMG Status'] = True
-        else:
-            print('Invalid values for Degrees of Freedom. Inititate CMGs.')
-
-    def cmgActivate(self):
-        if not self.targetStatus['Ready']:
-            print('Please verify the system before attempting to initialize CMG status')
-            return
-        print ('Activating CMGs...')
-        userChoiceCMG = input(f'Please choose a Degree of Freedom to alter: \n1 - Roll \n2 - Pitch \n3 - Yaw')
-        if userChoiceCMG == '1':
-            userRoll = input(f'Enter magnitude of roll manuever: ')
-            self.updateRoll(userRoll)
-        elif userChoiceCMG == '2':
-            userPitch = input(f'Enter magnitude of pitch manuever: ')
-            self.updatePitch(userPitch)
-        elif userChoiceCMG == '3':
-            userYaw = input(f'Enter magnitude of yaw manuever: ')
-            self.updateYaw(userYaw)
-        else:
-            print('Please reenter a valid response')
-            self.cmgActivate()
-        
-    def compareOutcome(self):
-        for k in self.orient:
-            if not self.orient[k] == self.orientGoal[k]:
-                print(f'{k} are not equal')
-                return
-        self.verifyStatus = True
-   
-    def telemtryTransfer(self):
-        if self.verifyStatus:
-            print('Transferring ACS telemetry. Please wait...')
-        else:
-            print('Verification process for COMMS not completed')
-            
-    def commsConfirmation(self):
-        if self.verify:
+    ###### Checking final orientation, passed from SimObject ###############
+    def verifyAlignment(self, finalValues):
+        rollDifference = finalValues["roll"] - self.orientation["roll"]
+        bitchDifference = finalValues["pitch"] - self.orientation["pitch"]
+        yawDifference = finalValues["yaw"] - self.orientation["yaw"]
+        if (abs(rollDifference) <= 10) and (abs(bitchDifference) <= 10) and (abs(yawDifference) <= 10):
             return True
         else:
-            self.telemtryTransfer()
-            return False 
+            return False, rollDifference, bitchDifference, yawDifference
 
+    def systemChecks(self):
+        align = self.verifyAlignment
+        longitude = self.checkLongitude
+        return align, longitude
+    
+    def telemetryTransfer(self):
+        if (self.verifyAlignment and self.checkLongitude):
+            self.telemetryTransferComplete = True
+        else:
+            self.telemetryTransferComplete = False
+        return self.telemetryTransferComplete
             

@@ -1,48 +1,64 @@
-from simulation.Subsystem import Subsystem
-from simulation import EPSSolarPanelCharging as Charging
-from simulation import EPSInitializing as EPSStart
-from simulation import EPSPowerDistribution as PD
+import Subsystem
+import EPSSolarPanelCharging as Charging
+import EPSInitializing as EPSStart
+import EPSPowerDistribution as PD
 from datetime import datetime
 import random
 
 class EPS(Subsystem):
 
-    def __init__(self, dicts):
-        super().__init__(dicts)
-        self.params = {'total power' : EPSStart.initialize(),
-                       'available power' : EPSStart.initialize(),
-                       'expended power' : 0.0,
-                       'battery capacity' : Charging.setupBatteries(),
-                       'current battery charge' : Charging.setupBatteries(),
-                       'time of last check' : datetime.now(),
-                       'simcraft power restrictions' : {'EPS' : 0.0,
-                                                        'TCS' : 0.0,
-                                                        'COMMS' : 0.0,
-                                                        'ACS' : 0.0,
-                                                        'Payload' : 0.0},
-                       'power distribution' : {'EPS' : 0.0,
-                                               'TCS' : 0.0,
-                                               'COMMS' : 0.0,
-                                               'ACS' : 0.0,
-                                               'Payload' : 0.0},
-                       'solar panel angle' : Charging.generateRandomAngle()
-                       }
-        self.checks = {'Uplink' : random.choice([True, False]),
-                       'Bus Connection' : random.choice([True, False]),
-                       'Articulation Gear' : random.choice([True, False])}
-        self.allChecks = False
-        self.params['simcraft power restrictions']['ACS'] = self.params['total power'] * 0.2
-        self.params['simcraft power restrictions']['EPS'] = self.params['total power'] * 0.2
-        self.params['simcraft power restrictions']['TCS'] = self.params['total power'] * 0.2
-        self.params['simcraft power restrictions']['COMMS'] = self.params['total power'] * 0.2
-        self.verifyStatus = False
+    params = {
+        'total power' : EPSStart.initialize(),
+        'available power' : EPSStart.initialize(),
+        'expended power' : 0.0,
+        'battery capacity' : Charging.setupBatteries(),
+        'current battery charge' : Charging.setupBatteries(),
+        'time of last check' : datetime.now(),
+        'simcraft power restrictions' : {'EPS' : 0.0,
+                                        'TCS' : 0.0,
+                                        'COMMS' : 0.0,
+                                        'ACS' : 0.0,
+                                        'Payload' : 0.0},
+        'power distribution' : {'EPS' : 0.0,
+                                'TCS' : 0.0,
+                                'COMMS' : 0.0,
+                                'ACS' : 0.0,
+                                'Payload' : 0.0},
+        'solar panel angle' : Charging.generateRandomAngle()
+        }  
+    
+    checks = {
+        'Uplink' : random.choice([True, False]),
+        'Bus Connection' : random.choice([True, False]),
+        'Articulation Gear' : random.choice([True, False])
+        }
+    
+    allChecks = False
+    verifyStatus = False
+
+    commands = [
+        "WELCOME TO THE ELECTRICAL POWER SYSTEMS (EPS) CONSOLE!",
+        "Your task is to command the satellite to full power before the payload can be operated.",
+        "1.) Status Checks",
+        "2.) Verify Power Distribution System",
+        "3.) Full Power",
+        "4.) Articulate Panel",
+        "5.) Transfer Telemetry"
+    ]
+
+    def __init__(self):
+        super().__init__()
+        self.params['simcraft power restrictions']['ACS'] = self.params['total power'] * 0.16
+        self.params['simcraft power restrictions']['EPS'] = self.params['total power'] * 0.16
+        self.params['simcraft power restrictions']['TCS'] = self.params['total power'] * 0.16
+        self.params['simcraft power restrictions']['COMMS'] = self.params['total power'] * 0.16
+        self.params['simcraft power restrictions']['COMMS'] = self.params['total power'] * 0.16
         print("New instance of EPS class created")
 
-    def update():
-        EPS.updateTimeParams()
-        EPS.updatePowerParams()
-        EPS.updateBatteryStatus()
-        
+    def update(self):
+        self.updateTimeParams()
+        self.updatePowerParams()
+        self.updateBatteryStatus()
 
     #EPS function for easy power updating ###############################
     def updatePowerParams(self, availablePower, expendedPower, powerDistributed, subsystemName):
@@ -66,7 +82,7 @@ class EPS(Subsystem):
     #EPS Power Distribution #############################################
     def requestPower(self, requestedPower, subsystemName):
         # Call to request power from EPS
-        requestedPower, availablePower, expendedPower, powerDistributed = PD.requestPower(requestedPower, subsystemName, self.params)
+        availablePower, expendedPower, powerDistributed = PD.requestPower(requestedPower, subsystemName, self.params)
         if requestedPower is None: return 0
         if availablePower is None:
             self.updatePowerParams(availablePower, expendedPower, powerDistributed, subsystemName)
@@ -94,57 +110,52 @@ class EPS(Subsystem):
         return UI
 
     #EPS Console Commands ##################################################
-    def systemChecks(self):
+    def statusChecks(self):
         badChecks = [key for key, value in self.checks.items() if not value]
         if not badChecks:
-            print("No errors found")
             self.allChecks = True
+            return("No errors found")
         else:
-            print("ERROR FOUND with :")
+            returnString="ERROR FOUND with : "
             for key in badChecks:
-                print(key)
-            print("Enter 'refresh' to reset the system and re-start system checks")
-        print("Enter 'go' if all systems are ready")
-
+                returnString+=(key + ", ")
+            
     def refresh(self):
         self.checks = {key: True for key in self.checks}
 
-    def verify(self):
+    def verifyPowerDist(self):
         if not self.allChecks:
-            print('All system checks not completed')
-            return
-        print("Verifying Spacecraft power level. Please wait .....")
+            return('All system checks not completed')
         expendedPower = self.params['expended power']
         totalPower = self.params['total power']
         checkpoint = 0.8 * totalPower
         currentOperating = expendedPower / checkpoint
         if checkpoint > currentOperating:
-            print(f"The spacecraft is currently operating at {1}% power", currentOperating * 100)
-            print("100% power is required for this mission activity")
-            print("Please set the power to 100%")
-            return
+            return(f"The spacecraft is currently operating at "+(currentOperating * 100)+"% power\n100% power is required for this mission activity\nPlease set the power to 100%")
         self.verifyStatus = True
-        print("Verifying Power...")
-        print("Spacecraft now operating at 100% power")
+        return("Verifying Power...\nSpacecraft now operating at 100% power")
+        
 
     def fullPower(self):
-        print(f"The current solar panel angle is: {1} degrees (away from the sun)" )
+        outputString = []
+        outputString.append("The current solar panel angle is: "+self.params['solar panel angle']+" degrees (away from the sun)" )
         if self.params['solar panel angle'] > 10.0:
-            print("Solar panels must be within 10 degrees of the sun angle for increased power to the spacecraft")
-            return
+            outputString.append("Solar panels must be within 10 degrees of the sun angle for increased power to the spacecraft")
+            return outputString
         self.calculateConsumedPower()
         if self.params['expended power'] < (self.params['total power'] * 0.8):
-            print('Not all systems running at max power')
+            outputString.append('Not all systems running at max power')
+        return outputString
 
     def articulate(self, delta):
         self.articulateAngle(delta)
-        print("New angle is : ", self.params['solar panel angle'])
+        return("New angle is : ", self.params['solar panel angle'])
     
     def telemtryTransfer(self):
         if self.verifyStatus:
-            print("Transferring EPS telemetry. Please wait...")
+            return("Data has been Transferred! GREAT WORK ON THE ELECTRICAL POWER SYSTEMS (EPS) CONSOLE")
         else:
-            print("Verification process for EPS not completed")
+            return("Verification process for EPS not completed")
     
     #Comms calls this function #######################################
     def commsConfirmation(self):

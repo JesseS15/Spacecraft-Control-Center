@@ -100,7 +100,21 @@ Engineering Notebook - Spring Semester
 2/28/23 - Class/Team Meeting
 - 
 
+3/4/23 - Team Meeting
+- Me, Jeremy, and Jesse met up
+- Made sure all of use had the same version and it worked (mostly)
+- Figured out how views and models worked. 
+- Moved sim stuff out of TC to simapp and had the system functioning through the correct files
 
+3/5/23 - Team Meeting
+- Me, Jeremy, Jesse, Jeff, and Kyle met up
+- Got the UI interaction working for the tc pages
+- Kyle set up testapp to test the system and have a working version for the demo
+- Accidentally broke the button to go to a sim page, everything else is working though!
+
+3/6/23 - Individual
+- Spoke to Garfield and showed him the (mostly) working system
+- He mentioned concerns about the modularity of the project and I reassured him that the system was mostly modular
 
 3/7/23 - Class/Team Meeting
 - Gave sprint 2 presentation
@@ -116,4 +130,48 @@ Engineering Notebook - Spring Semester
   - systemStatus() -> return boolean
   - sendTelemetry() -> ???
 - Fixed the Sim button I broke
+- Mission and Sim objects are now being created. The "createSusystems()" method in Simulation/SimObject.py is now being called in simapp/models.py "Sim" model.
+- Fixed all the imports for the Simulation files
 
+3/9/23 - Class/Team Meeting
+- I got my wisdom teeth out, was not there
+- Start of spring break (for me)
+
+3/21/23 - Class Team Meeting
+- Sorted tasks, made game plan for upcoming weeks
+
+3/23/23 - Class/Team Meeting
+- Had an issue with a folder name being changed in the project
+
+3/25/23 - Team Meeting
+- Me, Jesse, and Jeff met up for 7 hours
+- Me and Jesse worked on getting the new sim and new mission pages to work as well as attaching a SimObject to each Sim in the database
+- We now have a connection for the backend and the front end!!
+- Made list of everything left to do with the project
+- The light is at the end of the tunnel!!
+
+3/26/23 - Team Meeting
+- Me, Jesse, and Jeff met up again, stayed for a couple hours
+- Jesse and I didn't do much because we had done so much the previous day
+
+3/28/23 - Class/Team Meeting
+- Caught everyone up on what was done over the weekend. 
+- Jesse didn't give me anything to do 
+- Fixed minor issues with what had been done over the weekend and what others were doing
+
+3/30/23 - Class/Team Meeting
+- I didn't have anything to do, everyone else was working on things
+
+4/4/23 - Class/Team Meeting
+- I accidentally took too much benadryl and had to go to ER, I'm okay though
+
+4/6/23 - Class/Team Meeting
+- I was still feeling out of it from my accidental benadryl trip so I didn't do anything
+- Made plans to meet over the weekend
+
+4/8/23 - Team Meeting
+- Me, Jeremy, Jesse, and Kyle met up
+- Realized there were a lot of issues with the subsystem functionality
+- Made solid plan to fix the subsystems and what exactly needed to be done
+- Was able to fix the ACS so that it is 100% done now, Kyle just needs to use it with the console
+- RIP Dicts

@@ -26,8 +26,8 @@ for(i=0; i<btns.length; i++){
 
 for(let i=0; i<btns.length; i++){
     btns[i].onclick = function() {
-        var test1 = btns[i].id
-        window.alert()
+        var test1 = btns[i].id;
+        window.alert(test1);
         document.getElementById("myInput").value = test1;
         //document.getElementById("test").innerHTML = '';
         if(modal2.style.display == "none" && modal3.style.display =="none"){
