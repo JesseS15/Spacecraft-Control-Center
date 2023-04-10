@@ -4,20 +4,24 @@ import random
 class payload(Subsystem):
 
     payloadName = "Payload"
+    checks = {
+            'Optical Electronics' : random.choice([True, False]),
+            'Bus Connection' : random.choice([True, False]),
+            'Gimble Connection' : random.choice([True, False])
+        }
+    
+    targetStatus = {
+        'Ready' : False,
+        'Slew Imager' : False,
+        'Acquire Target' : False,
+        'Capture Target' : False
+        }
+    allChecks = False
+    verifyStatus = False
 
     def __init__(self, payloadName):
         super().__init__()
         self.payloadName = payloadName
-        self.checks = {'Optical Electronics' : random.choice([True, False]),
-                       'Bus Connection' : random.choice([True, False]),
-                       'Gimble Connection' : random.choice([True, False])}
-        self.allChecks = False
-        self.targetStatus = {'Ready' : False,
-                             'Slew Imager' : False,
-                             'Acquire Target' : False,
-                             'Capture Target' : False}
-        self.verifyStatus = False
-        print("New instance of Payload class created")
 
     def payloadAction(self):
         print("Payload action")

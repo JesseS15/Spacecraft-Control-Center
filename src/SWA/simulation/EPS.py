@@ -7,42 +7,48 @@ import random
 
 class EPS(Subsystem):
 
+    params = {
+        'total power' : EPSStart.initialize(),
+        'available power' : EPSStart.initialize(),
+        'expended power' : 0.0,
+        'battery capacity' : Charging.setupBatteries(),
+        'current battery charge' : Charging.setupBatteries(),
+        'time of last check' : datetime.now(),
+        'simcraft power restrictions' : {'EPS' : 0.0,
+                                        'TCS' : 0.0,
+                                        'COMMS' : 0.0,
+                                        'ACS' : 0.0,
+                                        'Payload' : 0.0},
+        'power distribution' : {'EPS' : 0.0,
+                                'TCS' : 0.0,
+                                'COMMS' : 0.0,
+                                'ACS' : 0.0,
+                                'Payload' : 0.0},
+        'solar panel angle' : Charging.generateRandomAngle()
+        }
+    
+    checks = {
+        'Uplink' : random.choice([True, False]),
+        'Bus Connection' : random.choice([True, False]),
+        'Articulation Gear' : random.choice([True, False])
+        }
+    
+    allChecks = False
+    verifyStatus = False
+
     def __init__(self):
         super().__init__()
-        self.params = {'total power' : EPSStart.initialize(),
-                       'available power' : EPSStart.initialize(),
-                       'expended power' : 0.0,
-                       'battery capacity' : Charging.setupBatteries(),
-                       'current battery charge' : Charging.setupBatteries(),
-                       'time of last check' : datetime.now(),
-                       'simcraft power restrictions' : {'EPS' : 0.0,
-                                                        'TCS' : 0.0,
-                                                        'COMMS' : 0.0,
-                                                        'ACS' : 0.0,
-                                                        'Payload' : 0.0},
-                       'power distribution' : {'EPS' : 0.0,
-                                               'TCS' : 0.0,
-                                               'COMMS' : 0.0,
-                                               'ACS' : 0.0,
-                                               'Payload' : 0.0},
-                       'solar panel angle' : Charging.generateRandomAngle()
-                       }
-        self.checks = {'Uplink' : random.choice([True, False]),
-                       'Bus Connection' : random.choice([True, False]),
-                       'Articulation Gear' : random.choice([True, False])}
-        self.allChecks = False
-        self.params['simcraft power restrictions']['ACS'] = self.params['total power'] * 0.2
-        self.params['simcraft power restrictions']['EPS'] = self.params['total power'] * 0.2
-        self.params['simcraft power restrictions']['TCS'] = self.params['total power'] * 0.2
-        self.params['simcraft power restrictions']['COMMS'] = self.params['total power'] * 0.2
-        self.verifyStatus = False
+        self.params['simcraft power restrictions']['ACS'] = self.params['total power'] * 0.16
+        self.params['simcraft power restrictions']['EPS'] = self.params['total power'] * 0.16
+        self.params['simcraft power restrictions']['TCS'] = self.params['total power'] * 0.16
+        self.params['simcraft power restrictions']['COMMS'] = self.params['total power'] * 0.16
+        self.params['simcraft power restrictions']['COMMS'] = self.params['total power'] * 0.16
         print("New instance of EPS class created")
 
     def update():
         EPS.updateTimeParams()
         EPS.updatePowerParams()
         EPS.updateBatteryStatus()
-        
 
     #EPS function for easy power updating ###############################
     def updatePowerParams(self, availablePower, expendedPower, powerDistributed, subsystemName):
@@ -143,8 +149,10 @@ class EPS(Subsystem):
     def telemtryTransfer(self):
         if self.verifyStatus:
             print("Transferring EPS telemetry. Please wait...")
+            return True
         else:
             print("Verification process for EPS not completed")
+            return False
     
     #Comms calls this function #######################################
     def commsConfirmation(self):

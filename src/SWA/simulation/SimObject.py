@@ -20,7 +20,7 @@ class SimObject(threading.Thread):
     simName = ""
     pk = 0
     
-    # All the subsystem objects
+    # Dictionary to hold all the subsystem objects
     subsystems = { "ACS": 0, "TCS": 0, "COMMS": 0, "EPS": 0, "Payload": 0 }
 
     telemetry = {"ACS": False, "TCS": False, "EPS": False, "Payload": False}
@@ -34,7 +34,7 @@ class SimObject(threading.Thread):
         self.createSubsys(sim)
         print('\n  !!! NEW SIM', self.simName, 'CREATED !!!\n')
 
-    # Creating all the subsystems and passing them the dictionaries
+    # Creating all the subsystem objects and adding them to the subsystem dictionary
     def createSubsys(self, sim):
         self.subsystems["ACS"] = ACS(self.finalValues["finalLongitude"])
         
@@ -44,7 +44,9 @@ class SimObject(threading.Thread):
         #self.subsystems["Payload"] = payload()
 
     def checkTelemetry(self):
-        self.telemetry["ACS"] = self.subsystems["ACS"].telemetryTransfer()
+        self.telemetry["ACS"] = self.subsystems["ACS"].telemetryTransferComplete
+        #self.telemetry["EPS"] = self.subsystems["EPS"].telemetryTransfer()
+        self.telemetry["TCS"] = self.subsystems["TCS"].telemetryTransferComplete
 
     def check(self):
         print('Sim Thread for '+ self.simName+' is reachable')

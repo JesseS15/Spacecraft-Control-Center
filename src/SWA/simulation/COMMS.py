@@ -3,22 +3,25 @@ import random
 
 class COMMS(Subsystem):
 
+    checks = {
+        'signal' : random.choice([True, False]),
+        'telem' : False,
+        'processing' : False
+        }
+        
+    systemChecksList = {
+        'EPS' : False,
+        'TCS' : False,
+        'ACS' : False,
+        'COMMS' : False
+        }
+    payloadCheck = False
+    verify = False
+
     def __init__(self):
         super().__init__()
         self.gain = 1
         self.requiredGain = random.randint(1, 10)
-        self.checks = {'signal' : random.choice([True, False]),
-                       'telem' : False,
-                       'processing' : False}
-        self.RPY = {'roll' : 0.0,
-                    'pitch' : 0.0,
-                    'yaw' : 0.0}
-        self.systemChecksList = {'EPS' : False,
-                                 'TCS' : False,
-                                 'ACS' : False,
-                                 'COMMS' : False}
-        self.payloadCheck = False
-        self.verify = False
         print('New instance of COMMS class created')
 
     def update():
@@ -28,12 +31,6 @@ class COMMS(Subsystem):
     def updateGain(self, update):
         self.gain = update
         print("Gain has been adjusted")
-
-    #Comms Attribute external commands
-    def updateRPY(self, r, p, y):
-        self.RPY['roll'] = r
-        self.RPY['pitch'] = p
-        self.RPY['yaw'] = y
 
     def systemChecks(self, subsystemName, status):
         self.systemChecksList[subsystemName] = status

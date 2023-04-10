@@ -20,7 +20,7 @@ class ACS(Subsystem):
         self.orientation["pitch"] = random.randint(-90,90)
         self.orientation["yaw"] = random.randint(-180,180)
         # setting starting longitude to random number from final longitude +50 to final longitude +90 (random magic numbers, dont be mad)
-        self.startLongitude = random.randint(finalLongitude+50, finalLongitude+90)
+        self.startLongitude = random.randint(-180, 180)
         self.finalLongitude = finalLongitude
         self.currentLongitude = self.startLongitude
         self.prograde = bool(random.getrandbits(1))
