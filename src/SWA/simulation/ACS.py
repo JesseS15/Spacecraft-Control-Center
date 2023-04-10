@@ -23,6 +23,9 @@ class ACS(Subsystem):
         self.startLongitude = random.randint(-180, 180)
         self.finalLongitude = finalLongitude
         self.currentLongitude = self.startLongitude
+        self.prograde = bool(random.getrandbits(1))
+        
+        self.menu = "tl" # can be tl, cmgRoll, cmgPitch, or cmgYaw
         self.commands = [
             "WELCOME TO THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE",
             "Your task is to rotate the satellite for proper payload alignment with the imagery target on the earth’s surface",
