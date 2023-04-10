@@ -29,15 +29,9 @@ class Sim(models.Model):
     
     # thread_id of associated SimObject thread
     sim_identifier = models.IntegerField(default=0, blank=True)
-
-<<<<<<< Updated upstream
-    flight_director = models.ManyToManyField("fo.FlightOperator", related_name="flight_director",default='', verbose_name=("Flight Director (Payload Flight Operator)"), blank=True)
-    director_command_buffer = models.ManyToManyField("CommandBufferItem", related_name="director_command_buffer", verbose_name=("Flight Director Command Buffer"), blank = True)
     
-=======
-    # Flight Operator roles
-    flight_director = models.ManyToManyField("fo.FlightOperator", related_name="flight_director",default='', verbose_name=("Flight Director"), blank=True)
->>>>>>> Stashed changes
+    # Flight Operators and their assigned subsytems
+    flight_director = models.ManyToManyField("fo.FlightOperator", related_name="flight_director",default='', verbose_name=("Flight Director (Payload Flight Operator)"), blank=True)
     COMMS_fo = models.ManyToManyField("fo.FlightOperator", related_name="comms_fo",default='', verbose_name=("Comms Flight Operator"), blank=True)
     ACS_fo = models.ManyToManyField("fo.FlightOperator", related_name="acs_fo",default='', verbose_name=("ACS Flight Operator"), blank=True)    
     EPS_fo = models.ManyToManyField("fo.FlightOperator", related_name="eps_fo",default='', verbose_name=("EPS Flight Operator"), blank=True)

@@ -23,9 +23,7 @@ class ACS(Subsystem):
         self.startLongitude = random.randint(finalLongitude+50, finalLongitude+90)
         self.finalLongitude = finalLongitude
         self.currentLongitude = self.startLongitude
-<<<<<<< Updated upstream
         self.prograde = bool(random.getrandbits(1))
-=======
         self.menu = "tl" # can be tl, cmgRoll, cmgPitch, or cmgYaw
         self.commandLog = []
         
@@ -88,7 +86,6 @@ class ACS(Subsystem):
         self.commandLog.append("5.) CMG Activate Yaw")
         self.commandLog.append("6.) Transfer Telemetry")
         return
->>>>>>> Stashed changes
 
     def updateRPY(self):
         self.orientation["roll"] += random.randint(-1,1)
