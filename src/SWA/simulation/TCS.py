@@ -4,8 +4,8 @@ import random
 class TCS(Subsystem):
 
     ACSThermal = {
-        "CMG": random.randrange(-100,100),
-        "Alignment System": random.randrange(-100,100)
+        "CMG": random.randrange(-50,50),
+        "Alignment System": random.randrange(-50,50)
     }
     ACSThermalRange = {
         "CMG": [random.randrange(-100,-20), random.randrange(20, 100)],
@@ -13,9 +13,9 @@ class TCS(Subsystem):
     }
 
     EPSThermal = {
-        "Power Distribution": random.randrange(-100,100),
-        "Battery": random.randrange(-100,100),
-        "Articulation System": random.randrange(-100,100)
+        "Power Distribution": random.randrange(-50,50),
+        "Battery": random.randrange(-50,50),
+        "Articulation System": random.randrange(-50,50)
     }
     EPSThermalRange = {
         "Power Distribution": [random.randrange(-100,-20), random.randrange(20, 100)],
@@ -24,8 +24,8 @@ class TCS(Subsystem):
     }
 
     COMMSThermal = {
-        "On-board Computer": random.randrange(-100,100),
-        "Signal Processor": random.randrange(-100,100)
+        "On-board Computer": random.randrange(-50,50),
+        "Signal Processor": random.randrange(-50,50)
     }
     COMMSThermalRange = {
         "On-board Computer": [random.randrange(-100,-20), random.randrange(20, 100)],
@@ -33,9 +33,9 @@ class TCS(Subsystem):
     }
 
     PayloadThermal = {
-        "Optical Electronics": random.randrange(-100,100),
-        "Gimbal System": random.randrange(-100,100),
-        "Imager": random.randrange(-100,100),
+        "Optical Electronics": random.randrange(-50,50),
+        "Gimbal System": random.randrange(-50,50),
+        "Imager": random.randrange(-50,50),
     }
     PayloadThermalRange = {
         "Optical Electronics": [random.randrange(-100,-20), random.randrange(20, 100)],
@@ -68,6 +68,7 @@ class TCS(Subsystem):
         super().__init__()
         print('New instance of TCS class created')
 
+    # Heats each item by 1 degree (since you can only cool)
     def randomThermal(self):
         for subsys in self.SubsystemThermal:
             for item in self.SubsystemThermal[subsys]:
