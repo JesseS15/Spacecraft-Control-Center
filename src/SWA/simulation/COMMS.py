@@ -17,6 +17,18 @@ class COMMS(Subsystem):
     allTelemetryDataGood = False
     allTelemetryData = {"ACS": False, "EPS": False, "TCS": False, "Payload": False}
 
+    commands = [
+        "WELCOME TO THE COMMUNICATIONS (COMMS) CONSOLE",
+        "Your task is to verify that signal lock is established between the Ku-Band satellite antenna and the ground station antenna, transmit the target image to the ground station, process the image, and display the results.",
+        "1.) Status Checks",
+        "2.) Verify Signal",
+        "3.) Signal Gain",
+        "4.) Signal Frequency",
+        "5.) Download Telemetry Data",
+        "6.) Process Telemetry Data",
+        "7.) Display Image"
+    ]
+
     def __init__(self):
         super().__init__()
         print('New instance of COMMS class created')

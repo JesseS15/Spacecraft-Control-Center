@@ -16,6 +16,16 @@ class payload(Subsystem):
     captureImageFlag = False
     telemetryTransferComplete = False
 
+    commands = [
+        "WELCOME TO THE PAYLOAD (PL) CONSOLE!",
+        "Your task is to capture imagery of the target during the flyover period.",
+        "1.) Status Checks",
+        "2.) Slew Image",
+        "3.) Acquire Target",
+        "4.) Capture Image",
+        "5.) Transfer Telemetry"
+    ]
+
     def __init__(self):
         super().__init__()
 
