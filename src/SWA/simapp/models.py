@@ -54,7 +54,7 @@ class Sim(models.Model):
     sim_name = models.CharField(default='', max_length=10)
     mission_script = models.ForeignKey(Mission, null=True, on_delete=models.CASCADE)
 
-    flight_director = models.ManyToManyField("fo.FlightOperator", related_name="flight_director",default='', verbose_name=("Flight Director"), blank=True)
+    flight_director = models.ManyToManyField("fo.FlightOperator", related_name="flight_director",default='', verbose_name=("Flight Director (Payload Flight Operator)"), blank=True)
     director_command_buffer = models.ManyToManyField("CommandBufferItem", related_name="director_command_buffer", verbose_name=("Flight Director Command Buffer"), blank = True)
     
     COMMS_fo = models.ManyToManyField("fo.FlightOperator", related_name="comms_fo",default='', verbose_name=("Comms Flight Operator"), blank=True)

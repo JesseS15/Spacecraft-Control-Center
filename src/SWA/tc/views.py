@@ -53,6 +53,7 @@ def tcHome(request):
         var = False
         if(form.is_valid()):
             class_namef = form.cleaned_data.get('class_name')
+            
             test = form.cleaned_data.get('test')
             #test1 = form2.cleaned_data.get('test')
             classesstr = str(classes)
@@ -68,14 +69,18 @@ def tcHome(request):
             if(len(classes)<=0):
                 form.save()
                 classget = Class.objects.get(class_name = class_namef)
+                nospacename = class_namef.replace(" ", "")
                 rcg = ''.join(random.choices(string.ascii_uppercase +string.digits, k=8))
+                classget.class_name = nospacename
                 classget.code = rcg
                 classget.save()
                 return redirect('tc:home')
             elif(len(classes)>0 and ifequal==0 and test==True):
                 form.save()
                 classget = Class.objects.get(class_name = class_namef)
+                nospacename = class_namef.replace(" ", "")
                 rcg = ''.join(random.choices(string.ascii_uppercase +string.digits, k=8))
+                classget.class_name = nospacename
                 classget.code = rcg
                 classget.save()
                 return redirect('tc:home')
