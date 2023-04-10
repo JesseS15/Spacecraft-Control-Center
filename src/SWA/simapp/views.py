@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 # Importing models from simaapp/views.py
 
+from django.contrib import messages
 from .models import Sim, Mission
 from tc.forms import *
 from tc.models import *
@@ -26,8 +27,6 @@ def newSim(request, class_name):
     print('   MISSIONGS ',marray)
     if (len(marray)==0):
         return redirect('../'+class_name+'/newMission')
-
-
 
     print("hi"+class_name)
     group = Class.objects.all().filter(class_name = class_name).values_list('sims', flat=True)
@@ -61,12 +60,14 @@ def newSim(request, class_name):
         form = SimCreationForm(class_name, request.POST)
         
         if form.is_valid():
-            
+            classattr = Class.objects.get(class_name = class_name)
+            sims = classattr.sims.all()
             # Get sim values from form
             #form.save()
             print(form.cleaned_data)
             # sim_list = form.cleaned_data.get('sim_list')y
             sim_name = form.cleaned_data.get('sim_name')
+            nospacename = sim_name.replace(" ", "")
             #sys_list = form.cleaned_data.get('sys_list')
             mission = form.cleaned_data.get('mission_script')
             flight_director = form.cleaned_data.get('flight_director')
@@ -76,66 +77,75 @@ def newSim(request, class_name):
             TCS_fo = form.cleaned_data.get('TCS_fo')
 
             # Create new Sim Database object
-            sim = Sim.objects.create(sim_name = sim_name, mission_script = mission)
-            sim.flight_director.set(flight_director)
-            #sim.mission_script = mission
-            sim.COMMS_fo.set(COMMS_fo)
-            sim.ACS_fo.set(ACS_fo)
-            sim.TCS_fo.set(EPS_fo)
-            sim.EPS_fo.set(TCS_fo)
+            count = 0
+            if(len(sims)>0):
+                for x in sims:
+                    if(x == nospacename):
+                        count = count + 1
+                if(count>0):
+                    sim = Sim.objects.create(sim_name = nospacename, mission_script = mission)
+                    sim.flight_director.set(flight_director)
+                    #sim.mission_script = mission
+                    sim.COMMS_fo.set(COMMS_fo)
+                    sim.ACS_fo.set(ACS_fo)
+                    sim.TCS_fo.set(EPS_fo)
+                    sim.EPS_fo.set(TCS_fo)
 
-            m = sim.mission_script
-            final_values = {}
-            final_values["roll"] = m.final_roll
-            final_values["pitch"] = m.final_pitch
-            final_values["yaw"] = m.final_yaw
+                    m = sim.mission_script
+                    final_values = {}
+                    final_values["roll"] = m.final_roll
+                    final_values["pitch"] = m.final_pitch
+                    final_values["yaw"] = m.final_yaw
 
-            # Create and start new sim thread
-            simThread = SimObject(final_values, pk=sim.pk)
-            simThread.start()
-            RegularFunctions.repopulateAllSimsDict(All_Sims_Dict)
-            All_Sims_Dict[sim.sim_identifier] = simThread
-            All_Sims_Dict[sim.sim_identifier].check()
+                    # Create and start new sim thread
+                    simThread = SimObject(final_values, pk=sim.pk)
+                    simThread.start()
+                    RegularFunctions.repopulateAllSimsDict(All_Sims_Dict)
+                    All_Sims_Dict[sim.sim_identifier] = simThread
+                    All_Sims_Dict[sim.sim_identifier].check()
 
-            print('Dictionary: ',All_Sims_Dict)
+                    print('Dictionary: ',All_Sims_Dict)
 
-            Class.objects.get(class_name = class_name).sims.add(sim)
-            flight_operators = FlightOperator.objects.all()
-            print(type(flight_operators))
-            if (flight_director.exists()):
-                for x in flight_operators:
-                    if(str(x) == str((flight_director[0]))):
-                        x.sim_list.add(sim)
+                    Class.objects.get(class_name = class_name).sims.add(sim)
+                    flight_operators = FlightOperator.objects.all()
+                    print(type(flight_operators))
+                    if (flight_director.exists()):
+                        for x in flight_operators:
+                            if(str(x) == str((flight_director[0]))):
+                                x.sim_list.add(sim)
 
-            if (COMMS_fo.exists()):
-                for x in flight_operators:
-                    if(str(x) == str((COMMS_fo[0]))):
-                        x.sim_list.add(sim)
-        
-            if (ACS_fo.exists()):
-                for x in flight_operators:
-                    if(str(x) == str((ACS_fo[0]))):
-                        x.sim_list.add(sim)
-            
-            if (TCS_fo.exists()):
-                for x in flight_operators:
-                    if(str(x) == str((TCS_fo[0]))):
-                        x.sim_list.add(sim)
-            
-            if (EPS_fo.exists()):
-                for x in flight_operators:
-                    if(str(x) == str((EPS_fo[0]))):
-                        x.sim_list.add(sim)
+                    if (COMMS_fo.exists()):
+                        for x in flight_operators:
+                            if(str(x) == str((COMMS_fo[0]))):
+                                x.sim_list.add(sim)
+                
+                    if (ACS_fo.exists()):
+                        for x in flight_operators:
+                            if(str(x) == str((ACS_fo[0]))):
+                                x.sim_list.add(sim)
+                    
+                    if (TCS_fo.exists()):
+                        for x in flight_operators:
+                            if(str(x) == str((TCS_fo[0]))):
+                                x.sim_list.add(sim)
+                    
+                    if (EPS_fo.exists()):
+                        for x in flight_operators:
+                            if(str(x) == str((EPS_fo[0]))):
+                                x.sim_list.add(sim)
 
-            # Send notification
-            """send_mail(
-                'STaTE Simulation Added to Your Account',
-                'A new simulation, ' + sim.sim_name + ', has been added to your STaTE account.',
-                None,
-                [flight_operator.user.email],
-                fail_silently=False,
-            )"""
-            return redirect('../'+class_name)
+                    # Send notification
+                    """send_mail(
+                        'STaTE Simulation Added to Your Account',
+                        'A new simulation, ' + sim.sim_name + ', has been added to your STaTE account.',
+                        None,
+                        [flight_operator.user.email],
+                        fail_silently=False,
+                    )"""
+                    return redirect('../'+class_name)
+                else:
+                    messages.info(request, 'Sim Already Exists. Add Class UNSUCCESSFUL')
+                    return redirect('../'+class_name)
     else:
         form = SimCreationForm(class_name)   
     return render(request, 'tc/newSim.html', {"form": form, "class_name": class_name, "sims": sims})
