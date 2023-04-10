@@ -14,7 +14,7 @@ class SimObject(threading.Thread):
 		"roll": 0,
 		"pitch": 0,
 		"yaw": 0,
-		"finalLongitude": 81
+		"finalLongitude": 0
 	}
 
     simName = ""
@@ -27,7 +27,11 @@ class SimObject(threading.Thread):
 
     def __init__(self, final_values, pk):
         threading.Thread.__init__(self)
-        #self.finalValues = final_values
+        self.finalValues = final_values
+
+        # Longitude of 81 is ERAU Daytona Beach campus
+        self.finalValues["finalLongitude"] = 81
+        
         sim = Sim.objects.get(pk = pk)
         self.pk = sim.pk
         self.simName = sim.sim_name
@@ -37,10 +41,9 @@ class SimObject(threading.Thread):
     # Creating all the subsystem objects and adding them to the subsystem dictionary
     def createSubsys(self, sim):
         self.subsystems["ACS"] = ACS(self.finalValues["finalLongitude"])
-        
         #self.subsystems["EPS"] = EPS()
-        #self.subsystems["COMMS"] = COMMS()
-        #self.subsystems["TCS"] = TCS()
+        self.subsystems["COMMS"] = COMMS()
+        self.subsystems["TCS"] = TCS()
         #self.subsystems["Payload"] = payload()
 
     def checkTelemetry(self):
