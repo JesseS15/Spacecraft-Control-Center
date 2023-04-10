@@ -15,13 +15,25 @@ class COMMS(Subsystem):
     gainRange = [25, 30]
 
     allTelemetryDataGood = False
+    allTelemetryData = {"ACS": False, "EPS": False, "TCS": False, "Payload": False}
+
+    commands = [
+        "WELCOME TO THE COMMUNICATIONS (COMMS) CONSOLE",
+        "Your task is to verify that signal lock is established between the Ku-Band satellite antenna and the ground station antenna, transmit the target image to the ground station, process the image, and display the results.",
+        "1.) Status Checks",
+        "2.) Verify Signal",
+        "3.) Signal Gain",
+        "4.) Signal Frequency",
+        "5.) Download Telemetry Data",
+        "6.) Process Telemetry Data",
+        "7.) Display Image"
+    ]
 
     def __init__(self):
         super().__init__()
         print('New instance of COMMS class created')
 
     def update(self):
-        self.frequency += random.randrange(-5.0, 5.0)
         self.gain += random.randrange(-5.0, 5.0)
 
     # Main menu option 1
@@ -63,12 +75,12 @@ class COMMS(Subsystem):
 
     # Main menu option 5
     # telemetryData needs to be passed from SimObject
-    def downloadTelemetryData(self, telemetryData):
+    def downloadTelemetryData(self):
         output = []
         index = 1
         self.allTelemetryDataGood = True
-        for key in telemetryData:
-            if telemetryData[key]:
+        for key in self.allTelemetryData:
+            if self.allTelemetryData[key]:
                 output[index] = "" + key + " Telemetry...COMPLETE!"
             else:
                 output[index] = "" + key + " Telemetry...INCOMPLETE!"

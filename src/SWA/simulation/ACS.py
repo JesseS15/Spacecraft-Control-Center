@@ -14,6 +14,17 @@ class ACS(Subsystem):
     finalLongitude = 0
     currentLongitude = 0
 
+    commands = [
+        "WELCOME TO THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE",
+        "Your task is to rotate the satellite for proper payload alignment with the imagery target on the earth’s surface",
+        "1.) System Checks",
+        "2.) Verify Alignment",
+        "3.) CMG Activate Roll",
+        "4.) CMG Activate Pitch",
+        "5.) CMG Activate Yaw",
+        "6.) Transfer Telemetry",
+    ]
+
     def __init__(self, finalLongitude):
         super().__init__()
         self.orientation["roll"] = random.randint(-180,180)
@@ -26,16 +37,6 @@ class ACS(Subsystem):
         self.prograde = bool(random.getrandbits(1))
         
         self.menu = "tl" # can be tl, cmgRoll, cmgPitch, or cmgYaw
-        self.commands = [
-            "WELCOME TO THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE",
-            "Your task is to rotate the satellite for proper payload alignment with the imagery target on the earth’s surface",
-            "1.) System Checks",
-            "2.) Verify Alignment",
-            "3.) CMG Activate Roll",
-            "4.) CMG Activate Pitch",
-            "5.) CMG Activate Yaw",
-            "6.) Transfer Telemetry",
-        ]
         self.commandLog = []
         
     def command(self, command):

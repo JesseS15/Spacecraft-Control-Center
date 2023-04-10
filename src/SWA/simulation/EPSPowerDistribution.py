@@ -5,7 +5,7 @@ def sendPower(requestedPower, params, subsystemName):
     availablePower = params['available power'] - requestedPower
     expendedPower = params['expended']+ requestedPower
     powerDistributed = params['power distribution'][subsystemName] + requestedPower
-    return requestedPower, availablePower, expendedPower, powerDistributed
+    return availablePower, expendedPower, powerDistributed
 
 def returnPower(returnedPower, params, subsystemName):  #Returning power back to the EPS 
     availablePower = params['available power'] + returnedPower

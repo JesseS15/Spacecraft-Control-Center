@@ -64,6 +64,16 @@ class TCS(Subsystem):
     
     telemtryTransferComplete = False
 
+    commands = [
+        "WELCOME TO THE THERMAL CONTROL SYSTEMS (TCS) CONSOLE!",
+        "Your task is to perform the cooling procedure for equipment now undergoing thermal exposure in the new attitude position.",
+        "1.) Status Check",
+        "2.) Verify Thermal Ranges",
+        "3.) Cool Subsystems",
+        "4.) Transfer Telemetry",
+        "5.) Refresh"
+    ]
+
     def __init__(self):
         super().__init__()
         print('New instance of TCS class created')
