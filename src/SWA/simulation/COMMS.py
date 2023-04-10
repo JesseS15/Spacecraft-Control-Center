@@ -21,7 +21,6 @@ class COMMS(Subsystem):
         print('New instance of COMMS class created')
 
     def update(self):
-        self.frequency += random.randrange(-5.0, 5.0)
         self.gain += random.randrange(-5.0, 5.0)
 
     # Main menu option 1
