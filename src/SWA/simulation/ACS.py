@@ -55,10 +55,10 @@ class ACS(Subsystem):
         if self.menu == "tl":
             response['consoleResponse'] = "Input:\n"
             if command_split[0] == "1":
-                response['consoleResponse'] = "Checking Attitude Systems… \nThe SimCraft’s current Longitude is"
-                + self.currentLongitude + "eta: " + str(self.longMin()) + "minutes until active range.\n" 
+                response['consoleResponse'].append("Checking Attitude Systems… \nThe SimCraft’s current Longitude is"
+                + self.currentLongitude + "eta: " + str(self.longMin()) + "minutes until active range.\n")
             elif command_split[0] == "2":
-                response['consoleResponse'] = "Verifying Alignment...\n" + self.verifyAlignment()
+                response['consoleResponse'].append("Verifying Alignment...\n" + self.verifyAlignment())
             elif command_split[0] == "3":
                 response['consoleResponse'].append("How much do you want to change the Roll by (in Degrees)?")
                 self.menu = "cmgRoll"
@@ -69,12 +69,12 @@ class ACS(Subsystem):
                 response['consoleResponse'].append("How much do you want to change the Yaw by (in Degrees)?")
                 self.menu = "cmgYaw"
             elif command_split[0] == "6":
-                response['consoleResponse'] = "Transfering ACS Telemetry...\n" + self.telemetryTransfer()
-                response['consoleResponse'] = "GREAT WORK ON THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE!"
+                response['consoleResponse'].append("Transfering ACS Telemetry...\n" + self.telemetryTransfer())
+                response['consoleResponse'].append("GREAT WORK ON THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE!")
                 #TODO: create instance where user cannot enter commands after subsys finished
                 #TODO: issue where sim thread terminates in >30sec randomly
             else:
-                response['consoleCommand'] = "Invalid Command " + command
+                response['consoleCommand'].append("Invalid Command " + command)
 
         elif self.menu == "cmgRoll":
             response['consoleCommand'] = self.newOrientation["newRoll"]
