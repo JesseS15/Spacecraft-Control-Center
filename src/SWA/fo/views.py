@@ -172,10 +172,7 @@ def submit(request, simkey):
         elif subsystem == 'TCS':
             pass
 
-        return HttpResponse(command + " command recieved") # Sending an success response
         return HttpResponse(json.dumps(data)) # Sending an success response
-
-        return HttpResponse(command + " command recieved") # Sending an success response
     else:
         return HttpResponse("Request method is not a GET")
 
@@ -202,20 +199,16 @@ def fetchdata(request, simkey):
         if simThread == None:
             data['output'].append("Spacecraft Simulation for " + sim.sim_name + " has terminated execution")
             data['input'].append("Spacecraft Simulation for " + sim.sim_name + " has terminated execution")
-        #if subsystem == 'DIRECTOR':
-        #    for item in sim.director_command_buffer.all():
-        #        data['input'].append(item.buffer_item)
-        #elif subsystem == 'Comms':
-        #    for item in sim.COMMS_command_buffer.all():
-        #        data['input'].append(item.buffer_item)
+        elif subsystem == 'DIRECTOR':
+            data['input'] = simThread.subsystems['Payload'].commandLog
+        elif subsystem == 'Comms':
+            data['input'] = simThread.subsystems['COMMS'].commandLog
         elif subsystem == 'ACS':
             data['input'] = simThread.subsystems['ACS'].commandLog
-        #elif subsystem == 'EPS':
-        #    for item in sim.EPS_command_buffer.all():
-        #        data['input'].append(item.buffer_item)
-        #elif subsystem == 'TCS':
-        #    for item in sim.TCS_command_buffer.all():
-        #        data['input'].append(item.buffer_item)
+        elif subsystem == 'EPS':
+            data['input'] = simThread.subsystems['EPS'].commandLog
+        elif subsystem == 'TCS':
+            data['input'] = simThread.subsystems['TCS'].commandLog
         
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:

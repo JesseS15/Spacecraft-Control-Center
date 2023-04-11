@@ -35,7 +35,7 @@ input.addEventListener('keyup', function (event) {
               output.textContent = `${data['consoleResponse'][i]}`;
               terminal2.appendChild(output);
             }
-            terminal1.parentElement.scrollTop = terminal1.parentElement.scrollHeight;
+            terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
           }
         })
   }
