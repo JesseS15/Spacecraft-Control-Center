@@ -5,7 +5,6 @@ const terminal1 = document.getElementById('terminal1');
 const terminal2 = document.getElementById('terminal2');
 const input = document.getElementById('input');
 
-fetchdata();
 fetchcommands();
 
 input.addEventListener('keyup', function (event) {
@@ -81,31 +80,3 @@ function fetchcommands(){
       }
   });
 }
-
-// Refresh SimCraft Attributes
-function fetchdata(){
-    $.ajax({
-        // fo/views.fetchdata
-        url: 'fetchdata',
-        type: 'GET',
-        dataType: 'json',
-
-        success: (data) => {
-    
-          if (data['input'].length > terminal2.children.length){
-            terminal2.replaceChildren();
-            for (var i = 0; i < data['input'].length; i++) {
-              const output = document.createElement('p');
-              output.textContent = `$ ${data['input'][i]}`;
-              terminal2.appendChild(output);
-            }
-            terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
-          }
-        }
-    });
-}
-
-// Set Refresh Rate
-$(document).ready(function(){
-    setInterval(fetchdata,5000);
-});

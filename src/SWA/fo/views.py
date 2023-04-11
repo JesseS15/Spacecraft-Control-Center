@@ -154,25 +154,34 @@ def submit(request, simkey):
         flightOperator = get_object_or_404(FlightOperator, user = request.user)
         subsystem = _get_fo_subsystem(sim, flightOperator)
         
+        response = {
+            'consoleCommand' : '',
+            'consoleResponse': [],
+        }
+        
         # Get simcraft thread
+        simThread = None
         thread_id = sim.sim_identifier
         for thread in threading.enumerate():
             if thread.ident == thread_id:
                 simThread = thread
         
         # Pass command to simcraft thread subsystem and add input console response
-        if subsystem == 'DIRECTOR':
+        
+        if simThread == None:
+            response['consoleCommand'] = "Spacecraft Simulation for " + sim.sim_name + " has terminated execution"
+        elif subsystem == 'DIRECTOR':
             pass
         elif subsystem == 'Comms':
             pass
         elif subsystem == 'ACS':
-            data = simThread.subsystems['ACS'].command(command)
+            response = simThread.subsystems['ACS'].command(command)
         elif subsystem == 'EPS':
             pass
         elif subsystem == 'TCS':
             pass
 
-        return HttpResponse(json.dumps(data)) # Sending an success response
+        return HttpResponse(json.dumps(response)) # Sending an success response
     else:
         return HttpResponse("Request method is not a GET")
 
@@ -209,6 +218,127 @@ def fetchdata(request, simkey):
             data['input'] = simThread.subsystems['EPS'].commandLog
         elif subsystem == 'TCS':
             data['input'] = simThread.subsystems['TCS'].commandLog
+        
+        return HttpResponse(json.dumps(data)) # Sending an success response
+    else:
+        return HttpResponse("Request method is not GET")
+    
+###############################################################################
+def acsFetchdata(request, simkey):
+    if request.method == 'GET':
+        sim = Sim.objects.get(pk = simkey)
+        
+        # Get simcraft thread
+        simThread = None
+        thread_id = sim.sim_identifier
+        for thread in threading.enumerate():
+            if thread.ident == thread_id:
+                simThread = thread
+                
+        data = {}
+                
+        if simThread != None:
+            # Define data to be returned
+            data['roll'] = simThread.subsystems['ACS'].orientation['roll']
+            data['pitch'] = simThread.subsystems['ACS'].orientation['pitch']
+            data['yaw'] = simThread.subsystems['ACS'].orientation['yaw']
+            data['longitude'] = simThread.subsystems['ACS'].currentLongitude
+            data['telemetry_transfer'] = simThread.subsystems['ACS'].telemetryTransferComplete
+        
+        return HttpResponse(json.dumps(data)) # Sending an success response
+    else:
+        return HttpResponse("Request method is not GET")
+    
+###############################################################################
+def epsFetchdata(request, simkey):
+    if request.method == 'GET':
+        sim = Sim.objects.get(pk = simkey)
+        
+        # Get simcraft thread
+        simThread = None
+        thread_id = sim.sim_identifier
+        for thread in threading.enumerate():
+            if thread.ident == thread_id:
+                simThread = thread
+                
+        data = {}
+                
+        if simThread != None:
+            # Define data to be returned
+            data['acs_power'] = simThread.subsystems['EPS'].params['power distribution']['ACS']
+            data['eps_power'] = simThread.subsystems['EPS'].params['power distribution']['EPS']
+            data['tcs_power'] = simThread.subsystems['EPS'].params['power distribution']['TCS']
+            data['commns_power'] = simThread.subsystems['EPS'].params['power distribution']['COMMS']
+            data['payload_power'] = simThread.subsystems['EPS'].params['power distribution']['PAYLOAD']
+            data['articulation'] = simThread.subsystems['EPS'].params['solar panel angle']
+            data['total_power'] = simThread.subsystems['EPS'].params['total power']
+        
+        return HttpResponse(json.dumps(data)) # Sending an success response
+    else:
+        return HttpResponse("Request method is not GET")
+    
+###############################################################################
+def tcsFetchdata(request, simkey):
+    if request.method == 'GET':
+        sim = Sim.objects.get(pk = simkey)
+        
+        # Get simcraft thread
+        simThread = None
+        thread_id = sim.sim_identifier
+        for thread in threading.enumerate():
+            if thread.ident == thread_id:
+                simThread = thread
+            
+        data = {}    
+                
+        if simThread != None:
+            # Define data to be returned
+            pass
+            
+        
+        return HttpResponse(json.dumps(data)) # Sending an success response
+    else:
+        return HttpResponse("Request method is not GET")
+
+###############################################################################
+def commsFetchdata(request, simkey):
+    if request.method == 'GET':
+        sim = Sim.objects.get(pk = simkey)
+        
+        # Get simcraft thread
+        simThread = None
+        thread_id = sim.sim_identifier
+        for thread in threading.enumerate():
+            if thread.ident == thread_id:
+                simThread = thread
+                
+        data = {}
+        
+        if simThread != None:
+            # Define data to be returned
+            pass
+        
+        return HttpResponse(json.dumps(data)) # Sending an success response
+    else:
+        return HttpResponse("Request method is not GET")
+    
+###############################################################################
+def payloadFetchdata(request, simkey):
+    if request.method == 'GET':
+        sim = Sim.objects.get(pk = simkey)
+        
+        # Get simcraft thread
+        simThread = None
+        thread_id = sim.sim_identifier
+        for thread in threading.enumerate():
+            if thread.ident == thread_id:
+                simThread = thread
+               
+        data = {}
+         
+        if simThread != None:
+            # Define data to be returned
+            pass
         
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:

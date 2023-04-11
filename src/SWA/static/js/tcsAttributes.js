@@ -56,3 +56,23 @@ window.setInterval(function(){
         }
     });
 }, 1000);
+
+// Refresh SimCraft Attributes
+function fetchdata(){
+    $.ajax({
+        // fo/views.tcsFetchdata
+        url: 'fetchdata', // tcs/fetchdata
+        type: 'GET',
+        dataType: 'json',
+
+        success: (data) => {
+    
+          console.log(data)
+        }
+    });
+}
+
+// Set Refresh Rate
+$(document).ready(function(){
+    setInterval(fetchdata,5000);
+});
