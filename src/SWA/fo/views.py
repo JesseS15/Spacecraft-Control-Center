@@ -269,7 +269,7 @@ def epsFetchdata(request, simkey):
             data['eps_power'] = simThread.subsystems['EPS'].params['power distribution']['EPS']
             data['tcs_power'] = simThread.subsystems['EPS'].params['power distribution']['TCS']
             data['commns_power'] = simThread.subsystems['EPS'].params['power distribution']['COMMS']
-            data['payload_power'] = simThread.subsystems['EPS'].params['power distribution']['PAYLOAD']
+            data['payload_power'] = simThread.subsystems['EPS'].params['power distribution']['Payload']
             data['articulation'] = simThread.subsystems['EPS'].params['solar panel angle']
             data['total_power'] = simThread.subsystems['EPS'].params['total power']
         
