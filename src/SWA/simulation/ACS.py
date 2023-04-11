@@ -30,15 +30,18 @@ class ACS(Subsystem):
         "6.) Transfer Telemetry",
     ]
 
-    def __init__(self, finalLongitude):
+    finalValues = {}
+
+    def __init__(self, finalValues):
         super().__init__()
         self.orientation["roll"] = random.randint(-180,180)
         self.orientation["pitch"] = random.randint(-90,90)
         self.orientation["yaw"] = random.randint(-180,180)
         # setting starting longitude to random number from final longitude +50 to final longitude +90 (random magic numbers, dont be mad)
         self.startLongitude = random.randint(-180, 180)
-        self.finalLongitude = finalLongitude
+        self.finalLongitude = finalValues["finalLongitude"]
         self.currentLongitude = self.startLongitude
+        self.finalValues = finalValues
 
         
         self.menu = "tl" # can be tl, cmgRoll, cmgPitch, or cmgYaw
@@ -116,7 +119,7 @@ class ACS(Subsystem):
             self.orientation["yaw"] = 179
 
     def updateLongitude(self):
-        self.currentLongitude += 1
+        self.currentLongitude += 3
         if (self.currentLongitude == 180):
             self.currentLongitude = -180
         elif (self.currentLongitude == -180):
@@ -155,10 +158,10 @@ class ACS(Subsystem):
         return ("Yaw updated by" + newYaw + "degrees")
 
     ###### Checking final orientation, passed from SimObject ###############
-    def verifyAlignment(self, finalValues):
-        rollDifference = finalValues["roll"] - self.orientation["roll"]
-        bitchDifference = finalValues["pitch"] - self.orientation["pitch"]
-        yawDifference = finalValues["yaw"] - self.orientation["yaw"]
+    def verifyAlignment(self):
+        rollDifference = self.finalValues["roll"] - self.orientation["roll"]
+        bitchDifference = self.finalValues["pitch"] - self.orientation["pitch"]
+        yawDifference = self.finalValues["yaw"] - self.orientation["yaw"]
         if (abs(rollDifference) <= 10) and (abs(bitchDifference) <= 10) and (abs(yawDifference) <= 10):
             return "The SimCraft's Alignment is Reached"
         else:
