@@ -113,7 +113,7 @@ class ACS(Subsystem):
         return abs(timeLeft)
 
     def checkLongitude(self):
-        if (self.currentLongitude == self.finalLongitude):
+        if (self.currentLongitude > (self.finalLongitude-15)) and (self.currentLongitude < (self.finalLongitude+15)):
             return True
         else:
             return False
