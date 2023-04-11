@@ -24,13 +24,17 @@
                 <thead>
                   <th style="font-size:18px; width: 18%">Name</th>
                   <th style="font-size:18px; width: 18%">Status</th>
-                  <th style="font-size:18px; width: 54%"></th>
+                  <th style="font-size:18px; width: 54%">Flight Operators in Sim</th>
                 </thead>
                  {% for sim in sims %}
-                <tr style="font-size:16px; max-height: 20px; overflow-y: scroll;">
+                <tr style="font-size:16px; height: 5vh;">
                   <td style="font-size:16px;"><a class = "simlist" href="{% url 'fo:sim' sim.pk %}">{{ sim }}</a></td>
-                  <td style="font-size:16px;"></td>
-                  <td style="font-size:16px;"><button type = "button">Manage</button><button type = "button" class="op">Operators</button><button type = "button" class="settings">Reports</button></td>
+                  <td style="font-size:16px;">{{sim.status}}</td>
+                  <td style="text-align:center; font-size: 16px;">
+                    {% for x in sim.fo_list.all %}
+                    <li style = "list-style-type: none;">{{x}}</li>
+                    {% endfor %}
+                  </td>
                 </tr>
               {% endfor %}
               </table> 

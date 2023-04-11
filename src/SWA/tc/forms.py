@@ -59,7 +59,8 @@ class SimCreationForm(forms.ModelForm):
 
     class Meta:
         model = Sim
-        fields = ['sim_name', 'mission_script', 'flight_director', 'COMMS_fo','ACS_fo', 'EPS_fo', 'TCS_fo']
+        fields = ['sim_name', 'status','mission_script', 'flight_director', 'COMMS_fo','ACS_fo', 'EPS_fo', 'TCS_fo']
+        widgets = {'status': forms.HiddenInput()}
     
         #FlightOperator.objects.filter(user_class_list__icontains=class_name).values()
 ###################################################################3

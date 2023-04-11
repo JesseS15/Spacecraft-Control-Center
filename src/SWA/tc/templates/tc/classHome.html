@@ -29,14 +29,12 @@
               <th class="one"></th>
               <th class="two">Name</th>
               <th>Status</th>
-              <th class="four"></th>
             </thead>
              {% for sim in sims %}
             <tr>
               <td><button id = {{sim}} type = "button" data-toggle = "modal" data-target = "modal1" class="edit"><span class="glyphicon glyphicon-wrench"></span></button><button id = {{sim}} type = "button" data-toggle = "modal" data-target = "modal1" class="download"><span class="glyphicon glyphicon-save"></span></button></td>
               <td class="five"><a class = "simlist" href="{% url 'tc:sim' sim.pk %}">{{ sim }}</a></td>
-              <td></td>
-              <td><button type = "button" class="op">Start</button><button type = "button" class="op">End</button></td>
+              <td>{{sim.status}}</td>
             </tr>
           {% endfor %}
           <div id="modal4" class="modal">
@@ -83,13 +81,11 @@
             <thead>
               <th>Name</th>
               <th>Status</th>
-              <th></th>
             </thead>
              {% for mission in missions %}
             <tr>
               <td><a class = "missionlist">{{ mission }}</a></td>
               <td></td>
-              <td><button type = "button">Manage</button><button type = "button" class="op">Operators</button><button type = "button" class="settings">Reports</button></td>
             </tr>
           {% endfor %}
           </table> 

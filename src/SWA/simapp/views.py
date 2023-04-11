@@ -98,7 +98,6 @@ def newSim(request, class_name):
             All_Sims_Dict[sim.sim_identifier].check()
 
             print('Dictionary: ',All_Sims_Dict)
-
             Class.objects.get(class_name = class_name).sims.add(sim)
             flight_operators = FlightOperator.objects.all()
             print(type(flight_operators))
@@ -106,26 +105,31 @@ def newSim(request, class_name):
                 for x in flight_operators:
                     if(str(x) == str((flight_director[0]))):
                         x.sim_list.add(sim)
+                        sim.fo_list.add(x)
 
             if (COMMS_fo.exists()):
                 for x in flight_operators:
                     if(str(x) == str((COMMS_fo[0]))):
                         x.sim_list.add(sim)
+                        sim.fo_list.add(x)
         
             if (ACS_fo.exists()):
                 for x in flight_operators:
                     if(str(x) == str((ACS_fo[0]))):
                         x.sim_list.add(sim)
+                        sim.fo_list.add(x)
             
             if (TCS_fo.exists()):
                 for x in flight_operators:
                     if(str(x) == str((TCS_fo[0]))):
                         x.sim_list.add(sim)
+                        sim.fo_list.add(x)
             
             if (EPS_fo.exists()):
                 for x in flight_operators:
                     if(str(x) == str((EPS_fo[0]))):
                         x.sim_list.add(sim)
+                        sim.fo_list.add(x)
 
             # Send notification
             """send_mail(

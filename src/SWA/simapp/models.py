@@ -21,15 +21,19 @@ class Mission(models.Model):
         return self.mission_name
 
 ###############################################################################
+STATUS_CHOICES= (
+    ('ACTIVE','ACTIVE'),
+    ('COMPLETE','COMPLETE')
+)
 class Sim(models.Model):
-
     sim_name = models.CharField(default='', max_length=10)
     
     mission_script = models.ForeignKey(Mission, null=True, on_delete=models.CASCADE)
     
     # thread_id of associated SimObject thread
     sim_identifier = models.IntegerField(default=0, blank=True)
-    
+    fo_list = models.ManyToManyField("fo.FlightOperator")
+    status = models.CharField(default='ACTIVE',max_length=15, blank = True, choices=STATUS_CHOICES)
     # Flight Operators and their assigned subsytems
     flight_director = models.ManyToManyField("fo.FlightOperator", related_name="flight_director",default='', verbose_name=("Flight Director (Payload Flight Operator)"), blank=True)
     COMMS_fo = models.ManyToManyField("fo.FlightOperator", related_name="comms_fo",default='', verbose_name=("Comms Flight Operator"), blank=True)
