@@ -53,15 +53,18 @@ class ACS(Subsystem):
             'consoleCommand' : command,
             'consoleResponse': [],
         }
+        
+        response['consoleCommand'] = command
+        
         command_split = command.lower().split(" ")
         
         if self.menu == "tl":
-            response['consoleResponse'] = "Input:\n"
             if command_split[0] == "1":
-                response['consoleResponse'].append("Checking Attitude Systems… \nThe SimCraft’s current Longitude is"
-                + self.currentLongitude + "eta: " + str(self.longMin()) + "minutes until active range.\n")
+                response['consoleResponse'].append("Checking Attitude Systems…")
+                response['consoleResponse'].append("The SimCraft’s current Longitude is: " + str(self.currentLongitude))
+                response['consoleResponse'].append("eta: " + str(self.longMin()) + " seconds until active range.")
             elif command_split[0] == "2":
-                response['consoleResponse'].append("Verifying Alignment...\n" + self.verifyAlignment())
+                response['consoleResponse'].append("Verifying Alignment...\n" + str(self.verifyAlignment()))
             elif command_split[0] == "3":
                 response['consoleResponse'].append("How much do you want to change the Roll by (in Degrees)?")
                 self.menu = "cmgRoll"
@@ -72,26 +75,26 @@ class ACS(Subsystem):
                 response['consoleResponse'].append("How much do you want to change the Yaw by (in Degrees)?")
                 self.menu = "cmgYaw"
             elif command_split[0] == "6":
-                response['consoleResponse'].append("Transfering ACS Telemetry...\n" + self.telemetryTransfer())
+                response['consoleResponse'].append("Transfering ACS Telemetry...\n" + str(self.telemetryTransfer()))
                 response['consoleResponse'].append("GREAT WORK ON THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE!")
                 #TODO: create instance where user cannot enter commands after subsys finished
                 #TODO: issue where sim thread terminates in >30sec randomly
             else:
-                response['consoleCommand'].append("Invalid Command " + command)
+                response['consoleCommand'] = "Invalid Command " + command
 
         elif self.menu == "cmgRoll":
-            response['consoleCommand'] = self.newOrientation["newRoll"]
-            response['consoleResponse'].append("The SimCraft's Roll had changed by " + self.newOrientation["newRoll"])
+            response['consoleCommand'] = str(self.newOrientation["newRoll"])
+            response['consoleResponse'].append("The SimCraft's Roll had changed by " + str(self.newOrientation["newRoll"]))
             self.menu = "tl"
         
         elif self.menu == "cmgPitch":
-            response['consoleCommand'] = self.newOrientation["newPitch"]
-            response['consoleResponse'].append("The SimCraft's Pitch had changed by " + self.newOrientation["newPitch"])
+            response['consoleCommand'] = str(self.newOrientation["newPitch"])
+            response['consoleResponse'].append("The SimCraft's Pitch had changed by " + str(self.newOrientation["newPitch"]))
             self.menu = "tl"
         
         elif self.menu == "cmgYaw":
-            response['consoleCommand'] = self.newOrientation["newYaw"]
-            response['consoleResponse'].append("The SimCraft's Yaw had changed by " + self.newOrientation["newYaw"])
+            response['consoleCommand'] = str(self.newOrientation["newYaw"])
+            response['consoleResponse'].append("The SimCraft's Yaw had changed by " + str(self.newOrientation["newYaw"]))
             self.menu = "tl"
         
         else:
@@ -119,15 +122,17 @@ class ACS(Subsystem):
             self.orientation["yaw"] = 179
 
     def updateLongitude(self):
-        self.currentLongitude += 3
+        self.currentLongitude += 1
         if (self.currentLongitude == 180):
             self.currentLongitude = -180
         elif (self.currentLongitude == -180):
             self.currentLongitude = 180
 
     def longMin(self):
-        timeLeft = self.finalLongitude - self.currentLongitude
-        return abs(timeLeft)
+        if self.currentLongitude>81:
+           return abs(self.finalLongitude - self.currentLongitude) + 180
+        else:
+            return abs(self.finalLongitude - self.currentLongitude)
 
     def checkLongitude(self):
         if (self.currentLongitude > (self.finalLongitude-15)) and (self.currentLongitude < (self.finalLongitude+15)):
@@ -137,6 +142,7 @@ class ACS(Subsystem):
         
     def update(self):
         self.updateRPY()
+        self.updateLongitude()
     
     ############# CMG : User input updates ##############
     def updateRoll(self):

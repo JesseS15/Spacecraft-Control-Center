@@ -56,9 +56,7 @@ class EPS(Subsystem):
         print("New instance of EPS class created")
 
     def update(self):
-        self.updateTimeParams()
-        self.updatePowerParams()
-        self.updateBatteryStatus()
+        pass
 
     #EPS function for easy power updating ###############################
     def updatePowerParams(self, availablePower, expendedPower, powerDistributed, subsystemName):
