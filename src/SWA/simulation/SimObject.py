@@ -41,15 +41,15 @@ class SimObject(threading.Thread):
     # Creating all the subsystem objects and adding them to the subsystem dictionary
     def createSubsys(self, sim):
         self.subsystems["ACS"] = ACS(self.finalValues["finalLongitude"])
-        #self.subsystems["EPS"] = EPS()
+        self.subsystems["EPS"] = EPS()
         self.subsystems["COMMS"] = COMMS()
         self.subsystems["TCS"] = TCS()
-        self.subsystems["Payload"] = payload()
+        #self.subsystems["Payload"] = payload()
 
     def checkTelemetry(self):
         # Using flag telemetryTransferComplete rather than calling function (that is for user command)
         self.telemetry["ACS"] = self.subsystems["ACS"].telemetryTransferComplete
-        #self.telemetry["EPS"] = self.subsystems["EPS"].telemetryTransfer()
+        self.telemetry["EPS"] = self.subsystems["EPS"].telemetryTransfer()
         self.telemetry["TCS"] = self.subsystems["TCS"].telemetryTransferComplete
         self.telemetry["Payload"] = self.subsystems["Payload"].telemetryTransferComplete
 

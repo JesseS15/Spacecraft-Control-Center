@@ -13,12 +13,12 @@
         
     <div class="center">
         <center>
-            <div class = header>
+            <div class = header style="color: white; padding-top: 10vh;">
                 <h2>Add New Mission</h2>
             </div>
         </center>
         <div class="centered">
-            <form name = "MissionCreationForm" method="POST" style="color: black; width: 35vw; ">
+            <form name = "MissionCreationForm" method="POST" style="color: white; width: 35vw; ">
                 {% csrf_token %}
                 <fieldset class="form-group">
                     {{ form2|crispy}}

@@ -8,19 +8,19 @@
 .navleft {
     min-height: 100%;
     width: 180px;
-    background-color: var(--background-color2);
+    background-color: #ffffffff;
     position: absolute;
-    box-shadow: 1px 1px 10px #000000aa;
+    box-shadow: 1px 1px 10px #ffffffff;
     display: flex;
     flex-direction: column;
     font-size: 14px;
     }
 .navleft-option {
     width: 180px;
-    height: 100px;
+    height: 80px;
     display: flex;
     align-items: center;
-    border-left: 7px solid #ffffffaf;
+    border-left: 7px solid #ffffffff;
     background-color: var(--Border-color);
     color: #000000af;
     cursor: pointer;

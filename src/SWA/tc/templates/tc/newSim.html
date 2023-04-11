@@ -12,12 +12,12 @@
     {% if user.is_authenticated %}
     <div class="center">
         <center>
-            <div class = header>
+            <div class = header style="color: white;">
                 <h2>Add New Simulation</h2>
             </div>
         </center>
-        <div style= "padding-top:45%"class="centered">
-            <form name = "SimCreationForm" method="POST" style="color: black; width: 70vw; ">
+        <div style= "padding-top:20vh;" class="centered">
+            <form name = "SimCreationForm" method="POST" style="color: white; width: 70vw; ">
                 {% csrf_token %}
                 <fieldset class="form-group">
                     {{ form|crispy}}
