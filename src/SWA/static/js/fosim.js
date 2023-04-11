@@ -26,12 +26,9 @@ input.addEventListener('keyup', function (event) {
 
           success: function( data )
           {
-            const output = document.createElement('p');
-            output.textContent = `$ ${data['consoleCommand']}`;
-            terminal2.appendChild(output);
-            for (var i = 0; i < data['consoleResponse'].length; i++) {
+            for (var i = 0; i < data.length; i++) {
               const output = document.createElement('p');
-              output.textContent = `${data['consoleResponse'][i]}`;
+              output.textContent = `${data[i]}`;
               terminal2.appendChild(output);
             }
             terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
@@ -71,12 +68,21 @@ function fetchcommands(){
       dataType: 'json',
 
       success: (data) => {
-          for (var i = 0; i < data['commands'].length; i++) {
+          // Display command options on left terminal
+          for (var i = 0; i < data['commandOptions'].length; i++) {
             const output = document.createElement('p');
-            output.textContent = `${data['commands'][i]}`;
+            output.textContent = `${data['commandOptions'][i]}`;
             terminal1.appendChild(output);
           }
           terminal1.parentElement.scrollTop = terminal1.parentElement.scrollHeight;
+
+          // Display previous commands on right terminal
+          for (var i = 0; i < data['previousCommands'].length; i++) {
+            const output = document.createElement('p');
+            output.textContent = `${data['previousCommands'][i]}`;
+            terminal2.appendChild(output);
+          }
+          terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
       }
   });
 }

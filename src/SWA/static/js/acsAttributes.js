@@ -56,8 +56,9 @@ window.setInterval(function(){
         }
     });
 }, 1000);
+fetchdata();
 
-// Refresh SimCraft Attributes
+// Refresh ACS UI Attributes
 function fetchdata(){
     $.ajax({
         // fo/views.acsFetchdata
@@ -66,8 +67,28 @@ function fetchdata(){
         dataType: 'json',
 
         success: (data) => {
+            //Debug return data
+            console.log(data);
     
-          console.log(data)
+            if (Object.keys(data).length > 0){
+                // Update Orientation panel
+                document.getElementById("Oreintation-Roll").innerText = data['roll'];
+                document.getElementById("Oreintation-Pitch").innerText = data['pitch'];
+                document.getElementById("Oreintation-Yaw").innerText = data['yaw'];
+                document.getElementById("Oreintation-Longitude").innerText = data['longitude'];
+
+                // Update CMG panel
+                document.getElementById("CMG-Roll").innerText = data['cmg_roll']   ? 'Active' : 'Inactive';
+                document.getElementById("CMG-Pitch").innerText = data['cmg_pitch'] ? 'Active' : 'Inactive';
+                document.getElementById("CMG-Yaw").innerText = data['cmg_yaw']     ? 'Active' : 'Inactive';
+
+                // Update Status panel
+                document.getElementById("CMG-Status").innerText = data['cmg_status'] ? 'Active' : 'Inactive';
+                document.getElementById("Orientation-Relay").innerText = data['orientation_relay'] ? 'Active' : 'Inactive';
+
+                // Update Telemetry panel
+                document.getElementById("Telemetry-Status").innerText = data['telemetry_transfer'] ? 'Transfered' : 'Not Transfered';
+            }
         }
     });
 }

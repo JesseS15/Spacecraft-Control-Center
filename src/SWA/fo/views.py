@@ -154,11 +154,6 @@ def submit(request, simkey):
         flightOperator = get_object_or_404(FlightOperator, user = request.user)
         subsystem = _get_fo_subsystem(sim, flightOperator)
         
-        response = {
-            'consoleCommand' : '',
-            'consoleResponse': [],
-        }
-        
         # Get simcraft thread
         simThread = None
         thread_id = sim.sim_identifier
@@ -167,7 +162,6 @@ def submit(request, simkey):
                 simThread = thread
         
         # Pass command to simcraft thread subsystem and add input console response
-        
         if simThread == None:
             response['consoleCommand'] = "Spacecraft Simulation for " + sim.sim_name + " has terminated execution"
         elif subsystem == 'DIRECTOR':
@@ -243,6 +237,11 @@ def acsFetchdata(request, simkey):
             data['pitch'] = simThread.subsystems['ACS'].orientation['pitch']
             data['yaw'] = simThread.subsystems['ACS'].orientation['yaw']
             data['longitude'] = simThread.subsystems['ACS'].currentLongitude
+            data['cmg_roll'] = simThread.subsystems['ACS'].rollActive
+            data['cmg_pitch'] = simThread.subsystems['ACS'].pitchActive
+            data['cmg_yaw'] = simThread.subsystems['ACS'].yawActive
+            data['cmg_status'] = simThread.subsystems['ACS'].cmgStatus
+            data['orientation_relay'] = simThread.subsystems['ACS'].orientationRelay
             data['telemetry_transfer'] = simThread.subsystems['ACS'].telemetryTransferComplete
         
         return HttpResponse(json.dumps(data)) # Sending an success response
@@ -354,7 +353,8 @@ def fetchcommands(request, simkey):
         
         # Define data strucutre to be returned
         data = {
-            'commands' : [],
+            'commandOptions' : [],
+            'previousCommands': [],
         }
         
         # Get simcraft thread
@@ -365,7 +365,8 @@ def fetchcommands(request, simkey):
                 simThread = thread
         
         if simThread == None:
-            data['commands'].append("Spacecraft Simulation for " + sim.sim_name + " has terminated execution")
+            data['commandOptions'].append("Spacecraft Simulation for " + sim.sim_name + " has terminated execution")
+            data['previousCommands'].append("Spacecraft Simulation for " + sim.sim_name + " has terminated execution")
         #if subsystem == 'DIRECTOR':
         #    for item in sim.director_command_buffer.all():
         #        data['input'].append(item.buffer_item)
@@ -373,7 +374,8 @@ def fetchcommands(request, simkey):
         #    for item in sim.COMMS_command_buffer.all():
         #        data['input'].append(item.buffer_item)
         elif subsystem == 'ACS':
-            data['commands'] = simThread.subsystems['ACS'].commands
+            data['commandOptions'] = simThread.subsystems['ACS'].commands
+            data['previousCommands'] = simThread.subsystems['ACS'].consoleLog
         #elif subsystem == 'EPS':
         #    for item in sim.EPS_command_buffer.all():
         #        data['input'].append(item.buffer_item)
