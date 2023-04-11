@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 # Importing models from simaapp/views.py
-
+from django.contrib import messages
 from .models import Sim, Mission
 from tc.forms import *
 from tc.models import *
@@ -61,12 +61,15 @@ def newSim(request, class_name):
         form = SimCreationForm(class_name, request.POST)
         
         if form.is_valid():
-            
+            classobjects = Class.objects.get(class_name = class_name)
+            simnotstr = classobjects.sims.all()
+            sims = numpy.asarray(simnotstr)
             # Get sim values from form
             #form.save()
             print(form.cleaned_data)
             # sim_list = form.cleaned_data.get('sim_list')y
             sim_name = form.cleaned_data.get('sim_name')
+            nospacename = sim_name.replace(" ","")
             #sys_list = form.cleaned_data.get('sys_list')
             mission = form.cleaned_data.get('mission_script')
             flight_director = form.cleaned_data.get('flight_director')
@@ -75,8 +78,25 @@ def newSim(request, class_name):
             EPS_fo = form.cleaned_data.get('EPS_fo')
             TCS_fo = form.cleaned_data.get('TCS_fo')
 
-            # Create new Sim Database object
-            sim = Sim.objects.create(sim_name = sim_name, mission_script = mission)
+            ifequal = 0
+            for simcheck in sims:
+                simstr = str(simcheck)
+                if(str(simstr) == nospacename):
+                    ifequal = ifequal+1
+            
+            
+            if(len(sims)<=0):
+                nospacename = sim_name.replace(" ", "")
+                sim = Sim.objects.create(sim_name = nospacename, mission_script = mission)
+                ifequal = 0
+                # Create new Sim Database object
+            if(len(sims)>0 and ifequal>0):
+                messages.info(request, 'Sim Already Exists. Add Sim UNSUCCESSFUL')
+                return redirect('tc:home')
+            if(len(sims)>0 and ifequal<=0):
+                nospacename = sim_name.replace(" ", "")
+                sim = Sim.objects.create(sim_name = nospacename, mission_script = mission)
+                ifequal = 0
             sim.flight_director.set(flight_director)
             #sim.mission_script = mission
             sim.COMMS_fo.set(COMMS_fo)

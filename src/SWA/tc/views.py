@@ -53,7 +53,7 @@ def tcHome(request):
         var = False
         if(form.is_valid()):
             class_namef = form.cleaned_data.get('class_name')
-            
+            nospacename = class_namef.replace(" ", "")
             test = form.cleaned_data.get('test')
             #test1 = form2.cleaned_data.get('test')
             classesstr = str(classes)
@@ -63,7 +63,7 @@ def tcHome(request):
             ifequal = 0
             for classi in classes:
                 classstr = str(classi)
-                if(str(classstr) == class_namef):
+                if(str(classstr) == nospacename):
                     ifequal = ifequal+1
             
             if(len(classes)<=0):
