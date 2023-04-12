@@ -16,7 +16,7 @@ class TestConductor(models.Model):
     )
 
     missions = models.ManyToManyField("simapp.Mission", verbose_name=("Mission"), blank=True)
-
+    classes = models.ManyToManyField("tc.Class", blank= True)
     def __str__(self):
         return self.user.username
 
@@ -31,6 +31,7 @@ class Class(models.Model):
     code = models.CharField(max_length=8, blank=True)
     status = models.CharField(default='ACTIVE',max_length=15, blank = True, choices=STATUS_CHOICES)
     flight_operators = models.ManyToManyField("fo.FlightOperator", verbose_name=("Flight Operator"), blank= True)
+    tc = models.ManyToManyField("tc.TestConductor")
     # Classses only want sims, which have a mission
     sims = models.ManyToManyField("simapp.Sim", verbose_name=("Sim"), blank=True)
 

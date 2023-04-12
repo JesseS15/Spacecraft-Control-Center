@@ -41,6 +41,7 @@ def index(request):
 def tcHome(request):
     
     classes = Class.objects.all()
+    tcobj = TestConductor.objects.get(user = request.user)
     # Create new TestConductor object if none exists for current staff user
     if not TestConductor.objects.filter(user = request.user).exists():
         TestConductor.objects.create(user = request.user).save()
@@ -73,7 +74,11 @@ def tcHome(request):
                 rcg = ''.join(random.choices(string.ascii_uppercase +string.digits, k=8))
                 classget.class_name = nospacename
                 classget.code = rcg
+                classget.tc.add(tcobj)
                 classget.save()
+                tcobj = TestConductor.objects.get(user = request.user)
+                tcobj.classes.add(classget)
+                tcobj.save()
                 return redirect('tc:home')
             elif(len(classes)>0 and ifequal==0 and test==True):
                 form.save()
@@ -82,7 +87,11 @@ def tcHome(request):
                 rcg = ''.join(random.choices(string.ascii_uppercase +string.digits, k=8))
                 classget.class_name = nospacename
                 classget.code = rcg
+                classget.tc.add(tcobj)
                 classget.save()
+                tcobj = TestConductor.objects.get(user = request.user)
+                tcobj.classes.add(classget)
+                tcobj.save()
                 return redirect('tc:home')
             elif(len(classes)>0 and ifequal>=1 and test ==True):
                messages.info(request, 'Class Already Exists. Add Class UNSUCCESSFUL')
@@ -135,7 +144,7 @@ def tcHome(request):
     else:
         form2 = ClassEditForm()
 
-    return render(request, 'tc/tcHome.html', {"classes":classes, 'form': form, 'form2': form2})
+    return render(request, 'tc/tcHome.html', {"classes":classes, 'form': form, 'form2': form2, 'tcobj':tcobj})
   
 ###############################################################################
 @login_required(login_url='/login/')

@@ -28,12 +28,12 @@
     <div class="content">
       <p  style = "text-align: right; margin-right: 10%; font-size: 16px;"><button id="joinclass"data-toggle="modal" data-target = "modal2"><span class="glyphicon glyphicon-plus"></span> &nbsp;Join New Class</button></p>
       <h3 class="list" style="color:white;margin-left: 10%;text-align: left;">Class List</h3>
-      <table id= "classtable" border="2" style="width: 80%;">
+      <table id= "classtable" border="2" style="width: 80%; z-index: -1;">
         <thead>
           <th style="font-size:18px; width: 26%">Name</th>
           <th style="font-size:18px; width: 26%">Status</th>
           <th style="font-size:18px; width: 26%">Code</th>
-          <th style="width:20%"></th>
+          <th style="width:20%">Professor</th>
         </thead>
          {% for class_name in classes %}
         <tr style="font-size:16px; max-height: 20px; overflow-y: scroll;">
@@ -41,7 +41,7 @@
           <td style="font-size:16px;">{{class_name.status}}</td>
           <td style="font-size:16px;">{{class_name.code}}</td>
           <td style="text-align:center; font-size: 16px;">
-            {% for x in class_name.flight_operators.all %}
+            {% for x in class_name.tc.all %}
             <li style = "list-style-type: none;">{{x}}</li>
             {% endfor %}
           </td>
