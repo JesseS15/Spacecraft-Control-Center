@@ -25,7 +25,7 @@ window.addEventListener("click", function(event){
         modal2.style.display = "none";
     }else{
         modal2.style.position = "fixed";
-        modal2.style.zIndex = "1";
+        modal2.style.zIndex = "2";
         modal2.style.margin = "auto auto";
         modal2.style.width = ""; 
     }

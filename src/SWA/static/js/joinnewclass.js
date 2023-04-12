@@ -19,7 +19,7 @@ window.addEventListener("click", function(event){
     if(event.target == modal1){
         modal1.style.display = "none";
     }else{
-        modal1.style.position = "relative";
+        modal1.style.position = "fixed";
         modal1.style.zIndex = "1";
         modal1.style.margin = "auto auto";
         modal1.style.width = ""; 
