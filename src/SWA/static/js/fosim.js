@@ -1,46 +1,10 @@
 // fosim.js
 // Purpose: Refresh simcraft attributes and submit flight operator inputs on the fo sim page.
 
+// Create resizeable terminal
 const terminal1 = document.getElementById('terminal1');
 const terminal2 = document.getElementById('terminal2');
 const input = document.getElementById('input');
-
-fetchcommands();
-
-input.addEventListener('keyup', function (event) {
-  if (event.keyCode === 13) {
-    event.preventDefault();
-    const command = this.value.trim();
-    this.value = '';
-
-    $.ajax(
-        {
-          // fo/views.submit
-          url: '../submit',
-          type: 'GET',
-          dataType: 'json',
-          
-          data:{
-              cmd: command,
-          },
-
-          success: function( data )
-          {
-            const output = document.createElement('p');
-            output.textContent = `$ ${data['consoleCommand']}`;
-            terminal2.appendChild(output);
-            for (var i = 0; i < data['consoleResponse'].length; i++) {
-              const output = document.createElement('p');
-              output.textContent = `${data['consoleResponse'][i]}`;
-              terminal2.appendChild(output);
-            }
-            terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
-          }
-        })
-  }
-});
-
-// Resize
 
 const resizable = document.querySelector('.resizable');
 const handle = document.querySelector('.resizable-handle');
@@ -62,6 +26,39 @@ function stopResize(e) {
   window.removeEventListener('mouseup', stopResize);
 }
 
+// Add enter key event listener to command console
+input.addEventListener('keyup', function (event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    const command = this.value.trim();
+    this.value = '';
+
+    $.ajax(
+        {
+          // fo/views.submit
+          url: '../submit',
+          type: 'GET',
+          dataType: 'json',
+          
+          data:{
+              cmd: command,
+          },
+
+          success: function( data )
+          {
+            // Clear right terminal and append subsystem command log
+            terminal2.innerText = '';
+            for (var i = 0; i < data.length; i++) {
+              const output = document.createElement('p');
+              output.textContent = `${data[i]}`;
+              terminal2.appendChild(output);
+            }
+            terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
+          }
+        })
+  }
+});
+
 // Get Simcraft Commands
 function fetchcommands(){
   $.ajax({
@@ -71,12 +68,22 @@ function fetchcommands(){
       dataType: 'json',
 
       success: (data) => {
-          for (var i = 0; i < data['commands'].length; i++) {
+          // Display command options on left terminal
+          for (var i = 0; i < data['commandOptions'].length; i++) {
             const output = document.createElement('p');
-            output.textContent = `${data['commands'][i]}`;
+            output.textContent = `${data['commandOptions'][i]}`;
             terminal1.appendChild(output);
           }
           terminal1.parentElement.scrollTop = terminal1.parentElement.scrollHeight;
+
+          // Display previous commands on right terminal
+          for (var i = 0; i < data['previousCommands'].length; i++) {
+            const output = document.createElement('p');
+            output.textContent = `${data['previousCommands'][i]}`;
+            terminal2.appendChild(output);
+          }
+          terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
       }
   });
 }
+fetchcommands();

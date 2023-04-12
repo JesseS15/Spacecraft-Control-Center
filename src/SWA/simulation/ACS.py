@@ -14,11 +14,19 @@ class ACS(Subsystem):
         "newYaw":0
     }
 
-    telemetryTransferComplete = False
+    rollActive = False
+    pitchActive = False
+    yawActive = False
+
     startLongitude = 0
     finalLongitude = 0
     currentLongitude = 0
+    
+    cmgStatus = False
+    orientationRelay = False
 
+    telemetryTransferComplete = False
+    
     commands = [
         "WELCOME TO THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE",
         "Your task is to rotate the satellite for proper payload alignment with the imagery target on the earth’s surface",
@@ -29,6 +37,7 @@ class ACS(Subsystem):
         "5.) CMG Activate Yaw",
         "6.) Transfer Telemetry",
     ]
+    consoleLog = []
 
     finalValues = {}
 
@@ -43,61 +52,59 @@ class ACS(Subsystem):
         self.currentLongitude = self.startLongitude
         self.finalValues = finalValues
 
-        
         self.menu = "tl" # can be tl, cmgRoll, cmgPitch, or cmgYaw
-        self.commandLog = []
         
     def command(self, command):
         
-        response = {
-            'consoleCommand' : command,
-            'consoleResponse': [],
-        }
+        self.consoleLog.append("$ " + command)
+        
+        consoleResponse = []
+        
         command_split = command.lower().split(" ")
         
         if self.menu == "tl":
-            response['consoleResponse'] = "Input:\n"
             if command_split[0] == "1":
-                response['consoleResponse'].append("Checking Attitude Systems… \nThe SimCraft’s current Longitude is"
-                + self.currentLongitude + "eta: " + str(self.longMin()) + "minutes until active range.\n")
+                consoleResponse.append("Checking Attitude Systems…")
+                consoleResponse.append("The SimCraft’s current Longitude is: " + str(self.currentLongitude))
+                consoleResponse.append("eta: " + str(self.longMin()) + " seconds until active range.")
             elif command_split[0] == "2":
-                response['consoleResponse'].append("Verifying Alignment...\n" + self.verifyAlignment())
+                consoleResponse.append("Verifying Alignment...")
+                consoleResponse.extend(self.verifyAlignment())
             elif command_split[0] == "3":
-                response['consoleResponse'].append("How much do you want to change the Roll by (in Degrees)?")
+                consoleResponse.append("How much do you want to change the Roll by (in Degrees)?")
                 self.menu = "cmgRoll"
             elif command_split[0] == "4":
-                response['consoleResponse'].append("How much do you want to change the Pitch by (in Degrees)?")
+                consoleResponse.append("How much do you want to change the Pitch by (in Degrees)?")
                 self.menu = "cmgPitch"
             elif command_split[0] == "5":
-                response['consoleResponse'].append("How much do you want to change the Yaw by (in Degrees)?")
+                consoleResponse.append("How much do you want to change the Yaw by (in Degrees)?")
                 self.menu = "cmgYaw"
             elif command_split[0] == "6":
-                response['consoleResponse'].append("Transfering ACS Telemetry...\n" + self.telemetryTransfer())
-                response['consoleResponse'].append("GREAT WORK ON THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE!")
+                consoleResponse.append("Transfering ACS Telemetry...")
+                consoleResponse.append( self.telemetryTransfer())
+                consoleResponse.append("GREAT WORK ON THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE!")
                 #TODO: create instance where user cannot enter commands after subsys finished
-                #TODO: issue where sim thread terminates in >30sec randomly
             else:
-                response['consoleCommand'].append("Invalid Command " + command)
+                consoleResponse.append("Invalid Command " + command)
 
         elif self.menu == "cmgRoll":
-            response['consoleCommand'] = self.newOrientation["newRoll"]
-            response['consoleResponse'].append("The SimCraft's Roll had changed by " + self.newOrientation["newRoll"])
+            consoleResponse.append("The SimCraft's Roll had changed by " + str(self.newOrientation["newRoll"]))
             self.menu = "tl"
         
         elif self.menu == "cmgPitch":
-            response['consoleCommand'] = self.newOrientation["newPitch"]
-            response['consoleResponse'].append("The SimCraft's Pitch had changed by " + self.newOrientation["newPitch"])
+            consoleResponse.append("The SimCraft's Pitch had changed by " + str(self.newOrientation["newPitch"]))
             self.menu = "tl"
         
         elif self.menu == "cmgYaw":
-            response['consoleCommand'] = self.newOrientation["newYaw"]
-            response['consoleResponse'].append("The SimCraft's Yaw had changed by " + self.newOrientation["newYaw"])
+            consoleResponse.append("The SimCraft's Yaw had changed by " + str(self.newOrientation["newYaw"]))
             self.menu = "tl"
         
         else:
             self.menu = "tl"
         
-        return response
+        self.consoleLog.extend(consoleResponse)
+        
+        return self.consoleLog
 
     def updateRPY(self):
         self.orientation["roll"] += random.randint(-1,1)
@@ -119,15 +126,17 @@ class ACS(Subsystem):
             self.orientation["yaw"] = 179
 
     def updateLongitude(self):
-        self.currentLongitude += 3
+        self.currentLongitude += 1
         if (self.currentLongitude == 180):
             self.currentLongitude = -180
         elif (self.currentLongitude == -180):
             self.currentLongitude = 180
 
     def longMin(self):
-        timeLeft = self.finalLongitude - self.currentLongitude
-        return abs(timeLeft)
+        if self.currentLongitude>81:
+           return abs(self.finalLongitude - self.currentLongitude) + 180
+        else:
+            return abs(self.finalLongitude - self.currentLongitude)
 
     def checkLongitude(self):
         if (self.currentLongitude > (self.finalLongitude-15)) and (self.currentLongitude < (self.finalLongitude+15)):
@@ -137,6 +146,7 @@ class ACS(Subsystem):
         
     def update(self):
         self.updateRPY()
+        self.updateLongitude()
     
     ############# CMG : User input updates ##############
     def updateRoll(self):
@@ -159,15 +169,20 @@ class ACS(Subsystem):
 
     ###### Checking final orientation, passed from SimObject ###############
     def verifyAlignment(self):
+        # Calculate required changes to roll, pitch and yaw
         rollDifference = self.finalValues["roll"] - self.orientation["roll"]
-        bitchDifference = self.finalValues["pitch"] - self.orientation["pitch"]
+        pitchDifference = self.finalValues["pitch"] - self.orientation["pitch"]
         yawDifference = self.finalValues["yaw"] - self.orientation["yaw"]
-        if (abs(rollDifference) <= 10) and (abs(bitchDifference) <= 10) and (abs(yawDifference) <= 10):
-            return "The SimCraft's Alignment is Reached"
+        
+        # Check if roll, pitch, and yaw are in acceptable range from final values
+        if (abs(rollDifference) <= 10) and (abs(pitchDifference) <= 10) and (abs(yawDifference) <= 10):
+            response = "The SimCraft's Alignment is Reached"
         else:
-            errorAlignment = "The SimCraft's Alignment is not reached...\n The roll is off by " + rollDifference
-            + "\nThe Pitch is off by " + bitchDifference +"The Yaw is off by " + yawDifference 
-            return errorAlignment
+            response = ["The SimCraft's Alignment is not reached...",
+                        "The roll is off by " + str(rollDifference),
+                        "The Pitch is off by " + str(pitchDifference),
+                        "The Yaw is off by " + str(yawDifference )]
+        return response
 
     def systemChecks(self):
         align = self.verifyAlignment

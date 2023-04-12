@@ -30,20 +30,34 @@
             <h3 class="panel-title">Orientation</h3>
             </div>
             <div class="panel-body">
-            <p><u><b>Roll (x):</u> [θ°]</b></p>
-            <p><u><b>Pitch (y):</u> [θ°]</b></p>
-            <p><u><b>Yaw (z):</u> [θ°]</b></p><br>
-            <p><u><b>Longitude: </u> [#]</b></p>
+            <div style="display: flex;">
+              <p><u><b>Roll (x) :</u>&nbsp;<p id="Oreintation-Roll">θ</p> <p>°</p></b></p>
             </div>
+            <div style="display: flex;">
+              <p><u><b>Pitch (y):</u>&nbsp;<p id="Oreintation-Pitch">θ</p> <p>°</p></b></p>
+            </div>
+            <div style="display: flex;">
+              <p><u><b>Yaw (z):</u>&nbsp;<p id="Oreintation-Yaw">θ</p> <p>°</p></b></p>
+            </div>
+            <div style="display: flex;">
+              <p><u><b>Longitude:</u>&nbsp;<p id="Oreintation-Longitude">#</p> </b></p>
+            </div>
+          </div>
         </div>
         <div id="item2">
           <div class="panel-header">
             <h3 class="panel-title">Control Moment Gyroscope (CMG)</h3>
             </div>
             <div class="panel-body">
-            <p><u><b>Roll (x):</u> [Inactive]</b></p><br>
-            <p><u><b>Pitch (y):</u> [Inactive]</b></p><br>
-            <p><u><b>Yaw (z):</u> [Inactive]</b></p>
+              <div style="display: flex;">
+                <p><u><b>Roll (x) :</u>&nbsp;<p id="CMG-Roll">Inactive</p></b></p>
+              </div>
+              <div style="display: flex;">
+                <p><u><b>Pitch (y):</u>&nbsp;<p id="CMG-Pitch">Inactive</p></b></p>
+              </div>
+              <div style="display: flex;">
+                <p><u><b>Yaw (z):</u>&nbsp;<p id="CMG-Yaw">Inactive</p></b></p>
+              </div>
             </div>
         </div>
         <div id="item3">
@@ -51,8 +65,12 @@
             <h3 class="panel-title">System Status</h3>
             </div>
             <div class="panel-body">
-              <p><u><b>CMG Status:</u> [Active]</b></p><br>
-              <p><u><b>Orientation Relay:</u> [Active]</b></p><br>
+              <div style="display: flex;">
+                <p><u><b>CMG Status:</u>&nbsp;<p id="CMG-Status">Inactive</p></b></p>
+              </div>
+              <div style="display: flex;">
+                <p><u><b>Orientation Relay:</u>&nbsp;<p id="Orientation-Relay">Inactive</p></b></p>
+              </div>
             </div>
         </div>
         <div id="item4">
@@ -61,7 +79,9 @@
             </div>
             <div class="panel-body">
               <br><div class="acstelemtry" style="text-align:center";></div><br>
-              <p><u><b>Status:</u> [Not Transfered]</b></p>
+              <div style="display: flex;">
+                <p><u><b>Status:</u>&nbsp;<p id="Telemetry-Status">Not Transfered</p></b></p>
+              </div>
             </div>
         </div>
       </div>

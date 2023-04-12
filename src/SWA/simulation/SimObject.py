@@ -82,8 +82,7 @@ class SimObject(threading.Thread):
             print('thread ' + self.simName)
             print(threading.get_ident())
             #Probably put stuff in this block under self.update function 
-            #self.update()
-            self.telemetry = self.subsystems["ACS"].updateRPY()
+            self.update()
             
             #End block here
             time.sleep(5)

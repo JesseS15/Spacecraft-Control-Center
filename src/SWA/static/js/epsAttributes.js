@@ -57,7 +57,7 @@ window.setInterval(function(){
     });
 }, 1000);
 
-// Refresh SimCraft Attributes
+// Refresh EPS Attributes
 function fetchdata(){
     $.ajax({
         // fo/views.epsFetchdata
@@ -66,8 +66,16 @@ function fetchdata(){
         dataType: 'json',
 
         success: (data) => {
+            //Debug return data
+            console.log(data);
     
-          console.log(data)
+            if (Object.keys(data).length > 0){
+                // Update Orientation panel
+                //document.getElementById("Oreintation-Roll").innerText = data['roll'];
+                //document.getElementById("Oreintation-Pitch").innerText = data['pitch'];
+                //document.getElementById("Oreintation-Yaw").innerText = data['yaw'];
+                //document.getElementById("Oreintation-Longitude").innerText = data['longitude'];
+            }
         }
     });
 }
