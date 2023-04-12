@@ -101,8 +101,8 @@ def newSim(request, class_name):
             #sim.mission_script = mission
             sim.COMMS_fo.set(COMMS_fo)
             sim.ACS_fo.set(ACS_fo)
-            sim.TCS_fo.set(EPS_fo)
-            sim.EPS_fo.set(TCS_fo)
+            sim.TCS_fo.set(TCS_fo)
+            sim.EPS_fo.set(EPS_fo)
 
             m = sim.mission_script
             final_values = {}

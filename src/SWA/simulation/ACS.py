@@ -27,6 +27,7 @@ class ACS(Subsystem):
 
     telemetryTransferComplete = False
     
+    menu = ''
     commands = [
         "WELCOME TO THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE",
         "Your task is to rotate the satellite for proper payload alignment with the imagery target on the earth’s surface",

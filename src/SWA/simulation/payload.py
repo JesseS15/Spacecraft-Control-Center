@@ -16,6 +16,9 @@ class payload(Subsystem):
     captureImageFlag = False
     telemetryTransferComplete = False
 
+    # Console infastructure
+    menu = ''
+    consoleLog = []
     commands = [
         "WELCOME TO THE PAYLOAD (PL) CONSOLE!",
         "Your task is to capture imagery of the target during the flyover period.",
@@ -27,7 +30,43 @@ class payload(Subsystem):
     ]
 
     def __init__(self):
+        self.menu = 'tl'
         super().__init__()
+        
+    def command(self, command):
+        
+        self.consoleLog.append("$ " + command)
+        
+        consoleResponse = []
+        
+        command_split = command.lower().split(" ")
+        
+        if self.menu == "tl":
+            if command_split[0] == "1":
+                consoleResponse.append("Checking Power Systems...")
+                consoleResponse.extend(self.statusChecks())
+            elif command_split[0] == "2":
+                consoleResponse.append("Slew Commencing...")
+                consoleResponse.append(self.slewImage())
+            elif command_split[0] == "3":
+                consoleResponse.append("Acquiring Target...")
+                consoleResponse.append(self.acquireTarget())
+            elif command_split[0] == "4":
+                consoleResponse.append("Capturing Image...")
+                consoleResponse.append(self.captureImage())
+            elif command_split[0] == "5":
+                consoleResponse.append("Transferring Payload Telemetry...")
+                consoleResponse.append( self.telemetryTransfer())
+                consoleResponse.append("GREAT WORK ON THE PAYLOAD SYSTEM CONSOLE!")
+                #TODO: create instance where user cannot enter commands after subsys finished
+            else:
+                consoleResponse.append("Invalid Command " + command)
+                
+        else:
+            self.menu = "tl"
+            
+        self.consoleLog.extend(consoleResponse)
+        return self.consoleLog
 
     # Main menu option 1
     def statusChecks(self):

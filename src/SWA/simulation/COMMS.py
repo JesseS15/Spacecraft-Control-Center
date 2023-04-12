@@ -17,6 +17,9 @@ class COMMS(Subsystem):
     allTelemetryDataGood = False
     allTelemetryData = {"ACS": False, "EPS": False, "TCS": False, "Payload": False}
 
+    # Console infastructure
+    menu = ''
+    consoleLog = []
     commands = [
         "WELCOME TO THE COMMUNICATIONS (COMMS) CONSOLE",
         "Your task is to verify that signal lock is established between the Ku-Band satellite antenna and the ground station antenna, transmit the target image to the ground station, process the image, and display the results.",
@@ -31,8 +34,58 @@ class COMMS(Subsystem):
 
     def __init__(self):
         super().__init__()
+        self.menu = 'tl'
         print('New instance of COMMS class created')
 
+    def command(self, command):
+        
+        self.consoleLog.append("$ " + command)
+        
+        consoleResponse = []
+        
+        command_split = command.lower().split(" ")
+        
+        if self.menu == "tl":
+            if command_split[0] == "1":
+                consoleResponse.append("Checking Power Systems…")
+                consoleResponse.extend(self.systemChecks())
+            elif command_split[0] == "2":
+                consoleResponse.append("Verifying Signal...")
+                consoleResponse.extend(self.verifySignal())
+            elif command_split[0] == "3":
+                consoleResponse.append("How much do you want to change the Signal Gain (in dB)?")
+                self.menu = "signalGain"
+            elif command_split[0] == "4":
+                consoleResponse.append("How much do you want to change the Signal Frequency (in GHz)?")
+                self.menu = "signalFreq"
+            elif command_split[0] == "5":
+                consoleResponse.append("Downloading Subsystem Telemetry...")
+                consoleResponse.extend(self.downloadTelemetryData())
+            elif command_split[0] == "6":
+                consoleResponse.append("Processing SimCraft Telemetry...")
+                consoleResponse.append(self.processTelemetryData())
+            elif command_split[0] == "7":
+                consoleResponse.append("Displaying Image...")
+                consoleResponse.append( self.displayImage())
+                consoleResponse.append("GREAT WORK ON THE PAYLOAD SYSTEM CONSOLE!")
+                #TODO: create instance where user cannot enter commands after subsys finished
+            else:
+                consoleResponse.append("Invalid Command " + command)
+        
+        elif self.menu == "signalGain":
+            consoleResponse.append(self.signalGain(int(command)))
+            self.menu = "tl"
+    
+        elif self.menu == "signalFreq":
+            consoleResponse.append(self.signalFrequency(int(command)))
+            self.menu = "tl"
+
+        else:
+            self.menu = "tl"
+            
+        self.consoleLog.extend(consoleResponse)
+        return self.consoleLog
+    
     def update(self):
         self.gain += random.randrange(-5.0, 5.0)
 
@@ -66,7 +119,7 @@ class COMMS(Subsystem):
     # Main menu option 3
     def signalGain(self, newGain):
         self.gain += newGain
-        return ("Gain has changed by " + newGain + "dB")
+        return ("Gain has changed by " + str(newGain) + "dB")
 
     # Main menu option 4
     def signalFrequency(self, newFreq):
@@ -102,8 +155,8 @@ class COMMS(Subsystem):
     # Main menu option 7
     ### NOT DONE!! NEED IMAGE URL ####
     def displayImage(self):
+        output = []
         if self.allTelemetryDataGood:
-            output = []
             output[0] = "All telemetry data has been successfully processed!"
             output[1] = "Click the link to view the image!"
             # Rick roll link for shits and giggles
@@ -111,7 +164,8 @@ class COMMS(Subsystem):
             output[3] = "GREAT WORK ON THE COMMS SYSTEM CONSOLE"
             output[4] = "Mission accomplished!"
             output[5] = "Just kidding...heres the actual image: CARLY_MAKE_URL"
-            return output
         else:
-            return "Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task."
+            output[0] = "Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task."
+            
+        return output
 

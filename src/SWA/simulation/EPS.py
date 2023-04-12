@@ -35,7 +35,10 @@ class EPS(Subsystem):
     
     allChecks = False
     verifyStatus = False
-
+    
+    # Console infastructure
+    menu = ''
+    consoleLog = []
     commands = [
         "WELCOME TO THE ELECTRICAL POWER SYSTEMS (EPS) CONSOLE!",
         "Your task is to command the satellite to full power before the payload can be operated.",
@@ -45,7 +48,7 @@ class EPS(Subsystem):
         "4.) Articulate Panel",
         "5.) Transfer Telemetry"
     ]
-
+    
     def __init__(self):
         super().__init__()
         self.params['simcraft power restrictions']['ACS'] = self.params['total power'] * 0.16
@@ -53,7 +56,47 @@ class EPS(Subsystem):
         self.params['simcraft power restrictions']['TCS'] = self.params['total power'] * 0.16
         self.params['simcraft power restrictions']['COMMS'] = self.params['total power'] * 0.16
         self.params['simcraft power restrictions']['COMMS'] = self.params['total power'] * 0.16
+        self.menu = 'tl'
         print("New instance of EPS class created")
+        
+    def command(self, command):
+        
+        self.consoleLog.append("$ " + command)
+        
+        consoleResponse = []
+        
+        command_split = command.lower().split(" ")
+        
+        if self.menu == "tl":
+            if command_split[0] == "1":
+                consoleResponse.append("Checking Power Systems...")
+                consoleResponse.extend(self.statusChecks())
+            elif command_split[0] == "2":
+                consoleResponse.append("Verifying Power Distribution...")
+                consoleResponse.extend(self.verifyPowerDist())
+            elif command_split[0] == "3":
+                consoleResponse.append("Redistributing Resources...")
+                consoleResponse.extend(self.fullPower())
+            elif command_split[0] == "4":
+                consoleResponse.append("How much do you want to articulate the solar panels by (in Degrees)?")
+                self.menu = "panelArticulate"
+            elif command_split[0] == "5":
+                consoleResponse.append("Transfering EPS Telemetry...")
+                consoleResponse.append( self.telemtryTransfer())
+                consoleResponse.append("GREAT WORK ON THE ELECTRICAL POWER SYSTEMS (EPS) CONSOLE!")
+                #TODO: create instance where user cannot enter commands after subsys finished
+            else:
+                consoleResponse.append("Invalid Command " + command)
+        
+        elif self.menu == "panelArticulate":
+            consoleResponse.append(self.articulate(int(command)))
+            self.menu = "tl"
+
+        else:
+            self.menu = "tl"
+            
+        self.consoleLog.extend(consoleResponse)
+        return self.consoleLog
 
     def update(self):
         pass
@@ -109,34 +152,39 @@ class EPS(Subsystem):
 
     #EPS Console Commands ##################################################
     def statusChecks(self):
+        response = []
         badChecks = [key for key, value in self.checks.items() if not value]
         if not badChecks:
             self.allChecks = True
-            return("No errors found")
+            response.append("No errors found")
         else:
             returnString="ERROR FOUND with : "
             for key in badChecks:
-                returnString+=(key + ", ")
+                response.append(key + ", ")
+        return response
             
     def refresh(self):
         self.checks = {key: True for key in self.checks}
 
     def verifyPowerDist(self):
         if not self.allChecks:
-            return('All system checks not completed')
+            return ['All system checks not completed']
         expendedPower = self.params['expended power']
         totalPower = self.params['total power']
         checkpoint = 0.8 * totalPower
         currentOperating = expendedPower / checkpoint
         if checkpoint > currentOperating:
-            return(f"The spacecraft is currently operating at "+(currentOperating * 100)+"% power\n100% power is required for this mission activity\nPlease set the power to 100%")
+            return ["The spacecraft is currently operating at "+(currentOperating * 100)+"% power",
+                    "100% power is required for this mission activity",
+                    "Please set the power to 100%"]
         self.verifyStatus = True
-        return("Verifying Power...\nSpacecraft now operating at 100% power")
+        return ["Verifying Power...",
+                "Spacecraft now operating at 100% power"]
         
 
     def fullPower(self):
         outputString = []
-        outputString.append("The current solar panel angle is: "+self.params['solar panel angle']+" degrees (away from the sun)" )
+        outputString.append("The current solar panel angle is: "+str(self.params['solar panel angle'])+" degrees (away from the sun)" )
         if self.params['solar panel angle'] > 10.0:
             outputString.append("Solar panels must be within 10 degrees of the sun angle for increased power to the spacecraft")
             return outputString
@@ -147,7 +195,7 @@ class EPS(Subsystem):
 
     def articulate(self, delta):
         self.articulateAngle(delta)
-        return("New angle is : ", self.params['solar panel angle'])
+        return "New angle is : " + str(self.params['solar panel angle'])
     
     def telemtryTransfer(self):
         if self.verifyStatus:
