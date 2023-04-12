@@ -22,6 +22,7 @@ class ACS(Subsystem):
 
     telemetryTransferComplete = False
     
+    # Console infastructure
     menu = ''
     commands = [
         "WELCOME TO THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE",
@@ -53,7 +54,6 @@ class ACS(Subsystem):
     def command(self, command):
         
         self.consoleLog.append("$ " + command)
-        
         consoleResponse = []
         
         command_split = command.lower().split(" ")
@@ -81,7 +81,7 @@ class ACS(Subsystem):
                 consoleResponse.append("GREAT WORK ON THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE!")
                 #TODO: create instance where user cannot enter commands after subsys finished
             else:
-                consoleResponse.append("Invalid Command " + command)
+                consoleResponse.append("Invalid Command: " + command)
 
         elif self.menu == "cmgRoll":
             consoleResponse.append(self.updateRoll(int(command)))
