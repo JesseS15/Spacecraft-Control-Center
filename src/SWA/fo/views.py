@@ -55,9 +55,9 @@ def sim(request, simkey):
     sim = get_object_or_404(Sim, pk = simkey)
     flightOperator = get_object_or_404(FlightOperator, user = request.user)
     subsystem = _get_fo_subsystem(sim, flightOperator)
-    if subsystem == 'DIRECTOR':
+    if subsystem == 'Payload':
         return redirect('fo:acs', simkey)
-    elif subsystem == 'Comms':
+    elif subsystem == 'COMMS':
         return redirect('fo:comms', simkey)
     elif subsystem == 'ACS':
         return redirect('fo:acs', simkey)
