@@ -163,7 +163,7 @@ def submit(request, simkey):
         
         # Pass command to simcraft thread subsystem and add input console response
         if simThread == None:
-            response['consoleCommand'] = "Spacecraft Simulation for " + sim.sim_name + " has terminated execution"
+            response = ["Spacecraft Simulation for " + sim.sim_name + " has terminated execution"]
         elif subsystem == 'DIRECTOR':
             pass
         elif subsystem == 'Comms':
@@ -178,44 +178,6 @@ def submit(request, simkey):
         return HttpResponse(json.dumps(response)) # Sending an success response
     else:
         return HttpResponse("Request method is not a GET")
-
-###############################################################################
-def fetchdata(request, simkey):
-    if request.method == 'GET':
-        # Get sim and flight operator subsystem
-        sim = Sim.objects.get(pk = simkey)
-        flightOperator = get_object_or_404(FlightOperator, user = request.user)
-        subsystem = _get_fo_subsystem(sim, flightOperator)
-        
-        # Define data strucutre to be returned
-        data = {}
-        data['output'] = []
-        data['input'] = []
-        
-        # Get simcraft thread
-        simThread = None
-        thread_id = sim.sim_identifier
-        for thread in threading.enumerate():
-            if thread.ident == thread_id:
-                simThread = thread
-        
-        if simThread == None:
-            data['output'].append("Spacecraft Simulation for " + sim.sim_name + " has terminated execution")
-            data['input'].append("Spacecraft Simulation for " + sim.sim_name + " has terminated execution")
-        elif subsystem == 'DIRECTOR':
-            data['input'] = simThread.subsystems['Payload'].commandLog
-        elif subsystem == 'Comms':
-            data['input'] = simThread.subsystems['COMMS'].commandLog
-        elif subsystem == 'ACS':
-            data['input'] = simThread.subsystems['ACS'].commandLog
-        elif subsystem == 'EPS':
-            data['input'] = simThread.subsystems['EPS'].commandLog
-        elif subsystem == 'TCS':
-            data['input'] = simThread.subsystems['TCS'].commandLog
-        
-        return HttpResponse(json.dumps(data)) # Sending an success response
-    else:
-        return HttpResponse("Request method is not GET")
     
 ###############################################################################
 def acsFetchdata(request, simkey):
@@ -367,22 +329,10 @@ def fetchcommands(request, simkey):
         if simThread == None:
             data['commandOptions'].append("Spacecraft Simulation for " + sim.sim_name + " has terminated execution")
             data['previousCommands'].append("Spacecraft Simulation for " + sim.sim_name + " has terminated execution")
-        #if subsystem == 'DIRECTOR':
-        #    for item in sim.director_command_buffer.all():
-        #        data['input'].append(item.buffer_item)
-        #elif subsystem == 'Comms':
-        #    for item in sim.COMMS_command_buffer.all():
-        #        data['input'].append(item.buffer_item)
-        elif subsystem == 'ACS':
-            data['commandOptions'] = simThread.subsystems['ACS'].commands
-            data['previousCommands'] = simThread.subsystems['ACS'].consoleLog
-        #elif subsystem == 'EPS':
-        #    for item in sim.EPS_command_buffer.all():
-        #        data['input'].append(item.buffer_item)
-        #elif subsystem == 'TCS':
-        #    for item in sim.TCS_command_buffer.all():
-        #        data['input'].append(item.buffer_item)
-        
+        else:
+            data['commandOptions'] = simThread.subsystems[subsystem].commands
+            data['previousCommands'] = simThread.subsystems[subsystem].consoleLog
+
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:
         return HttpResponse("Request method is not GET")
@@ -410,17 +360,17 @@ def _get_fo_subsystem(simobj, flightOperator):
     subsystem = 'UNKNOWN'
     if simobj.flight_director.all():
         if flightOperator == simobj.flight_director.all()[0]:
-            subsystem = 'DIRECTOR'
+            subsystem = "Payload"
     if simobj.COMMS_fo.all():
         if flightOperator == simobj.COMMS_fo.all()[0]:
-            subsystem = 'Comms'
+            subsystem = "COMMS"
     if simobj.ACS_fo.all():
         if flightOperator == simobj.ACS_fo.all()[0]:
-            subsystem = 'ACS'
+            subsystem = "ACS"
     if simobj.EPS_fo.all():
         if flightOperator == simobj.EPS_fo.all()[0]:
-            subsystem = 'EPS'
+            subsystem = "EPS"
     if simobj.TCS_fo.all():   
         if flightOperator == simobj.TCS_fo.all()[0]:
-            subsystem = 'TCS'
+            subsystem = "TCS"
     return subsystem

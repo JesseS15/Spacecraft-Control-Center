@@ -1,43 +1,10 @@
 // fosim.js
 // Purpose: Refresh simcraft attributes and submit flight operator inputs on the fo sim page.
 
+// Create resizeable terminal
 const terminal1 = document.getElementById('terminal1');
 const terminal2 = document.getElementById('terminal2');
 const input = document.getElementById('input');
-
-fetchcommands();
-
-input.addEventListener('keyup', function (event) {
-  if (event.keyCode === 13) {
-    event.preventDefault();
-    const command = this.value.trim();
-    this.value = '';
-
-    $.ajax(
-        {
-          // fo/views.submit
-          url: '../submit',
-          type: 'GET',
-          dataType: 'json',
-          
-          data:{
-              cmd: command,
-          },
-
-          success: function( data )
-          {
-            for (var i = 0; i < data.length; i++) {
-              const output = document.createElement('p');
-              output.textContent = `${data[i]}`;
-              terminal2.appendChild(output);
-            }
-            terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
-          }
-        })
-  }
-});
-
-// Resize
 
 const resizable = document.querySelector('.resizable');
 const handle = document.querySelector('.resizable-handle');
@@ -58,6 +25,38 @@ function stopResize(e) {
   window.removeEventListener('mousemove', resize);
   window.removeEventListener('mouseup', stopResize);
 }
+
+// Add enter key event listener to command console
+input.addEventListener('keyup', function (event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    const command = this.value.trim();
+    this.value = '';
+
+    $.ajax(
+        {
+          // fo/views.submit
+          url: '../submit',
+          type: 'GET',
+          dataType: 'json',
+          
+          data:{
+              cmd: command,
+          },
+
+          success: function( data )
+          {
+            terminal2.innerText = '';
+            for (var i = 0; i < data.length; i++) {
+              const output = document.createElement('p');
+              output.textContent = `${data[i]}`;
+              terminal2.appendChild(output);
+            }
+            terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
+          }
+        })
+  }
+});
 
 // Get Simcraft Commands
 function fetchcommands(){
@@ -86,3 +85,4 @@ function fetchcommands(){
       }
   });
 }
+fetchcommands();
