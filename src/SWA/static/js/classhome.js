@@ -26,7 +26,7 @@ window.addEventListener("click", function(event){
         //document.getElementById("test").innerHTML = '';
         modal4.style.display = "none";
     }else{
-        modal4.style.position ="relative";
+        modal4.style.position ="fixed";
         modal4.style.zIndex = "1";
         modal4.style.margin = "auto auto";
         modal4.style.width = ""; 

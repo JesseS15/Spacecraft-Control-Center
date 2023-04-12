@@ -68,9 +68,10 @@ window.addEventListener("click", function(event){
         //document.getElementById("test").innerHTML = '';
         modal1.style.display = "none";
     }else{
-        modal1.style.position = "relative";
-        modal1.style.zIndex = "1";
+        modal1.style.position = "fixed";
+        modal1.style.zIndex = "2";
         modal1.style.margin = "auto auto";
         modal1.style.width = ""; 
+
     }
 });

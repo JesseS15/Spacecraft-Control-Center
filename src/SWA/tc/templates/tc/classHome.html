@@ -15,7 +15,7 @@
     <div class="split left">
         <center>
             <div class = "header" id = "header">
-              <table class ="invisibleheader" id = "invisibleHeader" align = "center" border = "0" style="width: 95%; margin-left: 5%; font-size: 18px;">
+              <table class ="invisibleheader" id = "invisibleHeader" align = "center" border = "0" style="width: 95%; margin-left: 5%; font-size: 18px; z-index: -1;">
                 <thead>
                   <th style = "color: white;">Sim List</th>
                   <th><button class = "button" id="addsim" onclick="window.location ='{{ class_name }}/newSim';"><span class="glyphicon glyphicon-plus"></span>&nbsp;New Sim</button></th>
@@ -23,7 +23,7 @@
               </table>     
             </div>
         </center>
-        <div class="notcentered">
+        <div class="notcentered" style = "z-index: -1;">
           <table id = "simtable" align = "left" border="2">
             <thead>
               <th class="one"></th>
@@ -37,29 +37,6 @@
               <td>{{sim.status}}</td>
             </tr>
           {% endfor %}
-          <div id="modal4" class="modal">
-            <div class="modal-content"style="width: 95%">
-              <div class="modal-header">
-                <span class="close" id="span4">&times;</span>    
-              </div>
-              <div class="popup-body">
-                <form name = "SimEditForm" method="POST" style="color: black; padding:2%; border-radius:1%;width: 60vw; border-color: black;">
-                  {% csrf_token %}
-                  <fieldset class="form-group">
-                    <h2 id = "test" name = 'test'></h2>
-                    <div>
-                    <input id="myInput" type="text" name="sim_name" value='default' readonly/>
-                    {{ form3|crispy}}
-                  </fieldset>
-                    <button style="background: black; padding:2%; text-size-adjust: auto; color:white; width:95%" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-check"></span> &nbsp;Save and Apply</button>
-                </div>
-                  <br />
-                    <a href="{% url 'tc:home' %}" style="text-decoration: underline; color: white; padding:2%; cursor:pointer;">Exit</a></sub>
-                </form>
-                <script src = "/static/js/classHome.js"></script>
-              </div>
-            </div>
-          </div>
           </table> 
             
         </div>
@@ -79,18 +56,53 @@
         <div class="notcentered">
           <table id="missiontable" align = "right" border="2">
             <thead>
-              <th>Name</th>
-              <th>Status</th>
+              <th style = "width: 50%;">Name</th>
+              <th style = "border-right-color: navy !important;"></th>
+              <th style = "border-right-color: navy !important; border-left-color: navy;">Final</th>
+              <th style = "border-right-color: navy !important;"></th>
+              <tr>
+                <th></th>
+                <th>Roll</th>
+                <th>Pitch</th>
+                <th>Yaw</th>
+              </tr>
             </thead>
              {% for mission in missions %}
             <tr>
               <td><a class = "missionlist">{{ mission }}</a></td>
-              <td></td>
+              <td>{{mission.final_roll}}</td>
+              <td>{{mission.final_pitch}}</td>
+              <td>{{mission.final_yaw}}</td>
             </tr>
           {% endfor %}
           </table> 
         </div>
     </div>
+    <center>
+    <div id="modal4" class="modal" style = "padding-top: 15%;">
+      <div class="modal-content"style="width: 65%">
+        <div class="modal-header">
+          <span class="close" id="span4">&times;</span>    
+        </div>
+        <div class="popup-body">
+          <form name = "SimEditForm" method="POST" style="color: black; padding:2%; border-radius:1%;width: 60vw; border-color: black;">
+            {% csrf_token %}
+            <fieldset class="form-group">
+              <h2 id = "test" name = 'test'></h2>
+              <div>
+              <input id="myInput" type="text" name="sim_name" value='default' readonly/>
+              {{ form3|crispy}}
+            </fieldset>
+              <button style="background: black; padding:2%; text-size-adjust: auto; color:white; width:95%" class="btn btn-outline-info" type="submit"><span class="glyphicon glyphicon-check"></span> &nbsp;Save and Apply</button>
+          </div>
+            <br />
+              <a href="{% url 'tc:home' %}" style="text-decoration: underline; color: white; padding:2%; cursor:pointer;">Exit</a></sub>
+          </form>
+          <script src = "/static/js/classHome.js"></script>
+        </div>
+      </div>
+    </div>
+  </center>
     {% else %}
 
     {% endif %}
