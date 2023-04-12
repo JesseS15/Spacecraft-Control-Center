@@ -164,16 +164,10 @@ def submit(request, simkey):
         # Pass command to simcraft thread subsystem and add input console response
         if simThread == None:
             response = ["Spacecraft Simulation for " + sim.sim_name + " has terminated execution"]
-        elif subsystem == 'DIRECTOR':
-            pass
-        elif subsystem == 'Comms':
-            pass
-        elif subsystem == 'ACS':
-            response = simThread.subsystems['ACS'].command(command)
-        elif subsystem == 'EPS':
-            pass
-        elif subsystem == 'TCS':
-            pass
+        elif subsystem != 'UNKNOWN':
+            response = simThread.subsystems[subsystem].command(command)
+        else:
+            response = []
 
         return HttpResponse(json.dumps(response)) # Sending an success response
     else:
@@ -329,7 +323,7 @@ def fetchcommands(request, simkey):
         if simThread == None:
             data['commandOptions'].append("Spacecraft Simulation for " + sim.sim_name + " has terminated execution")
             data['previousCommands'].append("Spacecraft Simulation for " + sim.sim_name + " has terminated execution")
-        else:
+        elif subsystem != 'UNKNOWN':
             data['commandOptions'] = simThread.subsystems[subsystem].commands
             data['previousCommands'] = simThread.subsystems[subsystem].consoleLog
 
