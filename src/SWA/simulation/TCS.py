@@ -169,7 +169,7 @@ class TCS(Subsystem):
             if self.checks[key]:
                 outputString.append(key + " -- REACHED")
             else:
-                outputString.append(object)(key + " -- NOT REACHED, REFRESH SYSTEM")
+                outputString.append(key + " -- NOT REACHED, REFRESH SYSTEM")
         return outputString    
 
     # Main menu option 2 with sub-menu option as subsystem string
