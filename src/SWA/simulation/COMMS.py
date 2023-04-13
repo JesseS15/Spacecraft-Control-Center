@@ -8,11 +8,8 @@ class COMMS(Subsystem):
         "Antenna Status": True
     }
 
-    frequency = random.randrange(12.0, 18.0)
-    frequencyRange = [12.0, 18.0]
-
-    gain = random.randrange(25, 30)
-    gainRange = [25, 30]
+    frequency = random.randrange(12.000, 14.000)
+    currentGain = random.randrange(10, 65)
 
     allTelemetryDataGood = False
     allTelemetryData = {"ACS": False, "EPS": False, "TCS": False, "Payload": False}
@@ -25,13 +22,13 @@ class COMMS(Subsystem):
         "Your task is to verify that signal lock is established between the Ku-Band satellite antenna and the ground station antenna, transmit the target image to the ground station, process the image, and display the results.",
         "1.) Status Checks",
         "2.) Verify Signal",
-        "3.) Signal Gain",
-        "4.) Signal Frequency",
+        "3.) Increase Signal Gain",
+        "4.) Decrease Signal Gain",
         "5.) Download Telemetry Data",
         "6.) Process Telemetry Data",
         "7.) Display Image"
     ]
-
+    
     def __init__(self):
         super().__init__()
         self.menu = 'tl'
@@ -85,9 +82,14 @@ class COMMS(Subsystem):
             
         self.consoleLog.extend(consoleResponse)
         return self.consoleLog
-    
-    def update(self):
-        self.gain += random.randrange(-5.0, 5.0)
+
+    def finalGainCheck(self):
+        randomGain = random.randrange(20, 55)
+        if (randomGain %2 == 0 ): #final number is even; odd # is harmonic
+            return randomGain
+        else:
+            finalGain = randomGain - 1 #forces even # gain
+            return finalGain
 
     # Main menu option 1
     def systemChecks(self):
@@ -103,28 +105,23 @@ class COMMS(Subsystem):
 
     # Main menu option 2
     def verifySignal(self):
+        finalGain = self.finalGainCheck()
         output = []
-        if (self.frequency < self.frequencyRange[0] or self.frequency > self.frequencyRange[1]):
-            output[0] = "The SimCrafts current signal frequency is OUTSIDE the required bandwidth of 12.000-18.000 GHz"
-        else:
-            output[0] = "The SimCrafts current signal frequency is INSIDE the required bandwidth of 12.000-18.000 GHz"
-        
-        if (self.gain < self.gainRange[0] or self.gain > self.gainRange[1]):
-            output[1] = "The SimCrafts current signal gain is OUTSIDE the required strength of 25-30 dB"
-        else:
-            output[1] = "The SimCrafts current signal gain is INSIDE the required strength of 25-30 dB"
-        
+        if (self.currentGain > (finalGain - 10)):
+            output[0] = "SIGNAL GARBLED! Increase the Gain and verify the signal again."
+        elif (self.currentGain %2 != 0): #checking if number is odd
+            output[1] = "UNWANTED HARMONICS DETECTED - GAIN TOO HIGH! Decrease the Gain and verify the signal again."
+        elif self.currentGain in range(finalGain-5, finalGain+5):
+            output [2] = "SIGNAL CAPTURED"
         return output
-
-    # Main menu option 3
-    def signalGain(self, newGain):
-        self.gain += newGain
-        return ("Gain has changed by " + str(newGain) + "dB")
-
-    # Main menu option 4
-    def signalFrequency(self, newFreq):
-        self.frequency += newFreq
-        return ("Frequency has changed by " + newFreq + "GHz")
+        
+    def increaseGain(self, newGain):
+        self.currentGain += newGain
+        return self.currentGain
+    
+    def decreaseGain(self, newGain):
+        self.currentGain -= newGain
+        return self.currentGain
 
     # Main menu option 5
     # telemetryData needs to be passed from SimObject

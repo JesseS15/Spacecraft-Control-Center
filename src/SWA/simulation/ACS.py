@@ -212,6 +212,7 @@ class ACS(Subsystem):
         pitchDifference = self.finalValues["pitch"] - self.orientation["pitch"]
         yawDifference = self.finalValues["yaw"] - self.orientation["yaw"]
         
+        #NOTE: the input can only change by 10 degrees and the correct range is within 10 degrees- theyre seperate values
         # Check if roll, pitch, and yaw are in acceptable range from final values
         if (abs(rollDifference) <= 10):
             response = ["The SimCraft's Roll Alignment is Reached"]
