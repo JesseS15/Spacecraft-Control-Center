@@ -1,7 +1,6 @@
-from simulation.Subsystem import Subsystem
 import random
 
-class TCS(Subsystem):
+class TCS():
 
     ACSThermal = {
         "CMG": random.randrange(-50,50),

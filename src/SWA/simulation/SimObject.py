@@ -3,7 +3,7 @@ from simulation.ACS import ACS
 from simulation.TCS import TCS
 from simulation.EPS import EPS
 from simulation.COMMS import COMMS
-from simulation.payload import payload
+from simulation.Payload import Payload
 import threading
 import time
 import random
@@ -44,7 +44,7 @@ class SimObject(threading.Thread):
         self.subsystems["EPS"] = EPS()
         self.subsystems["COMMS"] = COMMS()
         self.subsystems["TCS"] = TCS()
-        self.subsystems["Payload"] = payload()
+        self.subsystems["Payload"] = Payload()
 
     def checkTelemetry(self):
         # Using flag telemetryTransferComplete rather than calling function (that is for user command)

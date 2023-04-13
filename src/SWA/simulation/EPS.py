@@ -1,7 +1,6 @@
-from simulation.Subsystem import Subsystem
 import random
 
-class EPS(Subsystem):
+class EPS():
     
     checks = {
         'Uplink' : random.choice([True, False]),

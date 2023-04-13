@@ -1,7 +1,6 @@
-from simulation.Subsystem import Subsystem
 import random
 
-class ACS(Subsystem):
+class ACS():
 
     orientation = {
         "roll":0,
@@ -187,8 +186,6 @@ class ACS(Subsystem):
         return ("Pitch updated by " + str(newPitch) + " degrees")
     
     def updateYaw(self, newYaw):
-        if (newYaw > 10):
-            newYaw = 10
         if (newYaw > 0):
             if(self.orientation['yaw'] + newYaw > 180):
                 diff = self.orientation['yaw'] + newYaw

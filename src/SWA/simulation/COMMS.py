@@ -1,7 +1,6 @@
-from simulation.Subsystem import Subsystem
 import random
 
-class COMMS(Subsystem):
+class COMMS():
 
     checks = {
         "On-board Computer": True,
