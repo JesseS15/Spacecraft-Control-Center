@@ -220,13 +220,21 @@ def epsFetchdata(request, simkey):
                 
         if simThread != None:
             # Define data to be returned
+            # Power Distribution
             data['acs_power'] = simThread.subsystems['EPS'].params['power distribution']['ACS']
             data['eps_power'] = simThread.subsystems['EPS'].params['power distribution']['EPS']
             data['tcs_power'] = simThread.subsystems['EPS'].params['power distribution']['TCS']
             data['commns_power'] = simThread.subsystems['EPS'].params['power distribution']['COMMS']
             data['payload_power'] = simThread.subsystems['EPS'].params['power distribution']['Payload']
+            
+            # Power Generated
             data['articulation'] = simThread.subsystems['EPS'].params['solar panel angle']
             data['total_power'] = simThread.subsystems['EPS'].params['total power']
+            
+            # Battery
+            
+            # Telemetry Transfer
+            data['telemetry_transfer'] = simThread.subsystems['EPS'].telemetryTransferComplete
         
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:

@@ -60,7 +60,7 @@ class ACS(Subsystem):
         
         if self.menu == "tl":
             if command_split[0] == "1":
-                consoleResponse.append("Checking Attitude Systems…")
+                consoleResponse.append("Checking Attitude Systems...")
                 consoleResponse.append("The SimCraft’s current Longitude is: " + str(self.currentLongitude))
                 consoleResponse.append("eta: " + str(self.longMin()) + " seconds until active range.")
             elif command_split[0] == "2":

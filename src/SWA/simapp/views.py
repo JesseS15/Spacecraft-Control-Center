@@ -113,9 +113,9 @@ def newSim(request, class_name):
             # Create and start new sim thread
             simThread = SimObject(final_values, pk=sim.pk)
             simThread.start()
-            RegularFunctions.repopulateAllSimsDict(All_Sims_Dict)
-            All_Sims_Dict[sim.sim_identifier] = simThread
-            All_Sims_Dict[sim.sim_identifier].check()
+            #RegularFunctions.repopulateAllSimsDict(All_Sims_Dict)
+            #All_Sims_Dict[sim.sim_identifier] = simThread
+            #All_Sims_Dict[sim.sim_identifier].check()
 
             print('Dictionary: ',All_Sims_Dict)
             Class.objects.get(class_name = class_name).sims.add(sim)

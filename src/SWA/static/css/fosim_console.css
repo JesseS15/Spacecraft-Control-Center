@@ -12,6 +12,7 @@
     border-top: 1px solid #ccc;
     font-family: monospace;
     z-index: 1;
+    word-break: break-all;
 }
 .left-side {
     width: 50%;
