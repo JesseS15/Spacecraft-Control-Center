@@ -54,14 +54,16 @@ input.addEventListener('keyup', function (event) {
 
             success: function( data )
             {
-              // Clear right terminal and append subsystem command log
-              terminal2.innerText = '';
-              for (var i = 0; i < data.length; i++) {
-                const output = document.createElement('p');
-                output.textContent = `${data[i]}`;
-                terminal2.appendChild(output);
+              if (data['consoleLog'].length > terminal2.childElementCount){
+                // Clear right terminal and append subsystem command log
+                terminal2.innerText = '';
+                for (var i = 0; i < data['consoleLog'].length; i++) {
+                    const output = document.createElement('p');
+                    output.textContent = `${data['consoleLog'][i]}`;
+                    terminal2.appendChild(output);
+                }
+                terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
               }
-              terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
             }
           })
         }
