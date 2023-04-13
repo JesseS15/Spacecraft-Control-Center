@@ -30,41 +30,32 @@ function stopResize(e) {
 input.addEventListener('keyup', function (event) {
   if (event.keyCode === 13) {
     event.preventDefault();
-    const str_command = this.value.trim();
+    const command = this.value.trim();
     this.value = '';
 
-    // Only allow user-input that can be cast to a number
-    if(isNaN(str_command)){
-      const output = document.createElement('p');
-      output.textContent = `${"Invalid Command: " + str_command + ", command must be a number"}`;
-      terminal2.appendChild(output);
-      terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
-    }
-    else{
-      $.ajax(
-          {
-            // fo/views.submit
-            url: '../submit',
-            type: 'GET',
-            dataType: 'json',
-            
-            data:{
-                cmd: parseFloat(str_command),
-            },
+    $.ajax(
+        {
+          // fo/views.submit
+          url: '../submit',
+          type: 'GET',
+          dataType: 'json',
+          
+          data:{
+              cmd: command,
+          },
 
-            success: function( data )
-            {
-              // Clear right terminal and append subsystem command log
-              terminal2.innerText = '';
-              for (var i = 0; i < data.length; i++) {
-                const output = document.createElement('p');
-                output.textContent = `${data[i]}`;
-                terminal2.appendChild(output);
-              }
-              terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
+          success: function( data )
+          {
+            // Clear right terminal and append subsystem command log
+            terminal2.innerText = '';
+            for (var i = 0; i < data.length; i++) {
+              const output = document.createElement('p');
+              output.textContent = `${data[i]}`;
+              terminal2.appendChild(output);
+            }
+            terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
           }
         })
-      }
   }
 });
 

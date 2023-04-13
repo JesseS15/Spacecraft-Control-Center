@@ -21,7 +21,6 @@ class ACS():
 
     telemetryTransferComplete = False
     
-    # Console infastructure
     menu = ''
     commands = [
         "WELCOME TO THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE",
@@ -53,13 +52,14 @@ class ACS():
     def command(self, command):
         
         self.consoleLog.append("$ " + command)
+        
         consoleResponse = []
         
         command_split = command.lower().split(" ")
         
         if self.menu == "tl":
             if command_split[0] == "1":
-                consoleResponse.append("Checking Attitude Systems...")
+                consoleResponse.append("Checking Attitude Systems…")
                 consoleResponse.append("The SimCraft’s current Longitude is: " + str(self.currentLongitude))
                 consoleResponse.append("eta: " + str(self.longMin()) + " seconds until active range.")
             elif command_split[0] == "2":
@@ -80,7 +80,7 @@ class ACS():
                 consoleResponse.append("GREAT WORK ON THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE!")
                 #TODO: create instance where user cannot enter commands after subsys finished
             else:
-                consoleResponse.append("Invalid Command: " + command)
+                consoleResponse.append("Invalid Command " + command)
 
         elif self.menu == "cmgRoll":
             consoleResponse.append(self.updateRoll(int(command)))
