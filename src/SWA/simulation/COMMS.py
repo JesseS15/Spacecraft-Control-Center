@@ -9,7 +9,7 @@ class COMMS(Subsystem):
     }
 
     frequency = random.randrange(12.000, 14.000)
-    currentGain = random.randrange(10, 65)
+    currentGain = 36 #random.randrange(10, 65)
 
     allTelemetryDataGood = False
     allTelemetryData = {"ACS": False, "EPS": False, "TCS": False, "Payload": False}
@@ -50,8 +50,8 @@ class COMMS(Subsystem):
                 consoleResponse.append("Verifying Signal...")
                 consoleResponse.extend(self.verifySignal())
             elif command_split[0] == "3":
-                consoleResponse.append("How much do you want to change the Signal Gain (in dB)?")
-                self.menu = "signalGain"
+                consoleResponse.append("How much do you want to decrease the Signal Gain (in dB)?")
+                self.menu = "signalGainDecrease"
             elif command_split[0] == "4":
                 consoleResponse.append("How much do you want to change the Signal Frequency (in GHz)?")
                 self.menu = "signalFreq"
@@ -69,8 +69,8 @@ class COMMS(Subsystem):
             else:
                 consoleResponse.append("Invalid Command " + command)
         
-        elif self.menu == "signalGain":
-            consoleResponse.append(self.signalGain(int(command)))
+        elif self.menu == "signalGainDecrease":
+            consoleResponse.append(newGain(int(command)))
             self.menu = "tl"
     
         elif self.menu == "signalFreq":
@@ -84,12 +84,12 @@ class COMMS(Subsystem):
         return self.consoleLog
 
     def finalGainCheck(self):
-        randomGain = random.randrange(20, 55)
-        if (randomGain %2 == 0 ): #final number is even; odd # is harmonic
-            return randomGain
-        else:
-            finalGain = randomGain - 1 #forces even # gain
-            return finalGain
+       # randomGain = random.randrange(35,37)
+       # if (randomGain %2 == 0 ): #final number is even; odd # is harmonic
+           # return randomGain
+        #else:
+            #finalGain = randomGain - 1 #forces even # gain
+           return finalGain
 
     # Main menu option 1
     def systemChecks(self):
@@ -105,23 +105,39 @@ class COMMS(Subsystem):
 
     # Main menu option 2
     def verifySignal(self):
-        finalGain = self.finalGainCheck()
-        output = []
-        if (self.currentGain > (finalGain - 10)):
-            output[0] = "SIGNAL GARBLED! Increase the Gain and verify the signal again."
-        elif (self.currentGain %2 != 0): #checking if number is odd
-            output[1] = "UNWANTED HARMONICS DETECTED - GAIN TOO HIGH! Decrease the Gain and verify the signal again."
-        elif self.currentGain in range(finalGain-5, finalGain+5):
-            output [2] = "SIGNAL CAPTURED"
-        return output
+        if self.checks['Antenna Status'] == False:
+          return 'SIGNAL GARBLED! Increase gain to 38 dB and verify the signal again.'
+        else:
+            return 'Antenna Status: VALID'
         
-    def increaseGain(self, newGain):
+    def increaseGain(self):
+        newGain = input(f'Input gain increase: \n')
+        print('GAIN INCREASED -- Please wait...')
         self.currentGain += newGain
         return self.currentGain
     
-    def decreaseGain(self, newGain):
+    def decreaseGain(self):
         self.currentGain -= newGain
+        newGain = input(f'Input gain decrease: \n')
+        print('GAIN DECREASED -- Please wait...')
         return self.currentGain
+    
+    def gainReset(self):
+        self.currentGain = 36
+        return self.currentGain
+    
+    def checkGain(self):
+        if self.currentGain == 38:
+            print('SIGNAL CAPTURED. Resetting to original gain...')
+            self.gainReset()
+            self.checks['Antenna Status'] = True
+        elif self.currentGain > 38:
+           print('UNWANTED HARMONICS DETECTED — gain too high! Reduce to 38 dB') 
+           self.decreaseGain() 
+        else:
+            print('UNABLE TO CAPTURE SIGNAL — increase gain to 38 dB')
+            self.increaseGain()
+
 
     # Main menu option 5
     # telemetryData needs to be passed from SimObject
