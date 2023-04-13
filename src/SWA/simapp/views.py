@@ -13,10 +13,6 @@ from tc.forms import SimCreationForm
 from fo.models import FlightOperator
 from simulation.SimObject import SimObject
 
-import simapp.funcs as RegularFunctions
-
-All_Sims_Dict = { }
-
 ############################################################################
 @login_required(login_url='/login/')
 def newSim(request, class_name):
@@ -113,11 +109,7 @@ def newSim(request, class_name):
             # Create and start new sim thread
             simThread = SimObject(final_values, pk=sim.pk)
             simThread.start()
-            RegularFunctions.repopulateAllSimsDict(All_Sims_Dict)
-            All_Sims_Dict[sim.sim_identifier] = simThread
-            All_Sims_Dict[sim.sim_identifier].check()
 
-            print('Dictionary: ',All_Sims_Dict)
             Class.objects.get(class_name = class_name).sims.add(sim)
             flight_operators = FlightOperator.objects.all()
             print(type(flight_operators))

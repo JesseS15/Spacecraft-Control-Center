@@ -1,7 +1,6 @@
-from simulation.Subsystem import Subsystem
 import random
 
-class COMMS(Subsystem):
+class COMMS():
 
     checks = {
         "On-board Computer": True,
@@ -90,6 +89,9 @@ class COMMS(Subsystem):
         #else:
             #finalGain = randomGain - 1 #forces even # gain
            return finalGain
+
+    def update(self):
+        pass
 
     # Main menu option 1
     def systemChecks(self):

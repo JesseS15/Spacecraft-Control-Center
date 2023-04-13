@@ -1,7 +1,6 @@
-from simulation.Subsystem import Subsystem
 import random
 
-class payload(Subsystem):
+class Payload():
 
     checks = {
         'Optical Electronics' : random.choice([True, False]),

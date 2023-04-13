@@ -1,7 +1,6 @@
-from simulation.Subsystem import Subsystem
 import random
 
-class TCS(Subsystem):
+class TCS():
 
     ACSThermal = {
         "CMG": random.randrange(-50,50),
@@ -121,26 +120,26 @@ class TCS(Subsystem):
         
         elif self.menu == "verifySubsys":
             if command_split[0] == "1":
-                verifySubsystem("ACS")
+                self.verifySubsystem("ACS")
             elif command_split[0] == "2":
-                verifySubsystem("EPS")
+                self.verifySubsystem("EPS")
             elif command_split[0] == "3":
-                verifySubsystem("Payload")
+                self.verifySubsystem("Payload")
             elif command_split[0] == "4":
-                verifySubsystem("COMMS")
+                self.verifySubsystem("COMMS")
             else:
                 consoleResponse.append("Invalid Command " + command)
                 self.menu = "tl"
                 
         elif self.menu == "verifySubsys":
             if command_split[0] == "1":
-                verifySubsystem("ACS")
+                self.verifySubsystem("ACS")
             elif command_split[0] == "2":
-                verifySubsystem("EPS")
+                self.verifySubsystem("EPS")
             elif command_split[0] == "3":
-                verifySubsystem("Payload")
+                self.verifySubsystem("Payload")
             elif command_split[0] == "4":
-                verifySubsystem("COMMS")
+                self.verifySubsystem("COMMS")
             else:
                 consoleResponse.append("Invalid Command " + command)
                 self.menu = "tl"

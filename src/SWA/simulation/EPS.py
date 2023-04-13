@@ -1,41 +1,32 @@
-from simulation.Subsystem import Subsystem
-import simulation.EPSSolarPanelCharging as Charging
-import simulation.EPSInitializing as EPSStart
-import simulation.EPSPowerDistribution as PD
-from datetime import datetime
 import random
 
-class EPS(Subsystem):
-
-    params = {
-        'total power' : EPSStart.initialize(),
-        'available power' : EPSStart.initialize(),
-        'expended power' : 0.0,
-        'battery capacity' : Charging.setupBatteries(),
-        'current battery charge' : Charging.setupBatteries(),
-        'time of last check' : datetime.now(),
-        'simcraft power restrictions' : {'EPS' : 0.0,
-                                        'TCS' : 0.0,
-                                        'COMMS' : 0.0,
-                                        'ACS' : 0.0,
-                                        'Payload' : 0.0},
-        'power distribution' : {'EPS' : 0.0,
-                                'TCS' : 0.0,
-                                'COMMS' : 0.0,
-                                'ACS' : 0.0,
-                                'Payload' : 0.0},
-        'solar panel angle' : Charging.generateRandomAngle()
-        }  
+class EPS():
     
     checks = {
         'Uplink' : random.choice([True, False]),
         'Bus Connection' : random.choice([True, False]),
         'Articulation Gear' : random.choice([True, False])
-        }
+    }
+
+    distribution = {
+        "ACS": 16,
+        "EPS": 16,
+        "TCS": 16,
+        "COMMS": 16,
+        "Payload": 16
+    }
+
+    totalPower = 80
     
-    allChecks = False
-    verifyStatus = False
-    
+    statusGood = False
+
+    telemetryTransferComplete = False
+    atFullPower = False
+
+    solarPanelAngleRange = [-10, 10]
+    solarPanelAngle = random.randint(-90, 90)
+    solarPanelAngleGood = False
+
     # Console infastructure
     menu = ''
     consoleLog = []
@@ -51,11 +42,6 @@ class EPS(Subsystem):
     
     def __init__(self):
         super().__init__()
-        self.params['simcraft power restrictions']['ACS'] = self.params['total power'] * 0.16
-        self.params['simcraft power restrictions']['EPS'] = self.params['total power'] * 0.16
-        self.params['simcraft power restrictions']['TCS'] = self.params['total power'] * 0.16
-        self.params['simcraft power restrictions']['COMMS'] = self.params['total power'] * 0.16
-        self.params['simcraft power restrictions']['COMMS'] = self.params['total power'] * 0.16
         self.menu = 'tl'
         print("New instance of EPS class created")
         
@@ -70,26 +56,26 @@ class EPS(Subsystem):
         if self.menu == "tl":
             if command_split[0] == "1":
                 consoleResponse.append("Checking Power Systems...")
-                consoleResponse.extend(self.statusChecks())
+                consoleResponse.extend(self.systemChecks())
             elif command_split[0] == "2":
                 consoleResponse.append("Verifying Power Distribution...")
-                consoleResponse.extend(self.verifyPowerDist())
+                consoleResponse.extend(self.verifyPowerDistribution())
             elif command_split[0] == "3":
                 consoleResponse.append("Redistributing Resources...")
-                consoleResponse.extend(self.fullPower())
+                consoleResponse.append(self.fullPower())
             elif command_split[0] == "4":
                 consoleResponse.append("How much do you want to articulate the solar panels by (in Degrees)?")
                 self.menu = "panelArticulate"
             elif command_split[0] == "5":
                 consoleResponse.append("Transfering EPS Telemetry...")
-                consoleResponse.append( self.telemtryTransfer())
+                consoleResponse.append( self.transferTelemetry())
                 consoleResponse.append("GREAT WORK ON THE ELECTRICAL POWER SYSTEMS (EPS) CONSOLE!")
                 #TODO: create instance where user cannot enter commands after subsys finished
             else:
                 consoleResponse.append("Invalid Command " + command)
         
         elif self.menu == "panelArticulate":
-            consoleResponse.append(self.articulate(int(command)))
+            consoleResponse.append(self.articulatePanel(int(command)))
             self.menu = "tl"
 
         else:
@@ -97,116 +83,67 @@ class EPS(Subsystem):
             
         self.consoleLog.extend(consoleResponse)
         return self.consoleLog
+    
+    # Main menu option 1
+    def systemChecks(self):
+        output = []
+        index = 0
+        self.statusGood = True
+        for key in self.checks:
+            self.checks[key] = random.choice([True, False])
+            if self.checks[key]:
+                output[index] = "The SimCrafts current " + key + " Status is REACHED"
+            else:
+                output[index] = "The SimCrafts current " + key + " Status is NOT REACHED"
+                self.statusGood = False
+            index += 1
+        return output
 
-    def update(self):
-        pass
+    # Main menu option 2
+    def verifyPowerDistribution(self):
+        output = []
+        index = 0
+        for key in self.distribution:
+            output[index] = "" + str(key) + " at %" + str(self.distribution[key]) + " power"
+            index += 1
+        output[index] = "Current power level is at %" + str(self.getCurrentTotalPower()) + ". 100% power is needed for mission completion."
+        return output
+    
+    def getCurrentTotalPower(self):
+        currentPower = 0
+        for key in self.distribution:
+            currentPower += self.distribution[key]
+        return currentPower
 
-    #EPS function for easy power updating ###############################
-    def updatePowerParams(self, availablePower, expendedPower, powerDistributed, subsystemName):
-        self.params['avialble power'] = availablePower
-        self.params['expended power'] = expendedPower
-        self.params['power distribution'][subsystemName] = powerDistributed
+    # Main menu option 3
+    def fullPower(self):
+        self.distribution["ACS"] = 26
+        self.distribution["COMMS"] = 26
+        self.atFullPower = True
+        return "System running at full power. Run Verify Power Distribution to verify."
 
-    #EPS time updates
-    def updateTimeParams(self):
-        self.params['time of last check'] = datetime.now()
-
-    #EPS Power Generating ###############################################
-    def updateBatteryStatus(self):
-        self.params['current battery charge'] = Charging.updateBatteryStatus(self.params)
-        self.updateTimeParams()
-
-    #EPS Solar Panel Angle
-    def articulateAngle(self, delta):
-        self.params['solar panel angle'] += Charging.checkAngleDeg(delta)
-
-    #EPS Power Distribution #############################################
-    def requestPower(self, requestedPower, subsystemName):
-        # Call to request power from EPS
-        availablePower, expendedPower, powerDistributed = PD.requestPower(requestedPower, subsystemName, self.params)
-        if requestedPower is None: return 0
-        if availablePower is None:
-            self.updatePowerParams(availablePower, expendedPower, powerDistributed, subsystemName)
-        return requestedPower
-
-    def returnPower(self, returnedPower, subsystemName):
-        # Call to return power to EPS
-        availablePower, expendedPower, powerDistributed = PD.returnPower(returnedPower, self.params, subsystemName)
-        self.updatePowerParams(availablePower, expendedPower, powerDistributed, subsystemName)
-
-    def calculateConsumedPower(self):
-        powerDistributed = self.params['power distributed']
-        total = 0.0
-        for key in powerDistributed:
-            total += powerDistributed[key]
-        self.params['expended power'] = total
-
-    #Returns for UI ########################################################
-    def UIReturns(self):
-        self.batteryStats = {'battery capacity' : self.params['battery capacity'],
-                             'current battery charge' : self.params['current battery charge']}
-        UI = {'power distribution' : self.params['power distributed'],
-              'battery status' : self.batteryStats,
-              'eps telem status' : self.verifyStatus}
-        return UI
-
-    #EPS Console Commands ##################################################
-    def statusChecks(self):
-        response = []
-        badChecks = [key for key, value in self.checks.items() if not value]
-        if not badChecks:
-            self.allChecks = True
-            response.append("No errors found")
+    # Main menu option 4
+    def articulatePanel(self, newAngle):
+        self.solarPanelAngle += newAngle
+        return "Solar panel angle updated by " + str(newAngle)
+    
+    def checkPanelAngle(self):
+        if (self.solarPanelAngle < self.solarPanelAngleRange[0] or self.solarPanelAngle > self.solarPanelAngleRange[1]):
+            self.solarPanelAngleGood = False
         else:
-            returnString="ERROR FOUND with : "
-            for key in badChecks:
-                response.append(key + ", ")
-        return response
-            
-    def refresh(self):
-        self.checks = {key: True for key in self.checks}
+            self.solarPanelAngleGood = True
 
-    def verifyPowerDist(self):
-        if not self.allChecks:
-            return ['All system checks not completed']
-        expendedPower = self.params['expended power']
-        totalPower = self.params['total power']
-        checkpoint = 0.8 * totalPower
-        currentOperating = expendedPower / checkpoint
-        if checkpoint > currentOperating:
-            return ["The spacecraft is currently operating at "+(currentOperating * 100)+"% power",
-                    "100% power is required for this mission activity",
-                    "Please set the power to 100%"]
-        self.verifyStatus = True
-        return ["Verifying Power...",
-                "Spacecraft now operating at 100% power"]
+    # Main menu option 5
+    def transferTelemetry(self):
+        if self.statusGood and self.solarPanelAngleGood and self.atFullPower:
+            self.telemetryTransferComplete = True
+            return "Telemetry transfer complete. EPS subsystem complete!"
+        else:
+            self.telemetryTransferComplete = False
+            return "Telemetry cannot be transfered"
+        
+    def update(self):
+        self.solarPanelAngle += random.randint(-1,1)
         
 
-    def fullPower(self):
-        outputString = []
-        outputString.append("The current solar panel angle is: "+str(self.params['solar panel angle'])+" degrees (away from the sun)" )
-        if self.params['solar panel angle'] > 10.0:
-            outputString.append("Solar panels must be within 10 degrees of the sun angle for increased power to the spacecraft")
-            return outputString
-        self.calculateConsumedPower()
-        if self.params['expended power'] < (self.params['total power'] * 0.8):
-            outputString.append('Not all systems running at max power')
-        return outputString
-
-    def articulate(self, delta):
-        self.articulateAngle(delta)
-        return "New angle is : " + str(self.params['solar panel angle'])
     
-    def telemtryTransfer(self):
-        if self.verifyStatus:
-            return("Data has been Transferred! GREAT WORK ON THE ELECTRICAL POWER SYSTEMS (EPS) CONSOLE")
-        else:
-            return("Verification process for EPS not completed")
-    
-    #Comms calls this function #######################################
-    def commsConfirmation(self):
-        if self.verifyStatus:
-            return True
-        else:
-            self.telemtryTransfer()
-            return False
