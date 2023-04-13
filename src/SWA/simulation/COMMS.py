@@ -90,6 +90,9 @@ class COMMS():
             finalGain = randomGain - 1 #forces even # gain
             return finalGain
 
+    def update(self):
+        pass
+
     # Main menu option 1
     def systemChecks(self):
         output = []
