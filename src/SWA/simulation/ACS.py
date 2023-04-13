@@ -229,12 +229,12 @@ class ACS(Subsystem):
         return response
 
     def systemChecks(self):
-        align = self.verifyAlignment
-        longitude = self.checkLongitude
+        align = self.verifyAlignment()
+        longitude = self.checkLongitude()
         return align, longitude
     
     def telemetryTransfer(self):
-        if (self.verifyAlignment and self.checkLongitude):
+        if (self.verifyAlignment() and self.checkLongitude()):
             self.telemetryTransferComplete = True
             return "Data has been Transferred!"
         else:

@@ -35,11 +35,11 @@ class SimObject(threading.Thread):
         sim = Sim.objects.get(pk = pk)
         self.pk = sim.pk
         self.simName = sim.sim_name
-        self.createSubsys(sim)
+        self.createSubsys()
         print('\n  !!! NEW SIM', self.simName, 'CREATED !!!\n')
 
     # Creating all the subsystem objects and adding them to the subsystem dictionary
-    def createSubsys(self, sim):
+    def createSubsys(self):
         self.subsystems["ACS"] = ACS(self.finalValues)
         self.subsystems["EPS"] = EPS()
         self.subsystems["COMMS"] = COMMS()
@@ -49,7 +49,7 @@ class SimObject(threading.Thread):
     def checkTelemetry(self):
         # Using flag telemetryTransferComplete rather than calling function (that is for user command)
         self.telemetry["ACS"] = self.subsystems["ACS"].telemetryTransferComplete
-        self.telemetry["EPS"] = self.subsystems["EPS"].telemetryTransfer()
+        self.telemetry["EPS"] = self.subsystems["EPS"].telemetryTransferComplete
         self.telemetry["TCS"] = self.subsystems["TCS"].telemetryTransferComplete
         self.telemetry["Payload"] = self.subsystems["Payload"].telemetryTransferComplete
 
