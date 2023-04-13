@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../../../static/css/table.css">
 </head>
 {% block start %}
-<body style="background-image: url({% static 'images/stars.jpg' %}); height: 100vh;">
+<body style= "background-size:cover; background-attachment: fixed; background-repeat: no-repeat; background-image: url({% static 'images/space.jpg' %}); height: 100vh">
     {% if user.is_authenticated %}
     <center><h1 style = "color: white; font-family: Arial, Helvetica, sans-serif;">Welcome to {{ class_name }}</h1></center>
     <div class="split left">

@@ -3,7 +3,7 @@
 {% block console %}
 
 <link rel="stylesheet" href="{% static "/css/fosim_console.css" %}">
-
+<body style= "background-size:cover; background-attachment: fixed; background-repeat: no-repeat; background-image: url({% static 'images/space.jpg' %}); height: 100vh">
   <!-- bottom console -->
   <div class="resizable" style = "z-index: 3;">
 	<div class="left-side">
@@ -30,5 +30,5 @@
 	
 	<script src=  "{% static "/js/jquery.min.js" %}"></script>
 	<script src = "{% static "/js/fosim.js" %}"></script>
-	  
+</body>
 	{% endblock console %}

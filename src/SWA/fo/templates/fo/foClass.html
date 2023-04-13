@@ -10,9 +10,10 @@
     <title>Test</title> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
 </head>
-<body>
-      <div class="row">
-        {% block start %}
+{% block start %}
+  <body style= "background-size:cover; background-attachment: fixed; background-repeat: no-repeat; background-image: url({% static 'images/space.jpg' %}); height: 100vh">
+    <div class="row">
+  
         {% if user.is_authenticated %}
         <center>
           <div class="header" style="color:white;">
@@ -44,7 +45,7 @@
 
         {% endif %}
         {% endblock %}
-      </div>
+    </div>
       
-</body>
+  </body>
 </html>
