@@ -1,4 +1,5 @@
 import random
+import time
 
 class Payload():
 
@@ -36,35 +37,37 @@ class Payload():
         
         self.consoleLog.append("$ " + command)
         
-        consoleResponse = []
-        
         command_split = command.lower().split(" ")
         
         if self.menu == "tl":
             if command_split[0] == "1":
-                consoleResponse.append("Checking Power Systems...")
-                consoleResponse.extend(self.statusChecks())
+                self.consoleLog.append("Checking Power Systems...")
+                time.sleep(5)
+                self.consoleLog.extend(self.statusChecks())
             elif command_split[0] == "2":
-                consoleResponse.append("Slew Commencing...")
-                consoleResponse.append(self.slewImage())
+                self.consoleLog.append("Slew Commencing...")
+                time.sleep(5)
+                self.consoleLog.append(self.slewImage())
             elif command_split[0] == "3":
-                consoleResponse.append("Acquiring Target...")
-                consoleResponse.append(self.acquireTarget())
+                self.consoleLog.append("Acquiring Target...")
+                time.sleep(5)
+                self.consoleLog.append(self.acquireTarget())
             elif command_split[0] == "4":
-                consoleResponse.append("Capturing Image...")
-                consoleResponse.append(self.captureImage())
+                self.consoleLog.append("Capturing Image...")
+                time.sleep(5)
+                self.consoleLog.append(self.captureImage())
             elif command_split[0] == "5":
-                consoleResponse.append("Transferring Payload Telemetry...")
-                consoleResponse.append( self.telemetryTransfer())
-                consoleResponse.append("GREAT WORK ON THE PAYLOAD SYSTEM CONSOLE!")
+                self.consoleLog.append("Transferring Payload Telemetry...")
+                time.sleep(5)
+                self.consoleLog.append( self.telemetryTransfer())
+                self.consoleLog.append("GREAT WORK ON THE PAYLOAD SYSTEM CONSOLE!")
                 #TODO: create instance where user cannot enter commands after subsys finished
             else:
-                consoleResponse.append("Invalid Command " + command)
+                self.consoleLog.append("Invalid Command " + command)
                 
         else:
             self.menu = "tl"
             
-        self.consoleLog.extend(consoleResponse)
         return self.consoleLog
 
     # Main menu option 1

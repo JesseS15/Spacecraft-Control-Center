@@ -1,4 +1,5 @@
 import random
+import time
 
 class TCS():
 
@@ -85,38 +86,38 @@ class TCS():
         
         self.consoleLog.append("$ " + command)
         
-        consoleResponse = []
-        
         command_split = command.lower().split(" ")
         
         if self.menu == "tl":
             if command_split[0] == "1":
-                consoleResponse.append("Checking Thermal Systems...")
-                consoleResponse.extend(self.checkThermalSystems())
+                self.consoleLog.append("Checking Thermal Systems...")
+                time.sleep(5)
+                self.consoleLog.extend(self.checkThermalSystems())
             elif command_split[0] == "2":
-                consoleResponse.extend(["Which Subsystem do you want to verify?",
+                self.consoleLog.extend(["Which Subsystem do you want to verify?",
                                         "1) ACS",
                                         "2) EPS",
                                         "3) Payload",
                                         "4) Comms",])
                 self.menu = "verifySubsys"
             elif command_split[0] == "3":
-                consoleResponse.extend(["Which Subsystem do you want to cool?",
+                self.consoleLog.extend(["Which Subsystem do you want to cool?",
                                         "1) ACS",
                                         "2) EPS",
                                         "3) Payload",
                                         "4) Comms",])
                 self.menu = "coolSubsys"
             elif command_split[0] == "4":
-                consoleResponse.append("Transferring TCS Telemetry...")
-                consoleResponse.append( self.telemtryTransfer())
-                consoleResponse.append("GREAT WORK ON THE THERMAL CONTROL SYSTEMS (TCS) CONSOLE!")
+                self.consoleLog.append("Transferring TCS Telemetry...")
+                time.sleep(5)
+                self.consoleLog.append( self.telemtryTransfer())
+                self.consoleLog.append("GREAT WORK ON THE THERMAL CONTROL SYSTEMS (TCS) CONSOLE!")
                 #TODO: create instance where user cannot enter commands after subsys finished
             elif command_split[0] == "5":
                 #TODO
                 pass
             else:
-                consoleResponse.append("Invalid Command " + command)
+                self.consoleLog.append("Invalid Command " + command)
         
         elif self.menu == "verifySubsys":
             if command_split[0] == "1":
@@ -128,7 +129,7 @@ class TCS():
             elif command_split[0] == "4":
                 self.verifySubsystem("COMMS")
             else:
-                consoleResponse.append("Invalid Command " + command)
+                self.consoleLog.append("Invalid Command " + command)
                 self.menu = "tl"
                 
         elif self.menu == "verifySubsys":
@@ -141,13 +142,12 @@ class TCS():
             elif command_split[0] == "4":
                 self.verifySubsystem("COMMS")
             else:
-                consoleResponse.append("Invalid Command " + command)
+                self.consoleLog.append("Invalid Command " + command)
                 self.menu = "tl"
 
         else:
             self.menu = "tl"
             
-        self.consoleLog.extend(consoleResponse)
         return self.consoleLog
 
     # Heats each item by 1 degree (since you can only cool)

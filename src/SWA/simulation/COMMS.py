@@ -1,4 +1,5 @@
 import random
+import time
 
 class COMMS():
 
@@ -37,49 +38,51 @@ class COMMS():
         
         self.consoleLog.append("$ " + command)
         
-        consoleResponse = []
-        
         command_split = command.lower().split(" ")
         
         if self.menu == "tl":
             if command_split[0] == "1":
-                consoleResponse.append("Checking Power Systems…")
-                consoleResponse.extend(self.systemChecks())
+                self.consoleLog.append("Checking Power Systems...")
+                time.sleep(5)
+                self.consoleLog.extend(self.systemChecks())
             elif command_split[0] == "2":
-                consoleResponse.append("Verifying Signal...")
-                consoleResponse.extend(self.verifySignal())
+                self.consoleLog.append("Verifying Signal...")
+                time.sleep(5)
+                self.consoleLog.extend(self.verifySignal())
             elif command_split[0] == "3":
-                consoleResponse.append("How much do you want to decrease the Signal Gain (in dB)?")
+                self.consoleLog.append("How much do you want to decrease the Signal Gain (in dB)?")
                 self.menu = "signalGainDecrease"
             elif command_split[0] == "4":
-                consoleResponse.append("How much do you want to change the Signal Frequency (in GHz)?")
+                self.consoleLog.append("How much do you want to change the Signal Frequency (in GHz)?")
                 self.menu = "signalFreq"
             elif command_split[0] == "5":
-                consoleResponse.append("Downloading Subsystem Telemetry...")
-                consoleResponse.extend(self.downloadTelemetryData())
+                self.consoleLog.append("Downloading Subsystem Telemetry...")
+                time.sleep(5)
+                self.consoleLog.extend(self.downloadTelemetryData())
             elif command_split[0] == "6":
-                consoleResponse.append("Processing SimCraft Telemetry...")
-                consoleResponse.append(self.processTelemetryData())
+                self.consoleLog.append("Processing SimCraft Telemetry...")
+                time.sleep(5)
+                self.consoleLog.append(self.processTelemetryData())
             elif command_split[0] == "7":
-                consoleResponse.append("Displaying Image...")
-                consoleResponse.append( self.displayImage())
-                consoleResponse.append("GREAT WORK ON THE PAYLOAD SYSTEM CONSOLE!")
+                self.consoleLog.append("Displaying Image...")
+                time.sleep(5)
+                self.consoleLog.append( self.displayImage())
+                self.consoleLog.append("GREAT WORK ON THE PAYLOAD SYSTEM CONSOLE!")
                 #TODO: create instance where user cannot enter commands after subsys finished
             else:
-                consoleResponse.append("Invalid Command " + command)
+                self.consoleLog.append("Invalid Command " + command)
         
         elif self.menu == "signalGainDecrease":
-            consoleResponse.append(newGain(int(command)))
+            self.consoleLog.append(newGain(int(command)))
             self.menu = "tl"
     
         elif self.menu == "signalFreq":
-            consoleResponse.append(self.signalFrequency(int(command)))
+            self.consoleLog.append(self.signalFrequency(int(command)))
             self.menu = "tl"
 
         else:
             self.menu = "tl"
-            
-        self.consoleLog.extend(consoleResponse)
+        
         return self.consoleLog
 
     def finalGainCheck(self):

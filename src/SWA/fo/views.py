@@ -186,9 +186,11 @@ def acsFetchdata(request, simkey):
                 simThread = thread
                 
         data = {}
+        data['consoleLog'] = []
                 
         if simThread != None:
             # Define data to be returned
+            data['consoleLog'] = simThread.subsystems['ACS'].consoleLog
             data['roll'] = simThread.subsystems['ACS'].orientation['roll']
             data['pitch'] = simThread.subsystems['ACS'].orientation['pitch']
             data['yaw'] = simThread.subsystems['ACS'].orientation['yaw']
@@ -217,9 +219,11 @@ def epsFetchdata(request, simkey):
                 simThread = thread
                 
         data = {}
+        data['consoleLog'] = []
                 
         if simThread != None:
             # Define data to be returned
+            data['consoleLog'] = simThread.subsystems['EPS'].consoleLog
             data['acs_power'] = simThread.subsystems['EPS'].params['power distribution']['ACS']
             data['eps_power'] = simThread.subsystems['EPS'].params['power distribution']['EPS']
             data['tcs_power'] = simThread.subsystems['EPS'].params['power distribution']['TCS']
@@ -245,11 +249,11 @@ def tcsFetchdata(request, simkey):
                 simThread = thread
             
         data = {}    
-                
+        data['consoleLog'] = []
+        
         if simThread != None:
             # Define data to be returned
-            pass
-            
+            data['consoleLog'] = simThread.subsystems['TCS'].consoleLog
         
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:
@@ -268,10 +272,11 @@ def commsFetchdata(request, simkey):
                 simThread = thread
                 
         data = {}
+        data['consoleLog'] = []
         
         if simThread != None:
             # Define data to be returned
-            pass
+            data['consoleLog'] = simThread.subsystems['COMMS'].consoleLog
         
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:
@@ -290,10 +295,11 @@ def payloadFetchdata(request, simkey):
                 simThread = thread
                
         data = {}
+        data['consoleLog'] = []
          
         if simThread != None:
             # Define data to be returned
-            pass
+            data['consoleLog'] = simThread.subsystems['Payload'].consoleLog
         
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:

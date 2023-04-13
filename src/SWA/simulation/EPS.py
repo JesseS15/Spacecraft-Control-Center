@@ -1,4 +1,5 @@
 import random
+import time
 
 class EPS():
     
@@ -49,39 +50,40 @@ class EPS():
         
         self.consoleLog.append("$ " + command)
         
-        consoleResponse = []
-        
         command_split = command.lower().split(" ")
         
         if self.menu == "tl":
             if command_split[0] == "1":
-                consoleResponse.append("Checking Power Systems...")
-                consoleResponse.extend(self.systemChecks())
+                self.consoleLog.append("Checking Power Systems...")
+                time.sleep(5)
+                self.consoleLog.extend(self.systemChecks())
             elif command_split[0] == "2":
-                consoleResponse.append("Verifying Power Distribution...")
-                consoleResponse.extend(self.verifyPowerDistribution())
+                self.consoleLog.append("Verifying Power Distribution...")
+                time.sleep(5)
+                self.consoleLog.extend(self.verifyPowerDistribution())
             elif command_split[0] == "3":
-                consoleResponse.append("Redistributing Resources...")
-                consoleResponse.append(self.fullPower())
+                self.consoleLog.append("Redistributing Resources...")
+                time.sleep(5)
+                self.consoleLog.append(self.fullPower())
             elif command_split[0] == "4":
-                consoleResponse.append("How much do you want to articulate the solar panels by (in Degrees)?")
+                self.consoleLog.append("How much do you want to articulate the solar panels by (in Degrees)?")
                 self.menu = "panelArticulate"
             elif command_split[0] == "5":
-                consoleResponse.append("Transfering EPS Telemetry...")
-                consoleResponse.append( self.transferTelemetry())
-                consoleResponse.append("GREAT WORK ON THE ELECTRICAL POWER SYSTEMS (EPS) CONSOLE!")
+                self.consoleLog.append("Transfering EPS Telemetry...")
+                time.sleep(5)
+                self.consoleLog.append( self.transferTelemetry())
+                self.consoleLog.append("GREAT WORK ON THE ELECTRICAL POWER SYSTEMS (EPS) CONSOLE!")
                 #TODO: create instance where user cannot enter commands after subsys finished
             else:
-                consoleResponse.append("Invalid Command " + command)
+                self.consoleLog.append("Invalid Command " + command)
         
         elif self.menu == "panelArticulate":
-            consoleResponse.append(self.articulatePanel(int(command)))
+            self.consoleLog.append(self.articulatePanel(int(command)))
             self.menu = "tl"
 
         else:
             self.menu = "tl"
-            
-        self.consoleLog.extend(consoleResponse)
+        
         return self.consoleLog
     
     # Main menu option 1

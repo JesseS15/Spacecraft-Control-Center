@@ -1,4 +1,5 @@
 import random
+import time
 
 class ACS():
 
@@ -56,54 +57,53 @@ class ACS():
         
         self.consoleLog.append("$ " + command)
         
-        consoleResponse = []
-        
         command_split = command.lower().split(" ")
         
         if self.menu == "tl":
             if command_split[0] == "1":
-                consoleResponse.append("Checking Attitude Systems…")
-                consoleResponse.append("The SimCraft’s current Longitude is: " + str(self.currentLongitude))
-                consoleResponse.append("eta: " + str(self.longMin()) + " seconds until active range.")
+                self.consoleLog.append("Checking Attitude Systems...")
+                time.sleep(5)
+                self.consoleLog.append("The SimCraft’s current Longitude is: " + str(self.currentLongitude))
+                self.consoleLog.append("eta: " + str(self.longMin()) + " seconds until active range.")
             elif command_split[0] == "2":
-                consoleResponse.append("Verifying Alignment...")
-                consoleResponse.extend(self.verifyAlignment())
+                self.consoleLog.append("Verifying Alignment...")
+                time.sleep(5)
+                self.consoleLog.extend(self.verifyAlignment())
             elif command_split[0] == "3":
-                consoleResponse.append("How much do you want to change the Roll by (in Degrees)?")
+                self.consoleLog.append("How much do you want to change the Roll by (in Degrees)?")
                 self.menu = "cmgRoll"
             elif command_split[0] == "4":
-                consoleResponse.append("How much do you want to change the Pitch by (in Degrees)?")
+                self.consoleLog.append("How much do you want to change the Pitch by (in Degrees)?")
                 self.menu = "cmgPitch"
             elif command_split[0] == "5":
-                consoleResponse.append("How much do you want to change the Yaw by (in Degrees)?")
+                self.consoleLog.append("How much do you want to change the Yaw by (in Degrees)?")
                 self.menu = "cmgYaw"
             elif command_split[0] == "6":
-                consoleResponse.append("Transfering ACS Telemetry...")
-                consoleResponse.append( self.telemetryTransfer())
-                consoleResponse.append("GREAT WORK ON THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE!")
+                self.consoleLog.append("Transfering ACS Telemetry...")
+                time.sleep(5)
+                self.consoleLog.append( self.telemetryTransfer())
+                self.consoleLog.append("GREAT WORK ON THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE!")
                 #TODO: create instance where user cannot enter commands after subsys finished
             else:
-                consoleResponse.append("Invalid Command " + command)
+                self.consoleLog.append("Invalid Command " + command)
 
         elif self.menu == "cmgRoll":
-            consoleResponse.append(self.updateRoll(int(command)))
-            consoleResponse.append("Roll can only be updated by 10 degrees at a time.")
+            self.consoleLog.append(self.updateRoll(int(command)))
+            self.consoleLog.append("Roll can only be updated by 10 degrees at a time.")
             self.menu = "tl"
         
         elif self.menu == "cmgPitch":
-            consoleResponse.append(self.updatePitch(int(command)))
-            consoleResponse.append("Pitch can only be updated by 10 degrees at a time.")
+            self.consoleLog.append(self.updatePitch(int(command)))
+            self.consoleLog.append("Pitch can only be updated by 10 degrees at a time.")
             self.menu = "tl"
         
         elif self.menu == "cmgYaw":
-            consoleResponse.append(self.updateYaw(int(command)))
-            consoleResponse.append("Yaw can only be updated by 10 degrees at a time.")
+            self.consoleLog.append(self.updateYaw(int(command)))
+            self.consoleLog.append("Yaw can only be updated by 10 degrees at a time.")
             self.menu = "tl"
         
         else:
             self.menu = "tl"
-        
-        self.consoleLog.extend(consoleResponse)
         
         return self.consoleLog
 

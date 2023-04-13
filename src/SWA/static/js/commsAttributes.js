@@ -67,7 +67,18 @@ function fetchdata(){
 
         success: (data) => {
             //Debug return data
-            console.log(data);
+            //console.log(data);
+
+            if (data['consoleLog'].length > terminal2.childElementCount){
+                // Clear right terminal and append subsystem command log
+                terminal2.innerText = '';
+                for (var i = 0; i < data['consoleLog'].length; i++) {
+                    const output = document.createElement('p');
+                    output.textContent = `${data['consoleLog'][i]}`;
+                    terminal2.appendChild(output);
+                }
+                terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
+            }
     
             if (Object.keys(data).length > 0){
                 // Update Orientation panel
@@ -82,5 +93,5 @@ function fetchdata(){
 
 // Set Refresh Rate
 $(document).ready(function(){
-    setInterval(fetchdata,5000);
+    setInterval(fetchdata,1000);
 });
