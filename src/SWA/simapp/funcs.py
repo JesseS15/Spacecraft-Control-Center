@@ -13,9 +13,8 @@ def repopulateAllSimsDict(all_sims_dict):
             final_values["roll"] = m.final_roll
             final_values["pitch"] = m.final_pitch
             final_values["yaw"] = m.final_yaw
-            if s_id == 0:
-                s.sim_identifier = getUniqueValue(all_sims_dict)
-                all_sims_dict[s.sim_identifier] = SimObject(final_values, pk=s.pk)
+            all_sims_dict[s_id] = SimObject(final_values, pk=s.pk)
+            all_sims_dict[s_id].start()
     print('\nAll Sims dictionary repopulated:')
     print(all_sims_dict,'\n')
 

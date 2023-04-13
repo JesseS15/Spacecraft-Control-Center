@@ -64,6 +64,9 @@ class TCS(Subsystem):
     
     telemtryTransferComplete = False
 
+    # Console infastructure
+    menu = ''
+    consoleLog = []
     commands = [
         "WELCOME TO THE THERMAL CONTROL SYSTEMS (TCS) CONSOLE!",
         "Your task is to perform the cooling procedure for equipment now undergoing thermal exposure in the new attitude position.",
@@ -76,7 +79,77 @@ class TCS(Subsystem):
 
     def __init__(self):
         super().__init__()
+        self.menu = 'tl'
         print('New instance of TCS class created')
+        
+    def command(self, command):
+        
+        self.consoleLog.append("$ " + command)
+        
+        consoleResponse = []
+        
+        command_split = command.lower().split(" ")
+        
+        if self.menu == "tl":
+            if command_split[0] == "1":
+                consoleResponse.append("Checking Thermal Systems...")
+                consoleResponse.extend(self.checkThermalSystems())
+            elif command_split[0] == "2":
+                consoleResponse.extend(["Which Subsystem do you want to verify?",
+                                        "1) ACS",
+                                        "2) EPS",
+                                        "3) Payload",
+                                        "4) Comms",])
+                self.menu = "verifySubsys"
+            elif command_split[0] == "3":
+                consoleResponse.extend(["Which Subsystem do you want to cool?",
+                                        "1) ACS",
+                                        "2) EPS",
+                                        "3) Payload",
+                                        "4) Comms",])
+                self.menu = "coolSubsys"
+            elif command_split[0] == "4":
+                consoleResponse.append("Transferring TCS Telemetry...")
+                consoleResponse.append( self.telemtryTransfer())
+                consoleResponse.append("GREAT WORK ON THE THERMAL CONTROL SYSTEMS (TCS) CONSOLE!")
+                #TODO: create instance where user cannot enter commands after subsys finished
+            elif command_split[0] == "5":
+                #TODO
+                pass
+            else:
+                consoleResponse.append("Invalid Command " + command)
+        
+        elif self.menu == "verifySubsys":
+            if command_split[0] == "1":
+                verifySubsystem("ACS")
+            elif command_split[0] == "2":
+                verifySubsystem("EPS")
+            elif command_split[0] == "3":
+                verifySubsystem("Payload")
+            elif command_split[0] == "4":
+                verifySubsystem("COMMS")
+            else:
+                consoleResponse.append("Invalid Command " + command)
+                self.menu = "tl"
+                
+        elif self.menu == "verifySubsys":
+            if command_split[0] == "1":
+                verifySubsystem("ACS")
+            elif command_split[0] == "2":
+                verifySubsystem("EPS")
+            elif command_split[0] == "3":
+                verifySubsystem("Payload")
+            elif command_split[0] == "4":
+                verifySubsystem("COMMS")
+            else:
+                consoleResponse.append("Invalid Command " + command)
+                self.menu = "tl"
+
+        else:
+            self.menu = "tl"
+            
+        self.consoleLog.extend(consoleResponse)
+        return self.consoleLog
 
     # Heats each item by 1 degree (since you can only cool)
     def randomThermal(self):
@@ -90,13 +163,13 @@ class TCS(Subsystem):
     ###################TCS CONSOLE COMMANDS #######################
     # Main menu option 1
     def checkThermalSystems(self):
-        outputString = {}
+        outputString = []
         for key in self.checks:
             self.checks[key] = random.choice([True, False])
             if self.checks[key]:
-                outputString[key] = (key + " -- REACHED")
+                outputString.append(key + " -- REACHED")
             else:
-                outputString[key] = (key + " -- NOT REACHED, REFRESH SYSTEM")
+                outputString.append(key + " -- NOT REACHED, REFRESH SYSTEM")
         return outputString    
 
     # Main menu option 2 with sub-menu option as subsystem string
@@ -127,6 +200,11 @@ class TCS(Subsystem):
             return True
         else:
             return False
+    def telemtryTransfer(self):
+        if self.verifyStatus:
+            return("Data has been Transferred! GREAT WORK ON THE ELECTRICAL POWER SYSTEMS (EPS) CONSOLE")
+        else:
+            return("Verification process for EPS not completed")
     
     # Main menu option 5 - refresh thermal systems
     def refresh(self):
