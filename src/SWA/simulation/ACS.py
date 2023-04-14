@@ -25,6 +25,8 @@ class ACS():
     longitudeValid = False
     rpyValid = False
     
+    random.seed(1)
+
     menu = ''
     commands = [
         "WELCOME TO THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE",
@@ -63,7 +65,7 @@ class ACS():
             if command_split[0] == "1":
                 self.consoleLog.append("Checking Attitude Systems...")
                 time.sleep(5)
-                self.consoleLog.append("The SimCraft’s current Longitude is: " + str(self.currentLongitude))
+                self.consoleLog.append("The SimCraft’s current Longitude is: " + str(self.currentLongitude) +"°")
                 self.consoleLog.append("eta: " + str(self.longMin()) + " seconds until active range.")
             elif command_split[0] == "2":
                 self.consoleLog.append("Verifying Alignment...")
@@ -90,17 +92,14 @@ class ACS():
 
         elif self.menu == "cmgRoll":
             self.consoleLog.append(self.updateRoll(int(command)))
-            self.consoleLog.append("Roll can only be updated by 10 degrees at a time.")
             self.menu = "tl"
         
         elif self.menu == "cmgPitch":
             self.consoleLog.append(self.updatePitch(int(command)))
-            self.consoleLog.append("Pitch can only be updated by 10 degrees at a time.")
             self.menu = "tl"
         
         elif self.menu == "cmgYaw":
             self.consoleLog.append(self.updateYaw(int(command)))
-            self.consoleLog.append("Yaw can only be updated by 10 degrees at a time.")
             self.menu = "tl"
         
         else:
@@ -145,56 +144,95 @@ class ACS():
         self.updateLongitude()
     
     ############# CMG : User input updates ##############
+    # def updateRoll(self, newRoll):
+    #     if (newRoll > 0):
+    #         if(self.orientation['roll'] + newRoll >= 180):
+    #             diff = self.orientation['roll'] + newRoll
+    #             newDiff = -180 + diff
+    #             self.orientation['roll'] = -180 + newDiff
+    #         elif(self.orientation['roll'] + newRoll < 180):
+    #             self.orientation['roll'] =+ newRoll
+    #     if (newRoll < 0):
+    #         if(self.orientation['roll'] + newRoll <= -180):
+    #             diff = self.orientation['roll'] + newRoll
+    #             newDiff = 180 + diff
+    #             self.orientation['roll'] = 180 + newDiff
+    #         elif(self.orientation['roll'] + newRoll > -180):
+    #             self.orientation['roll'] =+ newRoll
+    #     return ("Roll updated by " + str(newRoll) + " degrees")
+    
+    # def updatePitch(self, newPitch):
+    #     if (newPitch > 0):
+    #         if(self.orientation['pitch'] + newPitch >= 90):
+    #             diff = self.orientation['pitch'] + newPitch
+    #             newDiff = -90 + diff
+    #             self.orientation['pitch'] = -90 + newDiff
+    #         elif(self.orientation['pitch'] + newPitch < 90):
+    #             self.orientation['pitch'] =+ newPitch
+    #     if (newPitch < 0):
+    #         if(self.orientation['pitch'] + newPitch <= -90):
+    #             diff = self.orientation['pitch'] + newPitch
+    #             newDiff = 90 + diff
+    #             self.orientation['pitch'] = 90 + newDiff
+    #         elif(self.orientation['pitch'] + newPitch > -90):
+    #             self.orientation['pitch'] =+ newPitch
+    #     return ("Pitch updated by " + str(newPitch) + " degrees")
+    
+    # def updateYaw(self, newYaw):
+    #     if (newYaw > 0):
+    #         if(self.orientation['yaw'] + newYaw >= 180):
+    #             diff = self.orientation['yaw'] + newYaw
+    #             newDiff = -180 + diff
+    #             self.orientation['yaw'] = -180 + newDiff
+    #         elif(self.orientation['yaw'] + newYaw < 180):
+    #             self.orientation['yaw'] =+ newYaw
+    #     if (newYaw < 0):
+    #         if(self.orientation['yaw'] + newYaw <= -180):
+    #             diff = self.orientation['yaw'] + newYaw
+    #             newDiff = 180 + diff
+    #             self.orientation['yaw'] = 180 + newDiff
+    #         elif(self.orientation['yaw'] + newYaw > -180):
+    #             self.orientation['yaw'] =+ newYaw
+    #     return ("Yaw updated by " + str(newYaw) + " degrees")
     def updateRoll(self, newRoll):
-        if (newRoll > 0):
-            if(self.orientation['roll'] + newRoll >= 180):
-                diff = self.orientation['roll'] + newRoll
-                newDiff = -180 + diff
-                self.orientation['roll'] = -180 + newDiff
-            elif(self.orientation['roll'] + newRoll < 180):
-                self.orientation['roll'] =+ newRoll
-        if (newRoll < 0):
-            if(self.orientation['roll'] + newRoll <= -180):
-                diff = self.orientation['roll'] + newRoll
-                newDiff = 180 + diff
-                self.orientation['roll'] = 180 + newDiff
-            elif(self.orientation['roll'] + newRoll > -180):
-                self.orientation['roll'] =+ newRoll
-        return ("Roll updated by " + str(newRoll) + " degrees")
+        rollSum = newRoll + self.orientation['roll']
+        if (rollSum < -180):
+            self.orientation['roll'] = 360+rollSum
+            return self.orientation['roll']
     
+        elif (rollSum > 180):
+            self.orientation['roll'] = -360+rollSum
+            return self.orientation['roll']
+        else:
+            self.orientation['roll']=rollSum
+            return self.orientation['roll']
+
+
     def updatePitch(self, newPitch):
-        if (newPitch > 0):
-            if(self.orientation['pitch'] + newPitch >= 90):
-                diff = self.orientation['pitch'] + newPitch
-                newDiff = -90 + diff
-                self.orientation['pitch'] = -90 + newDiff
-            elif(self.orientation['pitch'] + newPitch < 90):
-                self.orientation['pitch'] =+ newPitch
-        if (newPitch < 0):
-            if(self.orientation['pitch'] + newPitch <= -90):
-                diff = self.orientation['pitch'] + newPitch
-                newDiff = 90 + diff
-                self.orientation['pitch'] = 90 + newDiff
-            elif(self.orientation['pitch'] + newPitch > -90):
-                self.orientation['pitch'] =+ newPitch
-        return ("Pitch updated by " + str(newPitch) + " degrees")
+        pitchSum = newPitch + self.orientation['pitch']
+        if (pitchSum < -90):
+            self.orientation['pitch'] = 180+pitchSum
+            return self.orientation['pitch']
     
+        elif (pitchSum > 90):
+            self.orientation['pitch'] = -180+pitchSum
+            return self.orientation['pitch']
+        else:
+            self.orientation['pitch']=pitchSum
+            return self.orientation['pitch']
+        
     def updateYaw(self, newYaw):
-        if (newYaw > 0):
-            if(self.orientation['yaw'] + newYaw >= 180):
-                diff = self.orientation['yaw'] + newYaw
-                newDiff = -180 + diff
-                self.orientation['yaw'] = -180 + newDiff
-            elif(self.orientation['yaw'] + newYaw < 180):
-                self.orientation['yaw'] =+ newYaw
-        if (newYaw < 0):
-            if(self.orientation['yaw'] + newYaw <= -180):
-                diff = self.orientation['yaw'] + newYaw
-                newDiff = 180 + diff
-                self.orientation['yaw'] = 180 + newDiff
-            elif(self.orientation['yaw'] + newYaw > -180):
-                self.orientation['yaw'] =+ newYaw
-        return ("Yaw updated by " + str(newYaw) + " degrees")
+        yawSum = newYaw + self.orientation['yaw']
+        if (yawSum < -180):
+            self.orientation['yaw'] = 360+yawSum
+            return self.orientation['yaw']
+    
+        elif (yawSum > 180):
+            self.orientation['yaw'] = -360+yawSum
+            return self.orientation['yaw']
+        else:
+            self.orientation['yaw']=yawSum
+            return self.orientation['yaw']
 
     ###### Checking final orientation, passed from SimObject ###############
     def verifyAlignment(self):
@@ -202,44 +240,32 @@ class ACS():
         #TODO change the differences to be actually accurate
 
         rollPosDif = abs(self.orientation["roll"] - self.finalValues["roll"])
-        rollNegDif = 360 - abs(self.orientation["roll"] - self.finalValues["roll"])
-        if rollNegDif<rollPosDif:
-            rollDifference=rollNegDif
-        else:
-            rollDifference=rollPosDif
+        rollDif = 360 - rollPosDif
 
         pitchPosDif = abs(self.orientation["pitch"] - self.finalValues["pitch"])
-        pitchNegDif = 180 - abs(self.orientation["pitch"] - self.finalValues["pitch"])
-        if pitchNegDif<pitchPosDif:
-            pitchDifference = pitchNegDif
-        else:
-            pitchDifference = pitchPosDif
+        pitchDif = 180 - pitchPosDif
 
         yawPosDif = abs(self.orientation["yaw"] - self.finalValues["yaw"])
-        yawNegDif = 360 - abs(self.orientation["yaw"] - self.finalValues["yaw"])
-        if yawNegDif<yawPosDif:
-            yawDifference = yawNegDif
-        else:
-            yawDifference = yawPosDif
+        yawDif = 360 - yawPosDif
 
-        
-        #NOTE: the input can only change by 10 degrees and the correct range is within 10 degrees- theyre seperate values
         # Check if roll, pitch, and yaw are in acceptable range from final values
-        if (abs(rollDifference) <= 15):
+        if (abs(rollDif) <= 15):
             response = ["The SimCraft's Roll Alignment is Reached"]
             self.rpyValid = True
         else:
-            response = ["The roll is off by " + str(rollDifference)]
+            response = ["The roll is off by " + str(rollDif) +"°"]
             self.rpyValid = False
-        if (abs(pitchDifference) <= 15):
+
+        if (abs(pitchDif) <= 15):
             response = ["The SimCraft's Pitch Alignment is Reached"]
         else:
-            response = ["The Pitch is off by " + str(pitchDifference)]
+            response = ["The Pitch is off by " + str(pitchDif) +"°"]
             self.rpyValid = False
-        if(abs(yawDifference) <= 15):
+
+        if(abs(yawDif) <= 15):
             response = ["The SimCraft's Yaw Alignment is Reached"]
         else:
-            response = ["The Yaw is off by " + str(yawDifference )]
+            response = ["The Yaw is off by " + str(yawDif) +"°"]
             self.rpyValid = False
         return response
 
