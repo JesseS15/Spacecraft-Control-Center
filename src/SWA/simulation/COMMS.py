@@ -4,12 +4,15 @@ import time
 class COMMS():
 
     checks = {
-        "On-board Computer": True,
-        "Antenna Status": True
+        "On-board Computer": random.choices([True, False]),
+        "Antenna Status": random.choices([True, False])
     }
 
+    checkTries = 0
+
     frequency = random.randrange(12.000, 14.000)
-    currentGain = 36 #random.randrange(10, 65)
+    currentGain = 36
+    gainRange = [36,38]
 
     allTelemetryDataGood = False
     allTelemetryData = {"ACS": False, "EPS": False, "TCS": False, "Payload": False}
@@ -23,7 +26,7 @@ class COMMS():
         "1.) Status Checks",
         "2.) Verify Signal",
         "3.) Increase Signal Gain",
-        "4.) Decrease Signal Gain",
+        "4.) Reset Signal Gain",
         "5.) Download Telemetry Data",
         "6.) Process Telemetry Data",
         "7.) Display Image"
@@ -48,13 +51,13 @@ class COMMS():
             elif command_split[0] == "2":
                 self.consoleLog.append("Verifying Signal...")
                 time.sleep(5)
-                self.consoleLog.extend(self.verifySignal())
+                self.consoleLog.append(self.verifySignal())
             elif command_split[0] == "3":
-                self.consoleLog.append("How much do you want to decrease the Signal Gain (in dB)?")
-                self.menu = "signalGainDecrease"
+                self.consoleLog.append("How much do you want to increase the Signal Gain (in dB)?")
+                self.menu = "signalGainIncrease"
             elif command_split[0] == "4":
-                self.consoleLog.append("How much do you want to change the Signal Frequency (in GHz)?")
-                self.menu = "signalFreq"
+                self.consoleLog.append("Resetting gain to 36 dB")
+                self.consoleLog.extend(self.resetGain())
             elif command_split[0] == "5":
                 self.consoleLog.append("Downloading Subsystem Telemetry...")
                 time.sleep(5)
@@ -72,26 +75,16 @@ class COMMS():
             else:
                 self.consoleLog.append("Invalid Command " + command)
         
-        elif self.menu == "signalGainDecrease":
-            self.consoleLog.append(newGain(int(command)))
+        elif self.menu == "signalGainIncrease":
+            self.consoleLog.extend(self.increaseGain(int(command)))
             self.menu = "tl"
-    
-        elif self.menu == "signalFreq":
-            self.consoleLog.append(self.signalFrequency(int(command)))
-            self.menu = "tl"
-
         else:
             self.menu = "tl"
         
         return self.consoleLog
 
     def finalGainCheck(self):
-       # randomGain = random.randrange(35,37)
-       # if (randomGain %2 == 0 ): #final number is even; odd # is harmonic
-           # return randomGain
-        #else:
-            #finalGain = randomGain - 1 #forces even # gain
-           return finalGain
+       pass
 
     def update(self):
         pass
@@ -101,7 +94,12 @@ class COMMS():
         output = []
         index = 0
         for key in self.checks:
-            self.checks[key] = bool(random.getrandbits(1))
+            if (self.checkTries < 3):
+                self.checks[key] = random.choices([True, False])
+                self.checkTries += 1
+            else:
+                self.checks[key] = True
+                self.checkTries = 0
             if (self.checks[key]):
                 output[index] = "The SimCrafts current " + key + "status is Reached"
             else:
@@ -110,40 +108,31 @@ class COMMS():
 
     # Main menu option 2
     def verifySignal(self):
-        if self.checks['Antenna Status'] == False:
-          return 'SIGNAL GARBLED! Increase gain to 38 dB and verify the signal again.'
-        else:
-            return 'Antenna Status: VALID'
-        
-    def increaseGain(self):
-        newGain = input(f'Input gain increase: \n')
-        print('GAIN INCREASED -- Please wait...')
-        self.currentGain += newGain
-        return self.currentGain
-    
-    def decreaseGain(self):
-        self.currentGain -= newGain
-        newGain = input(f'Input gain decrease: \n')
-        print('GAIN DECREASED -- Please wait...')
-        return self.currentGain
-    
-    def gainReset(self):
-        self.currentGain = 36
-        return self.currentGain
-    
-    def checkGain(self):
-        if self.currentGain == 38:
-            print('SIGNAL CAPTURED. Resetting to original gain...')
-            self.gainReset()
+        output = ""
+        if (self.currentGain >= self.gainRange[0]) and (self.currentGain <= self.gainRange[1]):
             self.checks['Antenna Status'] = True
-        elif self.currentGain > 38:
-           print('UNWANTED HARMONICS DETECTED — gain too high! Reduce to 38 dB') 
-           self.decreaseGain() 
+        elif self.currentGain > self.gainRange[1]:
+            output = ('UNWANTED HARMONICS DETECTED — gain too high! Reset gain')
         else:
-            print('UNABLE TO CAPTURE SIGNAL — increase gain to 38 dB')
-            self.increaseGain()
+            output = ('UNABLE TO CAPTURE SIGNAL — increase gain to 38 dB')
+        return output
 
-
+    # Main menu option 3    
+    def increaseGain(self, newGin):
+        output = []
+        output[0] = 'GAIN CHANGING -- Please wait...'
+        output[1] = "Gain changed by " + abs(newGin)
+        self.currentGain += abs(newGin)
+        return output
+    
+    # Main menu option 4
+    def resetGain(self):
+        output = []
+        output[0] = "GAIN RESETTING -- Please wait..."
+        output[1] = "Gain reset to 36 dB"
+        self.currentGain = 36
+        return output
+    
     # Main menu option 5
     # telemetryData needs to be passed from SimObject
     def downloadTelemetryData(self):

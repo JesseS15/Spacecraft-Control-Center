@@ -9,6 +9,7 @@ class Payload():
         'Gimble Connection' : random.choice([True, False])
     }
 
+    checkTries = 0
     ready = False
     statusGood = False
     slewImageFlag = False
@@ -76,7 +77,12 @@ class Payload():
         index = 0
         self.statusGood = True
         for key in self.checks:
-            self.checks[key] = random.choice([True, False])
+            if (self.checkTries < 3):
+                self.checks[key] = random.choices([True, False])
+                self.checkTries += 1
+            else:
+                self.checks[key] = True
+                self.checkTries = 0
             if self.checks[key]:
                 output[index] = "The SimCrafts current " + key + " Status is REACHED"
             else:

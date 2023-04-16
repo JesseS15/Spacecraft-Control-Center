@@ -62,6 +62,7 @@ class TCS():
         'Telemetry Signal' : random.choice([True, False])
     }
     
+    checkTries = 0
     telemtryTransferComplete = False
 
     # Console infastructure
@@ -164,7 +165,12 @@ class TCS():
     def checkThermalSystems(self):
         outputString = []
         for key in self.checks:
-            self.checks[key] = random.choice([True, False])
+            if (self.checkTries < 3):
+                self.checks[key] = random.choices([True, False])
+                self.checkTries += 1
+            else:
+                self.checks[key] = True
+                self.checkTries = 0
             if self.checks[key]:
                 outputString.append(key + " -- REACHED")
             else:

@@ -145,56 +145,6 @@ class ACS():
         self.updateLongitude()
     
     ############# CMG : User input updates ##############
-    # def updateRoll(self, newRoll):
-    #     if (newRoll > 0):
-    #         if(self.orientation['roll'] + newRoll >= 180):
-    #             diff = self.orientation['roll'] + newRoll
-    #             newDiff = -180 + diff
-    #             self.orientation['roll'] = -180 + newDiff
-    #         elif(self.orientation['roll'] + newRoll < 180):
-    #             self.orientation['roll'] =+ newRoll
-    #     if (newRoll < 0):
-    #         if(self.orientation['roll'] + newRoll <= -180):
-    #             diff = self.orientation['roll'] + newRoll
-    #             newDiff = 180 + diff
-    #             self.orientation['roll'] = 180 + newDiff
-    #         elif(self.orientation['roll'] + newRoll > -180):
-    #             self.orientation['roll'] =+ newRoll
-    #     return ("Roll updated by " + str(newRoll) + " degrees")
-    
-    # def updatePitch(self, newPitch):
-    #     if (newPitch > 0):
-    #         if(self.orientation['pitch'] + newPitch >= 90):
-    #             diff = self.orientation['pitch'] + newPitch
-    #             newDiff = -90 + diff
-    #             self.orientation['pitch'] = -90 + newDiff
-    #         elif(self.orientation['pitch'] + newPitch < 90):
-    #             self.orientation['pitch'] =+ newPitch
-    #     if (newPitch < 0):
-    #         if(self.orientation['pitch'] + newPitch <= -90):
-    #             diff = self.orientation['pitch'] + newPitch
-    #             newDiff = 90 + diff
-    #             self.orientation['pitch'] = 90 + newDiff
-    #         elif(self.orientation['pitch'] + newPitch > -90):
-    #             self.orientation['pitch'] =+ newPitch
-    #     return ("Pitch updated by " + str(newPitch) + " degrees")
-    
-    # def updateYaw(self, newYaw):
-    #     if (newYaw > 0):
-    #         if(self.orientation['yaw'] + newYaw >= 180):
-    #             diff = self.orientation['yaw'] + newYaw
-    #             newDiff = -180 + diff
-    #             self.orientation['yaw'] = -180 + newDiff
-    #         elif(self.orientation['yaw'] + newYaw < 180):
-    #             self.orientation['yaw'] =+ newYaw
-    #     if (newYaw < 0):
-    #         if(self.orientation['yaw'] + newYaw <= -180):
-    #             diff = self.orientation['yaw'] + newYaw
-    #             newDiff = 180 + diff
-    #             self.orientation['yaw'] = 180 + newDiff
-    #         elif(self.orientation['yaw'] + newYaw > -180):
-    #             self.orientation['yaw'] =+ newYaw
-    #     return ("Yaw updated by " + str(newYaw) + " degrees")
     def updateRoll(self, newRoll):
         rollSum = newRoll + self.orientation['roll']
         if (rollSum < -180):
