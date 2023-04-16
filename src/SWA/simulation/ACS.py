@@ -240,13 +240,23 @@ class ACS():
         #TODO change the differences to be actually accurate
 
         rollPosDif = abs(self.orientation["roll"] - self.finalValues["roll"])
-        rollDif = 360 - rollPosDif
+        if rollPosDif > 180:
+            rollDif = 360 - rollPosDif
+        else: 
+            rollDif=rollPosDif
+
 
         pitchPosDif = abs(self.orientation["pitch"] - self.finalValues["pitch"])
-        pitchDif = 180 - pitchPosDif
+        if pitchPosDif>90:
+            pitchDif = 180 - pitchPosDif
+        else:
+            pitchDif=pitchPosDif
 
         yawPosDif = abs(self.orientation["yaw"] - self.finalValues["yaw"])
-        yawDif = 360 - yawPosDif
+        if pitchPosDif>180:
+            yawDif = 360 - yawPosDif
+        else:
+            yawDif=yawPosDif
 
         # Check if roll, pitch, and yaw are in acceptable range from final values
         if (abs(rollDif) <= 15):
