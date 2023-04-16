@@ -67,10 +67,9 @@ class COMMS():
                 time.sleep(5)
                 self.consoleLog.append(self.processTelemetryData())
             elif command_split[0] == "7":
-                self.consoleLog.append("Displaying Image...")
+                self.consoleLog.append("Attempting to displaying Image...")
                 time.sleep(5)
-                self.consoleLog.append( self.displayImage())
-                self.consoleLog.append("GREAT WORK ON THE PAYLOAD SYSTEM CONSOLE!")
+                self.consoleLog.extend(self.displayImage())
                 #TODO: create instance where user cannot enter commands after subsys finished
             else:
                 self.consoleLog.append("Invalid Command " + command)
@@ -99,11 +98,13 @@ class COMMS():
                 self.checkTries += 1
             else:
                 self.checks[key] = True
-                self.checkTries = 0
             if (self.checks[key]):
                 output[index] = "The SimCrafts current " + key + "status is Reached"
             else:
                 output[index] = "The SimCrafts current " + key + "status is not reached"
+
+        if (self.checkTries >= 3):
+            self.checkTries = 0
         return output
 
     # Main menu option 2

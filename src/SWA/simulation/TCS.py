@@ -170,11 +170,12 @@ class TCS():
                 self.checkTries += 1
             else:
                 self.checks[key] = True
-                self.checkTries = 0
             if self.checks[key]:
                 outputString.append(key + " -- REACHED")
             else:
                 outputString.append(key + " -- NOT REACHED, REFRESH SYSTEM")
+        if (self.checkTries >= 3):
+            self.checkTries = 0
         return outputString    
 
     # Main menu option 2 with sub-menu option as subsystem string

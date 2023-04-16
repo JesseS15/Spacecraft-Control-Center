@@ -82,13 +82,15 @@ class Payload():
                 self.checkTries += 1
             else:
                 self.checks[key] = True
-                self.checkTries = 0
             if self.checks[key]:
                 output[index] = "The SimCrafts current " + key + " Status is REACHED"
             else:
                 output[index] = "The SimCrafts current " + key + " Status is NOT REACHED"
                 self.statusGood = False
             index += 1
+
+        if (self.checkTries >= 3):
+            self.checkTries = 0
         return output
 
     # Main menu option 2

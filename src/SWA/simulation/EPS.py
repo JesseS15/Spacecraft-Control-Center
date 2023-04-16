@@ -18,14 +18,10 @@ class EPS():
     }
 
     checkTries = 0
-
     totalPower = 80
-    
     statusGood = False
-
     telemetryTransferComplete = False
     atFullPower = False
-
     solarPanelAngleRange = [-10, 10]
     solarPanelAngle = random.randint(-90, 90)
     solarPanelAngleGood = False
@@ -92,20 +88,22 @@ class EPS():
     def systemChecks(self):
         output = []
         index = 0
-        self.statusGood = True
         for key in self.checks:
             if (self.checkTries < 3):
                 self.checks[key] = random.choices([True, False])
                 self.checkTries += 1
             else:
                 self.checks[key] = True
-                self.checkTries = 0
             if self.checks[key]:
-                output[index] = "The SimCrafts current " + key + " Status is REACHED"
+                output[index] = "--The SimCrafts current " + str(key) + " Status is REACHED"
+                self.statusGood = True
             else:
-                output[index] = "The SimCrafts current " + key + " Status is NOT REACHED"
+                output[index] = "--The SimCrafts current " + str(key) + " Status is NOT REACHED"
                 self.statusGood = False
             index += 1
+
+        if (self.checkTries >= 3):
+            self.checkTries = 0
         return output
 
     # Main menu option 2
@@ -113,7 +111,7 @@ class EPS():
         output = []
         index = 0
         for key in self.distribution:
-            output[index] = "" + str(key) + " at %" + str(self.distribution[key]) + " power"
+            output[index] = "--" + str(key) + " at %" + str(self.distribution[key]) + " power"
             index += 1
         output[index] = "Current power level is at %" + str(self.getCurrentTotalPower()) + ". 100% power is needed for mission completion."
         return output
