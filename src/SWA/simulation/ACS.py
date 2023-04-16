@@ -261,7 +261,7 @@ class ACS():
             yawDif=yawPosDif
 
         # Check if roll, pitch, and yaw are in acceptable range from final values
-        output = ["","",""]
+        output = []
         if (abs(rollDif) <= acceptableRange):
             output[0] = ["The SimCraft's Roll Alignment is Reached"]
             self.rpyValid = True
@@ -280,7 +280,7 @@ class ACS():
         else:
             output[2] = ["The Yaw is off by " + str(yawDif) +"°"]
             self.rpyValid = False
-        return response
+        return output
 
     def checkLongitude(self):
         acceptableRange=15
