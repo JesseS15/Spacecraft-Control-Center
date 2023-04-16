@@ -134,7 +134,8 @@ class ACS():
             self.currentLongitude = 180
 
     def longMin(self):
-        if self.currentLongitude>81:
+        desiredLongitude = 81
+        if self.currentLongitude>desiredLongitude:
            return abs(self.finalLongitude - self.currentLongitude) + 180
         else:
             return abs(self.finalLongitude - self.currentLongitude)
@@ -238,6 +239,7 @@ class ACS():
     def verifyAlignment(self):
         # Calculate required changes to roll, pitch and yaw
         #TODO change the differences to be actually accurate
+        acceptableRange = 15
 
         rollPosDif = abs(self.orientation["roll"] - self.finalValues["roll"])
         if rollPosDif > 180:
@@ -259,28 +261,30 @@ class ACS():
             yawDif=yawPosDif
 
         # Check if roll, pitch, and yaw are in acceptable range from final values
-        if (abs(rollDif) <= 15):
-            response = ["The SimCraft's Roll Alignment is Reached"]
+        output = ["","",""]
+        if (abs(rollDif) <= acceptableRange):
+            output[0] = ["The SimCraft's Roll Alignment is Reached"]
             self.rpyValid = True
         else:
-            response = ["The roll is off by " + str(rollDif) +"°"]
+            output[0] = ["The roll is off by " + str(rollDif) +"°"]
             self.rpyValid = False
 
-        if (abs(pitchDif) <= 15):
-            response = ["The SimCraft's Pitch Alignment is Reached"]
+        if (abs(pitchDif) <= acceptableRange):
+            output[1] = ["The SimCraft's Pitch Alignment is Reached"]
         else:
-            response = ["The Pitch is off by " + str(pitchDif) +"°"]
+            output[1] = ["The Pitch is off by " + str(pitchDif) +"°"]
             self.rpyValid = False
 
-        if(abs(yawDif) <= 15):
-            response = ["The SimCraft's Yaw Alignment is Reached"]
+        if(abs(yawDif) <= acceptableRange):
+            output[2] = ["The SimCraft's Yaw Alignment is Reached"]
         else:
-            response = ["The Yaw is off by " + str(yawDif) +"°"]
+            output[2] = ["The Yaw is off by " + str(yawDif) +"°"]
             self.rpyValid = False
         return response
 
     def checkLongitude(self):
-        if (self.currentLongitude > (self.finalLongitude-15)) and (self.currentLongitude < (self.finalLongitude+15)):
+        acceptableRange=15
+        if (self.currentLongitude > (self.finalLongitude-acceptableRange)) and (self.currentLongitude < (self.finalLongitude+acceptableRange)):
             self.longitudeValid=True
             return True
         else:
