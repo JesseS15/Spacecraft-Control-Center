@@ -41,7 +41,7 @@
           <td style="font-size:16px;"><a id = {{class_name}} class = "classlist" href="{% url 'fo:classHome' class_name %}">{{class_name}}</a></td>
           <td style="font-size:16px;">{{class_name.status}}</td>
           <td style="font-size:16px;">{{class_name.code}}</td>
-          <td style="text-align:center; font-size: 16px;">
+          <td style="font-size: 16px;">
             {% for x in class_name.tc.all %}
             <li style = "list-style-type: none;">{{x}}</li>
             {% endfor %}

@@ -164,6 +164,8 @@ def submit(request, simkey):
         # Pass command to simcraft thread subsystem and add input console response
         if simThread == None:
             response = ["Spacecraft Simulation for " + sim.sim_name + " has terminated execution"]
+            sim.status = "INACTIVE"
+            sim.save()
         elif subsystem != 'UNKNOWN':
             response = simThread.subsystems[subsystem].command(command)
         else:
@@ -329,6 +331,8 @@ def fetchcommands(request, simkey):
         if simThread == None:
             data['commandOptions'].append("Spacecraft Simulation for " + sim.sim_name + " has terminated execution")
             data['previousCommands'].append("Spacecraft Simulation for " + sim.sim_name + " has terminated execution")
+            sim.status = "INACTIVE"
+            sim.save()
         elif subsystem != 'UNKNOWN':
             data['commandOptions'] = simThread.subsystems[subsystem].commands
             data['previousCommands'] = simThread.subsystems[subsystem].consoleLog
@@ -374,3 +378,8 @@ def _get_fo_subsystem(simobj, flightOperator):
         if flightOperator == simobj.TCS_fo.all()[0]:
             subsystem = "TCS"
     return subsystem
+###########################################################
+@login_required(login_url='/login/')
+def imagedisplay(request):
+
+    return render(request, 'fo/imagedisplay.html', {})

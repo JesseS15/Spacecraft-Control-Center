@@ -12,6 +12,7 @@ urlpatterns = [
     path('<int:simkey>/acs/', views.acs, name ='acs'),
     path('<int:simkey>/eps/', views.eps, name ='eps'),
     path('<int:simkey>/tcs/', views.tcs, name ='tcs'),
+    path('imagedisplay/', views.imagedisplay, name ='imagedisplay'),
     path('<int:simkey>/payload/', views.payload, name ='payload'),
     path('<int:simkey>/comms/', views.comms, name ='comms'),
     path('<int:simkey>/acs/fetchdata/', views.acsFetchdata, name='acsFetchdata'),

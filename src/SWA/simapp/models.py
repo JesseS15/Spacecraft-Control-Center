@@ -23,7 +23,8 @@ class Mission(models.Model):
 ###############################################################################
 STATUS_CHOICES= (
     ('ACTIVE','ACTIVE'),
-    ('COMPLETE','COMPLETE')
+    ('COMPLETE','COMPLETE'),
+    ('INACTIVE', 'INACTIVE'),
 )
 class Sim(models.Model):
     sim_name = models.CharField(default='', max_length=10)
