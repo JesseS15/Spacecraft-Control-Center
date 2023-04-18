@@ -10,13 +10,12 @@
   <div style="height: 130vh">
     <!-- Header -->
     <div id="commsheader" style="margin-top:-70px; margin-left: 225px; z-index:7; color: white; border-bottom: solid;">
-      <table>
+      <table style="width: 100%">
         <tr>
-          <td><div id="commsheader" style="color: white;padding-right: 50px;">
+          <td><div id="commsheader" style="float: left;color: white;padding-right: 50px;">
             <h2><b>Communications Subsystem (COMMs)</b></h2>
           </div></td>
-          <td><div id="break" style="width: 32vw;"></div></td>
-          <td><div id="displaytime" style="border-color: white; color: white;border-style: solid; ; padding-left: 5px; padding-right: 5px">
+          <td><div id="displaytime" style="float: right; border-color: white; color: white;border-style: solid; ; padding-left: 5px; padding-right: 5px">
             <div id="time"></div>
           </div></td>
         </tr>
@@ -25,46 +24,87 @@
 
     <!-- body panels-->
     <div id="panelgrid" style="margin-top: 15px;">
+
       <div id="item1">
         <div class="panel-header">
           <h3 class="panel-title">Subsystem Telemetry</h3>
-          </div>
-          <div class="panel-body">
-          <p><u><b>ACS:</u> [Recieved]</b></p>
-          <p><u><b>EPS:</u> [Not Received]</b></p>
-          <p><u><b>TCS:</u> [Not Received]</b></p>
-          <p><u><b>Payload:</u> [Not Received]</b></p>
-          </div>
+        </div>
+        <div class="panel-body">
+          <b style="display: flex;">
+            <p><u>ACS:</u></p>&nbsp;
+            <p id="Telemetry-ACS">Not Recieved</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>EPS:</u></p>&nbsp;
+            <p id="Telemetry-EPS">Not Recieved</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>TCS:</u>&nbsp;
+            <p id="Telemetry-TCS">Not Recieved</p>
+            </b>
+          <b style="display: flex;">
+            <p><u>Payload:</u></p>&nbsp;
+            <p id="Telemetry-Payload">Not Recieved</p>
+          </b>
+        </div>
       </div>
+
       <div id="item2">
         <div class="panel-header">
           <h3 class="panel-title">Signal Status</h3>
-          </div>
-          <div class="panel-body">
-            <p><u><b>Optical Electronics:</u> [Reached]</b></p>
-            <p><u><b>Bus Connection:</u> [Not Reached]</b></p>
-            <p><u><b>Gimbal Connection:</u> [Not Reached]</b></p>
-          </div>
+        </div>
+        <div class="panel-body">
+          <b style="display: flex;">
+            <p><u>Optical Electronics:</u></p>&nbsp;
+            <p id="Optical-Electronics">Not Reached</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>Bus Connection:</u></p>&nbsp;<p id="Bus-Connection">Not Reached</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>Gimbal Connection:</u></p>&nbsp;
+            <p id="Gimbal-Connection">Not Reached</p>
+          </b>
+        </div>
       </div>
+
       <div id="item3">
         <div class="panel-header">
           <h3 class="panel-title">Signal Attributes</h3>
           </div>
           <div class="panel-body">
-            <p><u><b>Bandwidth:</u> [##.### GHz]</b></p><br>
-            <p><u><b>Gain:</u> [# dB]</b></p><br>
+            <b style="display: flex;">
+              <p><u>Bandwidth:</u>&nbsp;</p>
+              <p id="Bandwidth">##.###</p>
+              <p>GHz</p>
+            </b>
+            <b style="display: flex;">
+              <p><u>Gain:</u></p>&nbsp;
+              <p id="Gain">#</p> <p>dB</p>
+            </b>
           </div>
       </div>
+
       <div id="item4">
         <div class="panel-header">
           <h3 class="panel-title">Mission Objective</h3>
           </div>
           <div class="panel-body">
-            <p><u><b>Target:</u> [Reached]</b></p><br>
-            <p><u><b>Image:</u> [Captured]</b></p><br>
-            <p><u><b>Status:</u> [Not Completed]</b></p>
+            <b style="display: flex;">
+              <p><u>Target:</u></p>&nbsp;
+              <p id="Target">Not Reached</p>
+            </b>
+            <b style="display: flex;">
+              <p><u>Image:</u></p>&nbsp;
+              <p id="Image">Not Captured</p>
+            </b>
+            <b style="display: flex;">
+              <p><u>Status:</u></p>&nbsp;
+              <p id="Status">Not Completed</p>
+            </b>
           </div>
       </div>
+
     </div>
   </div>
   <script src = "/static/js/tcsAttributes.js"></script>  

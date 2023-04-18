@@ -10,13 +10,12 @@
   <div style="height: 130vh">
     <!-- Header -->
     <div id="epsheader" style="margin-top:-70px; margin-left: 225px; z-index:7; color: white; border-bottom: solid;">
-      <table>
+      <table style="width: 100%">
         <tr>
-          <td><div id="epsheader" style="padding-right: 50px;">
+          <td><div id="epsheader" style="float: left; padding-right: 50px;">
             <h2><b>Electrical and Power Subsystem (EPS)</b></h2>
           </div></td>
-          <td><div id="break" style="width: 32vw;"></div></td>
-          <td><div id="displaytime" style="border-color: white; color: white;border-style: solid; ; padding-left: 5px; padding-right: 5px">
+          <td><div id="displaytime" style="float: right; border-color: white; color: white;border-style: solid; ; padding-left: 5px; padding-right: 5px">
             <div id="time"></div>
           </div></td>
         </tr>
@@ -25,45 +24,105 @@
 
     <!-- body panels-->
     <div id="panelgrid" style="margin-top: 15px;">
+
       <div id="item1">
         <div class="panel-header">
           <h3 class="panel-title">Power Distribution</h3>
           </div>
           <div class="panel-body">
-            <p><u><b>ACS:</u> [# W], [# %]</b></p>
-            <p><u><b>EPS:</u> [# W], [# %]</b></p>
-            <p><u><b>TCS:</u> [# W], [# %]</b></p>
-            <p><u><b>COMMs:</u> [# W], [# %]</b></p>
-            <p><u><b>Payload:</u> [# W], [# %]</b></p>
+            <b style="display: flex;">
+              <p><u>ACS:</u></p>&nbsp;
+              <p id="ACS-Watts">#</p>&nbsp;
+              <p>W,</p>&nbsp;
+              <p id="ACS-Percent">#</p>
+              <p>%</p>
+            </b>
+            <b style="display: flex;">
+              <p><u>EPS:</u></p>&nbsp;
+              <p id="EPS-Watts">#</p>&nbsp;
+              <p>W,</p>&nbsp;
+              <p id="EPS-Percent">#</p>
+              <p>%</p>
+            </b>
+            <b style="display: flex;">
+              <p><u>TCS:</u></p>&nbsp;
+              <p id="TCS-Watts">#</p>&nbsp;
+              <p>W,</p>&nbsp;
+              <p id="TCS-Percent">#</p>
+              <p>%</p>
+            </b>
+            <b style="display: flex;">
+              <p><u>COMMs:</u></p>&nbsp;&nbsp;
+              <p id="COMMs-Watts">#</p>&nbsp;
+              <p>W,</p>&nbsp;
+              <p id="COMMs-Percent">#</p>
+              <p>%</p>
+            </b>
+            <b style="display: flex;">
+              <p><u>Payload:</u></p>&nbsp;
+              <p id="Payload-Watts">#</p>&nbsp;
+              <p>W,</p>&nbsp;
+              <p id="Payload-Percent">#</p>
+              <p>%</p>
+            </b>
           </div>
       </div>
+
       <div id="item2">
         <div class="panel-header">
           <h3 class="panel-title">Power Generated</h3>
           </div>
           <div class="panel-body">
-            <p><u><b>Solar Panel Articulation:</u> [θ°]</b></p><br>
-            <p><u><b>Total Power:</u> [# W], [# %]</b></p><br>
+            <b style="display: flex;">
+              <p><u>Solar Panel Articulation:</u></p>&nbsp;
+              <p id="Panel-Articulation">θ</p>
+              <p>°</p>
+            </b>
+            <b style="display: flex;">
+              <p><u>Total Power:</u></p>&nbsp;
+              <p id="Total-Watts">#</p>&nbsp;
+              <p>W,</p>&nbsp;
+              <p id="Total-Percent">#</p>
+              <p>%</p>
+            </b>
           </div>
       </div>
+
       <div id="item3">
         <div class="panel-header">
           <h3 class="panel-title">Battery</h3>
           </div>
           <div class="panel-body">
-            <p><u><b>In-Use:</u> [# W], [# %]</b></p><br>
-            <p><u><b>Capacity:</u> [# W], [# %]</b></p><br>
+            <b style="display: flex;">
+              <p><u>In-Use:</u></p>&nbsp;&nbsp;&nbsp;&nbsp;
+              <p id="In-Use-Watts">#</p>&nbsp;
+              <p>W,</p>&nbsp;
+              <p id="In-Use-Percent">#</p>
+              <p>%</p>
+            </b>
+            <b style="display: flex;">
+              <p><u>Capacity:</u></p>&nbsp;
+              <p id="Capacity-Watts">#</p>&nbsp;
+              <p>W,</p>&nbsp;
+              <p id="Capacity-Percent">#</p>
+              <p>%</p>
+            </b>
           </div>
       </div>
+
       <div id="item6">
         <div class="panel-header">
           <h3 class="panel-title">Telemetry Transfer</h3>
-          </div>
+        </div>
           <div class="panel-body">
-            <br><div class="epstelemtry" style="text-align:center";></div><br>
-            <p><u><b>Status:</u> [Not Transfered]</b></p>
-          </div>
+          <br><div class="epstelemtry" style="text-align:center";></div><br>
+          <b style="display: flex;">
+            <p><u>Status:</u></p>
+            <p id="Telemetry-Status">Not Transfered</p>
+          </b>
+        </div>
       </div>
+
     </div>
   </div>
   <script src = "/static/js/epsAttributes.js"></script>

@@ -10,13 +10,12 @@
   <div style="height: 130vh">
     <!-- Header -->
     <div id="payloadheader" style="margin-top:-70px; margin-left: 225px; z-index:7; color: white; border-bottom: solid;">
-      <table>
+      <table style="width: 100%">
         <tr>
-          <td><div id="payloadheader" style="padding-right: 300px;">
+          <td><div id="payloadheader" style="float: left; padding-right: 300px;">
             <h2><b>Payload Subsystem</b></h2>
           </div></td>
-          <td><div id="break" style="width: 32vw;"></div></td>
-          <td><div id="displaytime" style="border-color: white; color: white;border-style: solid; ; padding-left: 5px; padding-right: 5px">
+          <td><div id="displaytime" style="float: right; border-color: white; color: white;border-style: solid; ; padding-left: 5px; padding-right: 5px">
             <div id="time"></div>
           </div></td>
         </tr>
@@ -25,44 +24,74 @@
 
     <!-- body panels-->
     <div id="panelgrid" style="margin-top: 15px;">
+      
       <div id="item1">
         <div class="panel-header">
           <h3 class="panel-title">Gimbal System</h3>
-          </div>
-          <div class="panel-body">
-          <p><u><b>Uncertainty:</u> [+/-# %]</b></p><br>
-          <p><u><b>Connection:</u> [Active]</b></p><br>
-          </div>
+        </div>
+        <div class="panel-body">
+          <b style="display: flex;">
+            <p><u>Uncertainty:</u></p>
+            <p>+/-</p>
+            <p id="Uncertainty">#</p>
+            <p>%</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>Connection:</u><p> 
+            <p id ="Connection">Active</p>
+          </b>
+        </div>
       </div>
+
       <div id="item2">
         <div class="panel-header">
           <h3 class="panel-title">Imager System</h3>
-          </div>
-          <div class="panel-body">
-          <p><b>[Not in Range]</b></p><br>
-          <p><u><b>Target:</u> [Aquired]</b></p><br>
-          <p><u><b>Image: </u> [Received]</b></p><br>
-          </div>
+        </div>
+        <div class="panel-body">
+          <b style="display: flex;">
+            <p id="In-Range">Not in Range</p><br>
+          </b>
+          <b style="display: flex;">
+            <p><u>Target:</u></p> 
+            <p id="Target-Acquired">Acquired</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>Image: </u></p> 
+            <p id="Image-Recieved">Received</p>
+          </b>
+        </div>
       </div>
+
       <div id="item3">
         <div class="panel-header">
           <h3 class="panel-title">System Status</h3>
-          </div>
-          <div class="panel-body">
-            <p><u><b>Gimbal System:</u> [Active]</b></p><br>
-            <p><u><b>Imager:</u> [Inactive]</b></p><br>
-          </div>
+        </div>
+        <div class="panel-body">
+          <b style="display: flex;">
+            <p><u>Gimbal System:</u></p>
+            <p id="Gimbal-Status">Active</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>Imager:</u></p>
+            <p id="Imager-Status">[Inactive]</p>
+          </b>
+        </div>
       </div>
+
       <div id="item4">
         <div class="panel-header">
           <h3 class="panel-title">Telemetry Transfer</h3>
-          </div>
+        </div>
           <div class="panel-body">
-            <br><div class="payloadtelemtry" style="text-align:center";></div><br>
-            <p><u><b>Status:</u> [Not Transfered]</b></p>
-          </div>
+          <br><div class="payloadtelemtry" style="text-align:center";></div><br>
+          <b style="display: flex;">
+            <p><u>Status:</u></p>
+            <p id="Telemetry-Status">Not Transfered</p>
+          </b>
+        </div>
       </div>
+
     </div>
   </div>
-  <script src = "/static/js/payloadAttributes.js"></script>  
+<script src = "/static/js/payloadAttributes.js"></script>  
 {% endblock payload %}
