@@ -45,7 +45,7 @@ class COMMS():
         
         if self.menu == "tl":
             if command_split[0] == "1":
-                self.consoleLog.append("Checking Power Systems...")
+                self.consoleLog.append("Checking Communication Systems...")
                 time.sleep(5)
                 self.consoleLog.extend(self.systemChecks())
             elif command_split[0] == "2":
@@ -91,46 +91,43 @@ class COMMS():
     # Main menu option 1
     def systemChecks(self):
         output = []
-        index = 0
         for key in self.checks:
             if (self.checkTries < 3):
                 self.checks[key] = random.choices([True, False])
                 self.checkTries += 1
-            else:
+            elif (self.checkTries > 3):
+                self.checkTries = 0
                 self.checks[key] = True
             if (self.checks[key]):
-                output[index] = "The SimCrafts current " + key + "status is Reached"
+                output.append("The SimCrafts current " + key + " status is Reached")
             else:
-                output[index] = "The SimCrafts current " + key + "status is not reached"
-
-        if (self.checkTries >= 3):
-            self.checkTries = 0
+                output.append("The SimCrafts current " + key + " status is not reached")
         return output
 
     # Main menu option 2
     def verifySignal(self):
-        output = ""
+        output = []
         if (self.currentGain >= self.gainRange[0]) and (self.currentGain <= self.gainRange[1]):
             self.checks['Antenna Status'] = True
         elif self.currentGain > self.gainRange[1]:
-            output = ('UNWANTED HARMONICS DETECTED — gain too high! Reset gain')
+            output.append('UNWANTED HARMONICS DETECTED — gain too high! Reset gain')
         else:
-            output = ('UNABLE TO CAPTURE SIGNAL — increase gain to 38 dB')
+            output.append('UNABLE TO CAPTURE SIGNAL — increase gain to 38 dB')
         return output
 
     # Main menu option 3    
     def increaseGain(self, newGin):
         output = []
-        output[0] = 'GAIN CHANGING -- Please wait...'
-        output[1] = "Gain changed by " + abs(newGin)
+        output.append('GAIN CHANGING -- Please wait...')
+        output.append("Gain changed by " + str(abs(newGin)))
         self.currentGain += abs(newGin)
         return output
     
     # Main menu option 4
     def resetGain(self):
         output = []
-        output[0] = "GAIN RESETTING -- Please wait..."
-        output[1] = "Gain reset to 36 dB"
+        output.append("GAIN RESETTING -- Please wait...")
+        output.append("Gain reset to 36 dB")
         self.currentGain = 36
         return output
     
@@ -148,9 +145,9 @@ class COMMS():
                 self.allTelemetryDataGood = False
             index += 1
         if (self.allTelemetryDataGood):
-            output[0] = "The Subsystem Telemetry Data has been successfully downloaded!"
+            output.append("The Subsystem Telemetry Data has been successfully downloaded!")
         else:
-            output[0] = "Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task."
+            output.append("Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task.")
         return output
 
     # Main menu option 6
