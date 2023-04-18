@@ -135,15 +135,13 @@ class COMMS():
     # telemetryData needs to be passed from SimObject
     def downloadTelemetryData(self):
         output = []
-        index = 1
         self.allTelemetryDataGood = True
         for key in self.allTelemetryData:
             if self.allTelemetryData[key]:
-                output[index] = "" + key + " Telemetry...COMPLETE!"
+                output.append("" + key + " Telemetry...COMPLETE!")
             else:
-                output[index] = "" + key + " Telemetry...INCOMPLETE!"
+                output.append("" + key + " Telemetry...INCOMPLETE!")
                 self.allTelemetryDataGood = False
-            index += 1
         if (self.allTelemetryDataGood):
             output.append("The Subsystem Telemetry Data has been successfully downloaded!")
         else:
@@ -162,15 +160,15 @@ class COMMS():
     def displayImage(self):
         output = []
         if self.allTelemetryDataGood:
-            output[0] = "All telemetry data has been successfully processed!"
-            output[1] = "Click the link to view the image!"
+            output.append("All telemetry data has been successfully processed!")
+            output.append("Click the link to view the image!")
             # Rick roll link for shits and giggles
-            output[2] = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            output[3] = "GREAT WORK ON THE COMMS SYSTEM CONSOLE"
-            output[4] = "Mission accomplished!"
-            output[5] = "Just kidding...heres the actual image: CARLY_MAKE_URL"
+            output.append("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+            output.append("GREAT WORK ON THE COMMS SYSTEM CONSOLE")
+            output.append("Mission accomplished!")
+            output.append("Just kidding...heres the actual image: CARLY_MAKE_URL")
         else:
-            output[0] = "Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task."
+            output.append("Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task.")
             
         return output
 
