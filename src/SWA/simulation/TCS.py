@@ -3,9 +3,6 @@ import time
 
 class TCS():
 
-    # Needed to make sure random functions dont return the same value everytime
-    random.seed(9001)
-
     ACSThermal = {
         "CMG": random.randrange(-50,50),
         "Alignment System": random.randrange(-50,50)
@@ -64,6 +61,9 @@ class TCS():
         'Bus Connection' : bool(random.getrandbits(1)),
         'Telemetry Signal' : bool(random.getrandbits(1))
     }
+
+    # Needed to make sure random functions dont return the same value everytime
+    random.seed(9001)
     
     checkTries = 0
     telemetryTransferComplete = False
@@ -220,13 +220,11 @@ class TCS():
         return self.consoleLog
 
     # Heats each item by 1 degree (since you can only cool)
-    def randomThermal(self):
-        for subsys in self.SubsystemThermal:
-            for item in self.SubsystemThermal[subsys]:
-                self.SubsystemThermal[subsys][item] += 5
-
     def update(self):
-        self.randomThermal
+        if not self.telemetryTransferComplete:
+            for subsys in self.SubsystemThermal:
+                for item in self.SubsystemThermal[subsys]:
+                    self.SubsystemThermal[subsys][item] += 1
 
     ###################TCS CONSOLE COMMANDS #######################
     # Main menu option 1
@@ -285,10 +283,10 @@ class TCS():
         if self.allSubsystemsInRange() and self.checksGood:
             self.telemetryTransferComplete = True
             self.menu = "done"
-            return ["Data has been Transferred!", "GREAT WORK ON THE TEMPERATURE CONTROL SUBSYSTEM (TCS) CONSOLE"]
+            return ["Data has been Transferred!", "GREAT WORK ON THE THERMAL CONTROL SUBSYSTEM (TCS) CONSOLE"]
         else:
             self.menu = "tl"
-            return ("Verification process for EPS not completed -- Temps not in range")          
+            return ("Verification process for TCS not completed -- Temps not in range")          
     
     # Main menu option 5 - refresh thermal systems
     def refresh(self):
