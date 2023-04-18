@@ -95,13 +95,14 @@ class COMMS():
             if (self.checkTries < 3):
                 self.checks[key] = random.choices([True, False])
                 self.checkTries += 1
-            elif (self.checkTries > 3):
-                self.checkTries = 0
+            elif (self.checkTries >= 3):
                 self.checks[key] = True
             if (self.checks[key]):
                 output.append("The SimCrafts current " + key + " status is Reached")
             else:
                 output.append("The SimCrafts current " + key + " status is not reached")
+        if self.checkTries >= 3:
+            self.checkTries = 0
         return output
 
     # Main menu option 2
@@ -127,8 +128,8 @@ class COMMS():
     def resetGain(self):
         output = []
         output.append("GAIN RESETTING -- Please wait...")
-        output.append("Gain reset to 36 dB")
-        self.currentGain = 36
+        output.append("Gain reset to " + self.gainRange[0] + " dB")
+        self.currentGain = self.gainRange[0]
         return output
     
     # Main menu option 5
