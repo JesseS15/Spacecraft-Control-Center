@@ -13,7 +13,6 @@ class Mission(models.Model):
     final_roll = models.IntegerField(default=random.randint(-180,180), validators=[MinValueValidator(-180),MaxValueValidator(180)], blank=True)
     final_pitch = models.IntegerField(default=random.randint(-90,90), validators=[MinValueValidator(-90),MaxValueValidator(90)], blank=True)
     final_yaw = models.IntegerField(default=random.randint(-180,180), validators=[MinValueValidator(-180),MaxValueValidator(180)], blank=True)
-
     # 0 is prime meridian
     #final_longitude = models.IntegerField(default=random.randint(-180,180), validators=[MinValueValidator(-180),MaxValueValidator(180)], blank=True)
     

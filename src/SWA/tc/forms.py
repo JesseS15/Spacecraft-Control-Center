@@ -27,11 +27,12 @@ class ClassForm(forms.ModelForm):
      #   class_name = self.cleaned_data['class_name']
       ##     raise ValidationError("Spaces not allowed")
        # return class_name
+    missions = forms.ModelMultipleChoiceField(queryset=Mission.objects, help_text=("Hold Ctrl to Select Multiple"), required = False)
     test = True
     class Meta:
         model = Class
-        fields = ['class_name','status','missions', 'test']
-        widgets = {'test': forms.HiddenInput(), 'status': forms.HiddenInput()}
+        fields = ['class_name','status','missions','sims','test']
+        widgets = {'test': forms.HiddenInput(), 'status': forms.HiddenInput(), 'sims':forms.HiddenInput(),}
 
 ###############################################################################
 class SimCreationForm(forms.ModelForm):
@@ -66,7 +67,7 @@ class SimCreationForm(forms.ModelForm):
 ###################################################################3
 class MissionCreationForm(forms.ModelForm):
     mission_name = forms.CharField(max_length = 20)
-
+    
     class Meta:
         model = Mission
         fields = ['mission_name', 'final_roll', 'final_pitch', 'final_yaw']
@@ -75,10 +76,11 @@ class MissionCreationForm(forms.ModelForm):
 class ClassEditForm(forms.ModelForm):
     test = False
     randomizecode = forms.BooleanField(initial = False, required=False, label="Randomize Code")
-    delete = forms.BooleanField(initial = False, required=False)
     #test = forms.BooleanField(widget=forms.HiddenInput(), initial=False)
     #status = forms.CharField(widget=forms.HiddenInput(), initial=Class.status) 
     code  = forms.CharField(initial='', required=False)
+    missions = forms.ModelMultipleChoiceField(queryset=Mission.objects, help_text=("Hold Ctrl to Select Multiple"), required = False)
+    delete = forms.BooleanField(initial = False, required=False)
     class Meta:
         model = Class
         fields = ['randomizecode','code']

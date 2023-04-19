@@ -57,6 +57,7 @@ def tcHome(request):
             class_namef = form.cleaned_data.get('class_name')
             nospacename = class_namef.replace(" ", "")
             test = form.cleaned_data.get('test')
+            missions = numpy.asarray(request.POST.getlist('missions'))
             #test1 = form2.cleaned_data.get('test')
             classesstr = str(classes)
             print(type(classes))
@@ -76,7 +77,9 @@ def tcHome(request):
                 classget.class_name = nospacename
                 classget.code = rcg
                 classget.tc.add(tcobj)
-                classget.save()
+                for x in missions:
+                    classget.missions.add(x)
+                    classget.save()
                 tcobj = TestConductor.objects.get(user = request.user)
                 tcobj.classes.add(classget)
                 tcobj.save()
@@ -89,6 +92,9 @@ def tcHome(request):
                 classget.class_name = nospacename
                 classget.code = rcg
                 classget.tc.add(tcobj)
+                for x in missions:
+                    classget.missions.add(x)
+                    classget.save()
                 classget.save()
                 tcobj = TestConductor.objects.get(user = request.user)
                 tcobj.classes.add(classget)
@@ -129,6 +135,7 @@ def tcHome(request):
                             if(randomizecode == False):
                                 if(len(form2.cleaned_data.get('code'))>0):
                                     classget.code = form2.cleaned_data.get('code')
+                                    classget.missions.add(numpy.asarray(request.POST.getlist('missions')))
                                     classget.save()
                                     return redirect('tc:home')
                                 else:
@@ -136,6 +143,7 @@ def tcHome(request):
                             else:
                                 rcg = ''.join(random.choices(string.ascii_uppercase +string.digits, k=8))
                                 classget.code = rcg
+                                classget.missions.add(numpy.asarray(request.POST.getlist('missions')))
                                 classget.save()
                                 return redirect('tc:home')
                         else:
@@ -164,7 +172,7 @@ def classHome(request, class_name):
     else:
         sims=[]
     #############################################################################
-    group2 = TestConductor.objects.all().values_list('missions', flat=True)
+    group2 = Class.objects.all().filter(class_name = class_name).values_list('missions', flat=True)
     data2 = numpy.asarray(group2)
     print(group2)
     if (data2.all()!=None):
@@ -175,6 +183,7 @@ def classHome(request, class_name):
         print(missions)
     else:
         missions=[] 
+    
     ######################sim edit page#########################################
     if request.method == 'POST' and request.POST.get("form_type") == 'formOne':
         form3 = SimEditForm(request.POST)

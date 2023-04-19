@@ -33,7 +33,8 @@ class Class(models.Model):
     flight_operators = models.ManyToManyField("fo.FlightOperator", verbose_name=("Flight Operator"), blank= True)
     tc = models.ManyToManyField("tc.TestConductor")
     # Classses only want sims, which have a mission
-    missions = models.ManyToManyField("simapp.Mission", verbose_name=("Mission"), blank=True)
+    sims = models.ManyToManyField("simapp.Sim", verbose_name=("Sim"), blank=True)
+    missions = models.ManyToManyField("simapp.Mission", verbose_name=("Mission"),blank=True)
 
     def __str__(self):
         return self.class_name
