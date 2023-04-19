@@ -41,10 +41,11 @@ def index(request):
 def tcHome(request):
     
     classes = Class.objects.all()
-    tcobj = TestConductor.objects.get(user = request.user)
+    
     # Create new TestConductor object if none exists for current staff user
     if not TestConductor.objects.filter(user = request.user).exists():
         TestConductor.objects.create(user = request.user).save()
+    tcobj = TestConductor.objects.get(user = request.user)
 
     print(classes)
     if request.method == 'POST':

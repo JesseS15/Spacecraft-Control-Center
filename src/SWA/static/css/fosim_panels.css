@@ -34,6 +34,18 @@
   height: 3em;
   border: 8px solid #ffffff;
 }
+.signalpayload {
+  height: 3em;
+  border: 8px solid #ffffff;
+}
+.verifypayload {
+  height: 3em;
+  border: 8px solid #ffffff;
+}
+.payloadtelemtry {
+  height: 3em;
+  border: 8px solid #ffffff;
+}
 
 /* body panels */
 #panelgrid {

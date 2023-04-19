@@ -10,13 +10,12 @@
   <div style="height: 130vh">
     <!-- Header -->
     <div id="tcsheader" style="margin-top:-70px; margin-left: 225px; z-index:7; color: white; border-bottom: solid;">
-      <table>
+      <table style="width: 100%">
         <tr>
-          <td><div id="tcsheader" style="padding-right: 50px;">
+          <td><div id="tcsheader" style="float: left; padding-right: 50px;">
             <h2><b>Thermal Control Subsystem (TCS)</b></h2>
           </div></td>
-          <td><div id="break" style="width: 32vw;"></div></td>
-          <td><div id="displaytime" style="border-color: white; color: white;border-style: solid; ; padding-left: 5px; padding-right: 5px">
+          <td><div id="displaytime" style="float: right; border-color: white; color: white;border-style: solid; ; padding-left: 5px; padding-right: 5px">
             <div id="time"></div>
           </div></td>
         </tr>
@@ -25,53 +24,102 @@
 
     <!-- body panels-->
     <div id="panelgrid" style="margin-top: 15px;">
+      
       <div id="item1">
         <div class="panel-header">
           <h3 class="panel-title">ACS Thermals</h3>
-          </div>
-          <div class="panel-body">
-          <p><u><b>CMGs:</u> [#°C] </b></p><br>
-          <p><u><b>Alignment System:</u> [#°C] </b></p><br>
-          </div>
+        </div>
+        <div class="panel-body">
+          <b style="display: flex;">
+            <p><u>CMGs:</u></p>&nbsp;
+            <p id="CMG-Temp">#</p>
+            <p>°C</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>Alignment System:</u></p>&nbsp;
+            <p id="Alignment-Temp">#</p>
+            <p>°C</p>
+          </b>
+        </div>
       </div>
+
       <div id="item2">
         <div class="panel-header">
           <h3 class="panel-title">EPS Thermals</h3>
-          </div>
-          <div class="panel-body">
-          <p><u><b>Distribution System:</u> [#°C] </b></p><br>
-          <p><u><b>Battery:</u> [#°C] </b></p><br>
-          <p><u><b>Articulation System:</u> [#°C] </b></p>
-          </div>
+        </div>
+        <div class="panel-body">
+          <b style="display: flex;">
+            <p><u>Distribution System:</u></p>&nbsp;
+            <p id="Distribution-Temp">#</p>
+            <p>°C</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>Battery:</u></p>&nbsp;
+            <p id="Battery-Temp">#</p>
+            <p>°C</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>Articulation System:</u></p>&nbsp;
+            <p id="Articulation-Temp">#</p>
+            <p>°C</p>
+          </b>
+        </div>
       </div>
+
       <div id="item3">
         <div class="panel-header">
           <h3 class="panel-title">Communication Thermals</h3>
-          </div>
-          <div class="panel-body">
-          <p><u><b>On-Board Computer:</u> [#°C] </b></p><br>
-          <p><u><b>Signal Processor:</u> [#°C] </b></p><br>
-          </div>
+        </div>
+        <div class="panel-body">
+          <b style="display: flex;">
+            <p><u>On-Board Computer:</u></p>&nbsp;
+            <p id="Computer-Temp">#</p>
+            <p>°C</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>Signal Processor:</u></p>&nbsp;
+            <p id="Processor-Temp">#</p>
+            <p>°C</p>
+          </b>
+        </div>
       </div>
+
       <div id="item4">
         <div class="panel-header">
           <h3 class="panel-title">Payload Thermals</h3>
-          </div>
-          <div class="panel-body">
-          <p><u><b>Optical Electronics:</u> [#°C] </b></p><br>
-          <p><u><b>Gimbal System:</u> [#°C] </b></p><br>
-          <p><u><b>Imager:</u> [#°C] </b></p>
-          </div>
+        </div>
+        <div class="panel-body">
+          <b style="display: flex;">
+            <p><u>Optical Electronics:</u></p>&nbsp;
+            <p id="Optical-Temp">#</p>
+            <p>°C</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>Gimbal System:</u></p>&nbsp;
+            <p id="Gimbal-Temp">#</p>
+            <p>°C</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>Imager:</u></p>&nbsp;
+            <p id="Imager-Temp">#</p>
+            <p>°C</p>
+          </b>
+        </div>
       </div>
+
       <div id="item5">
         <div class="panel-header">
           <h3 class="panel-title">Telemetry Transfer</h3>
-          </div>
+        </div>
           <div class="panel-body">
-            <br><div class="tcstelemtry" style="text-align:center";></div><br>
-            <p><u><b>Status:</u> [Not Transfered]</b></p>
-          </div>
+          <br><div class="tcstelemtry" style="text-align:center";></div><br>
+          <b style="display: flex;">
+            <p><u>Status:</u></p>&nbsp;
+            <p id="Telemetry-Status">Not Transfered</p>
+          </b>
+        </div>
       </div>
+
     </div>
   </div>
   <script src = "/static/js/tcsAttributes.js"></script>  

@@ -25,7 +25,7 @@ class ACS():
     longitudeValid = False
     rpyValid = False
     
-    random.seed(1)
+    random.seed(9001)
 
     menu = ''
     commands = [
@@ -205,7 +205,7 @@ class ACS():
             pitchDif=pitchPosDif
 
         yawPosDif = abs(self.orientation["yaw"] - self.finalValues["yaw"])
-        if pitchPosDif>180:
+        if yawPosDif>180:
             yawDif = 360 - yawPosDif
         else:
             yawDif=yawPosDif
@@ -213,22 +213,22 @@ class ACS():
         # Check if roll, pitch, and yaw are in acceptable range from final values
         output = []
         if (abs(rollDif) <= acceptableRange):
-            output[0] = ["The SimCraft's Roll Alignment is Reached"]
+            output.append("The SimCraft's Roll Alignment is Reached")
             self.rpyValid = True
         else:
-            output[0] = ["The roll is off by " + str(rollDif) +"°"]
+            output.append("The roll is off by " + str(rollDif) +"°")
             self.rpyValid = False
 
         if (abs(pitchDif) <= acceptableRange):
-            output[1] = ["The SimCraft's Pitch Alignment is Reached"]
+            output.append("The SimCraft's Pitch Alignment is Reached")
         else:
-            output[1] = ["The Pitch is off by " + str(pitchDif) +"°"]
+            output.append("The Pitch is off by " + str(pitchDif) +"°")
             self.rpyValid = False
 
         if(abs(yawDif) <= acceptableRange):
-            output[2] = ["The SimCraft's Yaw Alignment is Reached"]
+            output.append("The SimCraft's Yaw Alignment is Reached")
         else:
-            output[2] = ["The Yaw is off by " + str(yawDif) +"°"]
+            output.append("The Yaw is off by " + str(yawDif) +"°")
             self.rpyValid = False
         return output
 

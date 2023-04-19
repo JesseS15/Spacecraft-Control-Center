@@ -45,7 +45,7 @@ class COMMS():
         
         if self.menu == "tl":
             if command_split[0] == "1":
-                self.consoleLog.append("Checking Power Systems...")
+                self.consoleLog.append("Checking Communication Systems...")
                 time.sleep(5)
                 self.consoleLog.extend(self.systemChecks())
             elif command_split[0] == "2":
@@ -91,66 +91,62 @@ class COMMS():
     # Main menu option 1
     def systemChecks(self):
         output = []
-        index = 0
         for key in self.checks:
             if (self.checkTries < 3):
                 self.checks[key] = random.choices([True, False])
                 self.checkTries += 1
-            else:
+            elif (self.checkTries >= 3):
                 self.checks[key] = True
             if (self.checks[key]):
-                output[index] = "The SimCrafts current " + key + "status is Reached"
+                output.append("The SimCrafts current " + key + " status is Reached")
             else:
-                output[index] = "The SimCrafts current " + key + "status is not reached"
-
-        if (self.checkTries >= 3):
+                output.append("The SimCrafts current " + key + " status is not reached")
+        if self.checkTries >= 3:
             self.checkTries = 0
         return output
 
     # Main menu option 2
     def verifySignal(self):
-        output = ""
+        output = []
         if (self.currentGain >= self.gainRange[0]) and (self.currentGain <= self.gainRange[1]):
             self.checks['Antenna Status'] = True
         elif self.currentGain > self.gainRange[1]:
-            output = ('UNWANTED HARMONICS DETECTED — gain too high! Reset gain')
+            output.append('UNWANTED HARMONICS DETECTED — gain too high! Reset gain')
         else:
-            output = ('UNABLE TO CAPTURE SIGNAL — increase gain to 38 dB')
+            output.append('UNABLE TO CAPTURE SIGNAL — increase gain to 38 dB')
         return output
 
     # Main menu option 3    
     def increaseGain(self, newGin):
         output = []
-        output[0] = 'GAIN CHANGING -- Please wait...'
-        output[1] = "Gain changed by " + abs(newGin)
+        output.append('GAIN CHANGING -- Please wait...')
+        output.append("Gain changed by " + str(abs(newGin)))
         self.currentGain += abs(newGin)
         return output
     
     # Main menu option 4
     def resetGain(self):
         output = []
-        output[0] = "GAIN RESETTING -- Please wait..."
-        output[1] = "Gain reset to 36 dB"
-        self.currentGain = 36
+        output.append("GAIN RESETTING -- Please wait...")
+        output.append("Gain reset to " + self.gainRange[0] + " dB")
+        self.currentGain = self.gainRange[0]
         return output
     
     # Main menu option 5
     # telemetryData needs to be passed from SimObject
     def downloadTelemetryData(self):
         output = []
-        index = 1
         self.allTelemetryDataGood = True
         for key in self.allTelemetryData:
             if self.allTelemetryData[key]:
-                output[index] = "" + key + " Telemetry...COMPLETE!"
+                output.append("" + key + " Telemetry...COMPLETE!")
             else:
-                output[index] = "" + key + " Telemetry...INCOMPLETE!"
+                output.append("" + key + " Telemetry...INCOMPLETE!")
                 self.allTelemetryDataGood = False
-            index += 1
         if (self.allTelemetryDataGood):
-            output[0] = "The Subsystem Telemetry Data has been successfully downloaded!"
+            output.append("The Subsystem Telemetry Data has been successfully downloaded!")
         else:
-            output[0] = "Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task."
+            output.append("Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task.")
         return output
 
     # Main menu option 6
@@ -165,15 +161,15 @@ class COMMS():
     def displayImage(self):
         output = []
         if self.allTelemetryDataGood:
-            output[0] = "All telemetry data has been successfully processed!"
-            output[1] = "Click the link to view the image!"
+            output.append("All telemetry data has been successfully processed!")
+            output.append("Click the link to view the image!")
             # Rick roll link for shits and giggles
-            output[2] = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            output[3] = "GREAT WORK ON THE COMMS SYSTEM CONSOLE"
-            output[4] = "Mission accomplished!"
-            output[5] = "Just kidding...heres the actual image: CARLY_MAKE_URL"
+            output.append("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+            output.append("GREAT WORK ON THE COMMS SYSTEM CONSOLE")
+            output.append("Mission accomplished!")
+            output.append("Just kidding...heres the actual image: CARLY_MAKE_URL")
         else:
-            output[0] = "Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task."
+            output.append("Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task.")
             
         return output
 
