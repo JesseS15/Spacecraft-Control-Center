@@ -12,6 +12,7 @@ for(let i=0; i<ebtns.length; i++){
         //document.getElementById("test").innerHTML = '';
         var myDiv = document.getElementById("test").innerHTML = "Edit " + ebtns[i].id;
         $('#modal4').show();
+
         //document.getElementById("test").innerHTML = '';
     }  
 }
@@ -25,6 +26,7 @@ window.addEventListener("click", function(event){
     if(event.target == modal4){
         //document.getElementById("test").innerHTML = '';
         modal4.style.display = "none";
+        $('#modal4').hide();
     }else{
         modal4.style.position ="fixed";
         modal4.style.zIndex = "1";

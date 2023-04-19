@@ -30,7 +30,7 @@ class ClassForm(forms.ModelForm):
     test = True
     class Meta:
         model = Class
-        fields = ['class_name','status','sims', 'test']
+        fields = ['class_name','status','missions', 'test']
         widgets = {'test': forms.HiddenInput(), 'status': forms.HiddenInput()}
 
 ###############################################################################
@@ -93,3 +93,13 @@ class SimEditForm(forms.ModelForm):
         model = Sim
         fields = []
         widgets = {'status': forms.HiddenInput()}
+
+############################################################
+class MissionEditForm(forms.ModelForm):
+    delete = forms.BooleanField(initial = False, required=False)
+    #test = forms.BooleanField(widget=forms.HiddenInput(), initial=False)
+    #status = forms.CharField(widget=forms.HiddenInput(), initial=Class.status) 
+    class Meta:
+        model = Mission
+        fields = []
+        

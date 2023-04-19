@@ -165,18 +165,36 @@ def newMission(request,class_name):
         form2 = MissionCreationForm(request.POST)
 
         if form2.is_valid():
-            
+            misobjects = Mission.objects.all()
+            missions = numpy.asarray(misobjects)
             mission_name = form2.cleaned_data.get('mission_name')
+            missionnamenospace = mission_name.replace(" ", "")
             final_roll = form2.cleaned_data.get('final_roll')
             final_pitch = form2.cleaned_data.get('final_pitch')
             final_yaw = form2.cleaned_data.get('final_yaw')
-
-            mission = Mission.objects.create(mission_name = mission_name)
+            ifequal = 0
+            for missioncheck in missions:
+                missionstr = str(missioncheck)
+                if(str(missionstr) == missionnamenospace):
+                    ifequal = ifequal+1
+            
+            if(len(missions)<=0):
+                nospacename = mission_name.replace(" ", "")
+                mission = Mission.objects.create(mission_name = nospacename, verbose_name = mission_name)
+                ifequal = 0
+                # Create new Sim Database object
+            if(len(missions)>0 and ifequal>0):
+                messages.info(request, 'Mission Already Exists. Add Mission UNSUCCESSFUL')
+                return redirect('tc:home')
+            if(len(missions)>0 and ifequal<=0):
+                nospacename = mission_name.replace(" ", "")
+                mission = Mission.objects.create(mission_name = nospacename, verbose_name = mission_name)
+                ifequal = 0
 
             mission.final_roll = final_roll
             mission.final_pitch = final_pitch
             mission.final_yaw = final_yaw
-
+            mission.save()
             TestConductor.objects.get().missions.add(mission)
             
             return redirect('../'+class_name)

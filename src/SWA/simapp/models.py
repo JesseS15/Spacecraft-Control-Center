@@ -6,7 +6,7 @@ import random
 ###############################################################################
 class Mission(models.Model):
     mission_name = models.CharField(default='', max_length=15)
-    
+    verbose_name = models.CharField(default='', max_length=20)
     # Roll range: -180, 180
     # Pitch range: -90, 90
     # Yaw rangeL -180, 180

@@ -22,7 +22,7 @@ from .models import Class
 from django.contrib import messages
 from .models import TestConductor, Class
 from simapp.models import Sim, Mission
-from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm, ClassEditForm, SimEditForm
+from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm, ClassEditForm, SimEditForm, MissionEditForm
 
 
 ###############################################################################
@@ -175,9 +175,10 @@ def classHome(request, class_name):
     else:
         missions=[] 
     ######################sim edit page#########################################
-    if request.method == 'POST':
+    if request.method == 'POST' and request.POST.get("form_type") == 'formOne':
         form3 = SimEditForm(request.POST)
-        if form3.is_valid():
+        if(form3.is_valid()):
+            form3.save()
             sim_namef = request.POST.get('sim_name')
             print("xxxx")
             print(sim_namef)
@@ -191,45 +192,30 @@ def classHome(request, class_name):
         return redirect('../home/'+class_name)
     else:
         form3 = SimEditForm()
+
     #if(form3.is_valid()):
      #   return redirect('tc:home')
     ##   form3 = SimEditForm()
 
     ###############################################################################
-    """if request.method == 'POST':
-        form = SimCreationForm(request.POST)
-
-        if form.is_valid():
-            sim_list = form.cleaned_data.get('sim_list')
-            sim_name = form.cleaned_data.get('sim_name')
-            sys_list = form.cleaned_data.get('sys_list')
-            flight_operators = form.cleaned_data.get('flight_operators')
-
-            sim = Sim.objects.create(sim_name = sim_name)
-            Class.objects.get(class_name = class_name).sims.add(sim)
-            for x in sys_list:
-                sim.sys_list.add(x)
-                #sys_list.sim_list.add(sim)
-                #class_belong.sim_list.add(sim)
-            #form.save_m2m()
-            ##gohere
-            for flight_operator in flight_operators:
-                sim.flight_operators.add(flight_operator)
-                #flight_operator.sim_list.add(sim)
-                # Send notification
-                send_mail(
-                    'STaTE Simulation Added to Your Account',
-                    'A new simulation, ' + sim.sim_name + ', has been added to your STaTE account.',
-                    None,
-                    [flight_operator.user.email],
-                    fail_silently=False,
-                )
-                return redirect('tc:home/class_name')
-            
-
-    form = SimCreationForm()"""
+    if request.method == 'POST' and request.POST.get("form_type") == 'formTwo':
+        form4 = MissionEditForm(request.POST)
+        if(form4.is_valid()):
+            mission_namef = request.POST.get('missionname')
+            print(mission_namef)
+            delete = form4.cleaned_data.get('delete')
+            missionget = Mission.objects.get(mission_name = mission_namef)
+            if(delete==False):
+                missionget.save()
+            else:
+                missionget.delete()
+                print('sucess')
+        return redirect('../home/'+class_name)
+    else:
+        form4 = MissionEditForm()
+########################################################
     # 3/5/23 Removed "missions":missions
-    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims, "missions":missions, "form3":form3})
+    return render(request, 'tc/classHome.html', {"class_name": class_name, "sims":sims, "missions":missions, "form3":form3, "form4":form4})
 
 ###############################################################################
 def getGroups(request):
