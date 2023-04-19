@@ -66,8 +66,10 @@ class TCS():
     random.seed(9001)
     
     checkTries = 0
-    telemetryTransferComplete = False
     checksGood = False
+    
+    telemetryTransfering = False
+    telemetryTransferComplete = False
 
     # Console infastructure
     menu = ''
@@ -112,7 +114,6 @@ class TCS():
                 self.menu = "coolSubsys"
             elif command_split[0] == "4":
                 self.consoleLog.append("Transferring TCS Telemetry...")
-                time.sleep(2)
                 self.consoleLog.extend(self.telemetryTransfer())
             elif command_split[0] == "5":
                 self.consoleLog.append(self.refresh())
@@ -281,6 +282,9 @@ class TCS():
     # Main menu option 4 - telemtry transfer
     def telemetryTransfer(self):
         if self.allSubsystemsInRange() and self.checksGood:
+            self.telemetryTransfering = True
+            time.sleep(5)
+            self.telemetryTransfering = False
             self.telemetryTransferComplete = True
             self.menu = "done"
             return ["Data has been Transferred!", "GREAT WORK ON THE THERMAL CONTROL SUBSYSTEM (TCS) CONSOLE"]

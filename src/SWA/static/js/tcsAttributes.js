@@ -1,64 +1,35 @@
-window.setInterval(function(){
+// Initial Calls
+updateTelemetry(false);
+fetchdata();
+
+function updateTime(){
     $('#time').text(function(){
         var today = new Date();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         return ("Current Time: " + time + " EST");
     })
-}, 1000)
-
-window.setInterval(function(){
-    var active = true;
-    $('.signaltcs').css('border-color', function(){
-        if (active = true) {
-            return 'green';
-        } else {
-            return 'red';
-        }
-    }).text(function(){
-        if (active = true) {
-            return "Active";
-        } else {
-            return "InActive";
-        }
-    });
-}, 1000);
-
-window.setInterval(function(){
-    var active1 = true;
-    $('.verifytcs').css('border-color', function(){
-        if (active1 = true) {
-            return 'green';
-        } else {
-            return 'red';
-        }
-    }).text(function(){
-        if (active = true) {
-            return "Signal Verified";
-        } else {
-            return "Signal Not Verified";
-        }
-    });
-}, 1000);
-
-window.setInterval(function(){
-    var active1 = true;
+}
+function updateTelemetry(telemetryTransfering){
     $('.tcstelemtry').css('border-color', function(){
-        if (active1 = true) {
-            return 'red';
-        } else {
+        if (telemetryTransfering == true) {
             return 'green';
+        } else {
+            return 'red';
         }
     }).text(function(){
-        if (active = true) {
-            return "Not Transfering";
-        } else {
+        if (telemetryTransfering == true) {
             return "Transfering in Progress";
+        } else {
+            return "Not Transfering";
         }
     });
-}, 1000);
+}
 
 // Refresh TCS Attributes
 function fetchdata(){
+
+    updateTime();
+
     $.ajax({
         // fo/views.tcsFetchdata
         url: 'fetchdata', // tcs/fetchdata
@@ -68,24 +39,42 @@ function fetchdata(){
         success: (data) => {
             //Debug return data
             //console.log(data);
-
-            if (data['consoleLog'].length > terminal2.childElementCount){
-                // Clear right terminal and append subsystem command log
-                terminal2.innerText = '';
-                for (var i = 0; i < data['consoleLog'].length; i++) {
-                    const output = document.createElement('p');
-                    output.textContent = `${data['consoleLog'][i]}`;
-                    terminal2.appendChild(output);
-                }
-                terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
-            }
     
             if (Object.keys(data).length > 0){
-                // Update Orientation panel
-                //document.getElementById("Oreintation-Roll").innerText = data['roll'];
-                //document.getElementById("Oreintation-Pitch").innerText = data['pitch'];
-                //document.getElementById("Oreintation-Yaw").innerText = data['yaw'];
-                //document.getElementById("Oreintation-Longitude").innerText = data['longitude'];
+
+                // Update terminal with console log data
+                if (data['consoleLog'].length > terminal2.childElementCount){
+                    // Clear right terminal and append subsystem command log
+                    terminal2.innerText = '';
+                    for (var i = 0; i < data['consoleLog'].length; i++) {
+                        const output = document.createElement('p');
+                        output.textContent = `${data['consoleLog'][i]}`;
+                        terminal2.appendChild(output);
+                    }
+                    terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
+                }
+
+                // Update ACS Thermals Panel
+                document.getElementById("CMG-Temp").innerText = data['CMG-Temp'];
+                document.getElementById("Alignment-Temp").innerText = data['Alignment-Temp'];
+
+                // Update EPS Thermals Panel
+                document.getElementById("Distribution-Temp").innerText = data['Distribution-Temp'];
+                document.getElementById("Battery-Temp").innerText = data['Battery-Temp'];
+                document.getElementById("Articulation-Temp").innerText = data['Articulation-Temp'];
+
+                // Update COMMs Thermals Panel
+                document.getElementById("Computer-Temp").innerText = data['Computer-Temp'];
+                document.getElementById("Processor-Temp").innerText = data['Processor-Temp'];
+
+                // Update Payload Thermals Panel
+                document.getElementById("Optical-Temp").innerText = data['Optical-Temp'];
+                document.getElementById("Gimbal-Temp").innerText = data['Gimbal-Temp'];
+                document.getElementById("Imager-Temp").innerText = data['Imager-Temp'];
+
+                // Update Telemetry panel
+                updateTelemetry(data[['telemetry_transfering']]);
+                document.getElementById("Telemetry-Status").innerText = data['telemetry_transfered'] ? 'Transfered' : 'Not Transfered';
             }
         }
     });

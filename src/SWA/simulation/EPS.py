@@ -20,12 +20,14 @@ class EPS():
     checkTries = 0
     totalPower = 80
     statusGood = False
-    telemetryTransferComplete = False
     atFullPower = False
     solarPanelAngleRange = [-10, 10]
     solarPanelAngle = random.randint(-90, 90)
     solarPanelAngleGood = False
 
+    telemetryTransfering = False
+    telemetryTransferComplete = False
+    
     # Console infastructure
     menu = ''
     consoleLog = []
@@ -68,7 +70,6 @@ class EPS():
                 self.menu = "panelArticulate"
             elif command_split[0] == "5":
                 self.consoleLog.append("Transfering EPS Telemetry...")
-                time.sleep(5)
                 self.consoleLog.append( self.transferTelemetry())
                 self.consoleLog.append("GREAT WORK ON THE ELECTRICAL POWER SYSTEMS (EPS) CONSOLE!")
                 #TODO: create instance where user cannot enter commands after subsys finished
@@ -126,6 +127,7 @@ class EPS():
     def fullPower(self):
         self.distribution["ACS"] = 26
         self.distribution["COMMS"] = 26
+        self.totalPower = 100
         self.atFullPower = True
         return "System running at full power. Run Verify Power Distribution to verify."
 
@@ -143,6 +145,9 @@ class EPS():
     # Main menu option 5
     def transferTelemetry(self):
         if self.statusGood and self.solarPanelAngleGood and self.atFullPower:
+            self.telemetryTransfering = True
+            time.sleep(5)
+            self.telemetryTransfering = False
             self.telemetryTransferComplete = True
             return "Telemetry transfer complete. EPS subsystem complete!"
         else:

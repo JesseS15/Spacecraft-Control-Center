@@ -20,6 +20,7 @@ class ACS():
     cmgStatus = False
     orientationRelay = False
 
+    telemetryTransfering = False
     telemetryTransferComplete = False
 
     longitudeValid = False
@@ -69,7 +70,6 @@ class ACS():
                 self.consoleLog.append("eta: " + str(self.longMin()) + " seconds until active range.")
             elif command_split[0] == "2":
                 self.consoleLog.append("Verifying Alignment...")
-                time.sleep(5)
                 self.consoleLog.extend(self.verifyAlignment())
             elif command_split[0] == "3":
                 self.consoleLog.append("How much do you want to change the Roll by (in Degrees)?")
@@ -82,7 +82,6 @@ class ACS():
                 self.menu = "cmgYaw"
             elif command_split[0] == "6":
                 self.consoleLog.append("Transfering ACS Telemetry...")
-                time.sleep(5)
                 self.consoleLog.append( self.telemetryTransfer())
                 if (self.telemetryTransferComplete):
                     self.consoleLog.append("GREAT WORK ON THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE!")
@@ -146,11 +145,15 @@ class ACS():
     
     ############# CMG : User input updates ##############
     def updateRoll(self, newRoll):
+        self.rollActive = True
+        self.cmgStatus = True
+        time.sleep(5)
         rollSum = newRoll + self.orientation['roll']
+        self.rollActive = False
+        self.cmgStatus = False
         if (rollSum < -180):
             self.orientation['roll'] = 360+rollSum
             return self.orientation['roll']
-    
         elif (rollSum > 180):
             self.orientation['roll'] = -360+rollSum
             return self.orientation['roll']
@@ -160,11 +163,15 @@ class ACS():
 
 
     def updatePitch(self, newPitch):
+        self.pitchActive = True
+        self.cmgStatus = True
+        time.sleep(5)
         pitchSum = newPitch + self.orientation['pitch']
+        self.pitchActive = False
+        self.cmgStatus = False
         if (pitchSum < -90):
             self.orientation['pitch'] = 180+pitchSum
             return self.orientation['pitch']
-    
         elif (pitchSum > 90):
             self.orientation['pitch'] = -180+pitchSum
             return self.orientation['pitch']
@@ -173,11 +180,15 @@ class ACS():
             return self.orientation['pitch']
         
     def updateYaw(self, newYaw):
+        self.yawActive = True
+        self.cmgStatus = True
+        time.sleep(5)
         yawSum = newYaw + self.orientation['yaw']
+        self.yawActive = False
+        self.cmgStatus = False
         if (yawSum < -180):
             self.orientation['yaw'] = 360+yawSum
             return self.orientation['yaw']
-    
         elif (yawSum > 180):
             self.orientation['yaw'] = -360+yawSum
             return self.orientation['yaw']
@@ -242,12 +253,18 @@ class ACS():
             return False
 
     def systemChecks(self):
+        self.orientationRelay = True
+        time.sleep(5)
         align = self.verifyAlignment()
         longitude = self.checkLongitude()
+        self.orientationRelay = False
         return align, longitude
     
     def telemetryTransfer(self):
         if (self.rpyValid and self.longitudeValid):
+            self.telemetryTransfering = True
+            time.sleep(5)
+            self.telemetryTransfering = False
             self.telemetryTransferComplete = True
             return "Data has been Transferred!"
         else:

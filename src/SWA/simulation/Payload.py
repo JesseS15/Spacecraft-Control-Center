@@ -15,6 +15,7 @@ class Payload():
     slewImageFlag = False
     acquireTargetFlag = False
     captureImageFlag = False
+    telemetryTransfering = False
     telemetryTransferComplete = False
 
     # Console infastructure
@@ -59,7 +60,6 @@ class Payload():
                 self.consoleLog.append(self.captureImage())
             elif command_split[0] == "5":
                 self.consoleLog.append("Transferring Payload Telemetry...")
-                time.sleep(5)
                 self.consoleLog.append( self.telemetryTransfer())
                 self.consoleLog.append("GREAT WORK ON THE PAYLOAD SYSTEM CONSOLE!")
                 #TODO: create instance where user cannot enter commands after subsys finished
@@ -120,6 +120,9 @@ class Payload():
     # Main menu option 5
     def telemetryTransfer(self):
         if self.captureImageFlag:
+            self.telemetryTransfering = True
+            time.sleep(5)
+            self.telemetryTransfering = False
             self.telemetryTransferComplete = True
             return True
         else:

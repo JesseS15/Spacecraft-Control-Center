@@ -179,6 +179,8 @@ def submit(request, simkey):
 def acsFetchdata(request, simkey):
     if request.method == 'GET':
         sim = Sim.objects.get(pk = simkey)
+        flightOperator = get_object_or_404(FlightOperator, user = request.user)
+        subsystem = _get_fo_subsystem(sim, flightOperator)
         
         # Get simcraft thread
         simThread = None
@@ -188,21 +190,25 @@ def acsFetchdata(request, simkey):
                 simThread = thread
                 
         data = {}
-        data['consoleLog'] = []
                 
-        if simThread != None:
+        if simThread != None and subsystem != 'UNKNOWN':
             # Define data to be returned
-            data['consoleLog'] = simThread.subsystems['ACS'].consoleLog
+            data['consoleLog'] = simThread.subsystems[subsystem].consoleLog
+            
             data['roll'] = simThread.subsystems['ACS'].orientation['roll']
             data['pitch'] = simThread.subsystems['ACS'].orientation['pitch']
             data['yaw'] = simThread.subsystems['ACS'].orientation['yaw']
             data['longitude'] = simThread.subsystems['ACS'].currentLongitude
+            
             data['cmg_roll'] = simThread.subsystems['ACS'].rollActive
             data['cmg_pitch'] = simThread.subsystems['ACS'].pitchActive
             data['cmg_yaw'] = simThread.subsystems['ACS'].yawActive
+            
             data['cmg_status'] = simThread.subsystems['ACS'].cmgStatus
             data['orientation_relay'] = simThread.subsystems['ACS'].orientationRelay
-            data['telemetry_transfer'] = simThread.subsystems['ACS'].telemetryTransferComplete
+            
+            data['telemetry_transfering'] = simThread.subsystems['ACS'].telemetryTransfering
+            data['telemetry_transfered'] = simThread.subsystems['ACS'].telemetryTransferComplete
         
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:
@@ -212,6 +218,8 @@ def acsFetchdata(request, simkey):
 def epsFetchdata(request, simkey):
     if request.method == 'GET':
         sim = Sim.objects.get(pk = simkey)
+        flightOperator = get_object_or_404(FlightOperator, user = request.user)
+        subsystem = _get_fo_subsystem(sim, flightOperator)
         
         # Get simcraft thread
         simThread = None
@@ -221,18 +229,22 @@ def epsFetchdata(request, simkey):
                 simThread = thread
                 
         data = {}
-        data['consoleLog'] = []
                 
-        if simThread != None:
+        if simThread != None and subsystem != 'UNKNOWN':
             # Define data to be returned
-            data['consoleLog'] = simThread.subsystems['EPS'].consoleLog
-            data['acs_power'] = simThread.subsystems['EPS'].params['power distribution']['ACS']
-            data['eps_power'] = simThread.subsystems['EPS'].params['power distribution']['EPS']
-            data['tcs_power'] = simThread.subsystems['EPS'].params['power distribution']['TCS']
-            data['commns_power'] = simThread.subsystems['EPS'].params['power distribution']['COMMS']
-            data['payload_power'] = simThread.subsystems['EPS'].params['power distribution']['Payload']
-            data['articulation'] = simThread.subsystems['EPS'].params['solar panel angle']
-            data['total_power'] = simThread.subsystems['EPS'].params['total power']
+            data['consoleLog'] = simThread.subsystems[subsystem].consoleLog
+            
+            data['acs_power'] = simThread.subsystems['EPS'].distribution['ACS']
+            data['eps_power'] = simThread.subsystems['EPS'].distribution['EPS']
+            data['tcs_power'] = simThread.subsystems['EPS'].distribution['TCS']
+            data['comms_power'] = simThread.subsystems['EPS'].distribution['COMMS']
+            data['payload_power'] = simThread.subsystems['EPS'].distribution['Payload']
+            
+            data['articulation'] = simThread.subsystems['EPS'].solarPanelAngle
+            data['total_power'] = simThread.subsystems['EPS'].totalPower
+            
+            data['telemetry_transfering'] = simThread.subsystems['EPS'].telemetryTransfering
+            data['telemetry_transfered'] = simThread.subsystems['EPS'].telemetryTransferComplete
         
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:
@@ -242,6 +254,8 @@ def epsFetchdata(request, simkey):
 def tcsFetchdata(request, simkey):
     if request.method == 'GET':
         sim = Sim.objects.get(pk = simkey)
+        flightOperator = get_object_or_404(FlightOperator, user = request.user)
+        subsystem = _get_fo_subsystem(sim, flightOperator)
         
         # Get simcraft thread
         simThread = None
@@ -250,12 +264,28 @@ def tcsFetchdata(request, simkey):
             if thread.ident == thread_id:
                 simThread = thread
             
-        data = {}    
-        data['consoleLog'] = []
+        data = {}
         
-        if simThread != None:
+        if simThread != None and subsystem != 'UNKNOWN':
             # Define data to be returned
-            data['consoleLog'] = simThread.subsystems['TCS'].consoleLog
+            data['consoleLog'] = simThread.subsystems[subsystem].consoleLog
+            
+            data['CMG-Temp'] = simThread.subsystems['TCS'].ACSThermal["CMG"]
+            data['Alignment-Temp'] = simThread.subsystems['TCS'].ACSThermal["Alignment System"]
+            
+            data['Distribution-Temp'] = simThread.subsystems['TCS'].EPSThermal["Power Distribution"]
+            data['Battery-Temp'] = simThread.subsystems['TCS'].EPSThermal["Battery"]
+            data['Articulation-Temp'] = simThread.subsystems['TCS'].EPSThermal["Articulation System"]
+            
+            data['Computer-Temp'] = simThread.subsystems['TCS'].COMMSThermal["On-board Computer"]
+            data['Processor-Temp'] = simThread.subsystems['TCS'].COMMSThermal["Signal Processor"]
+            
+            data['Optical-Temp'] = simThread.subsystems['TCS'].PayloadThermal["Optical Electronics"]
+            data['Gimbal-Temp'] = simThread.subsystems['TCS'].PayloadThermal["Gimbal System"]
+            data['Imager-Temp'] = simThread.subsystems['TCS'].PayloadThermal["Imager"]
+            
+            data['telemetry_transfering'] = simThread.subsystems['TCS'].telemetryTransfering
+            data['telemetry_transfered'] = simThread.subsystems['TCS'].telemetryTransferComplete
         
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:
@@ -265,6 +295,8 @@ def tcsFetchdata(request, simkey):
 def commsFetchdata(request, simkey):
     if request.method == 'GET':
         sim = Sim.objects.get(pk = simkey)
+        flightOperator = get_object_or_404(FlightOperator, user = request.user)
+        subsystem = _get_fo_subsystem(sim, flightOperator)
         
         # Get simcraft thread
         simThread = None
@@ -274,11 +306,25 @@ def commsFetchdata(request, simkey):
                 simThread = thread
                 
         data = {}
-        data['consoleLog'] = []
         
-        if simThread != None:
+        if simThread != None and subsystem != 'UNKNOWN':
             # Define data to be returned
-            data['consoleLog'] = simThread.subsystems['COMMS'].consoleLog
+            data['consoleLog'] = simThread.subsystems[subsystem].consoleLog
+            
+            data['Telemetry-ACS'] = simThread.subsystems['COMMS'].allTelemetryData['ACS']
+            data['Telemetry-EPS'] = simThread.subsystems['COMMS'].allTelemetryData['EPS']
+            data['Telemetry-TCS'] = simThread.subsystems['COMMS'].allTelemetryData['TCS']
+            data['Telemetry-Payload'] = simThread.subsystems['COMMS'].allTelemetryData['Payload']
+            
+            data['On-Board-Computer'] = simThread.subsystems['COMMS'].checks['On-board Computer']
+            data['Antenna-Status'] = simThread.subsystems['COMMS'].checks['Antenna Status']
+            
+            data['Bandwidth'] = simThread.subsystems['COMMS'].frequency
+            data['Gain'] = simThread.subsystems['COMMS'].currentGain
+            
+            #data['Target'] = simThread.subsystems['COMMS'].
+            #data['Image'] = simThread.subsystems['COMMS'].
+            #data['Status'] = simThread.subsystems['COMMS'].
         
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:
@@ -288,6 +334,8 @@ def commsFetchdata(request, simkey):
 def payloadFetchdata(request, simkey):
     if request.method == 'GET':
         sim = Sim.objects.get(pk = simkey)
+        flightOperator = get_object_or_404(FlightOperator, user = request.user)
+        subsystem = _get_fo_subsystem(sim, flightOperator)
         
         # Get simcraft thread
         simThread = None
@@ -299,9 +347,26 @@ def payloadFetchdata(request, simkey):
         data = {}
         data['consoleLog'] = []
          
-        if simThread != None:
+        if simThread != None and subsystem != 'UNKNOWN':
             # Define data to be returned
-            data['consoleLog'] = simThread.subsystems['Payload'].consoleLog
+            data['consoleLog'] = simThread.subsystems[subsystem].consoleLog
+            
+            #data['Uncertainty'] = simThread.subsystems['Payload'].
+            #data['Connection'] = simThread.subsystems['Payload'].statusGood
+            
+            data['In-Range'] = simThread.subsystems['Payload'].slewImageFlag
+            data['Target-Acquired'] = simThread.subsystems['Payload'].acquireTargetFlag
+            data['Image-Recieved'] = simThread.subsystems['Payload'].captureImageFlag
+
+            #data['Gimbal-Status'] = simThread.subsystems['Payload'].
+            #data['Imager-Status'] = simThread.subsystems['Payload'].
+
+            data['Optical-Electronics'] = simThread.subsystems['Payload'].checks['Optical Electronics']
+            data['Bus-Connection'] = simThread.subsystems['Payload'].checks['Bus Connection']
+            data['Gimbal-Connection'] = simThread.subsystems['Payload'].checks['Gimble Connection']
+        
+            data['telemetry_transfering'] = simThread.subsystems['Payload'].telemetryTransfering
+            data['telemetry_transfered'] = simThread.subsystems['Payload'].telemetryTransferComplete
         
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:

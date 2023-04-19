@@ -49,7 +49,7 @@ input.addEventListener('keyup', function (event) {
             dataType: 'json',
             
             data:{
-                cmd: parseFloat(str_command),
+              cmd: parseFloat(str_command),
             },
 
             success: function( data )

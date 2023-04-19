@@ -1,65 +1,34 @@
-window.setInterval(function(){
+// Initial Calls
+updateTelemetry(false);
+fetchdata();
+
+function updateTime(){
     $('#time').text(function(){
         var today = new Date();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         return ("Current Time: " + time + " EST");
     })
-}, 1000)
-
-window.setInterval(function(){
-    var active = true;
-    $('.signalacs').css('border-color', function(){
-        if (active = true) {
-            return 'green';
-        } else {
-            return 'red';
-        }
-    }).text(function(){
-        if (active = true) {
-            return "Active";
-        } else {
-            return "InActive";
-        }
-    });
-}, 1000);
-
-window.setInterval(function(){
-    var active1 = true;
-    $('.verifyacs').css('border-color', function(){
-        if (active1 = true) {
-            return 'green';
-        } else {
-            return 'red';
-        }
-    }).text(function(){
-        if (active = true) {
-            return "Signal Verified";
-        } else {
-            return "Signal Not Verified";
-        }
-    });
-}, 1000);
-
-window.setInterval(function(){
-    var active1 = true;
+}
+function updateTelemetry(telemetryTransfering){
     $('.acstelemtry').css('border-color', function(){
-        if (active1 = true) {
-            return 'red';
-        } else {
+        if (telemetryTransfering == true) {
             return 'green';
+        } else {
+            return 'red';
         }
     }).text(function(){
-        if (active = true) {
-            return "Not Transfering";
-        } else {
+        if (telemetryTransfering == true) {
             return "Transfering in Progress";
+        } else {
+            return "Not Transfering";
         }
     });
-}, 1000);
-fetchdata();
+}
 
 // Refresh ACS UI Attributes
 function fetchdata(){
+    updateTime();
+
     $.ajax({
         // fo/views.acsFetchdata
         url: 'fetchdata', // acs/fetchdata
@@ -69,19 +38,22 @@ function fetchdata(){
         success: (data) => {
             //Debug return data
             //console.log(data);
-            
-            if (data['consoleLog'].length > terminal2.childElementCount){
-                // Clear right terminal and append subsystem command log
-                terminal2.innerText = '';
-                for (var i = 0; i < data['consoleLog'].length; i++) {
-                    const output = document.createElement('p');
-                    output.textContent = `${data['consoleLog'][i]}`;
-                    terminal2.appendChild(output);
-                }
-                terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
-            }
+
     
             if (Object.keys(data).length > 0){
+
+                // Update terminal with console log data
+                if (data['consoleLog'].length > terminal2.childElementCount){
+                    // Clear right terminal and append subsystem command log
+                    terminal2.innerText = '';
+                    for (var i = 0; i < data['consoleLog'].length; i++) {
+                        const output = document.createElement('p');
+                        output.textContent = `${data['consoleLog'][i]}`;
+                        terminal2.appendChild(output);
+                    }
+                    terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
+                }
+
                 // Update Orientation panel
                 document.getElementById("Oreintation-Roll").innerText = data['roll'];
                 document.getElementById("Oreintation-Pitch").innerText = data['pitch'];
@@ -98,7 +70,8 @@ function fetchdata(){
                 document.getElementById("Orientation-Relay").innerText = data['orientation_relay'] ? 'Active' : 'Inactive';
 
                 // Update Telemetry panel
-                document.getElementById("Telemetry-Status").innerText = data['telemetry_transfer'] ? 'Transfered' : 'Not Transfered';
+                updateTelemetry(data[['telemetry_transfering']]);
+                document.getElementById("Telemetry-Status").innerText = data['telemetry_transfered'] ? 'Transfered' : 'Not Transfered';
             }
         }
     });

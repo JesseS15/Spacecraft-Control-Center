@@ -1,64 +1,19 @@
-window.setInterval(function(){
+// Initial Calls
+fetchdata();
+
+function updateTime(){
     $('#time').text(function(){
         var today = new Date();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         return ("Current Time: " + time + " EST");
     })
-}, 1000)
-
-window.setInterval(function(){
-    var active = true;
-    $('.signalacs').css('border-color', function(){
-        if (active = true) {
-            return 'green';
-        } else {
-            return 'red';
-        }
-    }).text(function(){
-        if (active = true) {
-            return "Active";
-        } else {
-            return "InActive";
-        }
-    });
-}, 1000);
-
-window.setInterval(function(){
-    var active1 = true;
-    $('.verifyacs').css('border-color', function(){
-        if (active1 = true) {
-            return 'green';
-        } else {
-            return 'red';
-        }
-    }).text(function(){
-        if (active = true) {
-            return "Signal Verified";
-        } else {
-            return "Signal Not Verified";
-        }
-    });
-}, 1000);
-
-window.setInterval(function(){
-    var active1 = true;
-    $('.acstelemtry').css('border-color', function(){
-        if (active1 = true) {
-            return 'red';
-        } else {
-            return 'green';
-        }
-    }).text(function(){
-        if (active = true) {
-            return "Not Transfering";
-        } else {
-            return "Transfering in Progress";
-        }
-    });
-}, 1000);
+}
 
 // Refresh Comms Attributes
 function fetchdata(){
+
+    updateTime();
+
     $.ajax({
         // fo/views.commsFetchdata
         url: 'fetchdata', // comms/fetchdata
@@ -68,24 +23,40 @@ function fetchdata(){
         success: (data) => {
             //Debug return data
             //console.log(data);
-
-            if (data['consoleLog'].length > terminal2.childElementCount){
-                // Clear right terminal and append subsystem command log
-                terminal2.innerText = '';
-                for (var i = 0; i < data['consoleLog'].length; i++) {
-                    const output = document.createElement('p');
-                    output.textContent = `${data['consoleLog'][i]}`;
-                    terminal2.appendChild(output);
-                }
-                terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
-            }
     
             if (Object.keys(data).length > 0){
-                // Update Orientation panel
-                //document.getElementById("Oreintation-Roll").innerText = data['roll'];
-                //document.getElementById("Oreintation-Pitch").innerText = data['pitch'];
-                //document.getElementById("Oreintation-Yaw").innerText = data['yaw'];
-                //document.getElementById("Oreintation-Longitude").innerText = data['longitude'];
+
+                // Update terminal with console log data
+                if (data['consoleLog'].length > terminal2.childElementCount){
+                    // Clear right terminal and append subsystem command log
+                    terminal2.innerText = '';
+                    for (var i = 0; i < data['consoleLog'].length; i++) {
+                        const output = document.createElement('p');
+                        output.textContent = `${data['consoleLog'][i]}`;
+                        terminal2.appendChild(output);
+                    }
+                    terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
+                }
+
+                // Update Subsystem Telemetry panel
+                document.getElementById("Telemetry-ACS").innerText = data['Telemetry-ACS'] ? 'Recieved' : 'Not Recieved';
+                document.getElementById("Telemetry-EPS").innerText = data['Telemetry-EPS'] ? 'Recieved' : 'Not Recieved';
+                document.getElementById("Telemetry-TCS").innerText = data['Telemetry-TCS'] ? 'Recieved' : 'Not Recieved';
+                document.getElementById("Telemetry-Payload").innerText = data['Telemetry-Payload'] ? 'Recieved' : 'Not Recieved';
+
+                // Update System Status panel
+                document.getElementById("On-Board-Computer").innerText = data['On-Board-Computer'] ? 'Reached' : 'Not Reached';
+                document.getElementById("Antenna-Status").innerText = data['Antenna-Status'] ? 'Reached' : 'Not Reached';
+
+                // Update Signal Attributes panel
+                document.getElementById("Bandwidth").innerText = data['Bandwidth'];
+                document.getElementById("Gain").innerText = data['Gain'];
+
+                // Update Mission Objective panel
+                //document.getElementById("Target").innerText = data['Target'] ? 'Reached' : 'Not Reached';
+                //document.getElementById("Image").innerText = data['Image'] ? 'Captured' : 'Not Captured';
+                //document.getElementById("Status").innerText = data['Status'] ? 'Completed' : 'Not Completed';
+
             }
         }
     });

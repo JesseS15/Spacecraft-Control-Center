@@ -1,64 +1,35 @@
-window.setInterval(function(){
+// Initial Calls
+updateTelemetry(false);
+fetchdata();
+
+function updateTime(){
     $('#time').text(function(){
         var today = new Date();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         return ("Current Time: " + time + " EST");
     })
-}, 1000)
-
-window.setInterval(function(){
-    var active = true;
-    $('.signaleps').css('border-color', function(){
-        if (active = true) {
-            return 'green';
-        } else {
-            return 'red';
-        }
-    }).text(function(){
-        if (active = true) {
-            return "Active";
-        } else {
-            return "InActive";
-        }
-    });
-}, 1000);
-
-window.setInterval(function(){
-    var active1 = true;
-    $('.verifyeps').css('border-color', function(){
-        if (active1 = true) {
-            return 'green';
-        } else {
-            return 'red';
-        }
-    }).text(function(){
-        if (active = true) {
-            return "Signal Verified";
-        } else {
-            return "Signal Not Verified";
-        }
-    });
-}, 1000);
-
-window.setInterval(function(){
-    var active1 = true;
+}
+function updateTelemetry(telemetryTransfering){
     $('.epstelemtry').css('border-color', function(){
-        if (active1 = true) {
-            return 'red';
-        } else {
+        if (telemetryTransfering == true) {
             return 'green';
+        } else {
+            return 'red';
         }
     }).text(function(){
-        if (active = true) {
-            return "Not Transfering";
-        } else {
+        if (telemetryTransfering == true) {
             return "Transfering in Progress";
+        } else {
+            return "Not Transfering";
         }
     });
-}, 1000);
+}
 
 // Refresh EPS Attributes
 function fetchdata(){
+
+    updateTime();
+
     $.ajax({
         // fo/views.epsFetchdata
         url: 'fetchdata', // eps/fetchdata
@@ -68,24 +39,45 @@ function fetchdata(){
         success: (data) => {
             //Debug return data
             //console.log(data);
-
-            if (data['consoleLog'].length > terminal2.childElementCount){
-                // Clear right terminal and append subsystem command log
-                terminal2.innerText = '';
-                for (var i = 0; i < data['consoleLog'].length; i++) {
-                    const output = document.createElement('p');
-                    output.textContent = `${data['consoleLog'][i]}`;
-                    terminal2.appendChild(output);
-                }
-                terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
-            }
     
             if (Object.keys(data).length > 0){
-                // Update Orientation panel
-                //document.getElementById("Oreintation-Roll").innerText = data['roll'];
-                //document.getElementById("Oreintation-Pitch").innerText = data['pitch'];
-                //document.getElementById("Oreintation-Yaw").innerText = data['yaw'];
-                //document.getElementById("Oreintation-Longitude").innerText = data['longitude'];
+
+                // Update terminal with console log data
+                if (data['consoleLog'].length > terminal2.childElementCount){
+                    // Clear right terminal and append subsystem command log
+                    terminal2.innerText = '';
+                    for (var i = 0; i < data['consoleLog'].length; i++) {
+                        const output = document.createElement('p');
+                        output.textContent = `${data['consoleLog'][i]}`;
+                        terminal2.appendChild(output);
+                    }
+                    terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
+                }
+                
+                // Update Power Distribution panel
+                document.getElementById("ACS-Percent").innerText = data['acs_power'];
+                document.getElementById("ACS-Watts").innerText = data['acs_power'] * 10;
+                document.getElementById("EPS-Percent").innerText = data['eps_power'];
+                document.getElementById("EPS-Watts").innerText = data['eps_power'] * 10;
+                document.getElementById("TCS-Percent").innerText = data['acs_power'];
+                document.getElementById("TCS-Watts").innerText = data['tcs_power'] * 10;
+                document.getElementById("COMMs-Percent").innerText = data['comms_power'];
+                document.getElementById("COMMs-Watts").innerText = data['comms_power'] * 10;
+                document.getElementById("Payload-Percent").innerText = data['payload_power'];
+                document.getElementById("Payload-Watts").innerText = data['payload_power'] * 10;
+
+                // Update Power Generated Panel
+                document.getElementById("Panel-Articulation").innerText = data['articulation'];
+                document.getElementById("Total-Percent").innerText = data['total_power'];
+                document.getElementById("Total-Watts").innerText = data['total_power'] * 10;
+
+                // Update Batery Panel
+                document.getElementById("In-Use-Percent").innerText = data['total_power'];
+                document.getElementById("In-Use-Watts").innerText = data['total_power'] * 10;
+
+                // Update Telemetry panel
+                updateTelemetry(data[['telemetry_transfering']]);
+                document.getElementById("Telemetry-Status").innerText = data['telemetry_transfered'] ? 'Transfered' : 'Not Transfered';
             }
         }
     });
