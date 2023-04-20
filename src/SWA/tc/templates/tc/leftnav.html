@@ -1,0 +1,39 @@
+{% extends "home/index.html" %}
+{% load crispy_forms_tags %}
+{% block leftnav %}
+
+<link rel="stylesheet" href="../../../static/css/leftnav.css" >
+
+<!-- left navigation bar -->
+<div class="main-container1">
+	<div class="navcontainerleft">
+	  <nav class="navleft">
+    
+      <div class="navleft-option option1" onclick="window.location ='/tc/{{ simkey }}/acs/';">
+			<img src= "../../../static/images/acs_icon.png" class="nav-img" alt="acs_icon">
+			<div style="cursor: pointer;"><h3> ACS </h3></div>
+		  </div>
+
+      <div class="navleft-option option2" onclick="window.location ='/tc/{{ simkey }}/eps/';">
+        <img src= "../../../static/images/eps_icon.png" class="nav-img" alt="eps_icon">
+        <div style="cursor: pointer;"><h3> EPS </h3></div>
+      </div>
+
+		<div class="navleft-option option3" onclick="window.location ='/tc/{{ simkey }}/tcs/';">
+		<img src= "../../../static/images/tcs_icon.png" class="nav-img" alt="tcs_icon">
+		<h3> TCS </h3>
+		</div>
+  
+		<div class="navleft-option option4" onclick="window.location ='/tc/{{ simkey }}/comms/';">
+		<img src= "../../../static/images/comms_icon.png" class="nav-img" alt="comms_icon">
+		<h3> COMMs </h3>
+		</div>
+
+		<div class="navleft-option option5" onclick="window.location ='/tc/{{ simkey }}/payload/';">
+		<img src= "../../../static/images/payload_icon.png" class="nav-img" alt="payload_icon">
+		<h3> Payload </h3>
+		</div>
+		</div>
+	  </nav>
+	</div>
+{% endblock leftnav%}

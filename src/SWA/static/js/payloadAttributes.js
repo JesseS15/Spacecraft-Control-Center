@@ -43,15 +43,17 @@ function fetchdata(){
             if (Object.keys(data).length > 0){
 
                 // Update terminal with console log data
-                if (data['consoleLog'].length > terminal2.childElementCount){
-                    // Clear right terminal and append subsystem command log
-                    terminal2.innerText = '';
-                    for (var i = 0; i < data['consoleLog'].length; i++) {
-                        const output = document.createElement('p');
-                        output.textContent = `${data['consoleLog'][i]}`;
-                        terminal2.appendChild(output);
+                if('consoleLog' in  data){
+                    if (data['consoleLog'].length > terminal2.childElementCount){
+                        // Clear right terminal and append subsystem command log
+                        terminal2.innerText = '';
+                        for (var i = 0; i < data['consoleLog'].length; i++) {
+                            const output = document.createElement('p');
+                            output.textContent = `${data['consoleLog'][i]}`;
+                            terminal2.appendChild(output);
+                        }
+                        terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
                     }
-                    terminal2.parentElement.scrollTop = terminal2.parentElement.scrollHeight;
                 }
 
                 // Update Gimbal System panel

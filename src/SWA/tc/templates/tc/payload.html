@@ -1,0 +1,117 @@
+{% extends "home/index.html" %}
+{% load crispy_forms_tags %}
+{% block payload %}
+
+  {% include "tc/tcSim.html" %}
+  {% include "tc/leftnav.html" %}
+  <link rel="stylesheet" href="../../../static/css/fosim_panels.css">
+  <link rel="stylesheet" href="../../../static/css/leftnav_payload.css">
+      
+  <div style="height: 130vh">
+    <!-- Header -->
+    <div id="payloadheader" style="margin-top:-70px; margin-left: 225px; z-index:7; color: white; border-bottom: solid;">
+      <table style="width: 100%">
+        <tr>
+          <td><div id="payloadheader" style="float: left; padding-right: 300px;">
+            <h2><b>Payload Subsystem</b></h2>
+          </div></td>
+          <td><div id="displaytime" style="float: right; border-color: white; color: white;border-style: solid; ; padding-left: 5px; padding-right: 5px">
+            <div id="time"></div>
+          </div></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- body panels-->
+    <div id="panelgrid" style="margin-top: 15px;">
+      
+      <div id="item1">
+        <div class="panel-header">
+          <h3 class="panel-title">Gimbal System</h3>
+        </div>
+        <div class="panel-body">
+          <b style="display: flex;">
+            <p><u>Uncertainty:</u></p>&nbsp;
+            <p>+/-</p>&nbsp;
+            <p id="Uncertainty">5</p>
+            <p>%</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>Connection:</u><p>&nbsp;&nbsp;
+            <p id ="Connection">Active</p>
+          </b>
+        </div>
+      </div>
+
+      <div id="item2">
+        <div class="panel-header">
+          <h3 class="panel-title">Imager System</h3>
+        </div>
+        <div class="panel-body">
+          <b style="display: flex;">
+            <p id="In-Range">Not in Range</p><br>
+          </b>
+          <b style="display: flex;">
+            <p><u>Target:</u></p>&nbsp;
+            <p id="Target-Acquired">Acquired</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>Image: </u></p>&nbsp;
+            <p id="Image-Recieved">Received</p>
+          </b>
+        </div>
+      </div>
+
+      <div id="item3">
+        <div class="panel-header">
+          <h3 class="panel-title">System Status</h3>
+        </div>
+        <div class="panel-body">
+          <b style="display: flex;">
+            <p><u>Gimbal System:</u></p>&nbsp;
+            <p id="Gimbal-Status">Active</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>Imager:</u></p>&nbsp;
+            <p id="Imager-Status">[Inactive]</p>
+          </b>
+        </div>
+      </div>
+
+      <div id="item4">
+        <div class="panel-header">
+          <h3 class="panel-title">Signal Status</h3>
+        </div>
+        <div class="panel-body">
+          <b style="display: flex;">
+            <p><u>Optical Electronics:</u></p>&nbsp;
+            <p id="Optical-Electronics">Not Reached</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>Bus Connection:</u></p>&nbsp;
+            <p id="Bus-Connection">Not Reached</p>
+          </b>
+          <b style="display: flex;">
+            <p><u>Gimbal Connection:</u></p>&nbsp;
+            <p id="Gimbal-Connection">Not Reached</p>
+          </b>
+        </div>
+      </div>
+
+      <div id="item5">
+        <div class="panel-header">
+          <h3 class="panel-title">Telemetry Transfer</h3>
+        </div>
+          <div class="panel-body">
+          <br><div class="payloadtelemtry" style="text-align:center";></div><br>
+          <b style="display: flex;">
+            <p><u>Status:</u></p>&nbsp;
+            <p id="Telemetry-Status">Not Transfered</p>
+          </b>
+        </div>
+      </div>
+
+    </div>
+  </div>
+<script src = "/static/js/payloadAttributes.js"></script>  
+{% endblock payload %}
