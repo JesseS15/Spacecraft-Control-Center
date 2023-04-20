@@ -34,6 +34,7 @@ class EPS():
     commands = [
         "WELCOME TO THE ELECTRICAL POWER SYSTEMS (EPS) CONSOLE!",
         "Your task is to command the satellite to full power before the payload can be operated.",
+        "Enter the command number in the console on the right to execute",
         "1.) Status Checks",
         "2.) Verify Power Distribution System",
         "3.) Full Power",
@@ -72,13 +73,15 @@ class EPS():
                 self.consoleLog.append("Transfering EPS Telemetry...")
                 self.consoleLog.append( self.transferTelemetry())
                 self.consoleLog.append("GREAT WORK ON THE ELECTRICAL POWER SYSTEMS (EPS) CONSOLE!")
-                #TODO: create instance where user cannot enter commands after subsys finished
             else:
                 self.consoleLog.append("Invalid Command " + command)
         
         elif self.menu == "panelArticulate":
             self.consoleLog.append(self.articulatePanel(int(command)))
             self.menu = "tl"
+
+        elif self.menu == "done":
+            self.consoleLog.append("EPS subsystem complete, console closed for commands")
 
         else:
             self.menu = "tl"
@@ -149,6 +152,7 @@ class EPS():
             time.sleep(5)
             self.telemetryTransfering = False
             self.telemetryTransferComplete = True
+            self.menu = "done"
             return "Telemetry transfer complete. EPS subsystem complete!"
         else:
             self.telemetryTransferComplete = False

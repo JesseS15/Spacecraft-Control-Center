@@ -25,6 +25,8 @@ class ACS():
 
     longitudeValid = False
     rpyValid = False
+
+    continueUpdates = True
     
     random.seed(9001)
 
@@ -32,6 +34,7 @@ class ACS():
     commands = [
         "WELCOME TO THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE",
         "Your task is to rotate the satellite for proper payload alignment with the imagery target on the earth’s surface",
+        "Enter the command number in the console on the right to execute",
         "1.) Longitude Check",
         "2.) Verify Alignment",
         "3.) CMG Activate Roll",
@@ -100,6 +103,9 @@ class ACS():
         elif self.menu == "cmgYaw":
             self.consoleLog.append(self.updateYaw(int(command)))
             self.menu = "tl"
+
+        elif self.menu == "done":
+            self.consoleLog.append("ACS subsystem complete, console closed for commands")
         
         else:
             self.menu = "tl"
@@ -140,8 +146,9 @@ class ACS():
             return abs(self.finalLongitude - self.currentLongitude)
         
     def update(self):
-        self.updateRPY()
-        self.updateLongitude()
+        if self.continueUpdates:
+            self.updateRPY()
+            self.updateLongitude()
     
     ############# CMG : User input updates ##############
     def updateRoll(self, newRoll):
@@ -153,13 +160,13 @@ class ACS():
         self.cmgStatus = False
         if (rollSum < -180):
             self.orientation['roll'] = 360+rollSum
-            return self.orientation['roll']
+            return ("New roll = " + str(self.orientation['roll']))
         elif (rollSum > 180):
             self.orientation['roll'] = -360+rollSum
-            return self.orientation['roll']
+            return ("New roll = " + str(self.orientation['roll']))
         else:
             self.orientation['roll']=rollSum
-            return self.orientation['roll']
+            return ("New roll = " + str(self.orientation['roll']))
 
 
     def updatePitch(self, newPitch):
@@ -171,13 +178,13 @@ class ACS():
         self.cmgStatus = False
         if (pitchSum < -90):
             self.orientation['pitch'] = 180+pitchSum
-            return self.orientation['pitch']
+            return ("New pitch = " + str(self.orientation['pitch']))
         elif (pitchSum > 90):
             self.orientation['pitch'] = -180+pitchSum
-            return self.orientation['pitch']
+            return ("New pitch = " + str(self.orientation['pitch']))
         else:
             self.orientation['pitch']=pitchSum
-            return self.orientation['pitch']
+            return ("New pitch = " + str(self.orientation['pitch']))
         
     def updateYaw(self, newYaw):
         self.yawActive = True
@@ -188,18 +195,17 @@ class ACS():
         self.cmgStatus = False
         if (yawSum < -180):
             self.orientation['yaw'] = 360+yawSum
-            return self.orientation['yaw']
+            return ("New yaw = " + str(self.orientation['yaw']))
         elif (yawSum > 180):
             self.orientation['yaw'] = -360+yawSum
-            return self.orientation['yaw']
+            return ("New yaw = " + str(self.orientation['yaw']))
         else:
             self.orientation['yaw']=yawSum
-            return self.orientation['yaw']
+            return ("New yaw = " + str(self.orientation['yaw']))
 
     ###### Checking final orientation, passed from SimObject ###############
     def verifyAlignment(self):
         # Calculate required changes to roll, pitch and yaw
-        #TODO change the differences to be actually accurate
         acceptableRange = 15
 
         rollPosDif = abs(self.orientation["roll"] - self.finalValues["roll"])
@@ -251,14 +257,6 @@ class ACS():
         else:
             self.rpyValid=False
             return False
-
-    def systemChecks(self):
-        self.orientationRelay = True
-        time.sleep(5)
-        align = self.verifyAlignment()
-        longitude = self.checkLongitude()
-        self.orientationRelay = False
-        return align, longitude
     
     def telemetryTransfer(self):
         if (self.rpyValid and self.longitudeValid):
@@ -266,6 +264,8 @@ class ACS():
             time.sleep(5)
             self.telemetryTransfering = False
             self.telemetryTransferComplete = True
+            self.menu = "done"
+            self.continueUpdates = False
             return "Data has been Transferred!"
         else:
             self.telemetryTransferComplete = False

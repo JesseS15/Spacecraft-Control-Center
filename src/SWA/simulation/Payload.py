@@ -24,6 +24,7 @@ class Payload():
     commands = [
         "WELCOME TO THE PAYLOAD (PL) CONSOLE!",
         "Your task is to capture imagery of the target during the flyover period.",
+        "Enter the command number in the console on the right to execute",
         "1.) Status Checks",
         "2.) Slew Image",
         "3.) Acquire Target",
@@ -62,9 +63,11 @@ class Payload():
                 self.consoleLog.append("Transferring Payload Telemetry...")
                 self.consoleLog.append( self.telemetryTransfer())
                 self.consoleLog.append("GREAT WORK ON THE PAYLOAD SYSTEM CONSOLE!")
-                #TODO: create instance where user cannot enter commands after subsys finished
             else:
                 self.consoleLog.append("Invalid Command " + command)
+
+        elif self.menu == "done":
+            self.consoleLog.append("Payload subsystem complete, console closed for commands")
                 
         else:
             self.menu = "tl"
@@ -124,6 +127,7 @@ class Payload():
             time.sleep(5)
             self.telemetryTransfering = False
             self.telemetryTransferComplete = True
+            self.menu = "done"
             return True
         else:
             return False

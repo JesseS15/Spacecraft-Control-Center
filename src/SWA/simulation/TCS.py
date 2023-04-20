@@ -77,6 +77,7 @@ class TCS():
     commands = [
         "WELCOME TO THE THERMAL CONTROL SYSTEMS (TCS) CONSOLE!",
         "Your task is to perform the cooling procedure for equipment now undergoing thermal exposure in the new attitude position.",
+        "Enter the command number in the console on the right to execute",
         "1.) Status Check",
         "2.) Verify Thermal Ranges",
         "3.) Cool Subsystems",
@@ -213,7 +214,7 @@ class TCS():
             self.menu = "tl"
 
         elif self.menu == "done":
-            self.consoleLog.append("TCS Completed")
+            self.consoleLog.append("TCS subsystem completed, console closed for commands")
 
         else:
             self.menu = "tl"
