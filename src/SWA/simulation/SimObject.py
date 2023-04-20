@@ -66,6 +66,7 @@ class SimObject(threading.Thread):
 
     def update(self):
         # Checking payload is good to take picture
+        self.checkTelemetry()
         self.checkPayloadReady()
         self.subsystems["COMMS"].allTelemetryData = self.telemetry
         self.subsystems["ACS"].update()
