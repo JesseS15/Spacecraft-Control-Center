@@ -16,12 +16,17 @@ from simulation.SimObject import SimObject
 ############################################################################
 @login_required(login_url='/login/')
 def newSim(request, class_name):
-
+    classobj = Class.objects.all().get(class_name = class_name)
     missions = TestConductor.objects.get().missions.all()
-    marray = numpy.asarray(missions)
+    marray = numpy.asarray(classobj.missions.all())
+    allmisarray = numpy.asarray(missions)
     print('   MISSIONGS ',marray)
-    if (len(marray)==0):
+    if (len(marray)==0) and (len(allmisarray)>=0):
+        messages.info(request, 'You do not have any existing missions: create a new one')
         return redirect('../'+class_name+'/newMission')
+    elif(len(marray)==0) and (len(allmisarray)>=1):
+        messages.info(request, 'You do not have any missions in this class: create or add a new one')
+        return redirect('../'+class_name)
 
 
 
