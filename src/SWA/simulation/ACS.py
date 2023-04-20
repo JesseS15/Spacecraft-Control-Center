@@ -154,6 +154,7 @@ class ACS():
     def updateRoll(self, newRoll):
         self.rollActive = True
         self.cmgStatus = True
+        self.consoleLog.append("Please wait...")
         time.sleep(5)
         rollSum = newRoll + self.orientation['roll']
         self.rollActive = False
@@ -172,6 +173,7 @@ class ACS():
     def updatePitch(self, newPitch):
         self.pitchActive = True
         self.cmgStatus = True
+        self.consoleLog.append("Please wait...")
         time.sleep(5)
         pitchSum = newPitch + self.orientation['pitch']
         self.pitchActive = False
@@ -189,6 +191,7 @@ class ACS():
     def updateYaw(self, newYaw):
         self.yawActive = True
         self.cmgStatus = True
+        self.consoleLog.append("Please wait...")
         time.sleep(5)
         yawSum = newYaw + self.orientation['yaw']
         self.yawActive = False
@@ -261,6 +264,7 @@ class ACS():
     def telemetryTransfer(self):
         if (self.rpyValid and self.longitudeValid):
             self.telemetryTransfering = True
+            self.consoleLog.append("Please wait...")
             time.sleep(5)
             self.telemetryTransfering = False
             self.telemetryTransferComplete = True

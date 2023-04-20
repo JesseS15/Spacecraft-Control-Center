@@ -149,6 +149,7 @@ class EPS():
     def transferTelemetry(self):
         if self.statusGood and self.solarPanelAngleGood and self.atFullPower:
             self.telemetryTransfering = True
+            self.consoleLog.append("Please wait...")
             time.sleep(5)
             self.telemetryTransfering = False
             self.telemetryTransferComplete = True

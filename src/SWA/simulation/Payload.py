@@ -124,6 +124,7 @@ class Payload():
     def telemetryTransfer(self):
         if self.captureImageFlag:
             self.telemetryTransfering = True
+            self.consoleLog.append("Please wait...")
             time.sleep(5)
             self.telemetryTransfering = False
             self.telemetryTransferComplete = True

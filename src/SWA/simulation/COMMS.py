@@ -86,9 +86,6 @@ class COMMS():
         
         return self.consoleLog
 
-    def finalGainCheck(self):
-       pass
-
     def update(self):
         pass
 
