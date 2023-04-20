@@ -170,11 +170,8 @@ class COMMS():
             output.append("GREAT WORK ON THE COMMS SYSTEM CONSOLE")
             output.append("Mission accomplished!")
             output.append("Just kidding...heres the actual image: CARLY_MAKE_URL")
-<<<<<<< Updated upstream
             self.menu = "done"
-=======
             webbrowser.open_new("http://127.0.0.1:8000/fo/imagedisplay/")
->>>>>>> Stashed changes
         else:
             output.append("Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task.")
             
