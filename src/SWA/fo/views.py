@@ -311,10 +311,10 @@ def commsFetchdata(request, simkey):
             # Define data to be returned
             data['consoleLog'] = simThread.subsystems[subsystem].consoleLog
             
-            data['Telemetry-ACS'] = simThread.subsystems['COMMS'].allTelemetryData['ACS']
-            data['Telemetry-EPS'] = simThread.subsystems['COMMS'].allTelemetryData['EPS']
-            data['Telemetry-TCS'] = simThread.subsystems['COMMS'].allTelemetryData['TCS']
-            data['Telemetry-Payload'] = simThread.subsystems['COMMS'].allTelemetryData['Payload']
+            data['Telemetry-ACS'] = simThread.telemetry['ACS']
+            data['Telemetry-EPS'] = simThread.telemetry['EPS']
+            data['Telemetry-TCS'] = simThread.telemetry['TCS']
+            data['Telemetry-Payload'] = simThread.telemetry['Payload']
             
             data['On-Board-Computer'] = simThread.subsystems['COMMS'].checks['On-board Computer']
             data['Antenna-Status'] = simThread.subsystems['COMMS'].checks['Antenna Status']
