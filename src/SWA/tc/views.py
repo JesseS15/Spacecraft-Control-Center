@@ -137,7 +137,8 @@ def tcHome(request):
                             if(randomizecode == False):
                                 if(len(form2.cleaned_data.get('code'))>0):
                                     classget.code = form2.cleaned_data.get('code')
-                                    classget.missions.add(numpy.asarray(request.POST.getlist('missions')))
+                                    if(len(numpy.asarray(request.POST.getlist('missions'))))>=1:
+                                        classget.missions.add(numpy.asarray(request.POST.getlist('missions')))
                                     classget.save()
                                     return redirect('tc:home')
                                 else:
