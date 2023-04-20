@@ -77,9 +77,10 @@ def tcHome(request):
                 classget.class_name = nospacename
                 classget.code = rcg
                 classget.tc.add(tcobj)
-                for x in missions:
-                    classget.missions.add(x)
-                    classget.save()
+                if(len(numpy.asarray(request.POST.getlist('missions'))))>=1:
+                    for x in missions:
+                        classget.missions.add(x)
+                classget.save()
                 tcobj = TestConductor.objects.get(user = request.user)
                 tcobj.classes.add(classget)
                 tcobj.save()
@@ -92,9 +93,10 @@ def tcHome(request):
                 classget.class_name = nospacename
                 classget.code = rcg
                 classget.tc.add(tcobj)
-                for x in missions:
-                    classget.missions.add(x)
-                    classget.save()
+                if(len(numpy.asarray(request.POST.getlist('missions'))))>=1:
+                    for x in missions:
+                        classget.missions.add(x)
+                classget.save()
                 classget.save()
                 tcobj = TestConductor.objects.get(user = request.user)
                 tcobj.classes.add(classget)
@@ -143,7 +145,7 @@ def tcHome(request):
                             else:
                                 rcg = ''.join(random.choices(string.ascii_uppercase +string.digits, k=8))
                                 classget.code = rcg
-                                if(len(numpy.asarry(request.POST.getlist('missions'))))>=1:
+                                if(len(numpy.asarray(request.POST.getlist('missions'))))>=1:
                                     classget.missions.add(numpy.asarray(request.POST.getlist('missions')))
                                 classget.save()
                                 return redirect('tc:home')
