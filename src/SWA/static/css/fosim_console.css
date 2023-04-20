@@ -29,9 +29,6 @@
     float: right;
     box-sizing: border-box;
 }
-.title-wrapper {
-    overflow: hidden;
-}
 .title {
     height:fit-content;
     font-size: 1.2rem;
