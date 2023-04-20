@@ -24,6 +24,7 @@ class EPS():
     solarPanelAngleRange = [-10, 10]
     solarPanelAngle = random.randint(-90, 90)
     solarPanelAngleGood = False
+    solarPanelOffBy = 0
 
     telemetryTransfering = False
     telemetryTransferComplete = False
@@ -72,7 +73,6 @@ class EPS():
             elif command_split[0] == "5":
                 self.consoleLog.append("Transfering EPS Telemetry...")
                 self.consoleLog.append( self.transferTelemetry())
-                self.consoleLog.append("GREAT WORK ON THE ELECTRICAL POWER SYSTEMS (EPS) CONSOLE!")
             else:
                 self.consoleLog.append("Invalid Command " + command)
         
@@ -103,6 +103,11 @@ class EPS():
             else:
                 output.append("--The SimCrafts current " + str(key) + " Status is NOT REACHED")
                 self.statusGood = False
+
+        if self.solarPanelAngleGood:
+            output.append("--Solar panel angle IN RANGE")
+        else:
+            output.append("--Solar panel angle OUT OF RANGE -- Off by " + str(self.solarPanelOffBy))
 
         if (self.checkTries >= 3):
             self.checkTries = 0
@@ -137,6 +142,10 @@ class EPS():
     
     def checkPanelAngle(self):
         if (self.solarPanelAngle < self.solarPanelAngleRange[0] or self.solarPanelAngle > self.solarPanelAngleRange[1]):
+            if (self.solarPanelAngle < self.solarPanelAngleRange[0]):
+                self.solarPanelOffBy = self.solarPanelAngle - self.solarPanelAngleRange[0]
+            else:
+                self.solarPanelOffBy = self.solarPanelAngle - self.solarPanelAngleRange[1]
             self.solarPanelAngleGood = False
         else:
             self.solarPanelAngleGood = True
