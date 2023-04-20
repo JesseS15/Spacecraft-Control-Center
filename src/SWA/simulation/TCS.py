@@ -202,7 +202,6 @@ class TCS():
                 self.menu = "cool"
             elif command_split[0] == "2":
                 self.consoleLog.append("How much would you like to cool the Payload Signal Processor by?")
-                self.consoleLog.append(self.coolSubsystemItem("COMMS", "Signal Processor", int(command)))
                 self.coolChange = ["COMMS", "Signal Processor"]
                 self.menu = "cool"
             else:
@@ -226,7 +225,7 @@ class TCS():
         if not self.telemetryTransferComplete:
             for subsys in self.SubsystemThermal:
                 for item in self.SubsystemThermal[subsys]:
-                    self.SubsystemThermal[subsys][item] += 1
+                    self.SubsystemThermal[subsys][item] += 0.2
 
     ###################TCS CONSOLE COMMANDS #######################
     # Main menu option 1
