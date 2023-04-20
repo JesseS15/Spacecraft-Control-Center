@@ -86,4 +86,4 @@ class SimObject(threading.Thread):
             self.update()
             
             #End block here
-            time.sleep(5)
+            time.sleep(1)
