@@ -143,7 +143,8 @@ def tcHome(request):
                             else:
                                 rcg = ''.join(random.choices(string.ascii_uppercase +string.digits, k=8))
                                 classget.code = rcg
-                                classget.missions.add(numpy.asarray(request.POST.getlist('missions')))
+                                if(len(numpy.asarry(request.POST.getlist('missions'))))>=1:
+                                    classget.missions.add(numpy.asarray(request.POST.getlist('missions')))
                                 classget.save()
                                 return redirect('tc:home')
                         else:

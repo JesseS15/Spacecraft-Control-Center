@@ -47,7 +47,7 @@ class SimCreationForm(forms.ModelForm):
         test = testa.flight_operators.all()
         missionA = TestConductor.objects.get().missions.all()
 
-        self.fields['mission_script'].queryset = missionA
+        self.fields['mission_script'].queryset = testa.missions
         self.fields['flight_director'].queryset = test
         self.fields['COMMS_fo'].queryset = test
         self.fields['ACS_fo'].queryset = test
