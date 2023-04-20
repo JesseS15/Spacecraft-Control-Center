@@ -104,6 +104,8 @@ class EPS():
                 output.append("--The SimCrafts current " + str(key) + " Status is NOT REACHED")
                 self.statusGood = False
 
+        self.checkPanelAngle()
+
         if self.solarPanelAngleGood:
             output.append("--Solar panel angle IN RANGE")
         else:
