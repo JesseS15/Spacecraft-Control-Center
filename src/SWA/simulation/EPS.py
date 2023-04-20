@@ -91,7 +91,6 @@ class EPS():
     # Main menu option 1
     def systemChecks(self):
         output = []
-        index = 0
         for key in self.checks:
             if (self.checkTries < 3):
                 self.checks[key] = random.choices([True, False])
@@ -99,12 +98,11 @@ class EPS():
             else:
                 self.checks[key] = True
             if self.checks[key]:
-                output[index] = "--The SimCrafts current " + str(key) + " Status is REACHED"
+                output.append("--The SimCrafts current " + str(key) + " Status is REACHED")
                 self.statusGood = True
             else:
-                output[index] = "--The SimCrafts current " + str(key) + " Status is NOT REACHED"
+                output.append("--The SimCrafts current " + str(key) + " Status is NOT REACHED")
                 self.statusGood = False
-            index += 1
 
         if (self.checkTries >= 3):
             self.checkTries = 0
@@ -113,11 +111,9 @@ class EPS():
     # Main menu option 2
     def verifyPowerDistribution(self):
         output = []
-        index = 0
         for key in self.distribution:
-            output[index] = "--" + str(key) + " at %" + str(self.distribution[key]) + " power"
-            index += 1
-        output[index] = "Current power level is at %" + str(self.getCurrentTotalPower()) + ". 100% power is needed for mission completion."
+            output.append("--" + str(key) + " at %" + str(self.distribution[key]) + " power")
+        output.append("Current power level is at %" + str(self.getCurrentTotalPower()) + ". 100% power is needed for mission completion.")
         return output
     
     def getCurrentTotalPower(self):

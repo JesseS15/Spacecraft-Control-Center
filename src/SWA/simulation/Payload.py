@@ -77,7 +77,6 @@ class Payload():
     # Main menu option 1
     def statusChecks(self):
         output = []
-        index = 0
         self.statusGood = True
         for key in self.checks:
             if (self.checkTries < 3):
@@ -86,11 +85,10 @@ class Payload():
             else:
                 self.checks[key] = True
             if self.checks[key]:
-                output[index] = "The SimCrafts current " + key + " Status is REACHED"
+                output.append("The SimCrafts current " + key + " Status is REACHED")
             else:
-                output[index] = "The SimCrafts current " + key + " Status is NOT REACHED"
+                output.append("The SimCrafts current " + key + " Status is NOT REACHED")
                 self.statusGood = False
-            index += 1
 
         if (self.checkTries >= 3):
             self.checkTries = 0
