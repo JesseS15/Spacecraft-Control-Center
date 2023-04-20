@@ -63,7 +63,7 @@ class TCS():
     }
 
     # Needed to make sure random functions dont return the same value everytime
-    random.seed(9001)
+    random.seed()
     
     checkTries = 0
     checksGood = False
@@ -284,6 +284,7 @@ class TCS():
     def telemetryTransfer(self):
         if self.allSubsystemsInRange() and self.checksGood:
             self.telemetryTransfering = True
+            self.consoleLog.append("Please wait...")
             time.sleep(5)
             self.telemetryTransfering = False
             self.telemetryTransferComplete = True
