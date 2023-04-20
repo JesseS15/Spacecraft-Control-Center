@@ -4,8 +4,8 @@ import time
 class COMMS():
 
     checks = {
-        "On-board Computer": random.choices([True, False]),
-        "Antenna Status": random.choices([True, False])
+        "On-board Computer": bool(random.getrandbits(1)),
+        "Antenna Status": bool(random.getrandbits(1))
     }
 
     checkTries = 0
@@ -23,6 +23,7 @@ class COMMS():
     commands = [
         "WELCOME TO THE COMMUNICATIONS (COMMS) CONSOLE",
         "Your task is to verify that signal lock is established between the Ku-Band satellite antenna and the ground station antenna, transmit the target image to the ground station, process the image, and display the results.",
+        "Enter the command number in the console on the right to execute",
         "1.) Status Checks",
         "2.) Verify Signal",
         "3.) Increase Signal Gain",
@@ -38,12 +39,12 @@ class COMMS():
         print('New instance of COMMS class created')
 
     def command(self, command):
-        
         self.consoleLog.append("$ " + command)
         
         command_split = command.lower().split(" ")
         
         if self.menu == "tl":
+            
             if command_split[0] == "1":
                 self.consoleLog.append("Checking Communication Systems...")
                 time.sleep(5)
@@ -56,7 +57,7 @@ class COMMS():
                 self.consoleLog.append("How much do you want to increase the Signal Gain (in dB)?")
                 self.menu = "signalGainIncrease"
             elif command_split[0] == "4":
-                self.consoleLog.append("Resetting gain to 36 dB")
+                #self.consoleLog.append("Resetting gain to 36 dB")
                 self.consoleLog.extend(self.resetGain())
             elif command_split[0] == "5":
                 self.consoleLog.append("Downloading Subsystem Telemetry...")
@@ -77,6 +78,9 @@ class COMMS():
         elif self.menu == "signalGainIncrease":
             self.consoleLog.extend(self.increaseGain(int(command)))
             self.menu = "tl"
+
+        elif self.menu == "done":
+            self.consoleLog.append("Mission Completed, console closed for commands")
         else:
             self.menu = "tl"
         
@@ -93,7 +97,7 @@ class COMMS():
         output = []
         for key in self.checks:
             if (self.checkTries < 3):
-                self.checks[key] = random.choices([True, False])
+                self.checks[key] = bool(random.getrandbits(1))
                 self.checkTries += 1
             elif (self.checkTries >= 3):
                 self.checks[key] = True
@@ -110,6 +114,7 @@ class COMMS():
         output = []
         if (self.currentGain >= self.gainRange[0]) and (self.currentGain <= self.gainRange[1]):
             self.checks['Antenna Status'] = True
+            output.append('GAIN IN RANGE — ' + str(self.currentGain))
         elif self.currentGain > self.gainRange[1]:
             output.append('UNWANTED HARMONICS DETECTED — gain too high! Reset gain')
         else:
@@ -127,9 +132,9 @@ class COMMS():
     # Main menu option 4
     def resetGain(self):
         output = []
-        output.append("GAIN RESETTING -- Please wait...")
-        output.append("Gain reset to " + self.gainRange[0] + " dB")
         self.currentGain = self.gainRange[0]
+        output.append("GAIN RESETTING -- Please wait...")
+        output.append("Gain reset to " + str(self.currentGain) + " dB")
         return output
     
     # Main menu option 5
@@ -168,6 +173,7 @@ class COMMS():
             output.append("GREAT WORK ON THE COMMS SYSTEM CONSOLE")
             output.append("Mission accomplished!")
             output.append("Just kidding...heres the actual image: CARLY_MAKE_URL")
+            self.menu = "done"
         else:
             output.append("Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task.")
             
