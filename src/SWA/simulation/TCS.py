@@ -282,6 +282,7 @@ class TCS():
 
     # Main menu option 4 - telemtry transfer
     def telemetryTransfer(self):
+        output = []
         if self.allSubsystemsInRange() and self.checksGood:
             self.telemetryTransfering = True
             self.consoleLog.append("Please wait...")
@@ -289,10 +290,12 @@ class TCS():
             self.telemetryTransfering = False
             self.telemetryTransferComplete = True
             self.menu = "done"
-            return ["Data has been Transferred!", "GREAT WORK ON THE THERMAL CONTROL SUBSYSTEM (TCS) CONSOLE"]
+            output.append("Data has been Transferred!")
+            output.append("GREAT WORK ON THE THERMAL CONTROL SUBSYSTEM (TCS) CONSOLE")
+            return output
         else:
             self.menu = "tl"
-            return ("Verification process for TCS not completed -- Temps not in range")          
+            return output.append("Verification process for TCS not completed -- Temps not in range")          
     
     # Main menu option 5 - refresh thermal systems
     def refresh(self):
