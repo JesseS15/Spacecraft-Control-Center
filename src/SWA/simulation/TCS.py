@@ -220,12 +220,13 @@ class TCS():
             
         return self.consoleLog
 
-    # Heats each item by 1 degree (since you can only cool)
+    # Heats each item by 1 degree every 5 seconds (since you can only cool)
     def update(self):
+        time.sleep(5)
         if not self.telemetryTransferComplete:
             for subsys in self.SubsystemThermal:
                 for item in self.SubsystemThermal[subsys]:
-                    self.SubsystemThermal[subsys][item] += 0.2
+                    self.SubsystemThermal[subsys][item] += 1
 
     ###################TCS CONSOLE COMMANDS #######################
     # Main menu option 1
