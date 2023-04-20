@@ -115,7 +115,7 @@ class TCS():
                 self.menu = "coolSubsys"
             elif command_split[0] == "4":
                 self.consoleLog.append("Transferring TCS Telemetry...")
-                self.consoleLog.append(self.telemetryTransfer())
+                self.consoleLog.extend(self.telemetryTransfer())
             elif command_split[0] == "5":
                 self.consoleLog.append(self.refresh())
             else:
