@@ -322,9 +322,9 @@ def commsFetchdata(request, simkey):
             data['Bandwidth'] = simThread.subsystems['COMMS'].frequency
             data['Gain'] = simThread.subsystems['COMMS'].currentGain
             
-            #data['Target'] = simThread.subsystems['COMMS'].
-            #data['Image'] = simThread.subsystems['COMMS'].
-            #data['Status'] = simThread.subsystems['COMMS'].
+            data['Target'] = simThread.subsystems['COMMS'].allTelemetryData['ACS']
+            data['Image'] = simThread.subsystems['COMMS'].allTelemetryData['Payload']
+            data['Status'] = simThread.subsystems['COMMS'].allTelemetryDataGood
         
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:

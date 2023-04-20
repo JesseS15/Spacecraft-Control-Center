@@ -55,9 +55,9 @@ function fetchdata(){
                 document.getElementById("Gain").innerText = data['Gain'];
 
                 // Update Mission Objective panel
-                //document.getElementById("Target").innerText = data['Target'] ? 'Reached' : 'Not Reached';
-                //document.getElementById("Image").innerText = data['Image'] ? 'Captured' : 'Not Captured';
-                //document.getElementById("Status").innerText = data['Status'] ? 'Completed' : 'Not Completed';
+                document.getElementById("Target").innerText = data['Target'] ? 'Reached' : 'Not Reached';
+                document.getElementById("Image").innerText = data['Image'] ? 'Captured' : 'Not Captured';
+                document.getElementById("Status").innerText = data['Status'] ? 'Completed' : 'Not Completed';
 
             }
         }
