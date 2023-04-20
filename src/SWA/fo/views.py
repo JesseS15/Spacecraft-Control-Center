@@ -351,6 +351,7 @@ def payloadFetchdata(request, simkey):
             # Define data to be returned
             data['consoleLog'] = simThread.subsystems[subsystem].consoleLog
             
+            #data['Uncertainty'] = simThread.subsystems['Payload'].
             #data['Connection'] = simThread.subsystems['Payload'].statusGood
             
             data['In-Range'] = simThread.subsystems['Payload'].slewImageFlag
