@@ -120,7 +120,7 @@ def newMission(request,class_name):
                     # Create new Sim Database object
                 if(len(missions)>0 and ifequal>0):
                     messages.info(request, 'Mission Already Exists. Add Mission UNSUCCESSFUL')
-                    return redirect('tc:home')
+                    return redirect('../'+class_name+'/newMission')
                 if(len(missions)>0 and ifequal<=0):
                     nospacename = mission_name.replace(" ", "")
                     mission = Mission.objects.create(mission_name = nospacename, verbose_name = mission_name)

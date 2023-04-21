@@ -8,27 +8,23 @@
     <meta charset="utf-8"/>
 </head>
 {% block start %}
-<body style= "background-size:cover; background-attachment: fixed; background-repeat: no-repeat; background-image: url({% static 'images/space.jpg' %}); height: 100vh">
+<body style= "background-size:cover; background-attachment: fixed; background-repeat: no-repeat; background-image: url({% static 'images/space.jpg' %}); height: 90vh">
     
     {% if user.is_authenticated %}
-        
-    <div class="center">
-        <center>
-            <div class = header style="color: white; padding-top: 10vh;">
-                <h2>Add New Mission</h2>
-            </div>
-        </center>
-        <div class="centered">
+    <center style= "padding: 20px">
+        <div class = header style="color: white;">
+            <h2>Add New Mission</h2>
+        </div>
+        <div>
             <form name = "MissionCreationForm" method="POST" style="color: white; width: 35vw; ">
                 {% csrf_token %}
-                <fieldset class="form-group">
+                <fieldset class="form-group" style="border: transparent;">
                     {{ form2|crispy}}
                 </fieldset>
                 <button style="background: black; font-size: 2rem; padding:1%; color: white;" class="btn btn-outline-info" type="submit">Submit</button>
             </form>
-            
         </div>
-    </div>
+    </center>
     {% else %}
 
     {% endif %}

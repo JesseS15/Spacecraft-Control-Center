@@ -10,22 +10,18 @@
 {% block start %}
 <body style= "background-size:cover; background-attachment: fixed; background-repeat: no-repeat; background-image: url({% static 'images/space.jpg' %}); height: 100vh">
     {% if user.is_authenticated %}
-    <div class="center">
-        <center>
-            <div class = header style="color: white;">
-                <h2>Add New Simulation</h2>
-            </div>
-        </center>
-        <div style= "padding-top:25%;" class="centered">
-            <form name = "SimCreationForm" method="POST" style="color: white; width: 70vw; ">
-                {% csrf_token %}
-                <fieldset class="form-group">
-                    {{ form|crispy}}
-                </fieldset>
-                <button style="background: black; font-size: 2rem; padding:1%; color: white;" class="btn btn-outline-info" type="submit">&nbsp;Submit</button>
-            </form>
+    <center style= "padding: 20px">
+        <div class = header style="color: white;">
+            <h2>Add New Simulation</h2>
         </div>
-    </div>
+        <form name = "SimCreationForm" method="POST" style="color: white; width: 70vw;">
+            {% csrf_token %}
+            <fieldset class="form-group" style="border: transparent;">
+                {{ form|crispy}}
+            </fieldset>
+            <button style="background: black; font-size: 2rem; padding:1%; color: white;" class="btn btn-outline-info" type="submit">&nbsp;Submit</button>
+        </form>
+    </center>
         
     {% else %}
 

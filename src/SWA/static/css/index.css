@@ -33,3 +33,21 @@ a.button1:hover{
     }
 }
 
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.centered-element {
+    padding: 20px;
+    border: 1px solid black;
+    background-color: lightgray;
+}

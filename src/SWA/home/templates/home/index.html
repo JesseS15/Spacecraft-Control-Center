@@ -28,21 +28,6 @@
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> 
 
 <!-- HTML !-->
-
-  <!-- message here -->
-
-  {% if messages %}
-  {% for message in messages %}
-
-  <script>
-    alert("{{ message }}");
-  </script>
-
-  {% endfor %}
-  {% endif %}
-
-  <!--_______________________________________________-->
-
 </head>
 
 <body class="container-fluid">
@@ -84,26 +69,36 @@
       </div>
     </nav>
   </header>
-    <div class="row1" style="margin-top: 35px;">
-      {% block acs %}
-      {% block eps %}
-      {% block tcs %}
-      {% block payload %}
-      {% block comms %}
-      {% block console %}
-      {% block leftnav %}
-      {% endblock leftnav %}
-      {% endblock console %}
-      {% endblock comms %}
-      {% endblock payload %}
-      {% endblock tcs %}
-      {% endblock eps %}
-      {% endblock acs %}
-    </div>
-    <div class="row" style="margin-top: 60px;">
-      {% block start %}
-      {% endblock start%}
-    </div>
+
+  <!-- message here -->
+
+  <div class="row1" style="margin-top: 60px;">
+    {% if messages %}
+    {% for message in messages %}
+        <center class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </center>
+    {% endfor %}
+    {% endif %}
+    {% block acs %}
+    {% block eps %}
+    {% block tcs %}
+    {% block payload %}
+    {% block comms %}
+    {% block console %}
+    {% block leftnav %}
+    {% endblock leftnav %}
+    {% endblock console %}
+    {% endblock comms %}
+    {% endblock payload %}
+    {% endblock tcs %}
+    {% endblock eps %}
+    {% endblock acs %}
+  </div>
+  <div class="row" style="margin-top: 60px;">
+    {% block start %}
+    {% endblock start%}
+  </div>
 </body>
 
 </html>
