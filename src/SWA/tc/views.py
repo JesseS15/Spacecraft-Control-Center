@@ -483,9 +483,9 @@ def commsFetchdata(request, simkey):
             data['Bandwidth'] = simThread.subsystems['COMMS'].frequency
             data['Gain'] = simThread.subsystems['COMMS'].currentGain
             
-            #data['Target'] = simThread.subsystems['COMMS'].
-            #data['Image'] = simThread.subsystems['COMMS'].
-            #data['Status'] = simThread.subsystems['COMMS'].
+            data['Target'] = simThread.telemetry['ACS']
+            data['Image'] = simThread.telemetry['Payload']
+            data['Status'] = simThread.subsystems['COMMS'].allTelemetryDataGood
         
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:
@@ -507,16 +507,15 @@ def payloadFetchdata(request, simkey):
          
         if simThread != None:
             # Define data to be returned
-            
-            #data['Uncertainty'] = simThread.subsystems['Payload'].
-            #data['Connection'] = simThread.subsystems['Payload'].statusGood
+
+            data['Connection'] = simThread.subsystems['Payload'].statusGood
             
             data['In-Range'] = simThread.subsystems['Payload'].slewImageFlag
             data['Target-Acquired'] = simThread.subsystems['Payload'].acquireTargetFlag
             data['Image-Recieved'] = simThread.subsystems['Payload'].captureImageFlag
 
-            #data['Gimbal-Status'] = simThread.subsystems['Payload'].
-            #data['Imager-Status'] = simThread.subsystems['Payload'].
+            data['Gimbal-Status'] = simThread.subsystems['Payload'].gimbalStatus
+            data['Imager-Status'] = simThread.subsystems['Payload'].imagerStatus
 
             data['Optical-Electronics'] = simThread.subsystems['Payload'].checks['Optical Electronics']
             data['Bus-Connection'] = simThread.subsystems['Payload'].checks['Bus Connection']

@@ -17,6 +17,9 @@ class Payload():
     captureImageFlag = False
     telemetryTransfering = False
     telemetryTransferComplete = False
+    
+    gimbalStatus = True
+    imagerStatus = True
 
     # Console infastructure
     menu = ''
