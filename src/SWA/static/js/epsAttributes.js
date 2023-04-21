@@ -61,7 +61,7 @@ function fetchdata(){
                 document.getElementById("ACS-Watts").innerText = data['acs_power'] * 10;
                 document.getElementById("EPS-Percent").innerText = data['eps_power'];
                 document.getElementById("EPS-Watts").innerText = data['eps_power'] * 10;
-                document.getElementById("TCS-Percent").innerText = data['acs_power'];
+                document.getElementById("TCS-Percent").innerText = data['tcs_power'];
                 document.getElementById("TCS-Watts").innerText = data['tcs_power'] * 10;
                 document.getElementById("COMMs-Percent").innerText = data['comms_power'];
                 document.getElementById("COMMs-Watts").innerText = data['comms_power'] * 10;
