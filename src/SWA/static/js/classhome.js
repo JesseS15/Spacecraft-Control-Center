@@ -37,12 +37,25 @@ window.addEventListener("click", function(event){
 
 for(let i=0; i<dbtns.length; i++){
     dbtns[i].onclick = function() {
-        test = String(dbtns[i].id);
-        const link = document.createElement("a");
-        const file = new Blob([dbtns[i].id], {type: 'text/plain' });
-        link.href = URL.createObjectURL(file);
-        link.download = test+'_Report.doc';
-        link.click();
-        URL.revokeObjectURL(link.href);
+        $.ajax({
+              // tc/views.downloadSimReport
+              url: 'downloadSimReport/',
+              type: 'GET',
+              dataType: 'json',
+              
+              data:{
+                simkey : String(dbtns[i].id),
+              },
+  
+              success: function( data )
+              {
+                const link = document.createElement("a");
+                const file = new Blob([data['report']], {type: 'text/plain' });
+                link.href = URL.createObjectURL(file);
+                link.download = data['sim_name']+'_Report.doc';
+                link.click();
+                URL.revokeObjectURL(link.href);
+              }
+         })
     }
 }

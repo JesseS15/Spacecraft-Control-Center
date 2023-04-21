@@ -88,7 +88,13 @@ def newSim(request, class_name):
             
             if(len(sims)<=0):
                 nospacename = sim_name.replace(" ", "")
-                sim = Sim.objects.create(sim_name = nospacename, mission_script = mission)
+                sim = Sim.objects.create(sim_name = nospacename, 
+                                         mission_script = mission, 
+                                         flight_director=flight_director, 
+                                         COMMS_fo=COMMS_fo, 
+                                         ACS_fo=ACS_fo, 
+                                         TCS_fo=TCS_fo, 
+                                         EPS_fo=EPS_fo)
                 ifequal = 0
                 # Create new Sim Database object
             if(len(sims)>0 and ifequal>0):
@@ -96,14 +102,14 @@ def newSim(request, class_name):
                 return redirect('tc:home')
             if(len(sims)>0 and ifequal<=0):
                 nospacename = sim_name.replace(" ", "")
-                sim = Sim.objects.create(sim_name = nospacename, mission_script = mission)
+                sim = Sim.objects.create(sim_name = nospacename, 
+                                         mission_script = mission, 
+                                         flight_director=flight_director, 
+                                         COMMS_fo=COMMS_fo, 
+                                         ACS_fo=ACS_fo, 
+                                         TCS_fo=TCS_fo, 
+                                         EPS_fo=EPS_fo)
                 ifequal = 0
-            sim.flight_director.set(flight_director)
-            #sim.mission_script = mission
-            sim.COMMS_fo.set(COMMS_fo)
-            sim.ACS_fo.set(ACS_fo)
-            sim.TCS_fo.set(TCS_fo)
-            sim.EPS_fo.set(EPS_fo)
 
             m = sim.mission_script
             final_values = {}
@@ -118,33 +124,33 @@ def newSim(request, class_name):
             Class.objects.get(class_name = class_name).sims.add(sim)
             flight_operators = FlightOperator.objects.all()
             print(type(flight_operators))
-            if (flight_director.exists()):
+            if (flight_director != None):
                 for x in flight_operators:
-                    if(str(x) == str((flight_director[0]))):
+                    if(str(x) == str((flight_director))):
                         x.sim_list.add(sim)
                         sim.fo_list.add(x)
 
-            if (COMMS_fo.exists()):
+            if (COMMS_fo != None):
                 for x in flight_operators:
-                    if(str(x) == str((COMMS_fo[0]))):
+                    if(str(x) == str((COMMS_fo))):
                         x.sim_list.add(sim)
                         sim.fo_list.add(x)
         
-            if (ACS_fo.exists()):
+            if (ACS_fo != None):
                 for x in flight_operators:
-                    if(str(x) == str((ACS_fo[0]))):
+                    if(str(x) == str((ACS_fo))):
                         x.sim_list.add(sim)
                         sim.fo_list.add(x)
             
-            if (TCS_fo.exists()):
+            if (TCS_fo != None ):
                 for x in flight_operators:
-                    if(str(x) == str((TCS_fo[0]))):
+                    if(str(x) == str((TCS_fo))):
                         x.sim_list.add(sim)
                         sim.fo_list.add(x)
             
-            if (EPS_fo.exists()):
+            if (EPS_fo != None):
                 for x in flight_operators:
-                    if(str(x) == str((EPS_fo[0]))):
+                    if(str(x) == str((EPS_fo))):
                         x.sim_list.add(sim)
                         sim.fo_list.add(x)
 

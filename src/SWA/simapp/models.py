@@ -35,11 +35,11 @@ class Sim(models.Model):
     fo_list = models.ManyToManyField("fo.FlightOperator")
     status = models.CharField(default='ACTIVE',max_length=15, blank = True, choices=STATUS_CHOICES)
     # Flight Operators and their assigned subsytems
-    flight_director = models.ManyToManyField("fo.FlightOperator", related_name="flight_director",default='', verbose_name=("Flight Director (Payload Flight Operator)"), blank=True)
-    COMMS_fo = models.ManyToManyField("fo.FlightOperator", related_name="comms_fo",default='', verbose_name=("Comms Flight Operator"), blank=True)
-    ACS_fo = models.ManyToManyField("fo.FlightOperator", related_name="acs_fo",default='', verbose_name=("ACS Flight Operator"), blank=True)    
-    EPS_fo = models.ManyToManyField("fo.FlightOperator", related_name="eps_fo",default='', verbose_name=("EPS Flight Operator"), blank=True)
-    TCS_fo = models.ManyToManyField("fo.FlightOperator", related_name="tcs_fo",default='', verbose_name=("TCS Flight Operator"), blank=True)
+    flight_director = models.ForeignKey("fo.FlightOperator", related_name="flight_director",default='', verbose_name=("Flight Director (Payload Flight Operator)"), blank=True, on_delete=models.CASCADE)
+    COMMS_fo = models.ForeignKey("fo.FlightOperator", related_name="comms_fo",default='', verbose_name=("Comms Flight Operator"), blank=True, on_delete=models.CASCADE)
+    ACS_fo = models.ForeignKey("fo.FlightOperator", related_name="acs_fo",default='', verbose_name=("ACS Flight Operator"), blank=True, on_delete=models.CASCADE)    
+    EPS_fo = models.ForeignKey("fo.FlightOperator", related_name="eps_fo",default='', verbose_name=("EPS Flight Operator"), blank=True, on_delete=models.CASCADE)
+    TCS_fo = models.ForeignKey("fo.FlightOperator", related_name="tcs_fo",default='', verbose_name=("TCS Flight Operator"), blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.sim_name

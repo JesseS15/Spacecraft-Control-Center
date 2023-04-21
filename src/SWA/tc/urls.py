@@ -9,6 +9,7 @@ app_name = 'tc'
 urlpatterns = [
     path('', views.index, name ='index'),
     path('home/', views.tcHome, name ='home'),
+    path('home/downloadSimReport/', views.downloadSimReport, name='downloadSimReport'),
     path('home/<str:class_name>/newMission', simappViews.newMission, name='newMission'),
     path('home/<str:class_name>/newSim', simappViews.newSim, name='newSim'),
     path('home/<str:class_name>', views.classHome, name='classHome'),

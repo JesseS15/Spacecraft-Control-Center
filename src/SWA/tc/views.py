@@ -242,6 +242,64 @@ def getGroups(request):
     print(data) 
     return render(request, 'tc: home.html', {"data":data})
 
+def downloadSimReport(request):
+    print('suc')
+    if request.method == 'GET':
+        simkey= request.GET.get('simkey')
+        sim = Sim.objects.get(pk = simkey)
+        
+        # Get simcraft thread
+        simThread = None
+        thread_id = sim.sim_identifier
+        for thread in threading.enumerate():
+            if thread.ident == thread_id:
+                simThread = thread
+                
+        data = {}
+        data['sim_name'] = sim.sim_name
+        data['report'] = 'Report for Simulation: ' + sim.sim_name + '\n\n'
+        
+        if simThread != None:
+            
+            data['report'] += 'Report for ACS subsytem: \n'
+            data['report'] += '\tACS Flight Operator: ' + str(sim.ACS_fo) + '\n'
+            data['report'] += '\tACS Console Log:\n'
+            for item in simThread.subsystems['ACS'].consoleLog:
+                data['report'] += '\t\t' + item + '\n'
+            data['report'] += '\n'
+            
+            data['report'] += 'Report for EPS subsytem: \n'
+            data['report'] += '\tEPS Flight Operator: ' + str(sim.EPS_fo) + '\n'
+            data['report'] += '\tEPS Console Log:\n'
+            for item in simThread.subsystems['EPS'].consoleLog:
+                data['report'] += '\t\t' + item + '\n'
+            data['report'] += '\n'
+            
+            data['report'] += 'Report for TCS subsytem: \n'
+            data['report'] += '\tTCS Flight Operator: ' + str(sim.TCS_fo) + '\n'
+            data['report'] += '\tTCS Console Log:\n'
+            for item in simThread.subsystems['TCS'].consoleLog:
+                data['report'] += '\t\t' + item + '\n'
+            data['report'] += '\n'
+            
+            data['report'] += 'Report for Comms subsytem: \n'
+            data['report'] += '\tComms Flight Operator: ' + str(sim.COMMS_fo) + '\n'
+            data['report'] += '\tComms Console Log:\n'
+            for item in simThread.subsystems['COMMS'].consoleLog:
+                data['report'] += '\t\t' + item + '\n'
+            data['report'] += '\n'
+            
+            data['report'] += 'Report for Payload subsytem: \n'
+            data['report'] += '\tPayload Flight Operator: ' + str(sim.flight_director) + '\n'
+            data['report'] += '\tPayload Console Log:\n'
+            for item in simThread.subsystems['Payload'].consoleLog:
+                data['report'] += '\t\t' + item + '\n'
+            data['report'] += '\n'
+
+        return HttpResponse(json.dumps(data)) # Sending an success response
+    else:
+        return HttpResponse("Request method is not GET")
+
 ###############################################################################
 @login_required(login_url='/login/')
 @staff_member_required

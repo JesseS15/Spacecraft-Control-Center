@@ -426,21 +426,16 @@ def foClass(request, class_name):
 
 def _get_fo_subsystem(simobj, flightOperator):
     subsystem = 'UNKNOWN'
-    if simobj.flight_director.all():
-        if flightOperator == simobj.flight_director.all()[0]:
-            subsystem = "Payload"
-    if simobj.COMMS_fo.all():
-        if flightOperator == simobj.COMMS_fo.all()[0]:
-            subsystem = "COMMS"
-    if simobj.ACS_fo.all():
-        if flightOperator == simobj.ACS_fo.all()[0]:
-            subsystem = "ACS"
-    if simobj.EPS_fo.all():
-        if flightOperator == simobj.EPS_fo.all()[0]:
-            subsystem = "EPS"
-    if simobj.TCS_fo.all():   
-        if flightOperator == simobj.TCS_fo.all()[0]:
-            subsystem = "TCS"
+    if flightOperator == simobj.flight_director:
+        subsystem = "Payload"
+    if flightOperator == simobj.COMMS_fo:
+        subsystem = "COMMS"
+    if flightOperator == simobj.ACS_fo:
+        subsystem = "ACS"
+    if flightOperator == simobj.EPS_fo:
+        subsystem = "EPS"
+    if flightOperator == simobj.TCS_fo:
+        subsystem = "TCS"
     return subsystem
 ###########################################################
 @login_required(login_url='/login/')
