@@ -36,7 +36,7 @@ class SimObject(threading.Thread):
         self.pk = sim.pk
         self.simName = sim.sim_name
         self.createSubsys()
-        print('\n  !!! NEW SIM', self.simName, 'CREATED !!!\n')
+        self.stop_flag = threading.Event()
 
     # Creating all the subsystem objects and adding them to the subsystem dictionary
     def createSubsys(self):
@@ -79,7 +79,7 @@ class SimObject(threading.Thread):
         simobj.sim_identifier = threading.get_ident()
         simobj.save()
 
-        while True:
+        while not self.stop_flag.is_set():
             print('thread ' + self.simName)
             print(threading.get_ident())
             #Probably put stuff in this block under self.update function 
@@ -87,3 +87,6 @@ class SimObject(threading.Thread):
             
             #End block here
             time.sleep(1)
+
+    def stop(self):
+        self.stop_flag.set()

@@ -14,13 +14,12 @@ from fo.models import FlightOperator
 from simulation.SimObject import SimObject
 
 ############################################################################
-@login_required(login_url='/login/')
 def newSim(request, class_name):
-    classobj = Class.objects.all().get(class_name = class_name)
+    selected_class = Class.objects.get(class_name=class_name)
+    
     missions = TestConductor.objects.get().missions.all()
-    marray = numpy.asarray(classobj.missions.all())
+    marray = numpy.asarray(selected_class.missions.all())
     allmisarray = numpy.asarray(missions)
-    print('   MISSIONGS ',marray)
     if (len(marray)==0) and (len(allmisarray)>=0):
         messages.info(request, 'You do not have any existing missions: create a new one')
         return redirect('../'+class_name+'/newMission')
@@ -28,144 +27,61 @@ def newSim(request, class_name):
         messages.info(request, 'You do not have any missions in this class: create or add a new one')
         return redirect('../'+class_name)
 
-
-
-    print("hi"+class_name)
-    group = Class.objects.all().filter(class_name = class_name).values_list('sims', flat=True)
-    data = numpy.asarray(group)
-    print(group)
-    if (data.all()!=None):
-        sims = ['']*(len(data))
-        for e in range(len(data)):
-            print(Sim.objects.get(pk=data[e]))
-            sims[e] = Sim.objects.get(pk=data[e])
-        print(sims)
-    else:
-        sims=[]
- 
-    this = Class.objects.all().filter(class_name = class_name).values_list('flight_operators', flat = True)
-    flight = numpy.asarray(this)
-    if (flight.all()!=None):
-        fos = ['']*(len(flight))
-        for m in range(len(flight)):
-            print(FlightOperator.objects.get(pk=flight[m]))
-            fos[m] = FlightOperator.objects.get(pk=flight[m])
-        print(fos)
-    else:
-        fos=[]
-
-       
-
-    ######################################
-    #form = SimCreationForm()
     if request.method == 'POST':
         form = SimCreationForm(class_name, request.POST)
-        
+
         if form.is_valid():
-            classobjects = Class.objects.get(class_name = class_name)
-            simnotstr = classobjects.sims.all()
-            sims = numpy.asarray(simnotstr)
-            # Get sim values from form
-            #form.save()
-            print(form.cleaned_data)
-            # sim_list = form.cleaned_data.get('sim_list')y
             sim_name = form.cleaned_data.get('sim_name')
-            nospacename = sim_name.replace(" ","")
-            #sys_list = form.cleaned_data.get('sys_list')
-            mission = form.cleaned_data.get('mission_script')
-            flight_director = form.cleaned_data.get('flight_director')
-            COMMS_fo = form.cleaned_data.get('COMMS_fo')
-            ACS_fo = form.cleaned_data.get('ACS_fo')
-            EPS_fo = form.cleaned_data.get('EPS_fo')
-            TCS_fo = form.cleaned_data.get('TCS_fo')
+            sim_exists = selected_class.sims.filter(sim_name=sim_name).exists()
 
-            ifequal = 0
-            for simcheck in sims:
-                simstr = str(simcheck)
-                if(str(simstr) == nospacename):
-                    ifequal = ifequal+1
-            
-            
-            if(len(sims)<=0):
-                nospacename = sim_name.replace(" ", "")
-                sim = Sim.objects.create(sim_name = nospacename, 
-                                         mission_script = mission, 
-                                         flight_director=flight_director, 
-                                         COMMS_fo=COMMS_fo, 
-                                         ACS_fo=ACS_fo, 
-                                         TCS_fo=TCS_fo, 
-                                         EPS_fo=EPS_fo)
-                ifequal = 0
-                # Create new Sim Database object
-            if(len(sims)>0 and ifequal>0):
-                messages.info(request, 'Sim Already Exists. Add Sim UNSUCCESSFUL')
-                return redirect('tc:home')
-            if(len(sims)>0 and ifequal<=0):
-                nospacename = sim_name.replace(" ", "")
-                sim = Sim.objects.create(sim_name = nospacename, 
-                                         mission_script = mission, 
-                                         flight_director=flight_director, 
-                                         COMMS_fo=COMMS_fo, 
-                                         ACS_fo=ACS_fo, 
-                                         TCS_fo=TCS_fo, 
-                                         EPS_fo=EPS_fo)
-                ifequal = 0
-
-            m = sim.mission_script
-            final_values = {}
-            final_values["roll"] = m.final_roll
-            final_values["pitch"] = m.final_pitch
-            final_values["yaw"] = m.final_yaw
-
-            # Create and start new sim thread
-            simThread = SimObject(final_values, pk=sim.pk)
-            simThread.start()
-
-            Class.objects.get(class_name = class_name).sims.add(sim)
-            flight_operators = FlightOperator.objects.all()
-            print(type(flight_operators))
-            if (flight_director != None):
-                for x in flight_operators:
-                    if(str(x) == str((flight_director))):
-                        x.sim_list.add(sim)
-                        sim.fo_list.add(x)
-
-            if (COMMS_fo != None):
-                for x in flight_operators:
-                    if(str(x) == str((COMMS_fo))):
-                        x.sim_list.add(sim)
-                        sim.fo_list.add(x)
+            if not sim_exists:
+                sim = Sim.objects.create(sim_name = sim_name, 
+                                         mission_script = form.cleaned_data.get('mission_script'), 
+                                         flight_director= form.cleaned_data.get('flight_director'),
+                                         COMMS_fo= form.cleaned_data.get('COMMS_fo'),
+                                         ACS_fo=form.cleaned_data.get('ACS_fo'), 
+                                         TCS_fo=form.cleaned_data.get('EPS_fo'), 
+                                         EPS_fo=form.cleaned_data.get('TCS_fo'))
+                mission = sim.mission_script
+                final_values = {}
+                final_values["roll"] = mission.final_roll
+                final_values["pitch"] = mission.final_pitch
+                final_values["yaw"] = mission.final_yaw
+                
+                sim.ACS_fo.sim_list.add(sim)
+                sim.fo_list.add(sim.ACS_fo)
+                
+                sim.EPS_fo.sim_list.add(sim)
+                sim.fo_list.add(sim.EPS_fo)
         
-            if (ACS_fo != None):
-                for x in flight_operators:
-                    if(str(x) == str((ACS_fo))):
-                        x.sim_list.add(sim)
-                        sim.fo_list.add(x)
-            
-            if (TCS_fo != None ):
-                for x in flight_operators:
-                    if(str(x) == str((TCS_fo))):
-                        x.sim_list.add(sim)
-                        sim.fo_list.add(x)
-            
-            if (EPS_fo != None):
-                for x in flight_operators:
-                    if(str(x) == str((EPS_fo))):
-                        x.sim_list.add(sim)
-                        sim.fo_list.add(x)
+                sim.TCS_fo.sim_list.add(sim)
+                sim.fo_list.add(sim.TCS_fo)
+                
+                sim.COMMS_fo.sim_list.add(sim)
+                sim.fo_list.add(sim.COMMS_fo)
+                
+                sim.flight_director.sim_list.add(sim)
+                sim.fo_list.add(sim.flight_director)
 
-            # Send notification
-            """send_mail(
-                'STaTE Simulation Added to Your Account',
-                'A new simulation, ' + sim.sim_name + ', has been added to your STaTE account.',
-                None,
-                [flight_operator.user.email],
-                fail_silently=False,
-            )"""
-            return redirect('../'+class_name)
+                # Create and start new sim thread
+                simThread = SimObject(final_values, pk=sim.pk)
+                simThread.start()
+                
+                selected_class.sims.add(sim)
+                
+                
+                return redirect('tc:classHome', class_name)
+            else:
+                messages.info(request, 'Sim with the same name already exists in this class. Please choose a different name.')
+        else:
+            messages.info(request, 'Invalid form data.')
+            
     else:
-        form = SimCreationForm(class_name)   
+        form = SimCreationForm(class_name)
+        
+    sims = selected_class.sims
     return render(request, 'tc/newSim.html', {"form": form, "class_name": class_name, "sims": sims})
+
 #########################################################################################################
 @login_required(login_url='/login/')
 def newMission(request,class_name):

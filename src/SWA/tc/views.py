@@ -195,17 +195,23 @@ def classHome(request, class_name):
     if request.method == 'POST' and request.POST.get("form_type") == 'formOne':
         form3 = SimEditForm(request.POST)
         if(form3.is_valid()):
-            form3.save()
             sim_namef = request.POST.get('sim_name')
             print("xxxx")
             print(sim_namef)
             delete = form3.cleaned_data.get('delete')
-            simget = Sim.objects.get(sim_name = sim_namef)
+            simget = Class.objects.get(class_name = class_name).sims.get(sim_name=sim_namef)
             if(delete==False):
                 simget.save()
             else:
+                simThread = None
+                thread_id = simget.sim_identifier
+                for thread in threading.enumerate():
+                    if thread.ident == thread_id:
+                        simThread = thread
+                if simThread != None:
+                    simThread.stop()
+                    simThread.join()
                 simget.delete()
-                print('sucess')
         return redirect('../home/'+class_name)
     else:
         form3 = SimEditForm()
@@ -246,7 +252,7 @@ def downloadSimReport(request):
     print('suc')
     if request.method == 'GET':
         simkey= request.GET.get('simkey')
-        sim = Sim.objects.get(pk = simkey)
+        sim = get_object_or_404(Sim, pk = simkey)
         
         # Get simcraft thread
         simThread = None
@@ -351,7 +357,7 @@ def comms(request, simkey):
 ###############################################################################
 def acsFetchdata(request, simkey):
     if request.method == 'GET':
-        sim = Sim.objects.get(pk = simkey)
+        sim = get_object_or_404(Sim, pk = simkey)
         
         # Get simcraft thread
         simThread = None
@@ -387,7 +393,7 @@ def acsFetchdata(request, simkey):
 ###############################################################################
 def epsFetchdata(request, simkey):
     if request.method == 'GET':
-        sim = Sim.objects.get(pk = simkey)
+        sim = get_object_or_404(Sim, pk = simkey)
         
         # Get simcraft thread
         simThread = None
@@ -420,7 +426,7 @@ def epsFetchdata(request, simkey):
 ###############################################################################
 def tcsFetchdata(request, simkey):
     if request.method == 'GET':
-        sim = Sim.objects.get(pk = simkey)
+        sim = get_object_or_404(Sim, pk = simkey)
         
         # Get simcraft thread
         simThread = None
@@ -458,7 +464,7 @@ def tcsFetchdata(request, simkey):
 ###############################################################################
 def commsFetchdata(request, simkey):
     if request.method == 'GET':
-        sim = Sim.objects.get(pk = simkey)
+        sim = get_object_or_404(Sim, pk = simkey)
         
         # Get simcraft thread
         simThread = None
@@ -494,7 +500,7 @@ def commsFetchdata(request, simkey):
 ###############################################################################
 def payloadFetchdata(request, simkey):
     if request.method == 'GET':
-        sim = Sim.objects.get(pk = simkey)
+        sim = get_object_or_404(Sim, pk = simkey)
         
         # Get simcraft thread
         simThread = None

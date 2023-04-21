@@ -150,7 +150,7 @@ def submit(request, simkey):
         command = request.GET.get('cmd')  # String
 
         # Determine Flight Operator's Subsystem
-        sim = Sim.objects.get(pk = simkey)
+        sim = get_object_or_404(Sim, pk = simkey)
         flightOperator = get_object_or_404(FlightOperator, user = request.user)
         subsystem = _get_fo_subsystem(sim, flightOperator)
         
@@ -178,7 +178,7 @@ def submit(request, simkey):
 ###############################################################################
 def acsFetchdata(request, simkey):
     if request.method == 'GET':
-        sim = Sim.objects.get(pk = simkey)
+        sim = get_object_or_404(Sim, pk = simkey)
         flightOperator = get_object_or_404(FlightOperator, user = request.user)
         subsystem = _get_fo_subsystem(sim, flightOperator)
         
@@ -217,7 +217,7 @@ def acsFetchdata(request, simkey):
 ###############################################################################
 def epsFetchdata(request, simkey):
     if request.method == 'GET':
-        sim = Sim.objects.get(pk = simkey)
+        sim = get_object_or_404(Sim, pk = simkey)
         flightOperator = get_object_or_404(FlightOperator, user = request.user)
         subsystem = _get_fo_subsystem(sim, flightOperator)
         
@@ -253,7 +253,7 @@ def epsFetchdata(request, simkey):
 ###############################################################################
 def tcsFetchdata(request, simkey):
     if request.method == 'GET':
-        sim = Sim.objects.get(pk = simkey)
+        sim = get_object_or_404(Sim, pk = simkey)
         flightOperator = get_object_or_404(FlightOperator, user = request.user)
         subsystem = _get_fo_subsystem(sim, flightOperator)
         
@@ -294,7 +294,7 @@ def tcsFetchdata(request, simkey):
 ###############################################################################
 def commsFetchdata(request, simkey):
     if request.method == 'GET':
-        sim = Sim.objects.get(pk = simkey)
+        sim = get_object_or_404(Sim, pk = simkey)
         flightOperator = get_object_or_404(FlightOperator, user = request.user)
         subsystem = _get_fo_subsystem(sim, flightOperator)
         
@@ -333,7 +333,7 @@ def commsFetchdata(request, simkey):
 ###############################################################################
 def payloadFetchdata(request, simkey):
     if request.method == 'GET':
-        sim = Sim.objects.get(pk = simkey)
+        sim = get_object_or_404(Sim, pk = simkey)
         flightOperator = get_object_or_404(FlightOperator, user = request.user)
         subsystem = _get_fo_subsystem(sim, flightOperator)
         
@@ -375,7 +375,7 @@ def payloadFetchdata(request, simkey):
 def fetchcommands(request, simkey):
     if request.method == 'GET':
         # Get sim and flight operator subsystem
-        sim = Sim.objects.get(pk = simkey)
+        sim = get_object_or_404(Sim, pk = simkey)
         flightOperator = get_object_or_404(FlightOperator, user = request.user)
         subsystem = _get_fo_subsystem(sim, flightOperator)
         
