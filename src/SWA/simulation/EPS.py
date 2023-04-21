@@ -3,50 +3,47 @@ import time
 
 class EPS():
     
-    checks = {
-        'Uplink' : random.choice([True, False]),
-        'Bus Connection' : random.choice([True, False]),
-        'Articulation Gear' : random.choice([True, False])
-    }
-
-    distribution = {
-        "ACS": 16,
-        "EPS": 16,
-        "TCS": 16,
-        "COMMS": 16,
-        "Payload": 16
-    }
-
-    checkTries = 0
-    totalPower = 80
-    statusGood = False
-    atFullPower = False
-    solarPanelAngleRange = [-10, 10]
-    solarPanelAngle = random.randint(-90, 90)
-    solarPanelAngleGood = False
-    solarPanelOffBy = 0
-
-    telemetryTransfering = False
-    telemetryTransferComplete = False
-    
-    # Console infastructure
-    menu = ''
-    consoleLog = []
-    commands = [
-        "WELCOME TO THE ELECTRICAL POWER SYSTEMS (EPS) CONSOLE!",
-        "Your task is to command the satellite to full power before the payload can be operated.",
-        "Enter the command number in the console on the right to execute",
-        "1.) Status Checks",
-        "2.) Verify Power Distribution System",
-        "3.) Full Power",
-        "4.) Articulate Panel",
-        "5.) Transfer Telemetry"
-    ]
-    
     def __init__(self):
         super().__init__()
+        self.checks = {
+            'Uplink' : random.choice([True, False]),
+            'Bus Connection' : random.choice([True, False]),
+            'Articulation Gear' : random.choice([True, False])
+        }
+
+        self.distribution = {
+            "ACS": 16,
+            "EPS": 16,
+            "TCS": 16,
+            "COMMS": 16,
+            "Payload": 16
+        }
+
+        self.checkTries = 0
+        self.totalPower = 80
+        self.statusGood = False
+        self.atFullPower = False
+        self.solarPanelAngleRange = [-10, 10]
+        self.solarPanelAngle = random.randint(-90, 90)
+        self.solarPanelAngleGood = False
+        self.solarPanelOffBy = 0
+
+        self.telemetryTransfering = False
+        self.telemetryTransferComplete = False
+        
+        # Console infastructure
         self.menu = 'tl'
-        print("New instance of EPS class created")
+        self.consoleLog = []
+        self.commands = [
+            "WELCOME TO THE ELECTRICAL POWER SYSTEMS (EPS) CONSOLE!",
+            "Your task is to command the satellite to full power before the payload can be operated.",
+            "Enter the command number in the console on the right to execute",
+            "1.) Status Checks",
+            "2.) Verify Power Distribution System",
+            "3.) Full Power",
+            "4.) Articulate Panel",
+            "5.) Transfer Telemetry"
+        ]
         
     def command(self, command):
         

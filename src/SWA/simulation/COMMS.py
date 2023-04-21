@@ -2,41 +2,38 @@ import random
 import time
 import webbrowser
 class COMMS():
-
-    checks = {
-        "On-board Computer": bool(random.getrandbits(1)),
-        "Antenna Status": bool(random.getrandbits(1))
-    }
-
-    checkTries = 0
-
-    frequency = random.randrange(12.000, 14.000)
-    currentGain = 36
-    gainRange = [36,38]
-
-    allTelemetryDataGood = False
-    allTelemetryData = {"ACS": False, "EPS": False, "TCS": False, "Payload": False}
-
-    # Console infastructure
-    menu = ''
-    consoleLog = []
-    commands = [
-        "WELCOME TO THE COMMUNICATIONS (COMMS) CONSOLE",
-        "Your task is to verify that signal lock is established between the Ku-Band satellite antenna and the ground station antenna, transmit the target image to the ground station, process the image, and display the results.",
-        "Enter the command number in the console on the right to execute",
-        "1.) Status Checks",
-        "2.) Verify Signal",
-        "3.) Increase Signal Gain",
-        "4.) Reset Signal Gain",
-        "5.) Download Telemetry Data",
-        "6.) Process Telemetry Data",
-        "7.) Display Image"
-    ]
     
     def __init__(self):
         super().__init__()
+        self.checks = {
+            "On-board Computer": bool(random.getrandbits(1)),
+            "Antenna Status": bool(random.getrandbits(1))
+        }
+
+        self.checkTries = 0
+
+        self.frequency = random.randrange(12.000, 14.000)
+        self.currentGain = 36
+        self.gainRange = [36,38]
+
+        self.allTelemetryDataGood = False
+        self.allTelemetryData = {"ACS": False, "EPS": False, "TCS": False, "Payload": False}
+
+        # Console infastructure
         self.menu = 'tl'
-        print('New instance of COMMS class created')
+        self.consoleLog = []
+        self.commands = [
+            "WELCOME TO THE COMMUNICATIONS (COMMS) CONSOLE",
+            "Your task is to verify that signal lock is established between the Ku-Band satellite antenna and the ground station antenna, transmit the target image to the ground station, process the image, and display the results.",
+            "Enter the command number in the console on the right to execute",
+            "1.) Status Checks",
+            "2.) Verify Signal",
+            "3.) Increase Signal Gain",
+            "4.) Reset Signal Gain",
+            "5.) Download Telemetry Data",
+            "6.) Process Telemetry Data",
+            "7.) Display Image"
+        ]
 
     def command(self, command):
         self.consoleLog.append("$ " + command)

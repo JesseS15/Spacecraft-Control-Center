@@ -3,93 +3,90 @@ import time
 
 class TCS():
 
-    ACSThermal = {
-        "CMG": random.randrange(-50,50),
-        "Alignment System": random.randrange(-50,50)
-    }
-    ACSThermalRange = {
-        "CMG": [random.randrange(-100,-20), random.randrange(20, 100)],
-        "Alignment System": [random.randrange(-100,-20), random.randrange(20, 100)]
-    }
-
-    EPSThermal = {
-        "Power Distribution": random.randrange(-50,50),
-        "Battery": random.randrange(-50,50),
-        "Articulation System": random.randrange(-50,50)
-    }
-    EPSThermalRange = {
-        "Power Distribution": [random.randrange(-100,-20), random.randrange(20, 100)],
-        "Battery": [random.randrange(-100,-20), random.randrange(20, 100)],
-        "Articulation System": [random.randrange(-100,-20), random.randrange(20, 100)]
-    }
-
-    COMMSThermal = {
-        "On-board Computer": random.randrange(-50,50),
-        "Signal Processor": random.randrange(-50,50)
-    }
-    COMMSThermalRange = {
-        "On-board Computer": [random.randrange(-100,-20), random.randrange(20, 100)],
-        "Signal Processor": [random.randrange(-100,-20), random.randrange(20, 100)]
-    }
-
-    PayloadThermal = {
-        "Optical Electronics": random.randrange(-50,50),
-        "Gimbal System": random.randrange(-50,50),
-        "Imager": random.randrange(-50,50),
-    }
-    PayloadThermalRange = {
-        "Optical Electronics": [random.randrange(-100,-20), random.randrange(20, 100)],
-        "Gimbal System": [random.randrange(-100,-20), random.randrange(20, 100)],
-        "Imager": [random.randrange(-100,-20), random.randrange(20, 100)]
-    }
-
-    SubsystemThermal = {
-        "ACS": ACSThermal,
-        "EPS": EPSThermal,
-        "COMMS": COMMSThermal,
-        "Payload": PayloadThermal
-    }
-    SubsystemThermalRange = {
-        "ACS": ACSThermalRange,
-        "EPS": EPSThermalRange,
-        "COMMS": COMMSThermalRange,
-        "Payload": PayloadThermalRange
-    }
-
-    checks = {
-        'Heating Elements' : bool(random.getrandbits(1)),
-        'Bus Connection' : bool(random.getrandbits(1)),
-        'Telemetry Signal' : bool(random.getrandbits(1))
-    }
-
-    # Needed to make sure random functions dont return the same value everytime
-    random.seed()
-    
-    checkTries = 0
-    checksGood = False
-    
-    telemetryTransfering = False
-    telemetryTransferComplete = False
-
-    # Console infastructure
-    menu = ''
-    consoleLog = []
-    commands = [
-        "WELCOME TO THE THERMAL CONTROL SYSTEMS (TCS) CONSOLE!",
-        "Your task is to perform the cooling procedure for equipment now undergoing thermal exposure in the new attitude position.",
-        "Enter the command number in the console on the right to execute",
-        "1.) Status Check",
-        "2.) Verify Thermal Ranges",
-        "3.) Cool Subsystems",
-        "4.) Transfer Telemetry",
-        "5.) Refresh"
-    ]
-
     def __init__(self):
         super().__init__()
-        self.menu = 'tl'
+        
+        self.ACSThermal = {
+            "CMG": random.randrange(-50,50),
+            "Alignment System": random.randrange(-50,50)
+        }
+        self.ACSThermalRange = {
+            "CMG": [random.randrange(-100,-20), random.randrange(20, 100)],
+            "Alignment System": [random.randrange(-100,-20), random.randrange(20, 100)]
+        }
+
+        self.EPSThermal = {
+            "Power Distribution": random.randrange(-50,50),
+            "Battery": random.randrange(-50,50),
+            "Articulation System": random.randrange(-50,50)
+        }
+        self.EPSThermalRange = {
+            "Power Distribution": [random.randrange(-100,-20), random.randrange(20, 100)],
+            "Battery": [random.randrange(-100,-20), random.randrange(20, 100)],
+            "Articulation System": [random.randrange(-100,-20), random.randrange(20, 100)]
+        }
+
+        self.COMMSThermal = {
+            "On-board Computer": random.randrange(-50,50),
+            "Signal Processor": random.randrange(-50,50)
+        }
+        self.COMMSThermalRange = {
+            "On-board Computer": [random.randrange(-100,-20), random.randrange(20, 100)],
+            "Signal Processor": [random.randrange(-100,-20), random.randrange(20, 100)]
+        }
+
+        self.PayloadThermal = {
+            "Optical Electronics": random.randrange(-50,50),
+            "Gimbal System": random.randrange(-50,50),
+            "Imager": random.randrange(-50,50),
+        }
+        self.PayloadThermalRange = {
+            "Optical Electronics": [random.randrange(-100,-20), random.randrange(20, 100)],
+            "Gimbal System": [random.randrange(-100,-20), random.randrange(20, 100)],
+            "Imager": [random.randrange(-100,-20), random.randrange(20, 100)]
+        }
+
+        self.SubsystemThermal = {
+            "ACS": self.ACSThermal,
+            "EPS": self.EPSThermal,
+            "COMMS": self.COMMSThermal,
+            "Payload": self.PayloadThermal
+        }
+        self.SubsystemThermalRange = {
+            "ACS": self.ACSThermalRange,
+            "EPS": self.EPSThermalRange,
+            "COMMS": self.COMMSThermalRange,
+            "Payload": self.PayloadThermalRange
+        }
+
+        self.checks = {
+            'Heating Elements' : bool(random.getrandbits(1)),
+            'Bus Connection' : bool(random.getrandbits(1)),
+            'Telemetry Signal' : bool(random.getrandbits(1))
+        }
+
+        # Needed to make sure random functions dont return the same value everytime
+        random.seed()
+        
         self.checkTries = 0
-        print('New instance of TCS class created')
+        self.checksGood = False
+        
+        self.telemetryTransfering = False
+        self.telemetryTransferComplete = False
+
+        # Console infastructure
+        self.menu = 'tl'
+        self.consoleLog = []
+        self.commands = [
+            "WELCOME TO THE THERMAL CONTROL SYSTEMS (TCS) CONSOLE!",
+            "Your task is to perform the cooling procedure for equipment now undergoing thermal exposure in the new attitude position.",
+            "Enter the command number in the console on the right to execute",
+            "1.) Status Check",
+            "2.) Verify Thermal Ranges",
+            "3.) Cool Subsystems",
+            "4.) Transfer Telemetry",
+            "5.) Refresh"
+        ]
         
     def command(self, command):
         

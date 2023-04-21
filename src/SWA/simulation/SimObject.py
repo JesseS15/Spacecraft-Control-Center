@@ -10,29 +10,25 @@ import random
 
 class SimObject(threading.Thread):
 
-    finalValues = {
-		"roll": 0,
-		"pitch": 0,
-		"yaw": 0,
-		"finalLongitude": 0
-	}
-
-    simName = ""
-    pk = 0
-    
-    # Dictionary to hold all the subsystem objects
-    subsystems = { "ACS": 0, "TCS": 0, "COMMS": 0, "EPS": 0, "Payload": 0 }
-
-    telemetry = {"ACS": False, "TCS": False, "EPS": False, "Payload": False}
-
     def __init__(self, final_values, pk):
         threading.Thread.__init__(self)
-        self.finalValues = final_values
-
+        
+        self.finalValues = {
+            "roll": 0,
+            "pitch": 0,
+            "yaw": 0,
+            "finalLongitude": 0
+        }
+        self.simName = ""
+        self.pk = 0
+        self.subsystems = {"ACS": 0, "TCS": 0, "COMMS": 0, "EPS": 0, "Payload": 0}
+        self.telemetry = {"ACS": False, "TCS": False, "EPS": False, "Payload": False}
+        
+        self.finalValues.update(final_values)
         # Longitude of 81 is ERAU Daytona Beach campus
         self.finalValues["finalLongitude"] = 81
 
-        sim = Sim.objects.get(pk = pk)
+        sim = Sim.objects.get(pk=pk)
         self.pk = sim.pk
         self.simName = sim.sim_name
         self.createSubsys()
@@ -75,9 +71,6 @@ class SimObject(threading.Thread):
         self.subsystems["COMMS"].update()
 
     def run(self):
-        simobj = Sim.objects.get(pk = self.pk)
-        simobj.sim_identifier = threading.get_ident()
-        simobj.save()
 
         while not self.stop_flag.is_set():
             print('thread ' + self.simName)

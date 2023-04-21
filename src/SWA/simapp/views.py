@@ -15,17 +15,20 @@ from simulation.SimObject import SimObject
 
 ############################################################################
 def newSim(request, class_name):
-    selected_class = Class.objects.get(class_name=class_name)
     
+    selected_class = Class.objects.get(class_name=class_name)
     missions = TestConductor.objects.get().missions.all()
-    marray = numpy.asarray(selected_class.missions.all())
-    allmisarray = numpy.asarray(missions)
-    if (len(marray)==0) and (len(allmisarray)>=0):
-        messages.info(request, 'You do not have any existing missions: create a new one')
-        return redirect('../'+class_name+'/newMission')
-    elif(len(marray)==0) and (len(allmisarray)>=1):
-        messages.info(request, 'You do not have any missions in this class: create or add a new one')
-        return redirect('../'+class_name)
+    class_missions = selected_class.missions.all()
+    class_mission_count = class_missions.count()
+    all_mission_count = missions.count()
+
+    if class_mission_count == 0:
+        if all_mission_count == 0:
+            messages.info(request, 'You do not have any existing missions: create a new one')
+            return redirect('../'+class_name+'/newMission')
+        else:
+            messages.info(request, 'You do not have any missions in this class: create or add a new one')
+            return redirect('../'+class_name+'/newMission')
 
     if request.method == 'POST':
         form = SimCreationForm(class_name, request.POST)
@@ -66,6 +69,9 @@ def newSim(request, class_name):
                 # Create and start new sim thread
                 simThread = SimObject(final_values, pk=sim.pk)
                 simThread.start()
+                
+                sim.sim_identifier = simThread.ident
+                sim.save()
                 
                 selected_class.sims.add(sim)
                 

@@ -3,41 +3,39 @@ import time
 
 class Payload():
 
-    checks = {
-        'Optical Electronics' : random.choice([True, False]),
-        'Bus Connection' : random.choice([True, False]),
-        'Gimble Connection' : random.choice([True, False])
-    }
-
-    checkTries = 0
-    ready = False
-    statusGood = False
-    slewImageFlag = False
-    acquireTargetFlag = False
-    captureImageFlag = False
-    telemetryTransfering = False
-    telemetryTransferComplete = False
-    
-    gimbalStatus = True
-    imagerStatus = True
-
-    # Console infastructure
-    menu = ''
-    consoleLog = []
-    commands = [
-        "WELCOME TO THE PAYLOAD (PL) CONSOLE!",
-        "Your task is to capture imagery of the target during the flyover period.",
-        "Enter the command number in the console on the right to execute",
-        "1.) Status Checks",
-        "2.) Slew Image",
-        "3.) Acquire Target",
-        "4.) Capture Image",
-        "5.) Transfer Telemetry"
-    ]
-
     def __init__(self):
-        self.menu = 'tl'
         super().__init__()
+        self.checks = {
+            'Optical Electronics' : random.choice([True, False]),
+            'Bus Connection' : random.choice([True, False]),
+            'Gimble Connection' : random.choice([True, False])
+        }
+
+        self.checkTries = 0
+        self.ready = False
+        self.statusGood = False
+        self.slewImageFlag = False
+        self.acquireTargetFlag = False
+        self.captureImageFlag = False
+        self.telemetryTransfering = False
+        self.telemetryTransferComplete = False
+        
+        self.gimbalStatus = True
+        self.imagerStatus = True
+
+        # Console infastructure
+        self.menu = 'tl'
+        self.consoleLog = []
+        self.commands = [
+            "WELCOME TO THE PAYLOAD (PL) CONSOLE!",
+            "Your task is to capture imagery of the target during the flyover period.",
+            "Enter the command number in the console on the right to execute",
+            "1.) Status Checks",
+            "2.) Slew Image",
+            "3.) Acquire Target",
+            "4.) Capture Image",
+            "5.) Transfer Telemetry"
+        ]
         
     def command(self, command):
         

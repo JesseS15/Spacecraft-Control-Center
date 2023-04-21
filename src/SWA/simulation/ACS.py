@@ -3,61 +3,56 @@ import time
 import webbrowser
 class ACS():
 
-    orientation = {
-        "roll":0,
-        "pitch":0,
-        "yaw": 0
-    }
-
-    rollActive = False
-    pitchActive = False
-    yawActive = False
-
-    startLongitude = 0
-    finalLongitude = 0
-    currentLongitude = 0
-    
-    cmgStatus = False
-    orientationRelay = False
-
-    telemetryTransfering = False
-    telemetryTransferComplete = False
-
-    longitudeValid = False
-    rpyValid = False
-
-    continueUpdates = True
-    
-    random.seed(9001)
-
-    menu = ''
-    commands = [
-        "WELCOME TO THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE",
-        "Your task is to rotate the satellite for proper payload alignment with the imagery target on the earth’s surface",
-        "Enter the command number in the console on the right to execute",
-        "1.) Longitude Check",
-        "2.) Verify Alignment",
-        "3.) CMG Activate Roll",
-        "4.) CMG Activate Pitch",
-        "5.) CMG Activate Yaw",
-        "6.) Transfer Telemetry",
-    ]
-    consoleLog = []
-
-    finalValues = {}
-
     def __init__(self, finalValues):
         super().__init__()
+        
+        self.finalValues = finalValues
+        
+        self.orientation = {
+            "roll":0,
+            "pitch":0,
+            "yaw": 0
+        }
         self.orientation["roll"] = random.randint(-180,180)
         self.orientation["pitch"] = random.randint(-90,90)
         self.orientation["yaw"] = random.randint(-180,180)
+
+        self.rollActive = False
+        self.pitchActive = False
+        self.yawActive = False
+
         # setting starting longitude to random number from final longitude +50 to final longitude +90 (random magic numbers, dont be mad)
         self.startLongitude = random.randint(-180, 180)
         self.finalLongitude = finalValues["finalLongitude"]
         self.currentLongitude = self.startLongitude
-        self.finalValues = finalValues
+        
+        self.cmgStatus = False
+        self.orientationRelay = False
 
+        self.telemetryTransfering = False
+        self.telemetryTransferComplete = False
+
+        self.longitudeValid = False
+        self.rpyValid = False
+
+        self.continueUpdates = True
+        
+        random.seed(9001)
+
+        # Console infastructure
         self.menu = "tl" # can be tl, cmgRoll, cmgPitch, or cmgYaw
+        self.commands = [
+            "WELCOME TO THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE",
+            "Your task is to rotate the satellite for proper payload alignment with the imagery target on the earth’s surface",
+            "Enter the command number in the console on the right to execute",
+            "1.) Longitude Check",
+            "2.) Verify Alignment",
+            "3.) CMG Activate Roll",
+            "4.) CMG Activate Pitch",
+            "5.) CMG Activate Yaw",
+            "6.) Transfer Telemetry",
+        ]
+        self.consoleLog = []
         
     def command(self, command):
         
