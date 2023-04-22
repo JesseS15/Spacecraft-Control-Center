@@ -22,7 +22,7 @@ def newSim(request, class_name):
         if TestConductor.objects.get().missions.all().count() == 0: # No missions in any class
             messages.info(request, 'You do not have any existing missions: create a new one')
         else: # No missions in selected class
-            messages.info(request, 'You do not have any missions in this class: create or add a new one')
+            messages.info(request, 'You do not have any missions in this class: add an existing mission or create a new one')
         return redirect('../'+class_name+'/newMission')
 
     if request.method == 'POST':
