@@ -1,0 +1,32 @@
+    {% extends "home/index.html" %}
+    {% load static %}
+    
+    {% load crispy_forms_tags %}
+    <!DOCTYPE html>
+    <html lang="eng"></html>
+    <head>
+    
+    </head>
+    {% block start %}
+      <body style= "background-size:cover; background-attachment: fixed; background-repeat: no-repeat; background-image: url({% static 'images/space.jpg' %}); height: 100vh">
+        <div class="row">
+      
+            {% if user.is_authenticated %}
+            <center>
+              <div class="header" style="color:white;">
+              <h3>HEHEHEHE</h3>
+              </div>
+              <div class="box">
+                <div class="content">
+                    <img src = "{% static 'images/rickroll-roll.gif' %}" alt="rickroll">
+                </div> 
+              </div>
+            </center>
+            {% else %}
+    
+            {% endif %}
+            {% endblock %}
+        </div>
+          
+      </body>
+    </html>

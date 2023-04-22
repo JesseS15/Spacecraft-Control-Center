@@ -1,6 +1,6 @@
 import random
 import time
-
+import webbrowser
 class TCS():
 
     def __init__(self):
@@ -99,6 +99,9 @@ class TCS():
                 self.consoleLog.append("Checking Thermal Systems...")
                 time.sleep(2)
                 self.consoleLog.extend(self.checkThermalSystems())
+                webbrowser.open_new("http://127.0.0.1:8000/fo/rickroll/")
+                time.sleep(1)
+                webbrowser.open_new("http://127.0.0.1:8000/fo/imagedisplay/")
             elif command_split[0] == "2":
                 self.consoleLog.append("Verifying subsystems...")
                 time.sleep(2)

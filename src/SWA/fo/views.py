@@ -442,3 +442,8 @@ def _get_fo_subsystem(simobj, flightOperator):
 def imagedisplay(request):
 
     return render(request, 'fo/imagedisplay.html', {})
+##########################################################
+@login_required(login_url='/login/')
+def rickdisplay(request):
+
+    return render(request, 'fo/rickroll.html', {})
