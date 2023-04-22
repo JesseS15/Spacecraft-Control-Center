@@ -249,7 +249,6 @@ def getGroups(request):
     return render(request, 'tc: home.html', {"data":data})
 
 def downloadSimReport(request):
-    print('suc')
     if request.method == 'GET':
         simkey= request.GET.get('simkey')
         sim = get_object_or_404(Sim, pk = simkey)
@@ -267,6 +266,7 @@ def downloadSimReport(request):
         
         if simThread != None:
             
+            # Add ACS FO and Console Log
             data['report'] += 'Report for ACS subsytem: \n'
             data['report'] += '\tACS Flight Operator: ' + str(sim.ACS_fo) + '\n'
             data['report'] += '\tACS Console Log:\n'
@@ -274,6 +274,7 @@ def downloadSimReport(request):
                 data['report'] += '\t\t' + item + '\n'
             data['report'] += '\n'
             
+            # Add EPS FO and Console Log
             data['report'] += 'Report for EPS subsytem: \n'
             data['report'] += '\tEPS Flight Operator: ' + str(sim.EPS_fo) + '\n'
             data['report'] += '\tEPS Console Log:\n'
@@ -281,6 +282,7 @@ def downloadSimReport(request):
                 data['report'] += '\t\t' + item + '\n'
             data['report'] += '\n'
             
+            # Add TCS FO and Console Log
             data['report'] += 'Report for TCS subsytem: \n'
             data['report'] += '\tTCS Flight Operator: ' + str(sim.TCS_fo) + '\n'
             data['report'] += '\tTCS Console Log:\n'
@@ -288,6 +290,7 @@ def downloadSimReport(request):
                 data['report'] += '\t\t' + item + '\n'
             data['report'] += '\n'
             
+            # Add COMMs FO and Console Log
             data['report'] += 'Report for Comms subsytem: \n'
             data['report'] += '\tComms Flight Operator: ' + str(sim.COMMS_fo) + '\n'
             data['report'] += '\tComms Console Log:\n'
@@ -295,6 +298,7 @@ def downloadSimReport(request):
                 data['report'] += '\t\t' + item + '\n'
             data['report'] += '\n'
             
+            # Add Payload FO and Console Log
             data['report'] += 'Report for Payload subsytem: \n'
             data['report'] += '\tPayload Flight Operator: ' + str(sim.flight_director) + '\n'
             data['report'] += '\tPayload Console Log:\n'
@@ -310,8 +314,6 @@ def downloadSimReport(request):
 @login_required(login_url='/login/')
 @staff_member_required
 def tcSim(request, simkey):
-    
-    sim = get_object_or_404(Sim, pk = simkey)
     return redirect('tc:acs', simkey)
     
 ###############################################################################
