@@ -49,7 +49,7 @@ class COMMS():
             elif command_split[0] == "2":
                 self.consoleLog.append("Verifying Signal...")
                 time.sleep(5)
-                self.consoleLog.append(self.verifySignal())
+                self.consoleLog.extend(self.verifySignal())
             elif command_split[0] == "3":
                 self.consoleLog.append("How much do you want to increase the Signal Gain (in dB)?")
                 self.menu = "signalGainIncrease"
