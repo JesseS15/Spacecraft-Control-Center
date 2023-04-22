@@ -72,10 +72,10 @@
 
   <!-- message here -->
 
-  <div class="row1" style="margin-top: 60px;">
+  <div class="row1" style="margin-top: 35px;">
     {% if messages %}
     {% for message in messages %}
-        <center class="alert alert-{{ message.tags }}">
+        <center style="padding-top: 35px;" class="alert alert-{{ message.tags }}">
             {{ message }}
         </center>
     {% endfor %}
