@@ -35,7 +35,6 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'testapp.apps.TestappConfig',
     'home.apps.HomeConfig',
     'fo.apps.FoConfig',
     'tc.apps.TcConfig',
