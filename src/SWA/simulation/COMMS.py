@@ -47,7 +47,6 @@ class COMMS():
             if command_split[0] == "1":
                 self.consoleLog.append("Checking Communication Systems...")
                 time.sleep(3)
-                self.subsystemComplete = True
                 self.consoleLog.extend(self.systemChecks())
             elif command_split[0] == "2":
                 self.consoleLog.append("Verifying Signal...")
