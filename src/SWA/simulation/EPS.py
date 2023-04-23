@@ -104,9 +104,9 @@ class EPS():
         self.checkPanelAngle()
 
         if self.solarPanelAngleGood:
-            output.append("--Solar panel angle IN RANGE")
+            output.append("...Solar Panel Angle -- IN RANGE")
         else:
-            output.append("--Solar panel angle OUT OF RANGE -- Off by " + str(self.solarPanelOffBy))
+            output.append("...Solar Panel Angle -- OUT OF RANGE -- OFF BY " + str(self.solarPanelOffBy) + ". Run Articulate Angle to change.")
 
         if (self.checkTries >= 3):
             self.checkTries = 0
@@ -116,7 +116,7 @@ class EPS():
     def verifyPowerDistribution(self):
         output = []
         for key in self.distribution:
-            output.append("--" + str(key) + " at %" + str(self.distribution[key]) + " power")
+            output.append("..." + str(key) + " -- %" + str(self.distribution[key]) + " power")
         output.append("Current power level is at %" + str(self.getCurrentTotalPower()) + ". 100% power is needed for mission completion.")
         return output
     
@@ -165,6 +165,3 @@ class EPS():
         
     def update(self):
         self.solarPanelAngle += random.randint(-1,1)
-        
-
-    

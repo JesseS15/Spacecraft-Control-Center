@@ -1,6 +1,6 @@
 import random
 import time
-import webbrowser
+
 class ACS():
 
     def __init__(self, finalValues):
@@ -232,4 +232,4 @@ class ACS():
             else: 
                 output.append("...Longitude -- REACHED")
         return output
-            
+       

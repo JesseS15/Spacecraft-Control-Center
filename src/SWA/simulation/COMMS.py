@@ -1,6 +1,6 @@
 import random
 import time
-import webbrowser
+
 class COMMS():
     
     def __init__(self):
@@ -9,6 +9,8 @@ class COMMS():
             "On-board Computer": bool(random.getrandbits(1)),
             "Antenna Status": bool(random.getrandbits(1))
         }
+
+        self.subsystemComplete = False
 
         self.checkTries = 0
 
@@ -44,31 +46,29 @@ class COMMS():
             
             if command_split[0] == "1":
                 self.consoleLog.append("Checking Communication Systems...")
-                time.sleep(5)
+                time.sleep(3)
                 self.consoleLog.extend(self.systemChecks())
             elif command_split[0] == "2":
                 self.consoleLog.append("Verifying Signal...")
-                time.sleep(5)
+                time.sleep(3)
                 self.consoleLog.extend(self.verifySignal())
             elif command_split[0] == "3":
                 self.consoleLog.append("How much do you want to increase the Signal Gain (in dB)?")
                 self.menu = "signalGainIncrease"
             elif command_split[0] == "4":
-                #self.consoleLog.append("Resetting gain to 36 dB")
                 self.consoleLog.extend(self.resetGain())
             elif command_split[0] == "5":
                 self.consoleLog.append("Downloading Subsystem Telemetry...")
-                time.sleep(5)
+                time.sleep(3)
                 self.consoleLog.extend(self.downloadTelemetryData())
             elif command_split[0] == "6":
                 self.consoleLog.append("Processing SimCraft Telemetry...")
-                time.sleep(5)
+                time.sleep(3)
                 self.consoleLog.append(self.processTelemetryData())
             elif command_split[0] == "7":
-                self.consoleLog.append("Attempting to displaying Image...")
-                time.sleep(5)
+                self.consoleLog.append("Attempting to display image...")
+                time.sleep(3)
                 self.consoleLog.extend(self.displayImage())
-                #TODO: create instance where user cannot enter commands after subsys finished
             else:
                 self.consoleLog.append("Invalid Command " + command)
         
@@ -84,7 +84,7 @@ class COMMS():
         return self.consoleLog
 
     def update(self):
-        pass
+        return self.subsystemComplete
 
     # Main menu option 1
     def systemChecks(self):
@@ -96,9 +96,9 @@ class COMMS():
             elif (self.checkTries >= 3):
                 self.checks[key] = True
             if (self.checks[key]):
-                output.append("The SimCrafts current " + key + " status is Reached")
+                output.append("..." + str.capitalize(key) + " -- REACHED")
             else:
-                output.append("The SimCrafts current " + key + " status is not reached")
+                output.append("..." + str.capitalize(key) + " -- NOT REACHED")
         if self.checkTries >= 3:
             self.checkTries = 0
         return output
@@ -108,11 +108,11 @@ class COMMS():
         output = []
         if (self.currentGain >= self.gainRange[0]) and (self.currentGain <= self.gainRange[1]):
             self.checks['Antenna Status'] = True
-            output.append('GAIN IN RANGE — ' + str(self.currentGain))
+            output.append('...Gain -- IN RANGE -- Current Gain at' + str(self.currentGain) + " dB")
         elif self.currentGain > self.gainRange[1]:
-            output.append('UNWANTED HARMONICS DETECTED — gain too high! Reset gain')
+            output.append('...Gain -- UNWANTED HARMONICS DETECTED -- Gain too high! Reset gain')
         else:
-            output.append('UNABLE TO CAPTURE SIGNAL — increase gain to 38 dB')
+            output.append('...Gain -- UNABLE TO CAPTURE SIGNAL -- Increase gain to 38 dB')
         return output
 
     # Main menu option 3    
@@ -132,15 +132,14 @@ class COMMS():
         return output
     
     # Main menu option 5
-    # telemetryData needs to be passed from SimObject
     def downloadTelemetryData(self):
         output = []
         self.allTelemetryDataGood = True
         for key in self.allTelemetryData:
             if self.allTelemetryData[key]:
-                output.append("" + key + " Telemetry...COMPLETE!")
+                output.append("..." + key + " Telemetry -- COMPLETE!")
             else:
-                output.append("" + key + " Telemetry...INCOMPLETE!")
+                output.append("..." + key + " Telemetry -- INCOMPLETE!")
                 self.allTelemetryDataGood = False
         if (self.allTelemetryDataGood):
             output.append("The Subsystem Telemetry Data has been successfully downloaded!")
@@ -156,22 +155,18 @@ class COMMS():
             return "Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task."
 
     # Main menu option 7
-    ### NOT DONE!! NEED IMAGE URL ####
     def displayImage(self):
         output = []
         if self.allTelemetryDataGood:
-            output.append("All telemetry data has been successfully processed!")
-            output.append("Click the link to view the image!")
-            # Rick roll link for shits and giggles
-            output.append("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
-            output.append("GREAT WORK ON THE COMMS SYSTEM CONSOLE")
-            output.append("Mission accomplished!")
-            time.sleep(5)
-            output.append("Just kidding...heres the actual image: ")
+            self.consoleLog.append("All telemetry data has been successfully processed!")
+            self.consoleLog.append("GREAT WORK ON THE COMMS SYSTEM CONSOLE")
+            self.consoleLog.append("Mission accomplished!")
+            self.consoleLog.append("Displaying image...")
+            time.sleep(3)
+            self.subsystemComplete = True
             self.menu = "done"
-            output.append("http://127.0.0.1:8000/fo/imagedisplay/")
         else:
             output.append("Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task.")
-            
         return output
+
 

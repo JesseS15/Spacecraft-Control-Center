@@ -86,9 +86,9 @@ class Payload():
             else:
                 self.checks[key] = True
             if self.checks[key]:
-                output.append("The SimCrafts current " + key + " Status is REACHED")
+                output.append("..." + key + " -- REACHED")
             else:
-                output.append("The SimCrafts current " + key + " Status is NOT REACHED")
+                output.append("..." + key + " -- NOT REACHED")
                 self.statusGood = False
 
         if (self.checkTries >= 3):
@@ -99,17 +99,20 @@ class Payload():
     def slewImage(self):
         if self.statusGood and self.ready:
             self.slewImageFlag = True
-            return "The imager has reached the ground target!"
+            return "...Ground Target -- REACHED"
         else:
-            return "The imager has not reached the ground target."
+            return "...Ground Target -- NOT REACHED -- Run Status Checks to check system"
 
     # Main menu option 3
     def acquireTarget(self):
+        output = []
         if self.slewImageFlag:
             self.acquireTargetFlag = True
-            return "The ground target has been acquired successfully!"
+            output.append("...Ground Target -- AQUIRED")
         else:
-            return "The ground target cannot be acquired at this time."
+            output.append("...Ground Target -- CANNOT BE AQUIRED")
+            output.append("Run Slew Image to check if ground target has been reached")
+        return output
 
     # Main menu option 4
     def captureImage(self):
@@ -131,6 +134,3 @@ class Payload():
             return True
         else:
             return False
-
-
-

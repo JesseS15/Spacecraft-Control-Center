@@ -7,6 +7,7 @@ from simulation.Payload import Payload
 import threading
 import time
 import random
+import webbrowser
 
 class SimObject(threading.Thread):
 
@@ -28,7 +29,7 @@ class SimObject(threading.Thread):
         self.subsystems = {"ACS": 0, "TCS": 0, "COMMS": 0, "EPS": 0, "Payload": 0}
         self.telemetry = {"ACS": False, "TCS": False, "EPS": False, "Payload": False}
         self.createSubsys()
-        
+        self.imageDisplayed = False
         self.stop_flag = threading.Event()
 
     # Creating all the subsystem objects and adding them to the subsystem dictionary
@@ -39,7 +40,7 @@ class SimObject(threading.Thread):
         self.subsystems["TCS"] = TCS()
         self.subsystems["Payload"] = Payload()
 
-    def checkTelemetry(self):
+    def setSubsystemTelemetry(self):
         # Using flag telemetryTransferComplete rather than calling function (that is for user command)
         self.telemetry["ACS"] = self.subsystems["ACS"].telemetryTransferComplete
         self.telemetry["EPS"] = self.subsystems["EPS"].telemetryTransferComplete
@@ -55,14 +56,18 @@ class SimObject(threading.Thread):
             self.subsystems["Payload"].ready = True
 
     def update(self):
-        # Check if payload is ready to take picture
-        self.checkTelemetry()
+        self.setSubsystemTelemetry()
         self.checkPayloadReady()
         self.subsystems["COMMS"].allTelemetryData = self.telemetry
         self.subsystems["ACS"].update()
         self.subsystems["EPS"].update()
         self.subsystems["TCS"].update()
-        self.subsystems["COMMS"].update()
+        displayImage = self.subsystems["COMMS"].update()
+        if (displayImage and (not self.imageDisplayed)):
+            webbrowser.open_new("http://127.0.0.1:8000/fo/rickroll/")
+            time.sleep(1)
+            webbrowser.open_new("http://127.0.0.1:8000/fo/imagedisplay/")
+            self.imageDisplayed = True
 
     def run(self):
         # Run until sim is deleted
