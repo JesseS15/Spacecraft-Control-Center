@@ -63,11 +63,12 @@ class ACS():
         if self.menu == "tl":
             if command_split[0] == "1":
                 self.consoleLog.append("Checking Attitude Systems...")
-                time.sleep(5)
+                time.sleep(3)
                 self.consoleLog.append("The SimCraft’s current Longitude is: " + str(self.currentLongitude) +"°")
-                self.consoleLog.append("eta: " + str(self.longMin()) + " seconds until active range.")
+                self.consoleLog.append("ETA: " + str(self.longMin()) + " seconds until active range.")
             elif command_split[0] == "2":
                 self.consoleLog.append("Verifying Alignment...")
+                time.sleep(3)
                 self.consoleLog.extend(self.verifyAlignment())
             elif command_split[0] == "3":
                 self.consoleLog.append("How much do you want to change the Roll by (in Degrees)?")
@@ -80,15 +81,12 @@ class ACS():
                 self.menu = "cmgYaw"
             elif command_split[0] == "6":
                 self.consoleLog.append("Transfering ACS Telemetry...")
-                self.consoleLog.append( self.telemetryTransfer())
-                if (self.telemetryTransferComplete):
-                    self.consoleLog.append("GREAT WORK ON THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE!")
-                #TODO: create instance where user cannot enter commands after subsys finished\
+                self.consoleLog.extend(self.telemetryTransfer())
             else:
                 self.consoleLog.append("Invalid Command " + command)
 
         elif self.menu == "cmgRoll":
-            self.consoleLog.append(self.updateRoll(int(command)))
+            self.consoleLog.append(self.updateRollOrYaw(int(command), "roll"))
             self.menu = "tl"
         
         elif self.menu == "cmgPitch":
@@ -96,7 +94,7 @@ class ACS():
             self.menu = "tl"
         
         elif self.menu == "cmgYaw":
-            self.consoleLog.append(self.updateYaw(int(command)))
+            self.consoleLog.append(self.updateRollOrYaw(int(command), "yaw"))
             self.menu = "tl"
 
         elif self.menu == "done":
@@ -134,8 +132,7 @@ class ACS():
             self.currentLongitude = 180
 
     def longMin(self):
-        desiredLongitude = 81
-        if self.currentLongitude>desiredLongitude:
+        if self.currentLongitude > self.finalLongitude:
            return abs(self.finalLongitude - self.currentLongitude) + 180
         else:
             return abs(self.finalLongitude - self.currentLongitude)
@@ -146,105 +143,60 @@ class ACS():
             self.updateLongitude()
     
     ############# CMG : User input updates ##############
-    def updateRoll(self, newRoll):
-        self.rollActive = True
+    def updateRollOrYaw(self, newValue, item):
+        if (item == "roll"):
+            self.rollActive = True
+        else:
+            self.yawActive = True
         self.cmgStatus = True
         self.consoleLog.append("Please wait...")
-        time.sleep(5)
-        rollSum = newRoll + self.orientation['roll']
-        self.rollActive = False
-        self.cmgStatus = False
-        if (rollSum < -180):
-            self.orientation['roll'] = 360+rollSum
-            return ("New roll = " + str(self.orientation['roll']))
-        elif (rollSum > 180):
-            self.orientation['roll'] = -360+rollSum
-            return ("New roll = " + str(self.orientation['roll']))
+        time.sleep(3)
+        itemSum = newValue + self.orientation[item]
+        if (item == "roll"):
+            self.rollActive = False
         else:
-            self.orientation['roll']=rollSum
-            return ("New roll = " + str(self.orientation['roll']))
-
+            self.yawActive = False
+        self.cmgStatus = False
+        if (itemSum < -180):
+            self.orientation[item] = 360+itemSum
+        elif (itemSum > 180):
+            self.orientation[item] = -360+itemSum
+        else:
+            self.orientation[item]=itemSum
+        return ("" + str.capitalize(item) + " Alignment -- RESET TO " + str(self.orientation[item]) + "°")
 
     def updatePitch(self, newPitch):
         self.pitchActive = True
         self.cmgStatus = True
         self.consoleLog.append("Please wait...")
-        time.sleep(5)
+        time.sleep(3)
         pitchSum = newPitch + self.orientation['pitch']
         self.pitchActive = False
         self.cmgStatus = False
         if (pitchSum < -90):
             self.orientation['pitch'] = 180+pitchSum
-            return ("New pitch = " + str(self.orientation['pitch']))
         elif (pitchSum > 90):
             self.orientation['pitch'] = -180+pitchSum
-            return ("New pitch = " + str(self.orientation['pitch']))
         else:
             self.orientation['pitch']=pitchSum
-            return ("New pitch = " + str(self.orientation['pitch']))
-        
-    def updateYaw(self, newYaw):
-        self.yawActive = True
-        self.cmgStatus = True
-        self.consoleLog.append("Please wait...")
-        time.sleep(5)
-        yawSum = newYaw + self.orientation['yaw']
-        self.yawActive = False
-        self.cmgStatus = False
-        if (yawSum < -180):
-            self.orientation['yaw'] = 360+yawSum
-            return ("New yaw = " + str(self.orientation['yaw']))
-        elif (yawSum > 180):
-            self.orientation['yaw'] = -360+yawSum
-            return ("New yaw = " + str(self.orientation['yaw']))
-        else:
-            self.orientation['yaw']=yawSum
-            return ("New yaw = " + str(self.orientation['yaw']))
+        return ("Pitch Alignment -- RESET TO " + str(self.orientation['pitch']) + "°")
 
-    ###### Checking final orientation, passed from SimObject ###############
     def verifyAlignment(self):
-        # Calculate required changes to roll, pitch and yaw
-        acceptableRange = 15
-
-        rollPosDif = abs(self.orientation["roll"] - self.finalValues["roll"])
-        if rollPosDif > 180:
-            rollDif = 360 - rollPosDif
-        else: 
-            rollDif=rollPosDif
-
-
-        pitchPosDif = abs(self.orientation["pitch"] - self.finalValues["pitch"])
-        if pitchPosDif>90:
-            pitchDif = 180 - pitchPosDif
-        else:
-            pitchDif=pitchPosDif
-
-        yawPosDif = abs(self.orientation["yaw"] - self.finalValues["yaw"])
-        if yawPosDif>180:
-            yawDif = 360 - yawPosDif
-        else:
-            yawDif=yawPosDif
-
-        # Check if roll, pitch, and yaw are in acceptable range from final values
         output = []
-        if (abs(rollDif) <= acceptableRange):
-            output.append("The SimCraft's Roll Alignment is Reached")
-            self.rpyValid = True
-        else:
-            output.append("The roll is off by " + str(rollDif) +"°")
-            self.rpyValid = False
-
-        if (abs(pitchDif) <= acceptableRange):
-            output.append("The SimCraft's Pitch Alignment is Reached")
-        else:
-            output.append("The Pitch is off by " + str(pitchDif) +"°")
-            self.rpyValid = False
-
-        if(abs(yawDif) <= acceptableRange):
-            output.append("The SimCraft's Yaw Alignment is Reached")
-        else:
-            output.append("The Yaw is off by " + str(yawDif) +"°")
-            self.rpyValid = False
+        acceptableRange = 15
+        self.rpyValid = True
+        for item in self.orientation:
+            itemDif = abs(self.orientation[item] - self.finalValues[item])
+            if (item == "pitch"):
+                if (itemDif > 90):
+                    itemDif = 180 - itemDif
+            elif (itemDif > 180):
+                    itemDif = 360 - itemDif
+            if (abs(itemDif) <= acceptableRange):
+                output.append("..." + str.capitalize(item) + " Alignment -- REACHED")
+            else:
+                output.append("..." + str.capitalize(item) + " Alignment -- NOT REACHED -- OFF BY: " + str(itemDif) + "°") 
+                self.rpyValid = False
         return output
 
     def checkLongitude(self):
@@ -257,16 +209,27 @@ class ACS():
             return False
     
     def telemetryTransfer(self):
+        output = []
         if (self.rpyValid and self.longitudeValid):
             self.telemetryTransfering = True
-            self.consoleLog.append("Please wait...")
-            time.sleep(5)
+            output.append("Please wait...")
+            time.sleep(3)
             self.telemetryTransfering = False
             self.telemetryTransferComplete = True
             self.menu = "done"
             self.continueUpdates = False
-            return "Data has been Transferred!"
+            output.append("Data Transfer -- COMPLETE!")
+            output.append("GREAT WORK ON THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE!")
         else:
             self.telemetryTransferComplete = False
-        return "Data Transfer Error! Attributes not within range."
+            output.append("Data Transfer -- ERROR!!")
+            if (not self.rpyValid): 
+                output.append("...Alignment -- OUT OF RANGE -- Run Verify Alignment to check")
+            else: 
+                output.append("...Alignment -- IN RANGE")
+            if (not self.longitudeValid): 
+                output.append("...Longitude -- NOT REACHED -- Run Longitude Check for ETA")
+            else: 
+                output.append("...Longitude -- REACHED")
+        return output
             
