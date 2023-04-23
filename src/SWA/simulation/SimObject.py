@@ -41,7 +41,6 @@ class SimObject(threading.Thread):
         self.subsystems["Payload"] = Payload()
 
     def setSubsystemTelemetry(self):
-        # Using flag telemetryTransferComplete rather than calling function (that is for user command)
         self.telemetry["ACS"] = self.subsystems["ACS"].telemetryTransferComplete
         self.telemetry["EPS"] = self.subsystems["EPS"].telemetryTransferComplete
         self.telemetry["TCS"] = self.subsystems["TCS"].telemetryTransferComplete
