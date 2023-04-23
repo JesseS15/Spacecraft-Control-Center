@@ -78,7 +78,7 @@ function fetchdata(){
                 document.getElementById("In-Use-Watts").innerText = data['total_power'] * 10;
 
                 // Update Telemetry panel
-                updateTelemetry(data[['telemetry_transfering']]);
+                updateTelemetry(data['telemetry_transfering']);
                 document.getElementById("Telemetry-Status").innerText = data['telemetry_transfered'] ? 'Transfered' : 'Not Transfered';
             }
         }

@@ -74,7 +74,7 @@ function fetchdata(){
                 document.getElementById("Gimbal-Connection").innerText = data['Gimbal-Connection']   ? 'Reached' : 'Not Reached';
 
                 // Update Telemetry panel
-                updateTelemetry(data[['telemetry_transfering']]);
+                updateTelemetry(data['telemetry_transfering']);
                 document.getElementById("Telemetry-Status").innerText = data['telemetry_transfered'] ? 'Transfered' : 'Not Transfered';
             }
         }

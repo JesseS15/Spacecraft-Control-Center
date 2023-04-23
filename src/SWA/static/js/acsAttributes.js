@@ -72,7 +72,7 @@ function fetchdata(){
                 document.getElementById("Orientation-Relay").innerText = data['orientation_relay'] ? 'Active' : 'Inactive';
 
                 // Update Telemetry panel
-                updateTelemetry(data[['telemetry_transfering']]);
+                updateTelemetry(data['telemetry_transfering']);
                 document.getElementById("Telemetry-Status").innerText = data['telemetry_transfered'] ? 'Transfered' : 'Not Transfered';
             }
         }

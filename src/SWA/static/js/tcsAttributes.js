@@ -75,7 +75,7 @@ function fetchdata(){
                 document.getElementById("Imager-Temp").innerText = data['Imager-Temp'];
 
                 // Update Telemetry panel
-                updateTelemetry(data[['telemetry_transfering']]);
+                updateTelemetry(data['telemetry_transfering']);
                 document.getElementById("Telemetry-Status").innerText = data['telemetry_transfered'] ? 'Transfered' : 'Not Transfered';
             }
         }
