@@ -274,8 +274,11 @@ class TCS():
     # item must be exactly as string in dictionaries above
     # amount can be positive or negative number
     def coolSubsystemItem(self, subsystem, item, amount):
-        self.SubsystemThermal[subsystem][item] += amount
-        return (str(subsystem) + " " + str(item) + " cooled by " + str(amount))
+        if (abs(amount) > 500):
+            return ("ERROR -- Attempting to cool by too much -- TRY AGAIN")
+        else:
+            self.SubsystemThermal[subsystem][item] += amount
+            return (str(subsystem) + " " + str(item) + " cooled by " + str(amount))
 
     # Main menu option 4 - telemtry transfer
     def telemetryTransfer(self):
