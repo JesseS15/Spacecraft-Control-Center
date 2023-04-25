@@ -167,11 +167,18 @@ class COMMS():
             time.sleep(3)
             self.subsystemComplete = True
             self.menu = "done"
-            webbrowser.open_new("http://127.0.0.1:8000/fo/rickroll/")
-            time.sleep(1)
-            webbrowser.open_new("http://127.0.0.1:8000/fo/imagedisplay/")
+            self.consoleLog.append(link("http://127.0.0.1:8000/fo/imagedisplay/", "See Image"))
         else:
             output.append("Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task.")
         return output
 
+def link(uri, label=None):
+    if label is None: 
+        label = uri
+    parameters = ''
+
+    # OSC 8 ; params ; URI ST <name> OSC 8 ;; ST 
+    escape_mask = '\033]8;{};{}\033\\{}\033]8;;\033\\'
+
+    return escape_mask.format(parameters, uri, label)
 
