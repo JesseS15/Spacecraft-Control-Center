@@ -64,9 +64,7 @@ class SimObject(threading.Thread):
         self.subsystems["TCS"].update()
         displayImage = self.subsystems["COMMS"].update()
         if (displayImage and (not self.imageDisplayed)):
-            webbrowser.open_new("http://127.0.0.1:8000/fo/rickroll/")
-            time.sleep(1)
-            webbrowser.open_new("http://127.0.0.1:8000/fo/imagedisplay/")
+            
             self.imageDisplayed = True
 
     def run(self):

@@ -1,5 +1,6 @@
 import random
 import time
+import webbrowser
 
 class COMMS():
     
@@ -166,6 +167,9 @@ class COMMS():
             time.sleep(3)
             self.subsystemComplete = True
             self.menu = "done"
+            webbrowser.open_new("http://127.0.0.1:8000/fo/rickroll/")
+            time.sleep(1)
+            webbrowser.open_new("http://127.0.0.1:8000/fo/imagedisplay/")
         else:
             output.append("Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task.")
         return output
