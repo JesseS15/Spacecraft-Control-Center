@@ -17,7 +17,7 @@ class Payload():
         self.slewImageFlag = False
         self.acquireTargetFlag = False
         self.captureImageFlag = False
-        self.telemetryTransfering = False
+        self.telemetryTransferring = False
         self.telemetryTransferComplete = False
         
         self.gimbalStatus = True

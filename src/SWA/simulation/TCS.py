@@ -71,7 +71,7 @@ class TCS():
         self.checkTries = 0
         self.checksGood = False
         
-        self.telemetryTransfering = False
+        self.telemetryTransferring = False
         self.telemetryTransferComplete = False
 
         # Console infastructure

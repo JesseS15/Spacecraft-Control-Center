@@ -32,7 +32,7 @@ class ACS():
         self.cmgStatus = False
         self.orientationRelay = False
 
-        self.telemetryTransfering = False
+        self.telemetryTransferring = False
         self.telemetryTransferComplete = False
 
         self.longitudeValid = False

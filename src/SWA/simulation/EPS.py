@@ -28,7 +28,7 @@ class EPS():
         self.solarPanelAngleGood = False
         self.solarPanelOffBy = 0
 
-        self.telemetryTransfering = False
+        self.telemetryTransferring = False
         self.telemetryTransferComplete = False
         
         # Console infastructure
