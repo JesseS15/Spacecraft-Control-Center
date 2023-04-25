@@ -5,12 +5,16 @@ class ACS():
 
     def __init__(self, finalValues):
         super().__init__()
-        
+        self.finalValues = {
+            "roll": 0,
+            "pitch": 0,
+            "yaw": 0
+        }
         self.finalValues = finalValues
         
         self.orientation = {
-            "roll":0,
-            "pitch":0,
+            "roll": 0,
+            "pitch": 0,
             "yaw": 0
         }
         self.orientation["roll"] = random.randint(-180,180)
@@ -21,7 +25,6 @@ class ACS():
         self.pitchActive = False
         self.yawActive = False
 
-        # setting starting longitude to random number from final longitude +50 to final longitude +90 (random magic numbers, dont be mad)
         self.startLongitude = random.randint(-180, 180)
         self.finalLongitude = finalValues["finalLongitude"]
         self.currentLongitude = self.startLongitude
@@ -65,7 +68,7 @@ class ACS():
                 self.consoleLog.append("Checking Attitude Systems...")
                 time.sleep(3)
                 self.consoleLog.append("The SimCraft’s current Longitude is: " + str(self.currentLongitude) +"°")
-                self.consoleLog.append("ETA: " + str(self.longMin()) + " seconds until active range.")
+                self.consoleLog.append("ETA: " + str(self.longitudeETASeconds()) + " seconds until active range.")
             elif command_split[0] == "2":
                 self.consoleLog.append("Verifying Alignment...")
                 time.sleep(3)
@@ -83,7 +86,7 @@ class ACS():
                 self.consoleLog.append("Transfering ACS Telemetry...")
                 self.consoleLog.extend(self.telemetryTransfer())
             else:
-                self.consoleLog.append("Invalid Command " + command)
+                self.consoleLog.append("Invalid Command: " + command)
 
         elif self.menu == "cmgRoll":
             self.consoleLog.append(self.updateRollOrYaw(int(command), "roll"))
@@ -125,13 +128,15 @@ class ACS():
             self.orientation["yaw"] = 179
 
     def updateLongitude(self):
-        self.currentLongitude += 1
+        self.currentLongitude += 5
         if (self.currentLongitude == 180):
             self.currentLongitude = -180
         elif (self.currentLongitude == -180):
             self.currentLongitude = 180
 
-    def longMin(self):
+    
+    # Method to determine how many seconds until longitude is within range
+    def longitudeETASeconds(self):
         if self.currentLongitude > self.finalLongitude:
            return abs(self.finalLongitude - self.currentLongitude) + 180
         else:
@@ -163,7 +168,7 @@ class ACS():
             self.orientation[item] = -360+itemSum
         else:
             self.orientation[item]=itemSum
-        return ("" + str.capitalize(item) + " Alignment -- RESET TO " + str(self.orientation[item]) + "°")
+        return ("..." + str.capitalize(item) + " Alignment -- RESET TO " + str(self.orientation[item]) + "°")
 
     def updatePitch(self, newPitch):
         self.pitchActive = True
@@ -201,12 +206,11 @@ class ACS():
 
     def checkLongitude(self):
         acceptableRange=15
-        if (self.currentLongitude > (self.finalLongitude-acceptableRange)) and (self.currentLongitude < (self.finalLongitude+acceptableRange)):
-            self.longitudeValid=True
-            return True
+        if (self.currentLongitude < (self.finalLongitude-acceptableRange)) or (self.currentLongitude > (self.finalLongitude+acceptableRange)):
+            self.longitudeValid=False
         else:
-            self.rpyValid=False
-            return False
+            self.longitudeValid=True
+        return self.longitudeValid
     
     def telemetryTransfer(self):
         output = []
@@ -218,11 +222,11 @@ class ACS():
             self.telemetryTransferComplete = True
             self.menu = "done"
             self.continueUpdates = False
-            output.append("Data Transfer -- COMPLETE!")
+            output.append("...Data Transfer -- COMPLETE!")
             output.append("GREAT WORK ON THE ATTITUDE CONTROL SYSTEMS (ACS) CONSOLE!")
         else:
             self.telemetryTransferComplete = False
-            output.append("Data Transfer -- ERROR!!")
+            output.append("!!Data Transfer -- ERROR!!")
             if (not self.rpyValid): 
                 output.append("...Alignment -- OUT OF RANGE -- Run Verify Alignment to check")
             else: 

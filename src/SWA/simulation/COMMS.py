@@ -48,6 +48,7 @@ class COMMS():
                 self.consoleLog.append("Checking Communication Systems...")
                 time.sleep(3)
                 self.consoleLog.extend(self.systemChecks())
+                self.subsystemComplete = True
             elif command_split[0] == "2":
                 self.consoleLog.append("Verifying Signal...")
                 time.sleep(3)
@@ -108,17 +109,17 @@ class COMMS():
         output = []
         if (self.currentGain >= self.gainRange[0]) and (self.currentGain <= self.gainRange[1]):
             self.checks['Antenna Status'] = True
-            output.append('...Gain -- IN RANGE -- Current Gain at' + str(self.currentGain) + " dB")
+            output.append('...Signal -- CAPTURED -- Current Gain at' + str(self.currentGain) + " dB")
         elif self.currentGain > self.gainRange[1]:
-            output.append('...Gain -- UNWANTED HARMONICS DETECTED -- Gain too high! Reset gain')
+            output.append('...Signal -- NOT CAPTURED -- Gain too high! Reset gain')
         else:
-            output.append('...Gain -- UNABLE TO CAPTURE SIGNAL -- Increase gain to 38 dB')
+            output.append('...Signal -- NOT CAPTURED -- Increase gain to 38 dB')
         return output
 
     # Main menu option 3    
     def increaseGain(self, newGin):
         output = []
-        output.append('GAIN CHANGING -- Please wait...')
+        output.append('...GAIN CHANGING -- Please wait...')
         output.append("Gain changed by " + str(abs(newGin)))
         self.currentGain += abs(newGin)
         return output
@@ -127,7 +128,7 @@ class COMMS():
     def resetGain(self):
         output = []
         self.currentGain = self.gainRange[0]
-        output.append("GAIN RESETTING -- Please wait...")
+        output.append("...GAIN RESETTING -- Please wait...")
         output.append("Gain reset to " + str(self.currentGain) + " dB")
         return output
     

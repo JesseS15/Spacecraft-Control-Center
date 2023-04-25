@@ -45,25 +45,24 @@ class Payload():
         
         if self.menu == "tl":
             if command_split[0] == "1":
-                self.consoleLog.append("Checking Power Systems...")
-                time.sleep(5)
+                self.consoleLog.append("Checking Payload Status...")
+                time.sleep(3)
                 self.consoleLog.extend(self.statusChecks())
             elif command_split[0] == "2":
                 self.consoleLog.append("Slew Commencing...")
-                time.sleep(5)
-                self.consoleLog.append(self.slewImage())
+                time.sleep(3)
+                self.consoleLog.extend(self.slewImage())
             elif command_split[0] == "3":
                 self.consoleLog.append("Acquiring Target...")
-                time.sleep(5)
+                time.sleep(3)
                 self.consoleLog.append(self.acquireTarget())
             elif command_split[0] == "4":
                 self.consoleLog.append("Capturing Image...")
-                time.sleep(5)
+                time.sleep(3)
                 self.consoleLog.append(self.captureImage())
             elif command_split[0] == "5":
                 self.consoleLog.append("Transferring Payload Telemetry...")
                 self.consoleLog.append( self.telemetryTransfer())
-                self.consoleLog.append("GREAT WORK ON THE PAYLOAD SYSTEM CONSOLE!")
             else:
                 self.consoleLog.append("Invalid Command " + command)
 
@@ -97,11 +96,17 @@ class Payload():
 
     # Main menu option 2
     def slewImage(self):
+        output = []
         if self.statusGood and self.ready:
             self.slewImageFlag = True
-            return "...Ground Target -- REACHED"
-        else:
-            return "...Ground Target -- NOT REACHED -- Run Status Checks to check system"
+            output.append("...Ground Target -- REACHED")
+        elif not self.ready:
+            output.append("...Ground Target -- NOT REACHED -- Longitude not within range. Check with ACS to determine ETA.")
+        elif not self.statusGood:
+            output.append("...Ground Target -- NOT REACHED -- Payload Status not reached")
+        return output
+
+
 
     # Main menu option 3
     def acquireTarget(self):
@@ -127,9 +132,11 @@ class Payload():
         if self.captureImageFlag:
             self.telemetryTransfering = True
             self.consoleLog.append("Please wait...")
-            time.sleep(5)
+            time.sleep(3)
             self.telemetryTransfering = False
             self.telemetryTransferComplete = True
+            self.consoleLog.append("...Telemetry Transfer -- COMPLETE")
+            self.consoleLog.append("GREAT WORK ON THE PAYLOAD SYSTEM CONSOLE!")
             self.menu = "done"
             return True
         else:
