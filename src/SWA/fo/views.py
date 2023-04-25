@@ -207,8 +207,8 @@ def acsFetchdata(request, simkey):
             data['cmg_status'] = simThread.subsystems['ACS'].cmgStatus
             data['orientation_relay'] = simThread.subsystems['ACS'].orientationRelay
             
-            data['telemetry_transfering'] = simThread.subsystems['ACS'].telemetryTransfering
-            data['telemetry_transfered'] = simThread.subsystems['ACS'].telemetryTransferComplete
+            data['telemetry_Transferring'] = simThread.subsystems['ACS'].telemetryTransferring
+            data['telemetry_Transferred'] = simThread.subsystems['ACS'].telemetryTransferComplete
         
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:
@@ -243,8 +243,8 @@ def epsFetchdata(request, simkey):
             data['articulation'] = simThread.subsystems['EPS'].solarPanelAngle
             data['total_power'] = simThread.subsystems['EPS'].totalPower
             
-            data['telemetry_transfering'] = simThread.subsystems['EPS'].telemetryTransfering
-            data['telemetry_transfered'] = simThread.subsystems['EPS'].telemetryTransferComplete
+            data['telemetry_Transferring'] = simThread.subsystems['EPS'].telemetryTransferring
+            data['telemetry_Transferred'] = simThread.subsystems['EPS'].telemetryTransferComplete
         
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:
@@ -284,8 +284,8 @@ def tcsFetchdata(request, simkey):
             data['Gimbal-Temp'] = simThread.subsystems['TCS'].PayloadThermal["Gimbal System"]
             data['Imager-Temp'] = simThread.subsystems['TCS'].PayloadThermal["Imager"]
             
-            data['telemetry_transfering'] = simThread.subsystems['TCS'].telemetryTransfering
-            data['telemetry_transfered'] = simThread.subsystems['TCS'].telemetryTransferComplete
+            data['telemetry_Transferring'] = simThread.subsystems['TCS'].telemetryTransferring
+            data['telemetry_Transferred'] = simThread.subsystems['TCS'].telemetryTransferComplete
         
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:
@@ -364,8 +364,8 @@ def payloadFetchdata(request, simkey):
             data['Bus-Connection'] = simThread.subsystems['Payload'].checks['Bus Connection']
             data['Gimbal-Connection'] = simThread.subsystems['Payload'].checks['Gimble Connection']
         
-            data['telemetry_transfering'] = simThread.subsystems['Payload'].telemetryTransfering
-            data['telemetry_transfered'] = simThread.subsystems['Payload'].telemetryTransferComplete
+            data['telemetry_Transferring'] = simThread.subsystems['Payload'].telemetryTransferring
+            data['telemetry_Transferred'] = simThread.subsystems['Payload'].telemetryTransferComplete
         
         return HttpResponse(json.dumps(data)) # Sending an success response
     else:

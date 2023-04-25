@@ -9,18 +9,18 @@ function updateTime(){
         return ("Current Time: " + time + " EST");
     })
 }
-function updateTelemetry(telemetryTransfering){
+function updateTelemetry(telemetryTransferring){
     $('.acstelemtry').css('border-color', function(){
-        if (telemetryTransfering == true) {
+        if (telemetryTransferring == true) {
             return 'green';
         } else {
             return 'red';
         }
     }).text(function(){
-        if (telemetryTransfering == true) {
-            return "Transfering in Progress";
+        if (telemetryTransferring == true) {
+            return "Transferring in Progress";
         } else {
-            return "Not Transfering";
+            return "Not Transferring";
         }
     });
 }
@@ -72,7 +72,7 @@ function fetchdata(){
                 document.getElementById("Orientation-Relay").innerText = data['orientation_relay'] ? 'Active' : 'Inactive';
 
                 // Update Telemetry panel
-                updateTelemetry(data['telemetry_transfering']);
+                updateTelemetry(data['telemetry_Transferring']);
                 document.getElementById("Telemetry-Status").innerText = data['telemetry_Transferred'] ? 'Transferred' : 'Not Transferred';
             }
         }
