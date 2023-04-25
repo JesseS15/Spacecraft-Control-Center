@@ -41,10 +41,10 @@ function fetchdata(){
                 }
 
                 // Update Subsystem Telemetry panel
-                document.getElementById("Telemetry-ACS").innerText = data['Telemetry-ACS'] ? 'Recieved' : 'Not Recieved';
-                document.getElementById("Telemetry-EPS").innerText = data['Telemetry-EPS'] ? 'Recieved' : 'Not Recieved';
-                document.getElementById("Telemetry-TCS").innerText = data['Telemetry-TCS'] ? 'Recieved' : 'Not Recieved';
-                document.getElementById("Telemetry-Payload").innerText = data['Telemetry-Payload'] ? 'Recieved' : 'Not Recieved';
+                document.getElementById("Telemetry-ACS").innerText = data['Telemetry-ACS'] ? 'Received' : 'Not Received';
+                document.getElementById("Telemetry-EPS").innerText = data['Telemetry-EPS'] ? 'Received' : 'Not Received';
+                document.getElementById("Telemetry-TCS").innerText = data['Telemetry-TCS'] ? 'Received' : 'Not Received';
+                document.getElementById("Telemetry-Payload").innerText = data['Telemetry-Payload'] ? 'Received' : 'Not Received';
 
                 // Update System Status panel
                 document.getElementById("On-Board-Computer").innerText = data['On-Board-Computer'] ? 'Reached' : 'Not Reached';

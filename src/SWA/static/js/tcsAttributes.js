@@ -76,7 +76,7 @@ function fetchdata(){
 
                 // Update Telemetry panel
                 updateTelemetry(data['telemetry_transfering']);
-                document.getElementById("Telemetry-Status").innerText = data['telemetry_transfered'] ? 'Transfered' : 'Not Transfered';
+                document.getElementById("Telemetry-Status").innerText = data['telemetry_Transferred'] ? 'Transferred' : 'Not Transferred';
             }
         }
     });

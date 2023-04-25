@@ -62,7 +62,7 @@ function fetchdata(){
                 // Update Imager System panel
                 document.getElementById("In-Range").innerText = data['In-Range']   ? 'In Range' : 'Not In Range';
                 document.getElementById("Target-Acquired").innerText = data['Target-Acquired'] ? 'Acquired' : 'Not Acquired';
-                document.getElementById("Image-Recieved").innerText = data['Image-Recieved']     ? 'Recieved' : 'Not Recieved';
+                document.getElementById("Image-Received").innerText = data['Image-Received']     ? 'Received' : 'Not Received';
 
                 // Update System Status panel
                 document.getElementById("Gimbal-Status").innerText = data['Gimbal-Status']   ? 'Active' : 'Inactive';
@@ -75,7 +75,7 @@ function fetchdata(){
 
                 // Update Telemetry panel
                 updateTelemetry(data['telemetry_transfering']);
-                document.getElementById("Telemetry-Status").innerText = data['telemetry_transfered'] ? 'Transfered' : 'Not Transfered';
+                document.getElementById("Telemetry-Status").innerText = data['telemetry_Transferred'] ? 'Transferred' : 'Not Transferred';
             }
         }
     });
