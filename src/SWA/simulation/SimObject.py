@@ -64,7 +64,8 @@ class SimObject(threading.Thread):
         self.subsystems["TCS"].update()
         displayImage = self.subsystems["COMMS"].update()
         if (displayImage and (not self.imageDisplayed)):
-            
+            for subsys in self.subsystems:
+                self.subsystems[subsys].consoleLog.append("http://108.227.182.205:8000/fo/imagedisplay/")
             self.imageDisplayed = True
 
     def run(self):
