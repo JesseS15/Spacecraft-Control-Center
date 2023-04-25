@@ -355,7 +355,7 @@ def payloadFetchdata(request, simkey):
             
             data['In-Range'] = simThread.subsystems['Payload'].slewImageFlag
             data['Target-Acquired'] = simThread.subsystems['Payload'].acquireTargetFlag
-            data['Image-Recieved'] = simThread.subsystems['Payload'].captureImageFlag
+            data['Image-Received'] = simThread.subsystems['Payload'].captureImageFlag
 
             data['Gimbal-Status'] = simThread.subsystems['Payload'].gimbalStatus
             data['Imager-Status'] = simThread.subsystems['Payload'].imagerStatus
