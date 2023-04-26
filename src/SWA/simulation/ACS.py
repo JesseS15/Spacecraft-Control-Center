@@ -70,8 +70,7 @@ class ACS():
             if command_split[0] == "1":
                 self.consoleLog.append("Checking Attitude Systems...")
                 time.sleep(3)
-                self.consoleLog.append("The SimCraft’s current Longitude is: " + str(self.currentLongitude) +"°")
-                self.consoleLog.append("ETA: " + str(self.longitudeETASeconds()) + " seconds until active range.")
+                self.consoleLog.extend(self.checkAttitudeSystems)
             elif command_split[0] == "2":
                 self.consoleLog.append("Verifying Alignment...")
                 time.sleep(3)
@@ -137,16 +136,23 @@ class ACS():
                 self.currentLongitude = -180 + (self.currentLongitude % 180)
             elif ((-180 % self.currentLongitude) == -180):
                 self.currentLongitude = 180 + (self.currentLongitude % -180)
+
+    def checkAttitudeSystems(self):
+        output = []
+        output.append("The SimCraft’s current Longitude is: " + str(self.currentLongitude) +"°")
+        output.append(self.longitudeETASeconds())
+
  
     # Method to determine how many seconds until longitude is within range
     def longitudeETASeconds(self):
         if (self.longitudeValid):
-            return "Longitude within acceptable range. Transfer Telemetry to complete subsystem."
+            return ("Longitude within acceptable range. Transfer Telemetry to complete subsystem.")
         else:
             if self.currentLongitude > self.finalLongitude:
-                return abs(360+self.finalLongitude-self.currentLongitude)/self.longitudeUpdateAmount
+                eta = abs(360+self.finalLongitude-self.currentLongitude)/self.longitudeUpdateAmount
             else:
-                return abs(self.finalLongitude - self.currentLongitude)/self.longitudeUpdateAmount
+                eta = abs(self.finalLongitude - self.currentLongitude)/self.longitudeUpdateAmount
+            return ("ETA: " + str(eta) + " seconds until active range.")
         
     def checkLongitude(self):
         acceptableRange = 25
