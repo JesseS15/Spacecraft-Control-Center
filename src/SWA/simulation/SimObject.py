@@ -48,8 +48,9 @@ class SimObject(threading.Thread):
     def run(self):
         # Run until sim is deleted
         while not self.stop_flag.is_set():
-            self.update()
-            time.sleep(1)
+            if not self.imageDisplayed:
+                self.update()
+                time.sleep(1)
 
     def update(self):
         self.setSubsystemTelemetry()
