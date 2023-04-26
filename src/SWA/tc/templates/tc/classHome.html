@@ -34,7 +34,7 @@
               </thead>
               {% for sim in sims %}
               <tr>
-                <td><button id = {{sim}} type = "button" data-toggle = "modal" data-target = "modal1" class="edit"><span class="glyphicon glyphicon-wrench"></span></button><button id = {{sim}} type = "button" data-toggle = "modal" data-target = "modal1" class="download"><span class="glyphicon glyphicon-save"></span></button></td>
+                <td><button id = {{sim}} type = "button" data-toggle = "modal" data-target = "modal1" class="edit"><span class="glyphicon glyphicon-wrench"></span></button><button id = {{sim.pk}} type = "button" data-toggle = "modal" data-target = "modal1" class="download"><span class="glyphicon glyphicon-save"></span></button></td>
                 <td class="five"><a class = "simlist" href="{% url 'tc:sim' sim.pk %}">{{ sim }}</a></td>
                 <td>{{sim.status}}</td>
               </tr>
