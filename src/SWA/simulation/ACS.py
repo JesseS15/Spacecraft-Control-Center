@@ -150,9 +150,9 @@ class ACS():
             return ("Longitude within acceptable range. Transfer Telemetry to complete subsystem.")
         else:
             if self.currentLongitude > self.finalLongitude:
-                eta = abs(360+self.finalLongitude-self.currentLongitude)/self.longitudeUpdateAmount
+                eta = abs(360+self.finalLongitude-self.currentLongitude)#/self.longitudeUpdateAmount
             else:
-                eta = abs(self.finalLongitude - self.currentLongitude)/self.longitudeUpdateAmount
+                eta = abs(self.finalLongitude - self.currentLongitude)#/self.longitudeUpdateAmount
             return ("ETA: " + str(eta) + " seconds until active range.")
         
     def checkLongitude(self):
