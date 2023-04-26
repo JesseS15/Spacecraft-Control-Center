@@ -8,7 +8,8 @@ class ACS():
         self.finalValues = {
             "roll": 0,
             "pitch": 0,
-            "yaw": 0
+            "yaw": 0,
+            "finalLongitude": 0
         }
         self.finalValues = finalValues
         
@@ -28,6 +29,8 @@ class ACS():
         self.startLongitude = random.randint(-180, 180)
         self.finalLongitude = finalValues["finalLongitude"]
         self.currentLongitude = self.startLongitude
+        # Randomly chosen update amount to keep simulation time shorter
+        self.longitudeUpdateAmount = 5
         
         self.cmgStatus = False
         self.orientationRelay = False
@@ -128,24 +131,33 @@ class ACS():
             self.orientation["yaw"] = 179
 
     def updateLongitude(self):
-        self.currentLongitude += 5
-        if (self.currentLongitude == 180):
-            self.currentLongitude = -180
-        elif (self.currentLongitude == -180):
-            self.currentLongitude = 180
-
-    
+        self.currentLongitude += self.longitudeUpdateAmount
+        if (self.currentLongitude != 0):
+            if ((180 % self.currentLongitude) == 180):
+                self.currentLongitude = -180 + (self.currentLongitude % 180)
+            elif ((-180 % self.currentLongitude) == -180):
+                self.currentLongitude = 180 + (self.currentLongitude % -180)
+ 
     # Method to determine how many seconds until longitude is within range
     def longitudeETASeconds(self):
         if self.currentLongitude > self.finalLongitude:
-           return abs(self.finalLongitude - self.currentLongitude) + 180
+            return abs(360+self.finalLongitude-self.currentLongitude)/self.longitudeUpdateAmount
         else:
-            return abs(self.finalLongitude - self.currentLongitude)
+            return abs(self.finalLongitude - self.currentLongitude)/self.longitudeUpdateAmount
+        
+    def checkLongitude(self):
+        acceptableRange = 25
+        if (self.currentLongitude < (self.finalLongitude-acceptableRange)) or (self.currentLongitude > (self.finalLongitude+acceptableRange)):
+            self.longitudeValid=False
+        else:
+            self.longitudeValid=True
+
         
     def update(self):
         if self.continueUpdates:
             self.updateRPY()
             self.updateLongitude()
+            self.checkLongitude()
     
     ############# CMG : User input updates ##############
     def updateRollOrYaw(self, newValue, item):
@@ -203,14 +215,6 @@ class ACS():
                 output.append("..." + str.capitalize(item) + " Alignment -- NOT REACHED -- OFF BY: " + str(itemDif) + "°") 
                 self.rpyValid = False
         return output
-
-    def checkLongitude(self):
-        acceptableRange=15
-        if (self.currentLongitude < (self.finalLongitude-acceptableRange)) or (self.currentLongitude > (self.finalLongitude+acceptableRange)):
-            self.longitudeValid=False
-        else:
-            self.longitudeValid=True
-        return self.longitudeValid
     
     def telemetryTransfer(self):
         output = []
@@ -236,4 +240,3 @@ class ACS():
             else: 
                 output.append("...Longitude -- REACHED")
         return output
-       
