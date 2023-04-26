@@ -1,3 +1,7 @@
+# STaTE
+# File: SimObject.py 
+# Purpose: Define EPS subsytem for use in a SimObject thread
+
 from simapp.models import Sim
 from simulation.ACS import ACS
 from simulation.TCS import TCS
@@ -7,10 +11,10 @@ from simulation.Payload import Payload
 import threading
 import time
 import random
-import webbrowser
 
 class SimObject(threading.Thread):
 
+    ################### Initialize  SimObject Thread #######################
     def __init__(self, final_values, pk):
         threading.Thread.__init__(self)
         
@@ -32,14 +36,34 @@ class SimObject(threading.Thread):
         self.imageDisplayed = False
         self.stop_flag = threading.Event()
 
-    # Creating all the subsystem objects and adding them to the subsystem dictionary
+    ################### Create SimObject Thread's Subsystems #######################
     def createSubsys(self):
         self.subsystems["ACS"] = ACS(self.finalValues)
         self.subsystems["EPS"] = EPS()
         self.subsystems["COMMS"] = COMMS()
         self.subsystems["TCS"] = TCS()
         self.subsystems["Payload"] = Payload()
+            
+    ################### Manage running SimObject Thread #######################
+    def run(self):
+        # Run until sim is deleted
+        while not self.stop_flag.is_set():
+            self.update()
+            time.sleep(1)
 
+    def update(self):
+        self.setSubsystemTelemetry()
+        self.checkPayloadReady()
+        self.subsystems["COMMS"].allTelemetryData = self.telemetry
+        self.subsystems["ACS"].update()
+        self.subsystems["EPS"].update()
+        self.subsystems["TCS"].update()
+        displayImage = self.subsystems["COMMS"].update()
+        if (displayImage and (not self.imageDisplayed)):
+            for subsys in self.subsystems:
+                self.subsystems[subsys].consoleLog.append("http://108.227.182.205:8000/fo/imagedisplay/")
+            self.imageDisplayed = True
+    
     def setSubsystemTelemetry(self):
         # Using flag telemetryTransferComplete rather than calling function (that is for user command)
         self.telemetry["ACS"] = self.subsystems["ACS"].telemetryTransferComplete
@@ -54,25 +78,6 @@ class SimObject(threading.Thread):
         long = self.subsystems["ACS"].checkLongitude()
         if acs and eps and tcs and long:
             self.subsystems["Payload"].ready = True
-
-    def update(self):
-        self.setSubsystemTelemetry()
-        self.checkPayloadReady()
-        self.subsystems["COMMS"].allTelemetryData = self.telemetry
-        self.subsystems["ACS"].update()
-        self.subsystems["EPS"].update()
-        self.subsystems["TCS"].update()
-        displayImage = self.subsystems["COMMS"].update()
-        if (displayImage and (not self.imageDisplayed)):
-            for subsys in self.subsystems:
-                self.subsystems[subsys].consoleLog.append("http://108.227.182.205:8000/fo/imagedisplay/")
-            self.imageDisplayed = True
-
-    def run(self):
-        # Run until sim is deleted
-        while not self.stop_flag.is_set():
-            self.update()
-            time.sleep(1)
             
     def check(self):
         print('Sim Thread for '+ self.simName+' is reachable')

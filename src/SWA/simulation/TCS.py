@@ -1,8 +1,13 @@
+# STaTE
+# File: TCS.py 
+# Purpose: Define TCS subsytem for use in a SimObject thread
+
 import random
 import time
 
 class TCS():
 
+    ################### INITIALIZE TCS SUBSYTEM #######################
     def __init__(self):
         super().__init__()
         
@@ -87,11 +92,10 @@ class TCS():
             "4.) Transfer Telemetry",
             "5.) Refresh"
         ]
-        
+
+    ################### TCS CONSOLE COMMANDS #######################
     def command(self, command):
-        
         self.consoleLog.append("$ " + command)
-        
         command_split = command.lower().split(" ")
         
         if self.menu == "tl":
@@ -216,17 +220,8 @@ class TCS():
             self.menu = "tl"
             
         return self.consoleLog
-
-    # Heats each item by 1 degree every 5 seconds (since you can only cool)
-    def update(self):
-        time.sleep(5)
-        if not self.telemetryTransferComplete:
-            for subsys in self.SubsystemThermal:
-                for item in self.SubsystemThermal[subsys]:
-                    self.SubsystemThermal[subsys][item] += 1
-
-    ###################TCS CONSOLE COMMANDS #######################
-    # Main menu option 1
+    
+    # tl menu option 1
     def checkThermalSystems(self):
         outputString = []
         self.checksGood = True
@@ -243,7 +238,7 @@ class TCS():
             self.checkTries = 0
         return outputString    
 
-    # Main menu option 2 with sub-menu option as subsystem string
+    # tl menu option 2 with sub-menu option as subsystem string
     # subsystem must be: "ACS", "EPS", "COMMS", or "Payload"            
     def verifySubsystem(self):
         output = []
@@ -268,8 +263,7 @@ class TCS():
         else:
             return True
     
-    ############# COOLING ###################
-    # Main menu option 3
+    # tl menu option 3 - Cool subsytem
     # subsystem must be: "ACS", "EPS", "COMMS", or "Payload"
     # item must be exactly as string in dictionaries above
     # amount can be positive or negative number
@@ -280,7 +274,7 @@ class TCS():
             self.SubsystemThermal[subsystem][item] += amount
             return (str(subsystem) + " " + str(item) + " cooled by " + str(amount))
 
-    # Main menu option 4 - telemtry transfer
+    # tl menu option 4 - telemtry transfer
     def telemetryTransfer(self):
         output = []
         if self.allSubsystemsInRange() and self.checksGood:
@@ -297,7 +291,7 @@ class TCS():
             self.menu = "tl"
             return output.append("Verification process for TCS not completed -- Temps not in range")          
     
-    # Main menu option 5 - refresh thermal systems
+    # tl menu option 5 - refresh thermal systems
     def refresh(self):
         for key in self.checks:
             self.checks[key] = True
@@ -316,3 +310,11 @@ class TCS():
                     return False
         return True  
     
+    ################### TCS UPDATE #######################
+    # Heats each item by 1 degree every 5 seconds (since you can only cool)
+    def update(self):
+        time.sleep(5)
+        if not self.telemetryTransferComplete:
+            for subsys in self.SubsystemThermal:
+                for item in self.SubsystemThermal[subsys]:
+                    self.SubsystemThermal[subsys][item] += 1

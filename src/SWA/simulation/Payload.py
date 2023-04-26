@@ -1,8 +1,13 @@
+# STaTE
+# File: Payload.py 
+# Purpose: Define Payload subsytem for use in a SimObject thread
+
 import random
 import time
 
 class Payload():
 
+    ################### INITIALIZE Payload SUBSYTEM #######################
     def __init__(self):
         super().__init__()
         self.checks = {
@@ -37,10 +42,9 @@ class Payload():
             "5.) Transfer Telemetry"
         ]
         
+    ################### COMMAND Payload SUBSYTEM #######################
     def command(self, command):
-        
         self.consoleLog.append("$ " + command)
-        
         command_split = command.lower().split(" ")
         
         if self.menu == "tl":
@@ -74,7 +78,7 @@ class Payload():
             
         return self.consoleLog
 
-    # Main menu option 1
+    # tl menu option 1
     def statusChecks(self):
         output = []
         self.statusGood = True
@@ -94,7 +98,7 @@ class Payload():
             self.checkTries = 0
         return output
 
-    # Main menu option 2
+    # tl menu option 2
     def slewImage(self):
         output = []
         if self.statusGood and self.ready:
@@ -107,7 +111,7 @@ class Payload():
                 output.append("...Ground Target -- NOT REACHED -- Payload Status not reached. Run status checks to verify.")
         return output
 
-    # Main menu option 3
+    # tl menu option 3
     def acquireTarget(self):
         output = []
         if self.slewImageFlag:
@@ -118,7 +122,7 @@ class Payload():
             output.append("Run Slew Image to check if ground target has been reached")
         return output
 
-    # Main menu option 4
+    # tl menu option 4
     def captureImage(self):
         if self.acquireTargetFlag:
             self.captureImageFlag = True
@@ -126,7 +130,7 @@ class Payload():
         else:
             return "The ground image cannot be captured at this time."
 
-    # Main menu option 5
+    # tl menu option 5
     def telemetryTransfer(self):
         if self.captureImageFlag:
             self.telemetryTransferring = True
@@ -140,3 +144,7 @@ class Payload():
             return True
         else:
             return False
+
+    ################### UPDATE Payload SUBSYTEM #######################
+    def update(self):
+        pass

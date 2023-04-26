@@ -1,9 +1,13 @@
+# STaTE
+# File: COMMS.py 
+# Purpose: Define COMMS subsytem for use in a SimObject thread
+
 import random
 import time
-import webbrowser
 
 class COMMS():
     
+    ################### INITIALIZE COMMS SUBSYTEM #######################
     def __init__(self):
         super().__init__()
         self.checks = {
@@ -38,9 +42,9 @@ class COMMS():
             "7.) Display Image"
         ]
 
+    ################### COMMS CONSOLE COMMANDS #######################
     def command(self, command):
-        self.consoleLog.append("$ " + command)
-        
+        self.consoleLog.append("$ " + command) 
         command_split = command.lower().split(" ")
         
         if self.menu == "tl":
@@ -84,10 +88,7 @@ class COMMS():
         
         return self.consoleLog
 
-    def update(self):
-        return self.subsystemComplete
-
-    # Main menu option 1
+    # tl menu option 1
     def systemChecks(self):
         output = []
         for key in self.checks:
@@ -104,7 +105,7 @@ class COMMS():
             self.checkTries = 0
         return output
 
-    # Main menu option 2
+    # tl menu option 2
     def verifySignal(self):
         output = []
         if (self.currentGain >= self.gainRange[0]) and (self.currentGain <= self.gainRange[1]):
@@ -116,7 +117,7 @@ class COMMS():
             output.append('...Signal -- NOT CAPTURED -- Increase gain to 38 dB')
         return output
 
-    # Main menu option 3    
+    # tl menu option 3    
     def increaseGain(self, newGin):
         output = []
         output.append('...GAIN CHANGING -- Please wait...')
@@ -124,7 +125,7 @@ class COMMS():
         self.currentGain += abs(newGin)
         return output
     
-    # Main menu option 4
+    # tl menu option 4
     def resetGain(self):
         output = []
         self.currentGain = self.gainRange[0]
@@ -132,7 +133,7 @@ class COMMS():
         output.append("Gain reset to " + str(self.currentGain) + " dB")
         return output
     
-    # Main menu option 5
+    # tl menu option 5
     def downloadTelemetryData(self):
         output = []
         self.allTelemetryDataGood = True
@@ -148,14 +149,14 @@ class COMMS():
             output.append("Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task.")
         return output
 
-    # Main menu option 6
+    # tl menu option 6
     def processTelemetryData(self):
         if self.allTelemetryDataGood:
             return "All telemetry data has been successfully processed!"
         else:
             return "Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task."
 
-    # Main menu option 7
+    # tl menu option 7
     def displayImage(self):
         output = []
         if self.allTelemetryDataGood:
@@ -170,5 +171,9 @@ class COMMS():
         else:
             output.append("Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task.")
         return output
+    
+    ################### COMMS UPDATE #######################
+    def update(self):
+        return self.subsystemComplete
 
 

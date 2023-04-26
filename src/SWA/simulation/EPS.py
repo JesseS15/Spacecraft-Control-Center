@@ -1,8 +1,13 @@
+# STaTE
+# File: EPS.py 
+# Purpose: Define EPS subsytem for use in a SimObject thread
+
 import random
 import time
 
 class EPS():
     
+    ################### INITIALIZE EPS SUBSYTEM #######################
     def __init__(self):
         super().__init__()
         self.checks = {
@@ -44,11 +49,10 @@ class EPS():
             "4.) Articulate Panel",
             "5.) Transfer Telemetry"
         ]
-        
+    
+    ################### EPS CONSOLE COMMANDS #######################
     def command(self, command):
-        
         self.consoleLog.append("$ " + command)
-        
         command_split = command.lower().split(" ")
         
         if self.menu == "tl":
@@ -82,10 +86,10 @@ class EPS():
 
         else:
             self.menu = "tl"
-        
+
         return self.consoleLog
     
-    # Main menu option 1
+    # tl menu option 1
     def systemChecks(self):
         output = []
         for key in self.checks:
@@ -112,12 +116,12 @@ class EPS():
             self.checkTries = 0
         return output
 
-    # Main menu option 2
+    # tl menu option 2
     def verifyPowerDistribution(self):
         output = []
         for key in self.distribution:
-            output.append("..." + str(key) + " -- %" + str(self.distribution[key]) + " power")
-        output.append("Current power level is at %" + str(self.getCurrentTotalPower()) + ". 100% power is needed for mission completion.")
+            output.append("..." + str(key) + " -- " + str(self.distribution[key]) + "% power")
+        output.append("Current power level is at " + str(self.getCurrentTotalPower()) + "%. 100% power is needed for mission completion.")
         return output
     
     def getCurrentTotalPower(self):
@@ -126,7 +130,7 @@ class EPS():
             currentPower += self.distribution[key]
         return currentPower
 
-    # Main menu option 3
+    # tl menu option 3
     def fullPower(self):
         self.distribution["ACS"] = 26
         self.distribution["COMMS"] = 26
@@ -134,7 +138,7 @@ class EPS():
         self.atFullPower = True
         return "System running at full power. Run Verify Power Distribution to verify."
 
-    # Main menu option 4
+    # tl menu option 4
     def articulatePanel(self, newAngle):
         self.solarPanelAngle += newAngle
         return "Solar panel angle updated by " + str(newAngle)
@@ -149,7 +153,7 @@ class EPS():
         else:
             self.solarPanelAngleGood = True
 
-    # Main menu option 5
+    # tl menu option 5
     def transferTelemetry(self):
         if self.statusGood and self.solarPanelAngleGood and self.atFullPower:
             self.telemetryTransferring = True
@@ -162,6 +166,7 @@ class EPS():
         else:
             self.telemetryTransferComplete = False
             return "Telemetry cannot be transfered"
-        
+
+    ################### EPS UPDATE #######################
     def update(self):
         self.solarPanelAngle += random.randint(-1,1)
