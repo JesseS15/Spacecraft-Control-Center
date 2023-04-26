@@ -24,7 +24,7 @@ class EPS():
             "Payload": 16
         }
 
-        self.checkTries = 0
+        self.checkTries = 1
         self.totalPower = 80
         self.statusGood = False
         self.atFullPower = False
@@ -104,7 +104,8 @@ class EPS():
             else:
                 output.append("..." + str(key) + " Status -- NOT REACHED")
                 self.statusGood = False
-
+        if self.checks >= 3:
+            self.checks = 1
         self.checkPanelAngle()
 
         if self.solarPanelAngleGood:
