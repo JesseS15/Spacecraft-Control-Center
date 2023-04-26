@@ -284,10 +284,10 @@ class TCS():
     def telemetryTransfer(self):
         output = []
         if self.allSubsystemsInRange() and self.checksGood:
-            self.telemetryTransfering = True
+            self.telemetryTransferring = True
             self.consoleLog.append("Please wait...")
             time.sleep(5)
-            self.telemetryTransfering = False
+            self.telemetryTransferring = False
             self.telemetryTransferComplete = True
             self.menu = "done"
             output.append("Data has been Transferred!")

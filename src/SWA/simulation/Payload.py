@@ -130,10 +130,10 @@ class Payload():
     # Main menu option 5
     def telemetryTransfer(self):
         if self.captureImageFlag:
-            self.telemetryTransfering = True
+            self.telemetryTransferring = True
             self.consoleLog.append("Please wait...")
             time.sleep(3)
-            self.telemetryTransfering = False
+            self.telemetryTransferring = False
             self.telemetryTransferComplete = True
             self.consoleLog.append("...Telemetry Transfer -- COMPLETE")
             self.consoleLog.append("GREAT WORK ON THE PAYLOAD SYSTEM CONSOLE!")

@@ -86,7 +86,7 @@ class ACS():
                 self.consoleLog.append("How much do you want to change the Yaw by (in Degrees)?")
                 self.menu = "cmgYaw"
             elif command_split[0] == "6":
-                self.consoleLog.append("Transfering ACS Telemetry...")
+                self.consoleLog.append("Transferring ACS Telemetry...")
                 self.consoleLog.extend(self.telemetryTransfer())
             else:
                 self.consoleLog.append("Invalid Command: " + command)
@@ -219,10 +219,10 @@ class ACS():
     def telemetryTransfer(self):
         output = []
         if (self.rpyValid and self.longitudeValid):
-            self.telemetryTransfering = True
+            self.telemetryTransferring = True
             output.append("Please wait...")
             time.sleep(3)
-            self.telemetryTransfering = False
+            self.telemetryTransferring = False
             self.telemetryTransferComplete = True
             self.menu = "done"
             self.continueUpdates = False
