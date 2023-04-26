@@ -100,10 +100,11 @@ class Payload():
         if self.statusGood and self.ready:
             self.slewImageFlag = True
             output.append("...Ground Target -- REACHED")
-        elif not self.ready:
-            output.append("...Ground Target -- NOT REACHED -- Longitude not within range. Check with ACS to determine ETA.")
-        elif not self.statusGood:
-            output.append("...Ground Target -- NOT REACHED -- Payload Status not reached. Run status checks to verify.")
+        else:
+            if not self.ready:
+                output.append("...Ground Target -- NOT REACHED -- Longitude not within range. Check with ACS to determine ETA.")
+            if not self.statusGood:
+                output.append("...Ground Target -- NOT REACHED -- Payload Status not reached. Run status checks to verify.")
         return output
 
     # Main menu option 3
