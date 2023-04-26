@@ -167,7 +167,6 @@ class COMMS():
             time.sleep(3)
             self.subsystemComplete = True
             self.menu = "done"
-            self.consoleLog.append("http://108.227.182.205:8000/fo/imagedisplay/", "See Image")
         else:
             output.append("Some subsystems have not complete their missions yet and need to send their telemetry data to finish your task.")
         return output
