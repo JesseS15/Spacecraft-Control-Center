@@ -19,7 +19,7 @@ def newSim(request, class_name):
     # Ensure selected class has at least one mission
     selected_class = Class.objects.get(class_name=class_name)
     if selected_class.missions.all().count() == 0:
-        if TestConductor.objects.get().missions.all().count() == 0: # No missions in any class
+        if TestConductor.objects.get(user = request.user).missions.all().count() == 0: # No missions in any class
             messages.info(request, 'You do not have any existing missions: create a new one')
         else: # No missions in selected class
             messages.info(request, 'You do not have any missions in this class: add an existing mission or create a new one')
@@ -126,7 +126,7 @@ def newMission(request,class_name):
                 mission.final_pitch = final_pitch
                 mission.final_yaw = final_yaw
                 mission.save()
-                TestConductor.objects.get().missions.add(mission)
+                TestConductor.objects.get(user = request.user).missions.add(mission)
                 
                 return redirect('../'+class_name)
     form2 = MissionCreationForm()
