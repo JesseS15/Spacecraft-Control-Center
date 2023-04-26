@@ -92,17 +92,20 @@ class COMMS():
     def systemChecks(self):
         output = []
         for key in self.checks:
-            if (self.checkTries < 3):
+            if (self.checkTries < 2):
                 self.checks[key] = bool(random.getrandbits(1))
-                self.checkTries += 1
-            elif (self.checkTries >= 3):
+            else:
                 self.checks[key] = True
+
             if (self.checks[key]):
                 output.append("..." + str.capitalize(key) + " -- REACHED")
             else:
                 output.append("..." + str.capitalize(key) + " -- NOT REACHED")
-        if self.checkTries >= 3:
+
+        if self.checkTries > 2:
             self.checkTries = 0
+        else:
+            self.checkTries += 1
         return output
 
     # tl menu option 2

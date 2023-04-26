@@ -58,15 +58,15 @@ class EPS():
         if self.menu == "tl":
             if command_split[0] == "1":
                 self.consoleLog.append("Checking Power Systems...")
-                time.sleep(5)
+                time.sleep(3)
                 self.consoleLog.extend(self.systemChecks())
             elif command_split[0] == "2":
                 self.consoleLog.append("Verifying Power Distribution...")
-                time.sleep(5)
+                time.sleep(3)
                 self.consoleLog.extend(self.verifyPowerDistribution())
             elif command_split[0] == "3":
                 self.consoleLog.append("Redistributing Resources...")
-                time.sleep(5)
+                time.sleep(3)
                 self.consoleLog.append(self.fullPower())
             elif command_split[0] == "4":
                 self.consoleLog.append("How much do you want to articulate the solar panels by (in Degrees)?")
@@ -93,19 +93,22 @@ class EPS():
     def systemChecks(self):
         output = []
         for key in self.checks:
-            if (self.checkTries < 3):
+            if (self.checkTries < 2):
                 self.checks[key] = bool(random.getrandbits(1))
-                self.checkTries += 1
             else:
                 self.checks[key] = True
+
             if self.checks[key]:
                 output.append("..." + str(key) + " Status -- REACHED")
                 self.statusGood = True
             else:
                 output.append("..." + str(key) + " Status -- NOT REACHED")
                 self.statusGood = False
-        if self.checkTries >= 3:
-            self.checkTries = 1
+
+        if self.checkTries > 2:
+            self.checkTries = 0
+        else:
+            self.checkTries += 1
         self.checkPanelAngle()
 
         if self.solarPanelAngleGood:
@@ -113,8 +116,6 @@ class EPS():
         else:
             output.append("...Solar Panel Angle -- OUT OF RANGE -- OFF BY " + str(self.solarPanelOffBy) + ". Run Articulate Angle to change.")
 
-        if (self.checkTries >= 3):
-            self.checkTries = 0
         return output
 
     # tl menu option 2
@@ -159,7 +160,7 @@ class EPS():
         if self.statusGood and self.solarPanelAngleGood and self.atFullPower:
             self.telemetryTransferring = True
             self.consoleLog.append("Please wait...")
-            time.sleep(5)
+            time.sleep(3)
             self.telemetryTransferring = False
             self.telemetryTransferComplete = True
             self.menu = "done"

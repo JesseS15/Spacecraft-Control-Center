@@ -101,11 +101,11 @@ class TCS():
         if self.menu == "tl":
             if command_split[0] == "1":
                 self.consoleLog.append("Checking Thermal Systems...")
-                time.sleep(2)
+                time.sleep(3)
                 self.consoleLog.extend(self.checkThermalSystems())
             elif command_split[0] == "2":
                 self.consoleLog.append("Verifying subsystems...")
-                time.sleep(2)
+                time.sleep(1)
                 self.consoleLog.extend(self.verifySubsystem())
             elif command_split[0] == "3":
                 self.consoleLog.extend(["Which Subsystem do you want to cool?",
