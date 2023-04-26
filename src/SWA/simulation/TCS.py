@@ -111,8 +111,8 @@ class TCS():
                 self.consoleLog.extend(["Which Subsystem do you want to cool?",
                                         "1) ACS",
                                         "2) EPS",
-                                        "3) Payload",
-                                        "4) Comms",])
+                                        "3) Comms",
+                                        "4) Payload",])
                 self.menu = "coolSubsys"
             elif command_split[0] == "4":
                 self.consoleLog.append("Transferring TCS Telemetry...")
@@ -135,16 +135,16 @@ class TCS():
                                         "3) Articulation System"])
                 self.menu = "epsCool"
             elif command_split[0] == "3":
+                self.consoleLog.extend(["Which COMMS item would you like to cool?",
+                                        "1) On-board Computer",
+                                        "2) Signal Processor"])
+                self.menu = "commsCool"
+            elif command_split[0] == "4":
                 self.consoleLog.extend(["Which Payload item would you like to cool?",
                                         "1) Optical Electronics",
                                         "2) Gimbal System",
                                         "3) Imager"])
                 self.menu = "payloadCool"
-            elif command_split[0] == "4":
-                self.consoleLog.extend(["Which COMMS item would you like to cool?",
-                                        "1) On-board Computer",
-                                        "2) Signal Processor"])
-                self.menu = "commsCool"
             else:
                 self.consoleLog.append("Invalid Command " + command)
                 self.menu = "tl"
