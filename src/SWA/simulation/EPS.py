@@ -104,8 +104,8 @@ class EPS():
             else:
                 output.append("..." + str(key) + " Status -- NOT REACHED")
                 self.statusGood = False
-        if self.checks >= 3:
-            self.checks = 1
+        if self.checkTries >= 3:
+            self.checkTries = 1
         self.checkPanelAngle()
 
         if self.solarPanelAngleGood:
