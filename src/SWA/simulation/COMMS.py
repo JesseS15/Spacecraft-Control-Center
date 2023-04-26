@@ -110,7 +110,7 @@ class COMMS():
         output = []
         if (self.currentGain >= self.gainRange[0]) and (self.currentGain <= self.gainRange[1]):
             self.checks['Antenna Status'] = True
-            output.append('...Signal -- CAPTURED -- Current Gain at' + str(self.currentGain) + " dB")
+            output.append('...Signal -- CAPTURED -- Current Gain at ' + str(self.currentGain) + " dB")
         elif self.currentGain > self.gainRange[1]:
             output.append('...Signal -- NOT CAPTURED -- Gain too high! Reset gain')
         else:
