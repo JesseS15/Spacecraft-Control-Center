@@ -147,10 +147,10 @@ class ACS():
         
     def checkLongitude(self):
         acceptableRange = 25
-        if (self.currentLongitude < (self.finalLongitude-acceptableRange)) or (self.currentLongitude > (self.finalLongitude+acceptableRange)):
-            self.longitudeValid=False
-        else:
+        if (self.currentLongitude >= (self.finalLongitude-acceptableRange)) and (self.currentLongitude <= (self.finalLongitude+acceptableRange)):
             self.longitudeValid=True
+        else:
+            self.longitudeValid=False
 
         
     def update(self):
