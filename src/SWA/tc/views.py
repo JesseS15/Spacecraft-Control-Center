@@ -150,7 +150,8 @@ def tcHome(request):
                                 rcg = ''.join(random.choices(string.ascii_uppercase +string.digits, k=8))
                                 classget.code = rcg
                                 if(len(numpy.asarray(request.POST.getlist('missions'))))>=1:
-                                    classget.missions.add(numpy.asarray(request.POST.getlist('missions')))
+                                    for x in missions:
+                                        classget.missions.add(x)
                                 classget.save()
                                 return redirect('tc:home')
                         else:
