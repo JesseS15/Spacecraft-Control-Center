@@ -63,7 +63,7 @@ class Payload():
             elif command_split[0] == "4":
                 self.consoleLog.append("Capturing Image...")
                 time.sleep(3)
-                self.consoleLog.append(self.captureImage())
+                self.consoleLog.extend(self.captureImage())
             elif command_split[0] == "5":
                 self.consoleLog.append("Transferring Payload Telemetry...")
                 self.consoleLog.extend(self.telemetryTransfer())
@@ -83,19 +83,21 @@ class Payload():
         output = []
         self.statusGood = True
         for key in self.checks:
-            if (self.checkTries < 3):
+            if (self.checkTries < 2):
                 self.checks[key] = bool(random.getrandbits(1))
-                self.checkTries += 1
             else:
                 self.checks[key] = True
+
             if self.checks[key]:
                 output.append("..." + key + " -- REACHED")
             else:
                 output.append("..." + key + " -- NOT REACHED")
                 self.statusGood = False
 
-        if (self.checkTries >= 3):
+        if (self.checkTries > 2):
             self.checkTries = 0
+        else:
+            self.checkTries += 1
         return output
 
     # tl menu option 2
@@ -106,9 +108,11 @@ class Payload():
             output.append("...Ground Target -- REACHED")
         else:
             if not self.ready:
-                output.append("...Ground Target -- NOT REACHED -- Longitude not within range. Check with ACS to determine ETA.")
+                output.append("...Ground Target -- NOT REACHED -- Longitude not within range.")
+                output.append("Check with ACS to determine ETA.")
             if not self.statusGood:
-                output.append("...Ground Target -- NOT REACHED -- Payload Status not reached. Run status checks to verify.")
+                output.append("...Ground Target -- NOT REACHED -- Payload Status not reached.")
+                output.append("Run status checks to verify ground target has been reached.")
         return output
 
     # tl menu option 3
@@ -116,19 +120,22 @@ class Payload():
         output = []
         if self.slewImageFlag:
             self.acquireTargetFlag = True
-            output.append("...Ground Target -- AQUIRED")
+            output.append("...Ground Target -- ACQUIRED")
         else:
-            output.append("...Ground Target -- CANNOT BE AQUIRED")
+            output.append("...Ground Target -- CANNOT BE ACQUIRED")
             output.append("Run Slew Image to check if ground target has been reached")
         return output
 
     # tl menu option 4
     def captureImage(self):
+        output = []
         if self.acquireTargetFlag:
             self.captureImageFlag = True
-            return "The ground image has been captured successfully!"
+            output.append("...Image -- CAPTURED")
         else:
-            return "The ground image cannot be captured at this time."
+            output.append("...Image -- NOT CAPTURED")
+            output.append("Target has not been acquired")
+        return output
 
     # tl menu option 5
     def telemetryTransfer(self):
@@ -145,7 +152,7 @@ class Payload():
             return output
         else:
             self.menu = "tl"
-            output.append("!!Data Transfer Error -- Image not in captured")  
+            output.append("!! Data Transfer Error -- Image has not been captured !!")  
             return output  
 
     ################### UPDATE Payload SUBSYTEM #######################
