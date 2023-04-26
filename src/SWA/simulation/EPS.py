@@ -68,7 +68,7 @@ class EPS():
                 self.consoleLog.append("How much do you want to articulate the solar panels by (in Degrees)?")
                 self.menu = "panelArticulate"
             elif command_split[0] == "5":
-                self.consoleLog.append("Transfering EPS Telemetry...")
+                self.consoleLog.append("Transferring EPS Telemetry...")
                 self.consoleLog.append( self.transferTelemetry())
             else:
                 self.consoleLog.append("Invalid Command " + command)
@@ -152,10 +152,10 @@ class EPS():
     # Main menu option 5
     def transferTelemetry(self):
         if self.statusGood and self.solarPanelAngleGood and self.atFullPower:
-            self.telemetryTransfering = True
+            self.telemetryTransferring = True
             self.consoleLog.append("Please wait...")
             time.sleep(5)
-            self.telemetryTransfering = False
+            self.telemetryTransferring = False
             self.telemetryTransferComplete = True
             self.menu = "done"
             return "Telemetry transfer complete. EPS subsystem complete!"
