@@ -62,6 +62,9 @@ class SimObject(threading.Thread):
         displayImage = self.subsystems["COMMS"].update()
         if (displayImage and (not self.imageDisplayed)):
             for subsys in self.subsystems:
+                self.subsystems[subsys].consoleLog.append("")
+                self.subsystems[subsys].consoleLog.append("ALL SUBSYSTEMS COMPLETED -- MISSION ACCOMPLISHED")
+                self.subsystems[subsys].consoleLog.append("Link to image:")
                 self.subsystems[subsys].consoleLog.append("http://108.227.182.205:8000/fo/imagedisplay/")
             self.imageDisplayed = True
     
