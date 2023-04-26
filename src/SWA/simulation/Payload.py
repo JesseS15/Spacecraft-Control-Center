@@ -6,9 +6,9 @@ class Payload():
     def __init__(self):
         super().__init__()
         self.checks = {
-            'Optical Electronics' : random.choice([True, False]),
-            'Bus Connection' : random.choice([True, False]),
-            'Gimble Connection' : random.choice([True, False])
+            'Optical Electronics' : bool(random.getrandbits(1)),
+            'Bus Connection' : bool(random.getrandbits(1)),
+            'Gimble Connection' : bool(random.getrandbits(1))
         }
 
         self.checkTries = 0

@@ -160,6 +160,7 @@ class ACS():
             self.longitudeValid=True
         else:
             self.longitudeValid=False
+        return self.longitudeValid
         
     def update(self):
         if self.continueUpdates:

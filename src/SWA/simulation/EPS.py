@@ -6,9 +6,9 @@ class EPS():
     def __init__(self):
         super().__init__()
         self.checks = {
-            'Uplink' : random.choice([True, False]),
-            'Bus Connection' : random.choice([True, False]),
-            'Articulation Gear' : random.choice([True, False])
+            'Uplink' : bool(random.getrandbits(1)),
+            'Bus Connection' : bool(random.getrandbits(1)),
+            'Articulation Gear' : bool(random.getrandbits(1))
         }
 
         self.distribution = {
@@ -90,7 +90,7 @@ class EPS():
         output = []
         for key in self.checks:
             if (self.checkTries < 3):
-                self.checks[key] = random.choices([True, False])
+                self.checks[key] = bool(random.getrandbits(1))
                 self.checkTries += 1
             else:
                 self.checks[key] = True
