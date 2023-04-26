@@ -59,14 +59,14 @@ class Payload():
             elif command_split[0] == "3":
                 self.consoleLog.append("Acquiring Target...")
                 time.sleep(3)
-                self.consoleLog.append(self.acquireTarget())
+                self.consoleLog.extend(self.acquireTarget())
             elif command_split[0] == "4":
                 self.consoleLog.append("Capturing Image...")
                 time.sleep(3)
                 self.consoleLog.append(self.captureImage())
             elif command_split[0] == "5":
                 self.consoleLog.append("Transferring Payload Telemetry...")
-                self.consoleLog.append( self.telemetryTransfer())
+                self.consoleLog.extend(self.telemetryTransfer())
             else:
                 self.consoleLog.append("Invalid Command " + command)
 
@@ -132,18 +132,21 @@ class Payload():
 
     # tl menu option 5
     def telemetryTransfer(self):
+        output = []
         if self.captureImageFlag:
             self.telemetryTransferring = True
             self.consoleLog.append("Please wait...")
             time.sleep(3)
             self.telemetryTransferring = False
             self.telemetryTransferComplete = True
-            self.consoleLog.append("...Telemetry Transfer -- COMPLETE")
-            self.consoleLog.append("GREAT WORK ON THE PAYLOAD SYSTEM CONSOLE!")
+            output.append("...Telemetry Transfer -- COMPLETE")
+            output.append("GREAT WORK ON THE PAYLOAD SYSTEM CONSOLE!")
             self.menu = "done"
-            return True
+            return output
         else:
-            return False
+            self.menu = "tl"
+            output.append("!!Data Transfer Error -- Image not in captured")  
+            return output  
 
     ################### UPDATE Payload SUBSYTEM #######################
     def update(self):
