@@ -95,10 +95,10 @@ class EPS():
             else:
                 self.checks[key] = True
             if self.checks[key]:
-                output.append("...The SimCrafts current " + str(key) + " Status is REACHED")
+                output.append("..." + str(key) + " Status -- REACHED")
                 self.statusGood = True
             else:
-                output.append("...The SimCrafts current " + str(key) + " Status is NOT REACHED")
+                output.append("..." + str(key) + " Status -- NOT REACHED")
                 self.statusGood = False
 
         self.checkPanelAngle()
