@@ -80,7 +80,7 @@ class Payload():
         self.statusGood = True
         for key in self.checks:
             if (self.checkTries < 3):
-                self.checks[key] = random.choices([True, False])
+                self.checks[key] = bool(random.getrandbits(1))
                 self.checkTries += 1
             else:
                 self.checks[key] = True
@@ -103,10 +103,8 @@ class Payload():
         elif not self.ready:
             output.append("...Ground Target -- NOT REACHED -- Longitude not within range. Check with ACS to determine ETA.")
         elif not self.statusGood:
-            output.append("...Ground Target -- NOT REACHED -- Payload Status not reached")
+            output.append("...Ground Target -- NOT REACHED -- Payload Status not reached. Run status checks to verify.")
         return output
-
-
 
     # Main menu option 3
     def acquireTarget(self):
