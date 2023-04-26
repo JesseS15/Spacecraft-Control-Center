@@ -38,8 +38,8 @@ def newSim(request, class_name):
                                          flight_director= form.cleaned_data.get('flight_director'),
                                          COMMS_fo= form.cleaned_data.get('COMMS_fo'),
                                          ACS_fo=form.cleaned_data.get('ACS_fo'), 
-                                         TCS_fo=form.cleaned_data.get('EPS_fo'), 
-                                         EPS_fo=form.cleaned_data.get('TCS_fo'))
+                                         TCS_fo=form.cleaned_data.get('TCS_fo'), 
+                                         EPS_fo=form.cleaned_data.get('EPS_fo'))
                 mission = sim.mission_script
                 final_values = {}
                 final_values["roll"] = mission.final_roll
