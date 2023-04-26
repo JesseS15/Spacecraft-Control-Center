@@ -289,7 +289,8 @@ class TCS():
             return output
         else:
             self.menu = "tl"
-            return output.append("Verification process for TCS not completed -- Temps not in range")          
+            output.append("Verification process for TCS not completed -- Temps not in range")  
+            return output       
     
     # tl menu option 5 - refresh thermal systems
     def refresh(self):
