@@ -140,10 +140,13 @@ class ACS():
  
     # Method to determine how many seconds until longitude is within range
     def longitudeETASeconds(self):
-        if self.currentLongitude > self.finalLongitude:
-            return abs(360+self.finalLongitude-self.currentLongitude)/self.longitudeUpdateAmount
+        if (self.longitudeValid):
+            return "Longitude within acceptable range. Transfer Telemetry to complete subsystem."
         else:
-            return abs(self.finalLongitude - self.currentLongitude)/self.longitudeUpdateAmount
+            if self.currentLongitude > self.finalLongitude:
+                return abs(360+self.finalLongitude-self.currentLongitude)/self.longitudeUpdateAmount
+            else:
+                return abs(self.finalLongitude - self.currentLongitude)/self.longitudeUpdateAmount
         
     def checkLongitude(self):
         acceptableRange = 25
@@ -151,7 +154,6 @@ class ACS():
             self.longitudeValid=True
         else:
             self.longitudeValid=False
-
         
     def update(self):
         if self.continueUpdates:
