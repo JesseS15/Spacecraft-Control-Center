@@ -413,21 +413,27 @@ def fetchcommands(request, simkey):
 @login_required(login_url='/login/')
 def foClass(request, class_name):
     getFO = FlightOperator.objects.get(user = request.user)
-    print(getFO)
     getclass = Class.objects.get(class_name=class_name)
     getFOsims = getFO.sim_list.all()
-    print(getFOsims)
     getclasssims = getclass.sims.all()
-    print(getclasssims)
     sims = []
     for sim in getFOsims:
-        print(sim)
         if sim in getclasssims:
-            print(sim)
             sims.append(sim)
 
     return render(request, 'fo/foClass.html', {'sims':sims, 'class_name':class_name})
 
+#######################################################################
+@login_required(login_url='/login/')
+def imagedisplay(request):
+    return render(request, 'fo/imagedisplay.html', {})
+
+#######################################################################
+@login_required(login_url='/login/')
+def rickdisplay(request):
+    return render(request, 'fo/rickroll.html', {})
+
+#######################################################################
 def _get_fo_subsystem(simobj, flightOperator):
     subsystem = 'UNKNOWN'
     if flightOperator == simobj.flight_director:
@@ -441,13 +447,3 @@ def _get_fo_subsystem(simobj, flightOperator):
     if flightOperator == simobj.TCS_fo:
         subsystem = "TCS"
     return subsystem
-
-#######################################################################
-@login_required(login_url='/login/')
-def imagedisplay(request):
-    return render(request, 'fo/imagedisplay.html', {})
-
-#######################################################################
-@login_required(login_url='/login/')
-def rickdisplay(request):
-    return render(request, 'fo/rickroll.html', {})
