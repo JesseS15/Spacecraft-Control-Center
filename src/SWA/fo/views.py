@@ -23,7 +23,6 @@ import threading
 
 ###############################################################################
 def index(request):
-
     if request.user.is_authenticated and not request.user.is_staff:
         return redirect('fo:home')
     else:
@@ -44,18 +43,16 @@ def foHome(request):
             test = FlightOperator.objects.get(user = request.user)
             test.class_list.add(Class.objects.get(code = code))
             return redirect('fo:home')
-            
         else:
             messages.info(request, f'Class does not exist')
 
     form = JoinClassForm()
-
     return render(request, 'fo/foHome.html', {'flightOperator':flightOperator, 'classes':classes, 'form':form})
 
 ###############################################################################
+# Route flight operator to page for their assigned subsystem
 @login_required(login_url='/login/')
 def sim(request, simkey):
-    
     sim = get_object_or_404(Sim, pk = simkey)
     flightOperator = get_object_or_404(FlightOperator, user = request.user)
     subsystem = _get_fo_subsystem(sim, flightOperator)
@@ -140,7 +137,6 @@ def joinClass(request):
             test = FlightOperator.objects.get(user = request.user)
             test.class_list.add(Class.objects.get(class_name = class_name))
             return redirect('fo:home')
-            
         else:
             messages.info(request, f'Class does not exist')
 
@@ -150,7 +146,6 @@ def joinClass(request):
 ###############################################################################
 def submit(request, simkey):
     if request.method == 'GET':
-        # Create command object for db
         command = request.GET.get('cmd')  # String
 
         # Determine Flight Operator's Subsystem

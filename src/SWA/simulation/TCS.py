@@ -226,16 +226,20 @@ class TCS():
         outputString = []
         self.checksGood = True
         for key in self.checks:
-            if self.checkTries < 3:
+            if self.checkTries < 2:
                 self.checks[key] = bool(random.getrandbits(1))
-                self.checkTries += 1
+            else:
+                self.checks[key] = True
+                
             if self.checks[key]:
                 outputString.append(key + " -- REACHED")
             else:
                 outputString.append(key + " -- NOT REACHED, REFRESH SYSTEM")
                 self.checksGood = False
-        if self.checkTries >= 3:
+        if self.checkTries > 2:
             self.checkTries = 0
+        else:
+            self.checkTries += 1
         return outputString    
 
     # tl menu option 2 with sub-menu option as subsystem string
@@ -298,7 +302,7 @@ class TCS():
             self.checks[key] = True
         self.checksGood = True
         self.checkTries = 4
-        return ("Systems refreshed, run System Checks to verify.")
+        return "Systems refreshed, run System Checks to verify."
     
     # Used to check for telemtry transfer
     def allSubsystemsInRange(self):
