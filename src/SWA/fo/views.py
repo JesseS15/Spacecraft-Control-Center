@@ -1,21 +1,25 @@
-from django.contrib import messages
+# STaTE
+# File: fo/views.py
+# Purpose: This file defines what html file and data to return when an http request is made to the fo Django app
+
+import json
 import numpy
+import threading
+
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.mail import send_mail
 from django.http import HttpResponse
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import JoinClassForm
 from .models import FlightOperator
-from tc.models import Class
 from simapp.models import Sim
-
-from django.http import JsonResponse
-from django.template.loader import render_to_string
-import json
-import threading
+from tc.models import Class
 
 ###############################################################################
 def index(request):
@@ -437,13 +441,13 @@ def _get_fo_subsystem(simobj, flightOperator):
     if flightOperator == simobj.TCS_fo:
         subsystem = "TCS"
     return subsystem
-###########################################################
+
+#######################################################################
 @login_required(login_url='/login/')
 def imagedisplay(request):
-
     return render(request, 'fo/imagedisplay.html', {})
-##########################################################
+
+#######################################################################
 @login_required(login_url='/login/')
 def rickdisplay(request):
-
     return render(request, 'fo/rickroll.html', {})

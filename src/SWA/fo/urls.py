@@ -1,8 +1,12 @@
-from django.urls import path, include
-from django.conf import settings
+# STaTE
+# File: fo/urls.py
+# Purpose: This file defines url patterns to route user http requests in the fo Django app
+
 from . import views
+from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth
+from django.urls import path, include
  
 app_name = 'fo'
 urlpatterns = [

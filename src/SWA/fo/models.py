@@ -1,5 +1,9 @@
-from django.conf import settings
+# STaTE
+# File: fo/models.py
+# Purpose: This file defines database objects for the fo Django app
+
 from django.db import models
+from django.conf import settings
 
 ###############################################################################
 class FlightOperator(models.Model):
