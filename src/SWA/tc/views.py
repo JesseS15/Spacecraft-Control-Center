@@ -133,7 +133,7 @@ def tcHome(request):
                                             classget.missions.add(x)
                                     classget.save()
                                     return redirect('tc:home')
-                            elif(randomizecode == True and (len(form2.cleaned_data.get('code'))>=0)):
+                            elif(randomizecode == True and (len(form2.cleaned_data.get('code'))>=1)):
                                  messages.info(request, 'Cannot enter code and randomize code. Please make one choice. Edit Unsuccessful.')  
                             else:
                                 rcg = ''.join(random.choices(string.ascii_uppercase +string.digits, k=8))
