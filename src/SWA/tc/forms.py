@@ -1,16 +1,21 @@
+# STaTE
+# File: tc/forms.py
+# Purpose: This file defines forms for user-provided data submission in the tc Django app
+
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User, Group
+from django.core.exceptions import ValidationError
+
+from .models import Class, TestConductor
+from fo.models import FlightOperator
+from simapp.models import Sim, Mission
+
 import re
 import random
 import string
-from django.contrib.auth.models import User, Group
-from django.contrib.auth.forms import UserCreationForm
-from django.core.exceptions import ValidationError
-
-from fo.models import FlightOperator
-from simapp.models import Sim, Mission
-from .models import Class, TestConductor
  
- ###############################################################################
+###############################################################################
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
     first_name = forms.CharField(max_length = 20)
@@ -22,11 +27,7 @@ class UserRegisterForm(UserCreationForm):
 ###############################################################################
 class ClassForm(forms.ModelForm):
     class_name = forms.CharField(initial='') 
-    
-    #def clean_msg(self):
-     #   class_name = self.cleaned_data['class_name']
-      ##     raise ValidationError("Spaces not allowed")
-       # return class_name
+
     missions = forms.ModelMultipleChoiceField(queryset=Mission.objects, help_text=("Hold Ctrl to Select Multiple"), required = False)
     test = True
     class Meta:
@@ -56,7 +57,6 @@ class SimCreationForm(forms.ModelForm):
         fields = ['sim_name', 'status', 'mission_script', 'flight_director', 'COMMS_fo', 'ACS_fo', 'EPS_fo', 'TCS_fo']
         widgets = {'status': forms.HiddenInput()}
     
-        #FlightOperator.objects.filter(user_class_list__icontains=class_name).values()
 ###################################################################3
 class MissionCreationForm(forms.ModelForm):
     mission_name = forms.CharField(max_length = 20)
@@ -69,8 +69,6 @@ class MissionCreationForm(forms.ModelForm):
 class ClassEditForm(forms.ModelForm):
     test = False
     randomizecode = forms.BooleanField(initial = False, required=False, label="Randomize Code")
-    #test = forms.BooleanField(widget=forms.HiddenInput(), initial=False)
-    #status = forms.CharField(widget=forms.HiddenInput(), initial=Class.status) 
     code  = forms.CharField(initial='', required=False)
     missions = forms.ModelMultipleChoiceField(queryset=Mission.objects, help_text=("Hold Ctrl to Select Multiple"), required = False)
     delete = forms.BooleanField(initial = False, required=False)
@@ -82,8 +80,6 @@ class ClassEditForm(forms.ModelForm):
 class SimEditForm(forms.ModelForm):
     test = False
     delete = forms.BooleanField(initial = False, required=False)
-    #test = forms.BooleanField(widget=forms.HiddenInput(), initial=False)
-    #status = forms.CharField(widget=forms.HiddenInput(), initial=Class.status) 
     class Meta:
         model = Sim
         fields = []
@@ -92,9 +88,6 @@ class SimEditForm(forms.ModelForm):
 ############################################################
 class MissionEditForm(forms.ModelForm):
     delete = forms.BooleanField(initial = False, required=False)
-    #test = forms.BooleanField(widget=forms.HiddenInput(), initial=False)
-    #status = forms.CharField(widget=forms.HiddenInput(), initial=Class.status) 
     class Meta:
         model = Mission
         fields = []
-        

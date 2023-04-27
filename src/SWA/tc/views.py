@@ -1,32 +1,26 @@
-import numpy
-import string
-import random
+# STaTE
+# File: tc/views.py
+# Purpose: This file defines what html file and data to return when an http request is made to the tc Django app
+
 from django.db import models
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
-from django.contrib.auth.forms import AuthenticationForm
-from django.core.mail import send_mail
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import get_template
-from django.template import Context
+from django.contrib.auth.models import Group, User
 from django.http import HttpResponse
-from django.template import loader
-from django.contrib.auth.models import Group, Permission, User
-from django.contrib.contenttypes.models import ContentType
-import time
-from .models import Class
-from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
+
+from .forms import ClassForm, ClassEditForm, SimEditForm, MissionEditForm
 from .models import TestConductor, Class
 from simapp.models import Sim, Mission
-from .forms import UserRegisterForm, SimCreationForm, ClassForm, MissionCreationForm, ClassEditForm, SimEditForm, MissionEditForm
 
 import json
+import numpy
+import random
+import string
 import threading
-
+import time
 
 ###############################################################################
 def index(request):
@@ -37,8 +31,6 @@ def index(request):
         return redirect('home:login')
 
 ###############################################################################
-
-######################################################
 @login_required(login_url='/login/')
 @staff_member_required
 def tcHome(request):
@@ -50,7 +42,6 @@ def tcHome(request):
         TestConductor.objects.create(user = request.user).save()
     tcobj = TestConductor.objects.get(user = request.user)
 
-    print(classes)
     if request.method == 'POST':
         form = ClassForm(request.POST)
         classes1 = Class.objects.all()
@@ -61,10 +52,7 @@ def tcHome(request):
             nospacename = class_namef.replace(" ", "")
             test = form.cleaned_data.get('test')
             missions = numpy.asarray(request.POST.getlist('missions'))
-            #test1 = form2.cleaned_data.get('test')
             classesstr = str(classes)
-            print(type(classes))
-            print(class_namef)
 
             ifequal = 0
             for classi in classes:
@@ -120,11 +108,6 @@ def tcHome(request):
             test = form2.cleaned_data.get('test')
             delete = form2.cleaned_data.get('delete')
             randomizecode = form2.cleaned_data.get('randomizecode')
-            #test1 = form2.cleaned_data.get('test')
-            print('xxxxxxxx')
-            print(class_namef)
-            print(len(form2.cleaned_data.get('code')))
-            print(test)
 
             ifequal = 0
             for classi in classes:
@@ -162,7 +145,7 @@ def tcHome(request):
                                 return redirect('tc:home')
                         else:
                             classget.delete()
-                            print('sucess')
+                            
             return redirect('tc:home')
     else:
         form2 = ClassEditForm()
@@ -176,25 +159,19 @@ def classHome(request, class_name):
 
     group = Class.objects.all().filter(class_name = class_name).values_list('sims', flat=True)
     data = numpy.asarray(group)
-    print(group)
     if (data.all()!=None):
         sims = ['']*(len(data))
         for e in range(len(data)):
-            print(Sim.objects.get(pk=data[e]))
             sims[e] = Sim.objects.get(pk=data[e])
-        print(sims)
     else:
         sims=[]
     #############################################################################
     group2 = Class.objects.all().filter(class_name = class_name).values_list('missions', flat=True)
     data2 = numpy.asarray(group2)
-    print(group2)
     if (data2.all()!=None):
         missions = ['']*(len(data2))
         for e in range(len(data2)):
-            print(Mission.objects.get(pk=data2[e]))
             missions[e] = Mission.objects.get(pk=data2[e])
-        print(missions)
     else:
         missions=[] 
     
@@ -203,8 +180,6 @@ def classHome(request, class_name):
         form3 = SimEditForm(request.POST)
         if(form3.is_valid()):
             sim_namef = request.POST.get('sim_name')
-            print("xxxx")
-            print(sim_namef)
             delete = form3.cleaned_data.get('delete')
             simget = Class.objects.get(class_name = class_name).sims.get(sim_name=sim_namef)
             if(delete==False):
@@ -223,23 +198,17 @@ def classHome(request, class_name):
     else:
         form3 = SimEditForm()
 
-    #if(form3.is_valid()):
-     #   return redirect('tc:home')
-    ##   form3 = SimEditForm()
-
     ###############################################################################
     if request.method == 'POST' and request.POST.get("form_type") == 'formTwo':
         form4 = MissionEditForm(request.POST)
         if(form4.is_valid()):
             mission_namef = request.POST.get('missionname')
-            print(mission_namef)
             delete = form4.cleaned_data.get('delete')
             missionget = Mission.objects.get(mission_name = mission_namef)
             if(delete==False):
                 missionget.save()
             else:
                 missionget.delete()
-                print('sucess')
         return redirect('../home/'+class_name)
     else:
         form4 = MissionEditForm()
@@ -252,7 +221,6 @@ def getGroups(request):
     
     group = list(request.user.groups.values_list('name', flat = True))
     data = numpy.asarray(group)
-    print(data) 
     return render(request, 'tc: home.html', {"data":data})
 
 def downloadSimReport(request):

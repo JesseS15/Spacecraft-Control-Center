@@ -1,10 +1,15 @@
+# STaTE
+# File: tc/models.py
+# Purpose: This file defines database objects for the tc Django app
+
 from django.conf import settings
-from django.db import models 
 from django.contrib.auth.models import Group
-import string
-import random
+from django.db import models 
 
 from simapp.models import Sim
+
+import string
+import random
 
 Group.add_to_class('sim_list', models.ManyToManyField("simapp.Sim",verbose_name="Sim"))
 
@@ -41,4 +46,3 @@ class Class(models.Model):
     
     class Meta:
        verbose_name_plural = "Classes"
-#############################################################

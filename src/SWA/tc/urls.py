@@ -1,8 +1,13 @@
-from django.urls import path, include
+# STaTE
+# File: tc/urls.py
+# Purpose: This file defines url patterns to route user http requests in the tc Django app
+
 from django.conf import settings
-from . import views
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth
+from django.urls import path, include
+
+from . import views
 from simapp import views as simappViews
 
 app_name = 'tc'
