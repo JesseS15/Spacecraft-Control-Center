@@ -1,6 +1,11 @@
+# STaTE
+# File: simapp/models.py
+# Purpose: This file defines database objects for the simapp Django app
+
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+
 import random
 
 ###############################################################################
@@ -8,14 +13,12 @@ class Mission(models.Model):
     mission_name = models.CharField(default='', max_length=15)
     verbose_name = models.CharField(default='', max_length=20)
     # Roll range: -180, 180
-    # Pitch range: -90, 90
-    # Yaw rangeL -180, 180
     final_roll = models.IntegerField(default=random.randint(-180,180), validators=[MinValueValidator(-180),MaxValueValidator(180)], blank=True)
+    # Pitch range: -90, 90
     final_pitch = models.IntegerField(default=random.randint(-90,90), validators=[MinValueValidator(-90),MaxValueValidator(90)], blank=True)
+    # Yaw range -180, 180
     final_yaw = models.IntegerField(default=random.randint(-180,180), validators=[MinValueValidator(-180),MaxValueValidator(180)], blank=True)
-    # 0 is prime meridian
-    #final_longitude = models.IntegerField(default=random.randint(-180,180), validators=[MinValueValidator(-180),MaxValueValidator(180)], blank=True)
-    
+
     def __str__(self):
         return self.mission_name
 

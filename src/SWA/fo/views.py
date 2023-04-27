@@ -2,10 +2,6 @@
 # File: fo/views.py
 # Purpose: This file defines what html file and data to return when an http request is made to the fo Django app
 
-import json
-import numpy
-import threading
-
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -20,6 +16,10 @@ from .forms import JoinClassForm
 from .models import FlightOperator
 from simapp.models import Sim
 from tc.models import Class
+
+import json
+import numpy
+import threading
 
 ###############################################################################
 def index(request):

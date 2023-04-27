@@ -1,17 +1,19 @@
-from django.shortcuts import render
+# STaTE
+# File: simapp/views.py
+# Purpose: This file defines what html file and data to return when an http request is made to the simapp Django app
+
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
-# Importing models from simaapp/views.py
 from django.contrib import messages
+from django.shortcuts import redirect, render
+
 from .models import Sim, Mission
+from fo.models import FlightOperator
 from tc.forms import *
 from tc.models import *
-from tc.models import TestConductor, Class
-import numpy, random
-from django.contrib.auth.decorators import login_required
-from tc.forms import SimCreationForm
-from fo.models import FlightOperator
+
 from simulation.SimObject import SimObject
+
+import numpy, random
 
 ############################################################################
 def newSim(request, class_name):
@@ -86,9 +88,7 @@ def newSim(request, class_name):
 #########################################################################################################
 @login_required(login_url='/login/')
 def newMission(request,class_name):
-    print("hi"+class_name)
-    
-    ###############################################3
+
     if request.method == 'POST':
         form2 = MissionCreationForm(request.POST)
 
@@ -131,5 +131,3 @@ def newMission(request,class_name):
                 return redirect('../'+class_name)
     form2 = MissionCreationForm()
     return render(request, 'tc/newMission.html', {"form2":form2, "class_name": class_name})
-
-#########################################################################################################
