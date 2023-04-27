@@ -1,3 +1,7 @@
+# STaTE
+# File: home/urls.py
+# Purpose: This file defines url patterns to route user http requests in the home Django app
+
 from django.urls import path
 
 from . import views

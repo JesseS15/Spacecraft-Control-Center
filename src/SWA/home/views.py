@@ -1,3 +1,7 @@
+# STaTE
+# File: home/views.py
+# Purpose: This file defines what html file and data to return when an http request is made to the home Django app
+
 from django.http import HttpResponse
 from django.template import loader
 from django.contrib import messages
